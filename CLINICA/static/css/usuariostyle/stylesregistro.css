@@ -1,0 +1,89 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+h1{font-size: 2.5em;}
+.container-box{
+    width: auto;
+    height: auto;
+    max-width: 500px;
+    max-height: 1000px;
+    margin: 30px;
+    background-color: #022e2c7c;
+    position:relative;
+    box-sizing: border-box;
+
+}
+.container-box h1{
+    background-color: none;
+    color:beige
+}
+.campos label.campo{
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    display: block;
+    color: #022e2c;
+}
+.estado {
+    width: 80%;
+    display:block;
+    color: #022e2c;
+}
+.estado .radio-container{
+    display: flex;
+}
+.estado input[type="button"]{
+    width: 54px;
+    margin-left: 100%;
+    margin-bottom: 5px;
+}
+.campos input, select{
+    width: 90%;
+    margin-bottom: 10px;
+}
+.campos input[type="text"],
+.campos input[type="password"],
+.campos select{
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.719);
+    background:#5fb9848e;
+    height: 35px;
+    color: rgba(0, 0, 0, 0.699);
+    font-size: 16px;
+}
+.campos input[type="text"]:hover,
+.campos input[type="password"]:hover,
+.campos select:hover{
+    background:#37835d;
+}
+.campos input[type="button"]{
+    border: none;
+    outline: none;
+    height: 35px;
+    background:#08693cc5;
+    border-radius: 10px;
+}
+.campos input[type="button"]:hover{
+    background: #022e2c;
+}
+@media(min-width:700px){
+    .estado {
+        margin-left: 40px;
+        margin-bottom: 10px;
+        display:flex;
+    }
+    .estado .radio-container{
+        display:flex;
+    }
+    .estado input[type="button"]{
+        width: 54px;
+        margin-left: -10px;
+        margin-bottom: 0;
+    }
+}

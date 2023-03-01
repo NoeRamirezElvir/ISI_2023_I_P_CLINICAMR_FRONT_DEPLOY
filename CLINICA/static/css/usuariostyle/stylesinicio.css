@@ -1,0 +1,37 @@
+*{
+    box-sizing: border-box;
+}
+h1{font-size: 2.5em;}
+h2{font-size: 2em;}
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+.container{
+    max-width: 1000px;
+    margin: auto;
+}
+.titulo{
+    padding-left: 8%;
+}
+#informacion .container{
+    display: flex;
+    align-items: flex-end;
+    padding-left: 15%;
+}
+#descripcion .container{
+    display: flex;
+    align-items: flex-end;
+    padding-left: 10%;
+}
+#descripcion2 .container{
+    display: flex;
+    align-items: flex-end;
+    padding-left: 10%;
+}
+
+
+
+
+
+

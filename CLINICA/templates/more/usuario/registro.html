@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CLINICA/static/css/usuariostyle/stylesregistro.css">
+    <title>Registrar Usuarios</title>
+</head>
+<body>
+    <div class="container-box">
+        <div class="container-box">
+            <div class="titulo">
+                <h1>Registro de Usuarios</h1>
+            </div>
+        </div>
+        <div class="campos">
+            <div>
+                <h4>Ingrese la información requerida</h4>
+                <label class="campo" for="idUsuariol">ID de Usuario</label>
+                <select name="idUsuariol" id="idUsuario">
+                    <option value="value1">Seleccione un ID</option>
+                </select>
+            </div>
+            <div>
+                <label class="campo" for="idEmpleadl">ID de Empleado</label>
+                <select name="idEmpleadl" id="idEmpleado">
+                    <option value="value1">Seleccione un ID</option>
+                </select>
+            </div>
+            <div>
+                <label class="campo" for="user">Nombre de Usuario</label>
+                <input type="text" name="user" id="username" placeholder="Nombre de Usuario">
+            </div>
+            <div>
+                <label class="campo" for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Contraseña">
+            </div>
+            <div class="estado">
+                <div>
+                    <h4>Usuario activo</h4>
+                    <div class="radio-container">
+                        <input type="radio" id="activar" name="activado" value="Activo"> 
+                        <label class="rad" for="activar">Activar</label>
+                        <input type="radio"  id="noactivado" name="activado" value="No Activo"> 
+                        <label class="rad" for="noactivado">Desactivar</label>   
+                    </div>
+                </div>
+                <div>
+                    <h4>Bloqueo de usuario</h4>
+                    <div class="radio-container">
+                        <input type="radio" id="bloquear" name="bloqueo" value="Bloquear"> 
+                        <label class="rad" for="bloquear">Bloquear</label>
+                        <input type="radio"  id="Desbloquear" name="bloqueo" value="Desbloquear"> 
+                        <label class="rad" for="Desbloquear">Desbloquear</label>   
+                    </div>
+                </div>
+                <div class="botones">
+                    <input type="button" value="Limpiar">
+                </div>
+            </div>
+            <div class="botones">
+                <input type="button" value="Actualizar">
+                <input type="button" value="Registrar">
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

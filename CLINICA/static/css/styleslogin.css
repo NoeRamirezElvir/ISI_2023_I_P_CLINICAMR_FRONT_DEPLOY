@@ -1,0 +1,108 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100vh;
+    background-image: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    )
+    ,url("/CLINICA/static/img/images/imglogin.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+}
+.container-box{
+    width: 400px;
+    height: 470px;
+    max-width: 400px;
+    top: 50%;
+    left: 30%;
+    margin: auto;
+    background-color: rgba(151, 144, 135, 0.842);
+    position: absolute;
+    border-radius: 7px;
+    box-sizing: border-box;
+    transform: translate(-50%,-50%);
+    padding: 70px 30px;
+}
+.logo{
+    background-image: url("/CLINICA/static/img/logo/logo2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 220px;
+    height: 100px;
+    position: absolute;
+    top: -40px;
+    left: calc(20%);
+}
+.container-box h1{
+    color: #022e2c;
+    margin: 0;
+    margin-top: 40px;
+    padding: 0 0 20px;
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+
+}
+.container-box label{
+    margin: 0;
+    padding: 0;
+    font-size: 1.4em;
+    display: block;
+    color: #022e2c;
+}
+.container-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.container-box input[type="text"],
+.container-box input[type="password"]{
+    border: none;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    background:rgba(175, 172, 168, 0.541);
+    border-radius: 2px;
+    height: 40px;
+    color: rgba(0,0,0,0.5);
+    font-size: 16px;
+}
+.container-box input[type="text"]:hover,
+.container-box input[type="password"]:hover{
+    background:rgba(211, 207, 203, 0.541);
+}
+.container-box input[type="button"]{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: rgba(87, 86, 85, 0.541);
+    border-radius: 10px;
+}
+.container-box input[type="button"]:hover{
+    background: #07827E;
+}
+.container-box a{
+    color: #022e2c;
+}
+.container-box a:hover{
+    color: #07827E;
+}
+@media(max-width:700px){
+    .container-box{
+        width: 400px;
+        height: 470px;
+        max-width: 400px;
+        top: 50%;
+        left: 50%;
+        margin: auto;
+        background-color: rgba(151, 144, 135, 0.842);
+        position: absolute;
+        box-sizing: border-box;
+        transform: translate(-50%,-50%);
+        padding: 70px 30px;
+    }
+}
