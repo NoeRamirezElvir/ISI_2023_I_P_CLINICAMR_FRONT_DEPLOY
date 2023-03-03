@@ -19,12 +19,12 @@ from CLINICA.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
-    path('CLINICA/templates/more/usuariologin.html',usuariologin),
-    path('CLINICA/templates/more/home.html',home),
-    path('CLINICA/templates/more/iniciomenu.html',iniciomenu),
-    path('CLINICA/templates/more/usuario/usuario.html',usuario),
-    path('CLINICA/templates/more/usuario/inicio.html',usuarioinicio),
-    path('CLINICA/templates/more/usuario/listar.html',usuariolistar),
-    path('CLINICA/templates/more/usuario/registro.html',usuarioregistro),
+    path('', presentacion),
+    path('CLINICA/templates/presentacion/usuariologin.html',usuariologin),
+    path('CLINICA/templates/home.html',home),
+    path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
+    path('CLINICA/templates/usuario/usuario.html',usuario),
+    path('CLINICA/templates/usuario/inicio.html',inicio),
+    path('CLINICA/templates/usuario/listar.html',listar),
+    path('CLINICA/templates/usuario/registro.html',registro),
 ]

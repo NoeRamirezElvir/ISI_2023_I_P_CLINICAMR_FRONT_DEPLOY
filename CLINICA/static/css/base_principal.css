@@ -1,0 +1,124 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+.body-principal{
+    background-color: #82b3b3;
+    display: flex;
+}
+.icono-base{
+    float:right;
+    font-size: 16px;
+}
+.container-base{
+    max-height: 100vh;
+    overflow-y: visible;
+}
+.titulo-base{
+    font-size: 25px;
+    color: white;
+    background-color: #103632;
+    width: 300px;
+    padding: 10px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.245); 
+}
+.titulo-base .logo-base{
+    font-size: 25px;
+    color: white;
+    background-color: #103632;
+    width: 300px;
+    text-decoration: none ;
+    text-align: center;
+    margin-left: 18vh;   
+}
+    
+.menu-base ul{
+    width: 300px;
+    height: 91.6vh;
+    max-height: 91.6vh;
+    background: #103632;
+    list-style: none;
+    margin:0px 0px;
+}
+.menu-base ul li{
+    border: 1px solid rgba(0, 0, 0, 0.245); 
+}
+.menu-base ul li a{
+    color:aliceblue;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+    display: block;
+}
+.menu-base ul li a:hover{
+    background: #6A7E6A;
+    border-left: 3px solid tomato;;
+}
+.menu-base ul .submenu-base{
+    margin:0;
+    width: 100%;
+    display: none;
+}
+.menu-base ul .submenu-base li a{
+    font-size: 18px;
+    padding-left: 30px;
+}
+.menu-base ul .submenu2-base{
+    margin:0;
+    width: 100%;
+    display: none;
+}
+.menu-base ul .submenu2-base li a{
+    font-size: 18px;
+    padding-left: 60px;
+}
+.menu-base ul li:focus-within>ul,
+.menu-base ul li:hover >ul{
+    display: initial;
+}
+.contenido-base{
+    position: absolute;
+    width: 78.1%;
+    height: 100%;
+    max-width: 78.1%;
+    max-height: 100%;
+    left:300px;
+    overflow-y: visible;
+}
+.titulo-inicio-base h1{
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    background-color: #103632;
+}
+.contenedor-titulo-base{
+    width: 78.8vmax;
+}
+.contenedor-parrafos-base{
+    display: flex;
+}
+.contenedor-parrafos-base p{
+    font-size: 18px;
+    padding:30px
+}
+.titulo-inicio-base img{
+    position: absolute;
+    width: 400px;
+    height: auto;
+    right: 8%;
+    top: 15%;
+}
+.contenedor-parrafos-base .parrafo2-base{
+    position: absolute;
+    top: 60%;
+}
+.contenedor-parrafos-base .parrafo1{
+    position: absolute;
+    width: 550px;
+    height: auto;
+    top:10%;
+}
+
+
+
