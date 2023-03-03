@@ -1,0 +1,70 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicaMR</title>
+    <link rel="stylesheet" href="{% static 'css/stylespresentacion.css' %}">
+    
+</head>
+<body>
+    <header>
+        <div class="container">
+            <p class="logo"><img src="{% static 'img/logo/logo2.png' %}" class="logo"></p>
+            <nav>
+                <a href="#informacion">Información</a>
+                <a href="#servicios">Servicios</a>
+                <a href="/CLINICA/templates/presentacion/usuariologin.html">Iniciar Sesión</a>
+            </nav>
+        </div>
+    </header>
+    <section id="hero">
+        <h1>Clínica general <br>Medical Rescue</h1>
+    </section>
+
+    <section id="informacion">
+        <div class="container">
+            <div class="texto">
+                <h2>Quienes somos</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cum, magni delectus. Nobis fugit exercitationem, quo esse neque suscipit itaque facilis expedita molestiae aliquid? Ut mollitia assumenda cupiditate recusandae ratione temporibus?</p>
+            </div>
+            <div class="img-container"></div>
+        </div>
+    </section>
+
+    <section id="servicios">
+        <div class="container">
+            <h2>Servicios que ofrecemos</h2>
+            <div class="listaservice">
+                <div class="carta">
+                    <h3>Consulta General</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quia cumque deleniti, saepe expedita modi unde quibusdam esse quo sit nam at distinctio libero consectetur neque voluptatum. Facere, nihil a.</p>
+                </div>
+                <div class="carta">
+                    <h3>Examenes</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quia cumque deleniti, saepe expedita modi unde quibusdam esse quo sit nam at distinctio libero consectetur neque voluptatum. Facere, nihil a.</p>
+                </div>
+                <div class="carta">
+                    <h3>Tratamientos</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quia cumque deleniti, saepe expedita modi unde quibusdam esse quo sit nam at distinctio libero consectetur neque voluptatum. Facere, nihil a.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact">
+        <div class="container">
+            <ul>
+                <li><img src="{% static 'img/icons/icinstagram.png' %}" alt="No se encontró la imagen"></li>
+                <li><img src="{% static 'img/icons/icphone.png' %}" alt="No se encontró la imagen"></li>
+                <li><img src="{% static 'img/icons/icwhatsapp.png' %}" alt="No se encontró la imagen"></li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; ClinicaMR</p>
+        </div>
+    </footer>
+</body>
+</html>

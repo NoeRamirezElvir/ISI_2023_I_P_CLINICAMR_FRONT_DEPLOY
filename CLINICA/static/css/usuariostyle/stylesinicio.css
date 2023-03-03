@@ -1,33 +1,40 @@
-*{
-    box-sizing: border-box;
-}
-h1{font-size: 2.5em;}
-h2{font-size: 2em;}
 body{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+    background-color: #82b3b3;
 }
-.container{
+.conte-inicio{
+    position:absolute;
+    left:30vh;
+    width: 200vh;
+    bottom: 10px;
+    max-height: 95%;
+    overflow-y: scroll ;
+    font-size:17px;
+}
+.container-inicio{
     max-width: 1000px;
+    width: 150vh;
     margin: auto;
+    
+    left: -75vmax;
+    top: 8vh;
 }
-.titulo{
+.titulo-inicio{
     padding-left: 8%;
 }
-#informacion .container{
-    display: flex;
+#informacion-inicio .container-inicio{
+    display: relative;
     align-items: flex-end;
     padding-left: 15%;
 }
-#descripcion .container{
+#descripcion-inicio .container-inicio{
     display: flex;
     align-items: flex-end;
-    padding-left: 10%;
+    padding-left: 0;
 }
-#descripcion2 .container{
+#descripcion2-inicio .container-inicio{
     display: flex;
     align-items: flex-end;
-    padding-left: 10%;
+    padding-left: 0;
 }
 
 

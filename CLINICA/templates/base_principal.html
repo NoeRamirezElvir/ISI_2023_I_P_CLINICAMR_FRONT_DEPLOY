@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <body class="body-principal">
+        <link rel="stylesheet" href="{% static 'css/base_principal.css' %}">
+        <div class="container-base">
+            <header>
+                {% include 'user.html' %}
+                <div class="titulo-base">
+                    <a href="#" class="logo-base">Menu</a>
+                </div>
+                <nav class="menu-base">
+                    <ul>
+                        <li class = "opcion-base"><a href="">Usuarios <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"></a>
+                        <ul class="submenu-base">
+                            <li><a href="/CLINICA/templates/usuario/inicio.html">Usuario</a></li>
+                            <li class = "opcion"><a href="#">Empleado <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
+                                <ul class = "submenu2-base">
+                                    <li><a href="#">Cargos</a></li>
+                                    <li><a href="#">Especialidades Medico</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Documentos</a></li>
+                            <li><a href="#">Pacientes</a></li>
+                            <li><a href="#">Proveedores</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Citas</a></li>
+                    <li><a href="#">Consultas</a></li>
+                    <li><a href="#">Facturacion</a></li>
+                </ul>
+            </nav>
+        </header>
+    </body>
+</html>
+
+
+
+
+

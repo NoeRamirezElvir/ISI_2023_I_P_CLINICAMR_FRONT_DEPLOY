@@ -2,21 +2,21 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-def index(request):
-    return render(request,'index.html')
+def presentacion(request):
+    return render(request,'presentacion/presentacion.html')
 def usuariologin(request):
-    return render(request,'more/usuariologin.html')
+    return render(request,'presentacion/usuariologin.html')
 def home(request):
-    return render(request,'more/home.html')
+    return render(request,'base_principal.html')
 def iniciomenu(request):
-    return render(request,'more/iniciomenu.html')
+    return render(request,'presentacion/iniciomenu.html')
 #Usuarios
 def usuario(request):
-    return render(request,'more/usuario/usuario.html')
-def usuarioregistro(request):
-    return render(request,'more/usuario/registro.html')
-def usuariolistar(request):
-    return render(request,'more/usuario/listar.html')
-def usuarioinicio(request):
-    return render(request,'more/usuario/inicio.html')
+    return render(request,'usuario/usuario.html')
+def registro(request):
+    return render(request,'usuario/registro.html')
+def listar(request):
+    return render(request,'usuario/listar.html')
+def inicio(request):
+    return render(request,'usuario/inicio.html',{})
 #Empleados

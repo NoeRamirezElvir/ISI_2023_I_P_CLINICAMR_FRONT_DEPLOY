@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/usuariostyle/styleslistar.css' %}">
+    <title>Registros de Usuarios</title>
+</head>
+<body class="contenedor-listar">
+    <header>{% include '../base_principal.html' %}
+    </header>
+    <div class="contenedor-listar-campos">
+
+        <h1 class="h1-listar"">Registros de Usuarios</h1>
+        <div class="container-listar"">
+            <div class="busqueda-listar"">
+                <div class="buscador-listar"">
+                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID,Nombre o Usuario">
+                </div>
+                <div class="btnBusqueda-listar"">
+                    <input id="btnBuscarUsuario "type="button" value="Buscar">
+                </div>
+            </div>
+            <div class="tabla-listar"">
+                <table class="tftable-listar"" ,border="1">
+                    <tr class="tfheader-listar"">
+                        <th>ID Usuario</th>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Contraseña</th>
+                        <th>Activo</th>
+                        <th>Bloqueado</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Francisco Cerrato Lagos</td>
+                        <td>franisco.cerrato</td>
+                    <td>06$ou2*NXwlOVTL1hA30$</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </table>
+            
+        </div>
+    </div>
+</div>
+    
+</body>
+</html>

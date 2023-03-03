@@ -1,4 +1,4 @@
-body{
+.body-registro{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,11 +7,17 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
 }
-h1{font-size: 2.5em;}
-.container-box{
-    width: auto;
+.contenedor-registro{
+    position: absolute;
+    left:75vh;
+    top: 15vh;
+
+}
+.h1-registro{font-size: 2.5em;}
+.container-box-registro{
+    width: 600px;
     height: auto;
-    max-width: 500px;
+    max-width: 600px;
     max-height: 1000px;
     margin: 30px;
     background-color: #022e2c7c;
@@ -19,71 +25,77 @@ h1{font-size: 2.5em;}
     box-sizing: border-box;
 
 }
-.container-box h1{
+.container-box-registro h1{
     background-color: none;
-    color:beige
+    color:rgb(26, 26, 26);
+    position:absolute;;
+    top:-45px;
+    right: 30vh;
 }
-.campos label.campo{
-    margin: 0;
+.campos-registro label.campo-registro{
+    margin: 10;
     padding: 0;
+    margin-left: 30px;
     font-size: 1em;
     display: block;
     color: #022e2c;
 }
-.estado {
+.estado-registro {
     width: 80%;
     display:block;
     color: #022e2c;
 }
-.estado .radio-container{
+.estado-registro .radio-container-registro{
     display: flex;
 }
-.estado input[type="button"]{
+.estado-registro input[type="button"]{
     width: 54px;
-    margin-left: 100%;
+    margin-left: 30%;
     margin-bottom: 5px;
 }
-.campos input, select{
-    width: 90%;
+.campos-registro input, select{
+    width: 80%;
     margin-bottom: 10px;
+    margin-left: 10px;
 }
-.campos input[type="text"],
-.campos input[type="password"],
-.campos select{
+.campos-registro input[type="text"],
+.campos-registro input[type="password"],
+.campos-registro select{
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.719);
     background:#5fb9848e;
     height: 35px;
+    left: 35px;
     color: rgba(0, 0, 0, 0.699);
     font-size: 16px;
 }
-.campos input[type="text"]:hover,
-.campos input[type="password"]:hover,
-.campos select:hover{
+.campos-registro input[type="text"]:hover,
+.campos-registro input[type="password"]:hover,
+.campos-registro select:hover{
     background:#37835d;
 }
-.campos input[type="button"]{
+.campos-registro input[type="button"]{
     border: none;
     outline: none;
     height: 35px;
     background:#08693cc5;
     border-radius: 10px;
 }
-.campos input[type="button"]:hover{
+.campos-registro input[type="button"]:hover{
     background: #022e2c;
 }
 @media(min-width:700px){
-    .estado {
-        margin-left: 40px;
-        margin-bottom: 10px;
+    .estado-registro {
+        margin-left: 60px;
+        margin-bottom: 20px;
         display:flex;
     }
-    .estado .radio-container{
+    .estado-registro .radio-container{
         display:flex;
     }
-    .estado input[type="button"]{
+    .estado-registro input[type="button"]{
         width: 54px;
-        margin-left: -10px;
+        margin-left: 10px;
         margin-bottom: 0;
     }
 }
