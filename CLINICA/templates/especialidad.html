@@ -1,0 +1,47 @@
+
+ <LINK REL=StyleSheet HREF="/CLINICA/static/css/styleEspecilidad.css" TYPE="text/css" MEDIA=screen>
+<head> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+
+ </head> 
+
+<div class="contenedor">
+    <h1 class="logo"  style="color: #09283b;" ><span class="nombre-empresa" >Espe</span>cialidad</h1>
+    <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+          <button class="bEspecialidad"><a href="/CLINICA/templates/BuscarEspecialidad.html">Buscar</button></a>
+        </ul>
+      </div>
+      <div class="contacto">
+        <h3></h3>
+        <form class="formulario">
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required>
+          </p>
+          <p>
+           
+          <p class="full">
+            <label>Descripción</label>
+            <textarea name="mensaje" required></textarea>
+          </p>
+          <p class="full">
+            <button class="boton-enviar">Guardar</button>
+          </p>
+          <p class="full">
+            <button class="boton-actualizar">Actualizar</button>
+          </p>
+
+
+
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% include 'base_principal.html' %}

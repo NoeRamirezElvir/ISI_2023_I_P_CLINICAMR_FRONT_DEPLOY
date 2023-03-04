@@ -27,4 +27,12 @@ urlpatterns = [
     path('CLINICA/templates/usuario/inicio.html',inicio),
     path('CLINICA/templates/usuario/listar.html',listar),
     path('CLINICA/templates/usuario/registro.html',registro),
+    path('CLINICA/templates/empleado/empleado.html',empleado),
+    path('CLINICA/templates/cargo.html',cargo),
+    path('CLINICA/templates/especialidad.html',especialidad),
+    path('CLINICA/templates/documento.html',documento),
+    path('CLINICA/templates/empleado/buscarEmpleado.html',buscarEmpleado),
+    path('CLINICA/templates/buscarCargo.html',buscarCargo),
+    path('CLINICA/templates/buscarDocumento.html',buscarDocumento),
+    path('CLINICA/templates/BuscarEspecialidad.html',BuscarEspecialidad),
 ]

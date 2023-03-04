@@ -2,9 +2,7 @@
 
 <!DOCTYPE html>
 <html>
-
-
-
+  
 
 <head>
 
@@ -15,7 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title></title>
   <LINK REL=StyleSheet HREF="/CLINICA/static/css/empleadostyle/stiloEmpleado.css" TYPE="text/css" MEDIA=screen>
-
+    <header class="contenedorempleado"> 
+      {% include 'base_principal.html' %} 
+    </header> 
   <name class="circles">
 
                     <li></li>
@@ -30,19 +30,25 @@
                     <li></li>
 
                     </ul>
- 
+                    
 
 
 
 </head>
 
+
 <body class="area">
 
-    
+
   
 <LINK REL=StyleSheet HREF="stilo.css" TYPE="text/css" MEDIA=screen>
+
+  
 <form >
-  <button class="redondo"><a href ="buscarpantalla.html">Buscar</a> </button>
+
+  
+
+  <button class="redondo"><a href ="/CLINICA/templates/empleado/buscarEmpleado.html"  >Buscar</a> </button>
       <fieldset>
 
         <legend class="empleado">Empleado  </legend>  
@@ -78,20 +84,20 @@
           />
         </div>
         <div class="form-control">
-          <label for="Tel">Telefono</label>
+          <label for="Tel">Teléfono</label>
           <input
             type="Tel"
             id="Tel"
-            placeholder="Introduce tu Telefono"
+            placeholder="Introduce tu Teléfono"
             required
           />
         </div>
         <div class="form-control">
-          <label for="direc">Direccion</label>
+          <label for="direc">Dirección</label>
           <input
             type="direc"
             id="direc"
-            placeholder="Introduce tu Direccion"
+            placeholder="Introduce tu Dirección"
             required
           />
         </div><div class="form-control">
@@ -99,14 +105,29 @@
           <input
             type="doc"
             id="doc"
-            placeholder="Introduce tu No. de documento"
+            placeholder="Introduce tu documento"
             required
           />
         </div>
+        <INPUT type="submit" value="Enviar"> <p> </p> 
+          <INPUT type="reset"value="Restablecer">
 
         
-        <br>   </br>
-      <select>
+        <br>   </br><fieldset id="payment_method">
+          <legend style="color: azure;">Activo/Inactivo</legend>
+          <div class="fieldgroup">
+          <input type="radio" name="payment_method"value="Bill Me"><label for= "payment1">Activo
+          </label>
+          </div>
+          <div class="fieldgroup">
+          <input type="radio" name="payment_method"value="Bill Me"><label for= "payment2">Inactivo</label>
+          </div>
+          </fieldset>
+
+
+
+    
+          <select>
 
   
   <option selected="selected">Tipo de documento</option>
@@ -121,18 +142,24 @@
 </select> 
 </select>
 
+
 <br>   </br>
 
 </fieldset>
 
 
-    <INPUT type="submit" value="Enviar"> <p> </p> 
-    <INPUT type="reset"value="Restablecer">
+   
 
+     
+      
         
     </div >
 
     </div>
+
+    
+
+  
 
 
 

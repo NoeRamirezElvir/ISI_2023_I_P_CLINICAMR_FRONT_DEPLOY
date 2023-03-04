@@ -1,6 +1,4 @@
-body{
-  background: #3399ff;
-}
+
 
 
 input {
@@ -10,10 +8,15 @@ height: 40px;
 
 
 }
+form{
+  position: relative;
+  left: 100px;
+}
 
 .search {
-
-   color: royalblue;
+  position: relative;
+  left: 350px;
+  color: rgba(4, 32, 118, 0.758);
 }
 
 
@@ -24,7 +27,7 @@ height: 40px;
   display: block;
   width: 90px;
   height: 30px;
-  top: 7px;
+  top: 8px;
   position: relative;
   left: 20px;
   border-radius: 50%;
@@ -33,12 +36,17 @@ height: 40px;
 }
 
 
-
+.redondo a{
+  text-decoration: none;
+  color: black;
+  text-align: center;
+  text-overflow: ellipsis;
+}
 
 .redondo {
   background: #fff; /* color de fondo */
-  color: #4741d7; /* color de fuente */
-  border: 2px solid #4741d7; /* tamaño y color de borde */
+  color: #000000; /* color de fuente */
+  border: 2px solid #0f6da0; /* tamaño y color de borde */
   padding: 20px 20px;
   border-radius: 3px; /* redondear bordes */
   position: relative;
@@ -54,7 +62,7 @@ height: 40px;
   height: 100%;
   top: 0;
   left: -50%;
-  background-color: #4741d7; /* color de fondo hover */
+  background-color: #006292; /* color de fondo hover */
   -webkit-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -150,4 +158,21 @@ height: 40px;
   100%{
     transform: scale(0.8);
   }
+}
+
+@media screen and (max-width: 980px){
+  #contenedor{
+      width: 90%;
+  }
+  #contenido{
+      width: 60%;
+  }
+  #barra_lateral{
+      width:30%;
+  }
+}
+
+.contenedorbuscarempleado{
+  position: relative;
+  left: 3px;
 }

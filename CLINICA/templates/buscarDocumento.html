@@ -1,0 +1,41 @@
+<header class="contenedorbuscarDocumento"> 
+    {% include 'base_principal.html' %} 
+  </header>
+
+<LINK REL=StyleSheet HREF="/CLINICA/static/css/BuscarDocumento.css" TYPE="text/css" MEDIA=screen>
+  <body class="body-listar">
+
+    <div class="contenedor-listar-campos">
+        <h1 class="h1-listar"">Buscar Documentos</h1>
+        <div class="container-listar"">
+            <div class="busqueda-listar"">
+                <div class="buscador-listar"">
+                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID,Nombre o Usuario">
+                </div>
+                <div class="btnBusqueda-listar"">
+                    <input id="btnBuscarUsuario "type="button" value="Buscar">
+                </div>
+            </div>
+            <div class="tabla-listar"">
+                <table class="tftable-listar"" ,border="1">
+                    <tr class="tfheader-listar"">
+                        <th>ID Usuario</th>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Contraseña</th>
+                        <th>Activo</th>
+                        <th>Bloqueado</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Francisco Cerrato Lagos</td>
+                        <td>franisco.cerrato</td>
+                    <td>06$ou2*NXwlOVTL1hA30$</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </table>
+            
+        </div>
+    </div>
+</div>

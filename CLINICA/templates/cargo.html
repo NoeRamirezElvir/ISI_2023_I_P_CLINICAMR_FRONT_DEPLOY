@@ -1,0 +1,68 @@
+<LINK REL=StyleSheet HREF="/CLINICA/static/css/styleCargo.css" TYPE="text/css" MEDIA=screen>
+
+ <head> 
+
+  <header class="contenedorcargo"> 
+    
+  </header> 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+
+ </head> 
+
+<div class="contenedor">
+    <h1 class="logo"><span class="nombre-empresa">Cargos Medical Rescue</span></h1>
+    <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+          <button class="bcargo"><a href ="/CLINICA/templates/buscarCargo.html">Buscar</a> </button>
+
+
+        </ul>
+      </div>
+      <div class="contacto">
+        <h3></h3>
+        <form class="formulario">
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required>
+          </p>
+
+
+<fieldset id="payment_method">
+<legend>Activo/Inactivo</legend>
+<div class="fieldgroup">
+<input type="radio" name="payment_method"value="Bill Me"><label for= "payment1">Activo
+</label>
+</div>
+<div class="fieldgroup">
+<input type="radio" name="payment_method"value="Bill Me"><label for= "payment2">Inactivo</label>
+</div>
+</fieldset>
+
+
+        <p class="full">
+            <label>Descripción</label>
+            <textarea name="mensaje" required></textarea>
+          </p>
+
+          <p>
+           
+          <p class="full">
+            <button class="boton-enviar">Guardar</button>
+          </p>
+          <p class="full">
+            <button class="boton-actualizar">Actualizar</button>
+          </p>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+  {% include 'base_principal.html' %} 
+ 

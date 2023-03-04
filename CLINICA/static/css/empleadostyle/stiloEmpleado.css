@@ -8,7 +8,12 @@ body {
     font-family: cursive;
   }
 
-
+.contenedorempleado{
+   right: 509px;
+   position: relative;
+   bottom: 2px;
+   z-index: 1000;
+}
 
 .empleado{
 
@@ -43,7 +48,7 @@ body {
    font-family: cursive;
    font-weight: bold;
    position: relative;
-   left: 260px;
+   left: 230px;
 
   }
 
@@ -58,7 +63,7 @@ input[type="reset"] {
    font-family: cursive;
    font-weight: bold;
    position: relative;
-   left: 140px;
+   left: 100px;
    bottom: 35px;
   }
 
@@ -75,7 +80,7 @@ form{
   height: 100px;
   left: 450px;
   position: relative;
-  bottom: 40px;
+  top: -53px;
   width: 500px;
 }
 
@@ -86,11 +91,12 @@ form{
   display: block;
   width: 90px;
   height: 55px;
-  top:520px;
+  top:569px;
   position: relative;
   left: 370px;
   border-radius: 59%;
   background-color: #A9CCE3;
+  border-radius: 3px;
 }
 .redondo a{
    text-decoration: none;
@@ -104,7 +110,7 @@ form{
   color: #073f3e; /* color de fuente */
   border: 2px solid #073f3e; /* tamaño y color de borde */
   padding: 20px 20px;
-  border-radius: 3px; /* redondear bordes */
+   /* redondear bordes */
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -285,5 +291,27 @@ body {
    left: 53vh;
   }
   
+
+}
+
+
+.fieldgroup{
+   float: left;
+   width: auto;
+   margin-left: 3em;
+
+   
+}
+
+#payment_method{
+
+   position: relative;
+   bottom: 40px;
+
+}
+
+select{
+position: relative;
+bottom: 30px;
 
 }
