@@ -1,5 +1,31 @@
-body{
+.body-listar{
     background-color: #82b3b3;
+}
+.container-menu-nav{
+    width: 100vh;
+    position: absolute; 
+}
+.nav-menu-nav{
+    position: absolute;
+    background-color: #022e2c;
+    text-align: center;
+    display: flex;
+    width: 79vmax;
+    height: 50px;
+    left: 21.8vmax;
+}
+.nav-menu-nav a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding:10px
+}
+.nav-menu-nav a:hover{
+    border-bottom: 1px solid tomato;;
+}
+.nav-menu-nav ul{
+    margin-left: 50%;
 }
 .contenedor-listar-campos{
     position:absolute;
