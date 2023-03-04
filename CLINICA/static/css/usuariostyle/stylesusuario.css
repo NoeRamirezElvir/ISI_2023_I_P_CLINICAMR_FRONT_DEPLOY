@@ -12,7 +12,8 @@
 .header-usuario{
     position:relative;;
     width: 100vmax;
-    max-height: 60px;
+    max-height: 70px;
+    height: 70px;
     background-color: #022B2A;
 }
 .header-usuario .container-usuario{

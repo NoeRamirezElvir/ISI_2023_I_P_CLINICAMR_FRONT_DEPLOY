@@ -13,7 +13,7 @@
 }
 .container-base{
     max-height: 100vh;
-    overflow-y: visible;
+    overflow-y: visible; 
 }
 .titulo-base{
     font-size: 25px;
@@ -84,7 +84,7 @@
     max-width: 78.1%;
     max-height: 100%;
     left:300px;
-    overflow-y: visible;
+    overflow-y: scroll;
 }
 .titulo-inicio-base h1{
     color: black;
