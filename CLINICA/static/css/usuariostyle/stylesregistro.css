@@ -13,7 +13,7 @@
 }
 .nav-menu-nav{
     position: absolute;
-    background-color: #022e2c;
+    background-color: #1A5276;
     text-align: center;
     display: flex;
     width: 79vmax;
@@ -45,69 +45,78 @@
     max-width: 600px;
     max-height: 1000px;
     margin: 30px;
-    background-color: #022e2c7c;
+    background-color: #1A5276;
     position:relative;
     box-sizing: border-box;
 
 }
 .container-box-registro h1{
     background-color: none;
-    color:rgb(26, 26, 26);
-    position:absolute;;
-    top:-45px;
-    right: 30vh;
+    color: rgb(210, 210, 210);
+    position:absolute;
+    top:-50px;
+    right: 25vh;
+}
+.container-box-registro .h4-registro{
+    margin-left: 30px;
+    color: rgb(210, 210, 210)
 }
 .campos-registro label.campo-registro{
-    margin: 10;
+    margin:10px;
     padding: 0;
-    margin-left: 30px;
     font-size: 1em;
     display: block;
-    color: #022e2c;
+    color: rgb(210, 210, 210);
 }
 .estado-registro {
     width: 80%;
     display:block;
-    color: #022e2c;
+    color: rgb(210, 210, 210);
 }
 .estado-registro .radio-container-registro{
     display: flex;
 }
-.estado-registro input[type="button"]{
+.estado-registro input[type="submit"]{
     width: 54px;
     margin-left: 30%;
     margin-bottom: 5px;
 }
 .campos-registro input, select{
-    width: 80%;
+    width: 95%;
     margin-bottom: 10px;
     margin-left: 10px;
+    text-align: center;
 }
 .campos-registro input[type="text"],
 .campos-registro input[type="password"],
 .campos-registro select{
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.719);
-    background:#5fb9848e;
+    background:#557a92;
     height: 35px;
     left: 35px;
-    color: rgba(0, 0, 0, 0.699);
+    color: rgb(210, 210, 210);
     font-size: 16px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 .campos-registro input[type="text"]:hover,
 .campos-registro input[type="password"]:hover,
 .campos-registro select:hover{
-    background:#37835d;
+    background:#3C6776;
+    color:rgb(210, 210, 210);
+    box-shadow: 2px 2px 2px rgba(233, 28, 28, 0.5);
 }
-.campos-registro input[type="button"]{
+.campos-registro input[type="submit"]{
     border: none;
     outline: none;
     height: 35px;
-    background:#08693cc5;
+    background:#27445c;
     border-radius: 10px;
+    color: rgb(210, 210, 210);
 }
-.campos-registro input[type="button"]:hover{
-    background: #022e2c;
+.campos-registro input[type="submit"]:hover{
+    background: #3C6776;
+    border: 0.5px solid black;;
 }
 @media(min-width:700px){
     .estado-registro {
@@ -118,7 +127,7 @@
     .estado-registro .radio-container{
         display:flex;
     }
-    .estado-registro input[type="button"]{
+    .estado-registro input[type="submit"]{
         width: 54px;
         margin-left: 10px;
         margin-bottom: 0;

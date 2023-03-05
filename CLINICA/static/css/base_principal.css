@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 .body-principal{
-    background-color: #82b3b3;
+    background-color: #567777;
     display: flex;
 }
 .icono-base{
@@ -18,7 +18,7 @@
 .titulo-base{
     font-size: 25px;
     color: white;
-    background-color: #103632;
+    background-color: #1A242E;
     width: 300px;
     padding: 10px 10px;
     border: 1px solid rgba(0, 0, 0, 0.245); 
@@ -26,7 +26,8 @@
 .titulo-base .logo-base{
     font-size: 25px;
     color: white;
-    background-color: #103632;
+    background-color: #1A242E;
+    
     width: 300px;
     text-decoration: none ;
     text-align: center;
@@ -37,7 +38,8 @@
     width: 300px;
     height: 91.6vh;
     max-height: 91.6vh;
-    background: #103632;
+    background: #1A242E;
+    overflow-y: scroll;
     list-style: none;
     margin:0px 0px;
 }
@@ -52,8 +54,10 @@
     display: block;
 }
 .menu-base ul li a:hover{
-    background: #6A7E6A;
-    border-left: 3px solid tomato;;
+    background: #1A242E;
+    
+    border-left: 3px solid tomato;
+    color:tomato;
 }
 .menu-base ul .submenu-base{
     margin:0;
@@ -90,7 +94,8 @@
     color: black;
     font-weight: bold;
     text-align: center;
-    background-color: #103632;
+    background-color: #1A242E;
+    
 }
 .contenedor-titulo-base{
     width: 78.8vmax;

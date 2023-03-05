@@ -16,6 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from CLINICA.views import *
+from CLINICA.views_api.views_usuarios import *
+from CLINICA.views_api.views_documento import *
+from CLINICA.views_api.views_cargos import *
+from CLINICA.views_api.views_especialidades import *
+from CLINICA.views_api.views_empleados import *
+from CLINICA.views_api.views_cargos import *
+from CLINICA.views_api.views_documento import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,14 +32,21 @@ urlpatterns = [
     path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
     path('CLINICA/templates/usuario/usuario.html',usuario),
     path('CLINICA/templates/usuario/inicio.html',inicio),
-    path('CLINICA/templates/usuario/listar.html',listar),
-    path('CLINICA/templates/usuario/registro.html',registro),
     path('CLINICA/templates/empleado/empleado.html',empleado),
-    path('CLINICA/templates/cargo.html',cargo),
+
+    path('CLINICA/templates/usuario/listar.html',buscar_usuarios,name = 'buscar_usuarios'),
+    path('CLINICA/templates/usuario/listar.html',listar_usuarios,name = 'lista_usuarios'),
+    path('CLINICA/templates/usuario/<int:id>',eliminar_usuario,name = 'eliminar_usuario'),
+    path('CLINICA/templates/usuario/registro.html',crear_usuario,name="crear_usuario"),
+    path('CLINICA/templates/usuario/actualizar.html',abrir_actualizar_usuarios,name="abrir_actualizar_usuarios"),
+    path('CLINICA/templates/cargo.html',crear_cargo, name="crear_cargo"),
+    path('CLINICA/templates/usuario/actualizar.html/<int:id>',actualizar_usuario,name="actualizar_usuario"),
+    path('CLINICA/templates/empleado/buscarEmpleado.html',listar_empleados, name="listar_empleados"),
+    path('CLINICA/templates/BuscarEspecialidad.html',listar_especialidades, name="lista_especialidades"),
+    path('CLINICA/templates/buscarCargo.html',listar_cargos, name="listar_cargos"),
+    path('CLINICA/templates/buscarDocumento.html',listar_documentos, name= 'lista_documentos'),
+
+    
     path('CLINICA/templates/especialidad.html',especialidad),
     path('CLINICA/templates/documento.html',documento),
-    path('CLINICA/templates/empleado/buscarEmpleado.html',buscarEmpleado),
-    path('CLINICA/templates/buscarCargo.html',buscarCargo),
-    path('CLINICA/templates/buscarDocumento.html',buscarDocumento),
-    path('CLINICA/templates/BuscarEspecialidad.html',BuscarEspecialidad),
 ]
