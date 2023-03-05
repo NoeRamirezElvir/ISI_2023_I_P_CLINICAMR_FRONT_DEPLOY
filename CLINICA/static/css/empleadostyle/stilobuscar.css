@@ -6,25 +6,24 @@ input {
 width: 230px;
 height: 40px;
 
-
 }
-form{
+form .contenido-search{
   position: relative;
   left: 100px;
+  top:50px
 }
 
 .search {
   position: relative;
-  left: 350px;
   color: rgba(4, 32, 118, 0.758);
 }
-
-
-
-
-
+.input-btn-search{
+  position:relative;
+  left: 250px;
+  top:50px
+}
 .redondo{
-  display: block;
+  display: flex;
   width: 90px;
   height: 30px;
   top: 8px;
@@ -32,6 +31,8 @@ form{
   left: 20px;
   border-radius: 50%;
   background-color: #A9CCE3;
+  top:-43px;
+  left: 250px
   
 }
 
@@ -174,5 +175,43 @@ form{
 
 .contenedorbuscarempleado{
   position: relative;
-  left: 3px;
+
+}
+
+.tftable-listar {
+  font-size:12px;
+  color:#333333;
+  width:130vh;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.233);;
+  border-collapse: collapse;
+  position: relative;
+  top: 130px;
+  left: -30vh;
+}
+.tftable-listar th {
+  font-size:16px;
+  background-color:#1d4852;
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.233);;
+  text-align:left;}
+.tftable-listar tr {
+  background-color:#57828f;
+}
+.tftable-listar td {
+  font-size:12px;
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.233);
+}
+.tftable-listar tr:hover {
+  background-color:#6d9595;
+}
+.btnEliminar, .btnEditar{
+  align-self: center;
+  margin-left: 25px;
+  cursor: pointer;
 }
