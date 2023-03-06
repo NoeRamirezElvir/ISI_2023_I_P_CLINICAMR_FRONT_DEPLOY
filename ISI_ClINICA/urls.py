@@ -27,7 +27,21 @@ from CLINICA.views_api.views_documento import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', presentacion),
-    path('CLINICA/templates/presentacion/usuariologin.html',usuariologin),
+
+###################
+    path('CLINICA/templates/presentacion/usuariosignup.html',usuariosignup, name="usuariosignup"),
+    path('CLINICA/templates/presentacion/usuariologin.html',usuariologin, name="buscar_login"),
+    path('CLINICA/templates/cargoactualizar.html',abrir_actualizar_cargos,name="abrir_actualizar_cargos"),
+    path('CLINICA/templates/cargoactualizar.html/<int:id>',actualizar_cargo,name="actualizar_cargo"),
+    path('CLINICA/templates/buscarCargo.html/<int:id>',eliminar_cargo,name = 'eliminar_cargo'),
+    path('CLINICA/templates/buscarCargo.html',buscar_cargos,name = 'buscar_cargos'),
+    ##
+    path('CLINICA/templates/documentoactualizar.html',abrir_actualizar_documentos,name="abrir_actualizar_documentos"),
+    path('CLINICA/templates/documentoactualizar.html/<int:id>',actualizar_documento,name="actualizar_documento"),
+    path('CLINICA/templates/buscarDocumento.html/<int:id>',eliminar_documento,name = 'eliminar_documento'),
+    path('CLINICA/templates/buscarDocumento.html',buscar_documentos,name = 'buscar_documentos'),
+    path('CLINICA/templates/documento.html',crear_documento, name="crear_documento"),
+
     path('CLINICA/templates/home.html',home),
     path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
     path('CLINICA/templates/usuario/usuario.html',usuario),

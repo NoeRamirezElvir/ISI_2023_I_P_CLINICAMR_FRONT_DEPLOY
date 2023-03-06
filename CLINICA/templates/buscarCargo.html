@@ -7,7 +7,7 @@
     <meta http-equiv="Last-Modified" content="0">
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
-
+<title>Cargos</title>
 </head>
 <LINK REL=StyleSheet HREF="/CLINICA/static/css/styleBuscarCargo.css" TYPE="text/css" MEDIA=screen>
   <body class="body-listar">
@@ -17,11 +17,14 @@
         <div class="container-listar">
             <div class="busqueda-listar">
                 <div class="buscador-listar">
-                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
-                </div>
-                <div class="btnBusqueda-listar">
-                    <input id="btnBuscarUsuario "type="button" value="Buscar">
-                </div>
+                    <form method="GET" action="{% url 'buscar_cargos' %}" >
+                        {% csrf_token %}
+                        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+                        </div>
+                        <div class="btnBusqueda-listar">
+                            <input id="btnBuscarUsuario "type="submit" value="Buscar">
+                        </div>
+                    </form>
             </div>
             <div class="tabla-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
                 <table class="tftable-listar" ,border="1">
@@ -40,12 +43,16 @@
                         <td>{{ cargo.descripcion }}</td>
                         <td>{{ cargo.activo }}</td>
                         <td> 
-                            <form action="" method="post" class="form-botones">
+                            <form action="{% url 'abrir_actualizar_cargos' %}" method="post" class="form-botones">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_cargo" value="{{ cargo.id }}">
                             <button class="btnEditar" name="editar" id="editar">
                                   <img src="{% static 'img/icons/icedit.png' %}">
                             </button>
                             </form>
-                            <form action="btnEliminar"  method="post">
+                            <form action="{% url 'eliminar_cargo' id=cargo.id  %}"  method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_cargo" value="{{ cargo.id }}">
                             <button class="btnEliminar" name="eliminar" id="eliminar">
                               <img src="{% static 'img/icons/icdelete.png' %}">
                             </button>

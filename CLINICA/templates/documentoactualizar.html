@@ -1,0 +1,21 @@
+{% extends 'documento.html' %}
+{% load static %}
+{% block tittle %}Actualizacion de Documentos{% endblock %}
+{% block content %}
+<form class="formulario" method="POST" action="{% url 'actualizar_documento' id=documentos.0.id %}">
+  {% csrf_token %}
+  <p>
+    <label>Nombre</label>
+    <input type="text" name="nombre" required value="{{ documentos.0.nombre }}">
+  </p>
+  <p>
+    <label>Cantidad de Caracteres</label>
+    <input type="text" name="longitud" required value="{{ documentos.0.longitud }}">
+  </p>
+  <p>
+    
+    <p class="full">
+      <button class="boton-actualizar">Actualizar</button>
+    </p>  
+</form>
+{% endblock %}

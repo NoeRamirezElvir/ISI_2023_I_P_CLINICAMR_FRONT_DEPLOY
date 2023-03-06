@@ -163,7 +163,6 @@ def buscar_usuarios(request):
                 data = response.json()
                 usuarios = data['usuariosr']
                 mensaje = data['message']   
-                print(usuarios)
                 return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
             else:
                 usuarios = []

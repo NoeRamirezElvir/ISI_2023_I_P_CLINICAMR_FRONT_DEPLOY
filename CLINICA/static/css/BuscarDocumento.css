@@ -25,10 +25,12 @@ font-size: 16px;
 background:#61a6aa;
 }
 
-.busqueda-listar input[type="button"]{
-margin-left: 0;
+.busqueda-listar input[type="submit"]{
+position: relative;
 width: 100px;
-margin-top: 10px;
+left:80px;
+margin-top: 5px;
+margin-left: 20px;
 border: none;
 outline: none;
 height: 35px;
@@ -36,7 +38,7 @@ background:#035D62;
 color: white;
 border-radius: 10px;
 }
-.busqueda-listar input[type="button"]:hover{
+.busqueda-listar input[type="submit"]:hover{
 background: #579396;
 }
 

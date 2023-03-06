@@ -9,6 +9,27 @@ def presentacion(request):
     return render(request,'presentacion/presentacion.html')
 def usuariologin(request):
     return render(request,'presentacion/usuariologin.html')
+
+def usuariosignup(request):##############
+    return render(request,'presentacion/usuariosignup.html')
+def abrir_actualizar_cargos(request):#
+    return render(request,'cargoactualizar.html')
+def actualizar_cargo(request,id):#
+    return render(request,'cargoactualizar.html')
+def buscar_cargos(request):#
+    return render(request,'buscarCargo.html')
+#
+def abrir_actualizar_documentos(request):#
+    return render(request,'documentoactualizar.html')
+def actualizar_documento(request,id):#
+    return render(request,'documentoactualizar.html')
+def buscar_documentos(request):#
+    return render(request,'buscarDocumento.html')
+def crear_documento(request):#
+    return render(request,'documento.html')
+
+
+
 def home(request):
     return render(request,'base_principal.html')
 def iniciomenu(request):
