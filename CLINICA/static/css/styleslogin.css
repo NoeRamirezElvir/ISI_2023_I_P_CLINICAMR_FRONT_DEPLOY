@@ -75,14 +75,14 @@ body{
 .container-box input[type="password"]:hover{
     background:rgba(211, 207, 203, 0.541);
 }
-.container-box input[type="button"]{
+.container-box input[type="submit"]{
     border: none;
     outline: none;
     height: 40px;
     background: rgba(87, 86, 85, 0.541);
     border-radius: 10px;
 }
-.container-box input[type="button"]:hover{
+.container-box input[type="submit"]:hover{
     background: #07827E;
 }
 .container-box a{

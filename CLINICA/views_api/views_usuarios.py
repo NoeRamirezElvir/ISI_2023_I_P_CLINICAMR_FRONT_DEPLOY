@@ -132,36 +132,44 @@ def eliminar_usuario(request, id):
         return render(request, 'usuario/listar.html', context)     
     
 def buscar_usuarios(request):
-    valor = request.GET.get('buscador', None)
-    url2 = url + 'usuarios/busqueda/'
+        valor = request.GET.get('buscador', None)
+        url2 = url + 'usuarios/busqueda/'
 
-    if valor is not None:
-        if valor.isdigit():
-            id = int(valor)
-            response = requests.get(url2 + f'id/{id}')
+        if valor is not None and (len(valor)>0):
+            
+            if valor.isdigit():
+                id = int(valor)
+                response = requests.get(url2 + f'id/{id}')
+                if response.status_code == 200:
+                    data = response.json()
+                    mensaje = data['message']
+                    usuarios = {}
+                    usuarios = data['usuariosr']
+                    context = {'usuariosr': usuarios, 'mensaje':mensaje}
+                    print(context)
+                    return render(request, 'usuario/listar.html', context)       
+            else:
+                response = requests.get(url2+'nombre/'+valor)
+                if response.status_code == 200:
+                    data = response.json()
+                    mensaje = data['message']
+                    usuarios = {}
+                    usuarios = data['usuariosr']
+                    context = {'usuariosr': usuarios, 'mensaje':mensaje}
+                    return render(request, 'usuario/listar.html', context)
         else:
-            response = requests.get(url2+'nombre/'+valor)
-        if response.status_code == 200:
-            data = response.json()
-            mensaje = data['message']
-            usuarios = data['usuariosr']
-            context = {'usuariosr': usuarios, 'mensaje':mensaje}
-            return render(request, 'usuario/listar.html', context)
-        else:
-            usuarios = []
-            mensaje = 'No se encontraron usuarios con ese criterio de búsqueda'
-            return render(request, 'usuario/listar.html', {'usuarios': usuarios, 'mensaje': mensaje})
-    else:
-        response = requests.get(url+'usuarios/')
-        if response.status_code == 200:
-            data = response.json()
-            usuarios = data['usuariosr']
-            mensaje = data['message']    
+            response = requests.get(url+'usuarios/')
+            if response.status_code == 200:
+                data = response.json()
+                usuarios = data['usuariosr']
+                mensaje = data['message']   
+                print(usuarios)
+                return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+            else:
+                usuarios = []
+                mensaje = 'No se encontraron usuarios'
             return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
-        else:
-            usuarios = []
-            mensaje = 'No se encontraron usuarios'
-    return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+    
 
 
         
