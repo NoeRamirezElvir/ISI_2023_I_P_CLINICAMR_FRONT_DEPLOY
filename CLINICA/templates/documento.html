@@ -1,3 +1,4 @@
+{% load static %}
 <LINK REL=StyleSheet HREF="/CLINICA/static/css/styleDocumento.css" TYPE="text/css" MEDIA=screen>
 
  <head> 
@@ -8,7 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache">
  </head> 
  <body  > 
-
+<title>{% block tittle %}Registro de Documentos{% endblock %}</title>
 <div class="contenedor">
     <h1 class="logo"> <span class="nombre-empresa">Docu</span>mentos</h1>
     <div class="wrapper animated bounceInLeft">
@@ -23,24 +24,27 @@
       </div>
       <div class="contacto">
         <h3></h3>
-        <form class="formulario">
+        {% block content %}
+        <form class="formulario" method="POST" action="{% url 'crear_documento' %}" >
+          {% csrf_token %}
           <p>
             <label>Nombre</label>
             <input type="text" name="nombre" required>
           </p>
           <p>
-            <label>Longitud</label>
-            <input type="text" name="longitud" required>
+            <label>Cantidad de Caracteres</label>
+            <input type="number" name="longitud" required pattern="[0-9]" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
           </p>
           <p>
            
             <p class="full">
               <button class="boton-enviar">Guardar</button>
             </p>
-            <p class="full">
-              <button class="boton-actualizar">Actualizar</button>
-            </p>  
         </form>
+        {% endblock %}
+        {% if mensaje %}
+        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
+        {% endif %}
       </div>
     </div>
   </div>

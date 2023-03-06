@@ -1,0 +1,83 @@
+{% extends 'presentacion/usuariologin.html' %}
+{% load static %}
+{% block title %}REGISTRO{% endblock %}
+{% block content %}
+<style type="text/css" >
+    .control-buttons{
+    position: relative;
+    left:calc(-10%);
+    top:calc(-40%);
+    width: 500px;
+}
+#idEmpleado{
+    width: 100%;
+    height:40px;
+    margin-bottom:5px;
+    background:rgba(175, 172, 168, 0.541);
+}
+#idEmpleado:hover{
+    background:rgba(211, 207, 203, 0.541);
+}
+.container-box{
+    width: 400px;
+    height: 500px;
+    max-width: 400px;
+    margin-top: 15px;
+    
+}
+
+.control-buttons a{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    font-size: 1.2rem;
+    margin: 2px;
+    text-decoration: none;
+    color: rgb(39, 37, 37);
+}
+.control-buttons .in{
+    z-index: 0;
+    position: relative;
+    background-color: rgba(226, 214, 198, 0.768);
+
+}
+.control-buttons .up{
+    z-index: 1;
+    position: relative;
+    background-color: rgb(203, 181, 152);
+}
+@media(max-width:700px){
+    .control-buttons{
+        position: relative;
+        left:calc(20%);
+        top:calc(-40%);
+        width: 500px;
+    }
+}
+</style>
+<form action="" method="post">
+    <div class="container-box">
+        <div class="texto">
+            <div class="logo"></div>
+            <h1>Registro</h1>
+        </div>
+        <div class="user">
+            <label class="campo-registro" for="idEmpleadl" style="margin-top: 20px;">Empleado Relacionado</label>
+            <select name="idEmpleadl" id="idEmpleado">
+                {% for empleados in empleado %}
+                    <option value="{{ empleados.id }}">{{ empleados.nombre }}</option>
+                {% endfor %}
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" placeholder="Ingresar Usuario">
+            <label for="password">Contraseña</label>
+            <input type="password" placeholder="Ingresar Contraseña">
+            <label for="password">Confirmar Contraseña</label>
+            <input type="password" placeholder="Ingresar Contraseña">
+            <input type="submit" value="Entrar">
+        </div>
+        <div class="registrar">
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}

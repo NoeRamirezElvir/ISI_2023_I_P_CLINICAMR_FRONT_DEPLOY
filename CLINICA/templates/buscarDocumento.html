@@ -9,19 +9,21 @@
   <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
   <meta http-equiv="Pragma" content="no-cache">
 </head>
+<title>Documentos</title>
 <LINK REL=StyleSheet HREF="/CLINICA/static/css/BuscarDocumento.css" TYPE="text/css" MEDIA=screen>
   <body class="body-listar">
-
     <div class="contenedor-listar-campos">
         <h1 class="h1-listar">Buscar Documentos</h1>
         <div class="container-listar">
             <div class="busqueda-listar">
+              <form method="GET" action="{% url 'buscar_documentos' %}" >
                 <div class="buscador-listar">
-                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID,Nombre o Usuario">
-                </div>
-                <div class="btnBusqueda-listar">
-                    <input id="btnBuscarUsuario "type="button" value="Buscar">
-                </div>
+                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+                    </div>
+                    <div class="btnBusqueda-listar">
+                        <input id="btnBuscarUsuario "type="submit" value="Buscar">
+                    </div>
+              </form>
             </div>
             <div class="tabla-listar">
                 <table class="tftable-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
@@ -41,12 +43,16 @@
                           <td>{{ documento.nombre }}</td>
                           <td>{{ documento.longitud }}</td>
                           <td> 
-                            <form action="" method="post" class="form-botones">
-                            <button class="btnEditar" name="editar" id="editar">
+                            <form action="{% url 'abrir_actualizar_documentos' %}" method="post" class="form-botones">
+                              {% csrf_token %}
+                              <input type="hidden" name="id_documento" value="{{ documento.id }}">
+                              <button class="btnEditar" name="editar" id="editar">
                                   <img src="{% static 'img/icons/icedit.png' %}">
                             </button>
                             </form>
-                            <form action="btnEliminar"  method="post">
+                            <form action="{% url 'eliminar_documento' id=documento.id  %}"  method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="id_documento" value="{{ documento.id }}">
                             <button class="btnEliminar" name="eliminar" id="eliminar">
                               <img src="{% static 'img/icons/icdelete.png' %}">
                             </button>

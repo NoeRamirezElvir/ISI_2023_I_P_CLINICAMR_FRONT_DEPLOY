@@ -35,17 +35,17 @@
     background:#629da0;
 }
 
-.busqueda-listar input[type="button"]{
+.busqueda-listar input[type="submit"]{
     margin-left: 0;
     width: 100px;
-    margin-top: 10px;
+    margin-left: 10px;
     border: none;
     outline: none;
     height: 35px;
     background:#579396;
     border-radius: 10px;
 }
-.busqueda-listar input[type="button"]:hover{
+.busqueda-listar input[type="submit"]:hover{
     background: #ABC9CA;
 }
 
