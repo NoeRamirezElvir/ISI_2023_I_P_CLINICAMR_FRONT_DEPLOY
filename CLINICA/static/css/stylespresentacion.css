@@ -65,7 +65,7 @@ header a:hover{
     color: antiquewhite;
 }
 #informacion .container{
-    text-align: center;
+    text-align: left;
     padding: 100px 12px;
 }
 #servicios{
@@ -169,6 +169,7 @@ footer .container{
         align-items: center;
 
     }
+
     #informacion h2{
         margin-top: 0;
     }

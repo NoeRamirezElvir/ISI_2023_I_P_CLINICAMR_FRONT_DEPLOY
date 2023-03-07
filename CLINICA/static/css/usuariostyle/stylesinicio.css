@@ -1,9 +1,46 @@
 .body-inicio{
     background-color: #82b3b3;
+    background-image: url('/CLINICA/static/img/images/imgclinica.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    max-width: 100%;
+    overflow-x:hidden !important;
+
 }
 .container-menu-nav{
     width: 100vh;
     position: absolute; 
+}
+.-inicio{
+    background-color: #82b3b3;
+    font-weight: bold;
+    position: relative;
+    width: 245px;
+    top: -230px;
+}
+.texto-inicio ul{
+    list-style: none;
+    position: relative;
+    right: 90px;
+    top: -200px;
+    width: 365px;
+    overflow-y:scroll !important;;
+    max-height: 200px
+
+}
+.texto-inicio ul li{
+    height: 200px;
+}
+.texto-inicio ul li h3{
+    color: antiquewhite;
+}
+p {
+    font-size: 18px;
+    color: blanchedalmond;
+    width: 350px;
+    height: 300px;
+    overflow: hidden;
 }
 .nav-menu-nav{
     position: absolute;
@@ -21,11 +58,19 @@
     font-size: 18px;
     padding:10px
 }
+.texto-inicio h3{
+    position: relative;
+    text-align: center;
+    margin:10px;
+    font-size: 20px;
+    font-weight: bold;
+}
 .nav-menu-nav a:hover{
     border-bottom: 1px solid tomato;;
 }
 .nav-menu-nav ul{
     margin-left: 50%;
+
 }
 .conte-inicio{
     position:absolute;

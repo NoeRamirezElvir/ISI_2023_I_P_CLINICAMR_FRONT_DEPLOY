@@ -1,41 +1,72 @@
+{% load static %}
+
 <header class="contenedorbuscarDocumento"> 
     {% include 'base_principal.html' %} 
   </header>
-
+<head>
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+</head>
+<title>Documentos</title>
 <LINK REL=StyleSheet HREF="/CLINICA/static/css/BuscarDocumento.css" TYPE="text/css" MEDIA=screen>
   <body class="body-listar">
-
     <div class="contenedor-listar-campos">
-        <h1 class="h1-listar"">Buscar Documentos</h1>
-        <div class="container-listar"">
-            <div class="busqueda-listar"">
-                <div class="buscador-listar"">
-                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID,Nombre o Usuario">
-                </div>
-                <div class="btnBusqueda-listar"">
-                    <input id="btnBuscarUsuario "type="button" value="Buscar">
-                </div>
+        <h1 class="h1-listar">Buscar Documentos</h1>
+        <div class="container-listar">
+            <div class="busqueda-listar">
+              <form method="GET" action="{% url 'buscar_documentos' %}" >
+                <div class="buscador-listar">
+                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+                    </div>
+                    <div class="btnBusqueda-listar">
+                        <input id="btnBuscarUsuario "type="submit" value="Buscar">
+                    </div>
+              </form>
             </div>
-            <div class="tabla-listar"">
-                <table class="tftable-listar"" ,border="1">
-                    <tr class="tfheader-listar"">
-                        <th>ID Usuario</th>
-                        <th>Nombre</th>
-                        <th>Usuario</th>
-                        <th>Contraseña</th>
-                        <th>Activo</th>
-                        <th>Bloqueado</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Francisco Cerrato Lagos</td>
-                        <td>franisco.cerrato</td>
-                    <td>06$ou2*NXwlOVTL1hA30$</td>
-                    <td>1</td>
-                    <td>1</td>
-                </tr>
-            </table>
-            
+            <div class="tabla-listar">
+                <table class="tftable-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
+                    <thead>
+                      <tr class="tfheader-listar">
+                        <th style="color:aliceblue">ID</th>
+                        <th style="color:aliceblue">Nombre</th>
+                        <th style="color:aliceblue">Longitud</th>
+                        <th style="color:aliceblue">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if documentos %}
+                      {% for documento in documentos %}
+                        <tr>
+                          <td>{{ documento.id }}</td>
+                          <td>{{ documento.nombre }}</td>
+                          <td>{{ documento.longitud }}</td>
+                          <td> 
+                            <form action="{% url 'abrir_actualizar_documentos' %}" method="post" class="form-botones">
+                              {% csrf_token %}
+                              <input type="hidden" name="id_documento" value="{{ documento.id }}">
+                              <button class="btnEditar" name="editar" id="editar">
+                                  <img src="{% static 'img/icons/icedit.png' %}">
+                            </button>
+                            </form>
+                            <form action="{% url 'eliminar_documento' id=documento.id  %}"  method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="id_documento" value="{{ documento.id }}">
+                            <button class="btnEliminar" name="eliminar" id="eliminar">
+                              <img src="{% static 'img/icons/icdelete.png' %}">
+                            </button>
+                            </form>
+                        </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="3">No se encontraron documentos.</td>
+                      </tr>
+                    {% endif %}
+                    </tbody>
+                  </table>
         </div>
     </div>
 </div>

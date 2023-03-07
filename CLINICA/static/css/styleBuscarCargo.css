@@ -9,6 +9,11 @@
     right: 56px;
     top: 50px;
 }
+.h1-listar{
+    position:relative;
+    color:white;
+    left:360px;
+}
 .container-listar{
     width: 70vmax;
     max-width: 70vmax;
@@ -21,47 +26,47 @@
 .busqueda-listar input[type="text"]{
     border: 1px solid rgba(0, 0, 0, 0.199);
     border-bottom: 1px solid rgba(255, 255, 255, 0.719);
-    background:#68a7828e;
+    background:#388083;
     height: 35px;
-    color: rgb(0, 0, 0);
+    color: rgba(232, 232, 232, 0.846);
     font-size: 16px;
 }
 .busqueda-listar input[type="text"]:hover{
-    background:#76eba68e;
+    background:#629da0;
 }
 
-.busqueda-listar input[type="button"]{
+.busqueda-listar input[type="submit"]{
     margin-left: 0;
     width: 100px;
-    margin-top: 10px;
+    margin-left: 10px;
     border: none;
     outline: none;
     height: 35px;
-    background:#08693cc5;
+    background:#579396;
     border-radius: 10px;
 }
-.busqueda-listar input[type="button"]:hover{
-    background: #066853;
+.busqueda-listar input[type="submit"]:hover{
+    background: #ABC9CA;
 }
 
 .tftable-listar {
     font-size:12px;
-    color:#333333;
+    color:#151515;
     width:100%;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.233);;
     border-collapse: collapse;
 }
 .tftable-listar th {
-    font-size:12px;
-    background-color:#286649;
+    font-size:16px;
+    background-color:#035D62;
     border-width: 1px;
     padding: 8px;
     border-style: solid;
-    border-color: rgba(0, 0, 0, 0.233);;
+    border-color: rgba(0, 0, 0, 0.543);;
     text-align:left;}
 .tftable-listar tr {
-    background-color:#75b494;
+    background-color:#579396;
 }
 .tftable-listar td {
     font-size:12px;
@@ -71,7 +76,7 @@
     border-color: rgba(0, 0, 0, 0.233);
 }
 .tftable-listar tr:hover {
-    background-color:#abd689;
+    background-color:#ABC9CA;
 }
 @media(min-width:700px){
     .busqueda-listar{
@@ -87,3 +92,8 @@
     }
     
 }
+.btnEliminar, .btnEditar{
+    align-self: center;
+    margin-left: 25px;
+    cursor: pointer;
+  }

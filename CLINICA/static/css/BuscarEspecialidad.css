@@ -1,6 +1,4 @@
-.body-listar{
-    background-color: #82b3b3;
-}
+
 .contenedor-listar-campos{
   position:absolute;
   right: 56px;
@@ -18,13 +16,13 @@
 .busqueda-listar input[type="text"]{
   border: 1px solid rgba(0, 0, 0, 0.199);
   border-bottom: 1px solid rgba(255, 255, 255, 0.719);
-  background:#68a7828e;
+  background:#5483a3;
   height: 35px;
   color: rgb(0, 0, 0);
   font-size: 16px;
 }
 .busqueda-listar input[type="text"]:hover{
-  background:#76eba68e;
+  background:#8baabe;
 }
 
 .busqueda-listar input[type="button"]{
@@ -34,41 +32,47 @@
   border: none;
   outline: none;
   height: 35px;
-  background:#08693cc5;
+  background:#668BA3;
   border-radius: 10px;
 }
 .busqueda-listar input[type="button"]:hover{
-  background: #066853;
+  background: #AAB8B8;
 }
 
 .tftable-listar {
   font-size:12px;
-  color:#333333;
+  color:#000000;
   width:100%;
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.233);;
   border-collapse: collapse;
 }
+.h1-listar{
+  color:white;
+  position:relative;
+  left:350px
+}
 .tftable-listar th {
-  font-size:12px;
-  background-color:#286649;
+  font-size:16px;
+  background-color:#32435F;
   border-width: 1px;
   padding: 8px;
   border-style: solid;
+  color:white;
   border-color: rgba(0, 0, 0, 0.233);;
   text-align:left;}
 .tftable-listar tr {
-  background-color:#75b494;
+  background-color:#579396;
 }
 .tftable-listar td {
   font-size:12px;
   border-width: 1px;
   padding: 8px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.233);
+  border-color: rgba(0, 0, 0, 0.549);
 }
 .tftable-listar tr:hover {
-  background-color:#abd689;
+  background-color:#ABC9CA;
 }
 @media(min-width:700px){
   .busqueda-listar{
@@ -83,4 +87,9 @@
       margin-left: 30px;
   }
   
+}
+.btnEliminar, .btnEditar{
+  align-self: center;
+  margin-left: 25px;
+  cursor: pointer;
 }

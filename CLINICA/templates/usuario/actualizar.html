@@ -1,0 +1,68 @@
+{% extends 'usuario/registro.html' %}
+{% load static %}
+
+{%  block content %}
+<form method="POST" action="{% url 'actualizar_usuario' id=usuariosr.0.id %}">
+
+    {% csrf_token %}
+    <input type="hidden" name="_method" value="PUT">
+    <div class="container-box-registro">
+        <div class="titulo-registro">
+            <h1 class = "h1-registro">Actualizacion de Usuario</h1>
+        </div>
+    </div>
+    <div class="campos-registro" style="max-width: 600px;">
+        <div>
+            <h4 class="h4-registro">Ingrese la información requerida</h4>
+        </div>
+        <div>
+            {% if usuariosr.0 %}
+            <input type="hidden" name="id_usuario" value="{{ usuariosr.0.id }}" required>
+            <label class="campo-registro" for="idEmpleadl" style="margin-top: 20px;">Empleado</label>
+            <select name="idEmpleadl" id="idEmpleado">
+                {% for empleados in empleado %}
+                    <option value="{{ empleados.id }}" {% if empleados.id == usuariosr.0.idEmpleado_id %}selected{% endif %} >{{ empleados.nombre }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </div>
+        <div>
+        <label class="campo-registro" for="user" style="margin-left:10px">Nombre de Usuario</label>
+        <input type="text" name="user" id="username" style="margin-left:10px" value="{{ usuariosr.0.nombreUsuario }}" required>
+    </div>
+    <div>
+        <label class="campo-registro" for="password" style="margin-left:10px">Contraseña</label>
+        <input type="password" name="password" id="password" style="margin-left:10px" value="{{ contra }} " required>
+    </div>
+    <div class="estado-registro">
+        <div>
+            <h4 style="margin-left:10px">Usuario activo</h4>
+            <div class="radio-container-registro" style="margin-right: 10px;">
+                    <input type="radio" id="activar" name="activado" value=1 {% if usuariosr.0.activo == 1 %} checked {% endif %}> 
+                    <label class="rad-registro" for="activar">Activar</label>
+                    <input type="radio"  id="noactivado" name="activado" value=0 {% if usuariosr.0.activo == 0 %} checked {% endif %}> 
+                    <label class="rad-registro" for="noactivado">Desactivar</label>  
+            </div>
+        </div>
+        
+        <div>
+            <h4 style="margin-left:10px">Bloqueo de usuario</h4>
+            <div class="radio-container" style="margin-left:10px">
+                
+                    <input type="radio" id="bloquear" name="bloqueo" value=0 {% if usuariosr.0.bloqueado == 0 %} checked {% endif %}> 
+                    <label class="rad-registro" for="bloquear">Desbloquear</label>
+                    <input type="radio"  id="Desbloquear" name="bloqueo" value=1 {% if usuariosr.0.bloqueado == 1 %} checked {% endif %} > 
+                    <label class="rad-registro" for="Desbloquear">Bloquear</label> 
+                    
+                    
+            </div>
+        </div>
+    </div>
+    <div class="botones-registro">
+        <input type="submit" value="Actualizar">
+    </div>
+    </form>
+    {% if mensaje %}
+        <div class="alert alert-info" style="color:rgb(255, 255, 255);font-size: 20px;">{{ mensaje }}</div>
+    {% endif %}
+{% endblock %}
