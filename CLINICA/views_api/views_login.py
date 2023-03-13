@@ -7,14 +7,48 @@ from django.shortcuts import redirect
 
 
 url = 'http://localhost:8080/api/'
-def buscar_login(request):
-    nombre = requests.POST['username']
-    rsp_usuario = requests.get(url+f'usuarios/busqueda/nombre/{nombre}') 
-    if rsp_usuario.status_code == 200:
-        data = rsp_usuario.json()
-        usuarios = data['usuariosr']
-        print(usuarios)
+def iniciar_sesion(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        response = requests.post(url+'login/', json={'username': username, 'password': password})
+        data = response.json()
+        if data['mensaje'] == 'Inicio Exitoso':
+            mensaje = data['mensaje']
+            return render(request, 'usuario/inicio.html', {'mensaje': mensaje})
+        else:
+            mensaje = data['mensaje']
+            return render(request, 'presentacion/usuariologin.html', {'mensaje': mensaje})
     else:
-        usuarios = []
-    context = {'usuariosr': usuarios}
-    return render(request, 'presentacion/usuariologin.html', context)
+        return render(request, 'presentacion/usuariologin.html')
+    
+def registrar_login(request):
+    rsp_empleado = requests.get(url+'empleados/')
+    if rsp_empleado.status_code == 200:
+            data = rsp_empleado.json()
+            empleado = data['empleados']
+    else:
+            empleado = []
+    if request.method == 'POST':
+        idEmpleado = int(request.POST['idEmpleadl'])
+        nombreUsuario = request.POST['username']
+        password = request.POST['password']
+        passwordc = request.POST['passwordc']
+        activo = 1
+        bloqueado = 0
+        if password == passwordc: 
+            response = requests.post(url+'usuarios/', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado})
+            userdata={}
+            if response.status_code == 200:
+                userdata = response.json()
+                mensaje = userdata['message']
+                return render(request, 'presentacion/usuariosignup.html', {'mensaje': mensaje,  'empleado': empleado})
+            else:
+                mensaje = userdata['usuariosr']
+                print(mensaje)
+                return render(request, 'presentacion/usuariosignup.html', {'mensaje': mensaje,  'empleado': empleado})
+        else:
+            mensaje = 'Las contraseñas no coinciden'
+            return render(request, 'presentacion/usuariosignup.html', {'mensaje': mensaje,'empleado': empleado}) 
+    else:
+        return render(request, 'presentacion/usuariosignup.html', { 'empleado': empleado})

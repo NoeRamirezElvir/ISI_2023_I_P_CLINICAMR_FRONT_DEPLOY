@@ -6,12 +6,12 @@
           {% csrf_token %}
           <p>
             <label>Nombre</label>
-            <input type="text" name="nombre" required style="width: 40%;height: 40px;" value="{{ especialidades.0.nombre }}">
+            <input type="text" name="nombre" required style="width: 40%;height: 40px;" value="{{ especialidad.0.nombre }}">
           </p>
           
         <p class="full">
             <label>Descripción</label>
-            <textarea name="descripcion" required style="width: 100%;height: 100px;">{{ especialidades.0.descripcion }}</textarea>
+            <textarea name="descripcion" required style="width: 100%;height: 100px;">{{ especialidad.0.descripcion }}</textarea>
           </p>
           <p> 
           <p class="full">

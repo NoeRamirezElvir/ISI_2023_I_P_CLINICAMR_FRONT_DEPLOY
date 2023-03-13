@@ -7,8 +7,10 @@ import requests
 
 def presentacion(request):
     return render(request,'presentacion/presentacion.html')
-def usuariologin(request):
+def iniciar_sesion(request):
     return render(request,'presentacion/usuariologin.html')
+def registrar_login(request):
+    return render(request,'presentacion/usuariosignup.html')
 
 def usuariosignup(request):##############
     return render(request,'presentacion/usuariosignup.html')

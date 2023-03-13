@@ -15,7 +15,7 @@
     max-width: 70vmax;
     overflow-y: scroll;
     height: auto;
-    max-height: 600px; 
+    max-height: 495px; 
 }
 .busqueda-listar{
     display: block;
@@ -58,7 +58,7 @@
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.233);;
     border-collapse: collapse;
-    overflow: auto;
+
 }
 .tftable-listar th {
     font-size:12px;

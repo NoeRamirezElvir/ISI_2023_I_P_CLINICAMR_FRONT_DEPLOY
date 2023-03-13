@@ -26,14 +26,16 @@ from CLINICA.views_api.views_documento import *
 from CLINICA.views_api.views_impuesto import *
 from CLINICA.views_api.views_Pacientes import *
 from CLINICA.views_api.views_muestras  import *
+from CLINICA.views_api.views_login import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', presentacion),
 
 ###################
+    path('CLINICA/templates/presentacion/usuariosignup.html',registrar_login, name="registrar_login"),
     path('CLINICA/templates/presentacion/usuariosignup.html',usuariosignup, name="usuariosignup"),
-    path('CLINICA/templates/presentacion/usuariologin.html',usuariologin, name="buscar_login"),
+    path('CLINICA/templates/presentacion/usuariologin.html',iniciar_sesion, name="iniciar_sesion"),
     path('CLINICA/templates/cargoactualizar.html',abrir_actualizar_cargos,name="abrir_actualizar_cargos"),
     path('CLINICA/templates/cargoactualizar.html/<int:id>',actualizar_cargo,name="actualizar_cargo"),
     path('CLINICA/templates/buscarCargo.html/<int:id>',eliminar_cargo,name = 'eliminar_cargo'),

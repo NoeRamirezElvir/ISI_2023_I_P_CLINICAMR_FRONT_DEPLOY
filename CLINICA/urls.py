@@ -13,6 +13,9 @@ from views_api import views_muestras
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
+    path('',views.usuariosignup, name='usuariosignup'),
+    path('',views_login.iniciar_sesion, name='iniciar_sesion'),
+    path('',views_login.registrar_login, name='registrar_login'),
 
 
 #####################
