@@ -7,6 +7,11 @@
   padding: 0;
 }
 
+.contenedorcargo{
+
+position: relative;
+}
+
 body {
   font-family: "Roboto", sans-serif;
   color: #85929E;
@@ -61,13 +66,13 @@ body {
 }
 
 .nombre-empresa {
-  color: #09283b;
+  color: #0e334a;
   ;
 }
 
 .contacto {
   padding: 1rem;
-  background-color: #1A5276 ;
+  background-color: #173d54 ;
 }
 .contacto h3 {
   margin-bottom: 1rem;
@@ -126,6 +131,7 @@ body {
 }
 
 
+
 @media screen and (max-width: 980px){
     #contenedor{
         width: 90%;
@@ -138,22 +144,32 @@ body {
     }
 }
 
-.bEspecialidad{
+
+
+.fieldgroup{
+   float: left;
+   width: auto;
+   margin-left: 3em;
+}
+
+.bcargo{
   display: block;
   width: 90px;
   height: 55px;
+  
   position: relative;
+  
   border-radius: 59%;
   background-color: #A9CCE3;
   border-radius: 3px;
 }
-.bEspecialidad a{
+.bcargo a{
    text-decoration: none;
    color: rgb(0, 0, 0);
    z-index: 3;
 }
 
-.bEspecialidad {
+.bcargo {
   background: #fff; /* color de fondo */
   color: #000000; /* color de fuente */
   border: 2px solid #021818; /* tamaño y color de borde */
@@ -164,7 +180,7 @@ body {
   overflow: hidden;
   display: inline-block;
 }
-.bEspecialidad:before, .bEspecialidad:after {
+.bcargo:before, .bcargo:after {
   content: "";
   z-index: -1;
   position: absolute;
@@ -177,15 +193,16 @@ body {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-.bEspecialidad:after {
+.bcargo:after {
   left: 100%;
 }
-.bEspecialidad:hover {
+.bcargo:hover {
   color: #fff; /* color de fuente hover */
 }
-.bEspecialidad:hover:before {
+.bcargo:hover:before {
   left: 0;
 }
-.bEspecialidad:hover:after {
+.bcargo:hover:after {
   left: 50%;
 }
+

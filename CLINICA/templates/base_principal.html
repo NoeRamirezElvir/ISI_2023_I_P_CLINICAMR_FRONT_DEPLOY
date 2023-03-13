@@ -27,13 +27,23 @@
                                 </ul>
                             </li>
                             <li><a href="/CLINICA/templates/documento.html">Documentos</a></li>
-                            <li><a href="#">Pacientes</a></li>
+                            <li><a href="/CLINICA/templates/Pacientes/Paciente.html">Pacientes</a></li>
                             <li><a href="#">Proveedores</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Citas</a></li>
                     <li><a href="#">Consultas</a></li>
-                    <li><a href="#">Facturación</a></li>
+                    <li class = "opcion"><a href="">Facturacion <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
+                        <ul class = "submenu2-base">
+                            <li><a href="/CLINICA/templates/Impuestos/Impuesto.html">Impuestos</a></li>
+                            <li><a href="">Impuesto Historico</a></li> </ul>
+
+                            <li class = "opcion"><a href="/CLINICA/templates/Muestras/Muestra.html">Muestras <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
+                                <ul class = "submenu2-base">
+                                    <li><a href="">Tipo Muestra</a></li>
+                            
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </header>

@@ -1,0 +1,27 @@
+{% extends 'especialidad.html' %}
+{% load static %}
+{% block tittle %}Actualizacion de especialidades{% endblock %}
+        {% block content %}
+        <form method="POST" action="{% url 'actualizar_especialidades' id=especialidad.0.id %}">
+          {% csrf_token %}
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required style="width: 40%;height: 40px;" value="{{ especialidades.0.nombre }}">
+          </p>
+          
+        <p class="full">
+            <label>Descripción</label>
+            <textarea name="descripcion" required style="width: 100%;height: 100px;">{{ especialidades.0.descripcion }}</textarea>
+          </p>
+          <p> 
+          <p class="full">
+            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Actualizar</button>
+          </p>
+        </form>
+        {% if mensaje %}
+        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}
