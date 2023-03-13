@@ -4,6 +4,11 @@ from views_api import views_cargos
 from views_api import views_usuarios
 from views_api import views_login
 from views_api import views_documento
+from views_api import views_impuesto
+from views_api import views_Pacientes
+from views_api import views_especialidades
+from views_api import views_muestras
+
 
 
 urlpatterns = [
@@ -25,6 +30,39 @@ urlpatterns = [
     path('',views_documento.listar_documentos, name='buscarDocumentos'),
     path('',views_documento.buscar_documentos, name='buscar_documentos'),
     path('',views_documento.crear_documento, name='crear_documento'),
+
+    #Impuestos
+    path('',views_impuesto.abrir_actualizar_Impuestos , name='abrir_actualizar_Impuestos'),
+    path('',views_impuesto.actualizar_Impuestos , name='actualizar_Impuestos'),
+    path('',views_impuesto.eliminar_Impuestos , name='eliminar_Impuestos'),
+    path('',views_impuesto.listar_Impuestos, name='buscar_Impuestos'),
+    path('',views_impuesto.buscar_Impuestos, name='buscar_Impuestos'),
+    path('',views_impuesto.crear_Impuestos, name='crear_Impuestos'),
+
+    #Pacientes
+    #path('',views_Pacientes.abrir_actualizar_pacientes, name='abrir_actualizar_pacientes'),
+    #path('',views_Pacientes.actualizar_pacientes , name='actualizar_pacientes'),
+    #path('',views_Pacientes.eliminar_pacientes , name='eliminar_pacientes'),
+    path('',views_Pacientes.listar_pacientes, name='buscar_pacientes'),
+    #path('',views_Pacientes.buscar_pacientes, name='buscar_pacientes'),
+    path('',views_Pacientes.crear_pacientes, name='crear_pacientes'),
+
+    #Especialidad
+    path('',views_especialidades.abrir_actualizar_especialidades, name='abrir_actualizar_especialidades'),
+    path('',views_especialidades.actualizar_especialidades , name='actualizar_especialidades'),
+    path('',views_especialidades.eliminar_especialidades , name='eliminar_especialidades'),
+    path('',views_especialidades.listar_especialidades, name='buscar_especialidades'),
+    path('',views_especialidades.buscar_especialidades, name='buscar_especialidades'),
+    path('',views_especialidades.crear_especialidades, name='crear_especialidades'),
+
+    #Muestras
+    path('',views_muestras.abrir_actualizar_muestras , name='abrir_actualizar_muestras'),
+    path('',views_muestras.actualizar_muestras , name='actualizar_muestras'),
+    path('',views_muestras.eliminar_muestras , name='eliminar_muestras'),
+    path('',views_muestras.listar_muestras, name='buscar_muestras'),
+    path('',views_muestras.buscar_muestras, name='buscar_muestras'),
+    path('',views_muestras.crear_muestras, name='crear_muestras'),
+
 
 
 

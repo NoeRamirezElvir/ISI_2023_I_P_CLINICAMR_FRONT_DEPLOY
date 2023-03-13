@@ -1,0 +1,20 @@
+{% extends 'Impuestos/Impuesto.html' %}
+{% load static %}
+
+{% block tittle %}Actualizacion de Impuestos{% endblock %}
+{% block content %}
+<form class="formulario" method="POST" action="{% url 'actualizar_Impuestos' id=Impuestos.0.id %}">
+  {% csrf_token %}
+  <p>
+    <label>Nombre</label>
+    <input type="text" name="nombre" required value="{{ Impuestos.0.nombre }}">
+  </p>
+  <p>
+  </p>
+  <p>
+    
+    <p class="full">
+      <button class="boton-actualizar">Actualizar</button>
+    </p>  
+</form>
+{% endblock %}

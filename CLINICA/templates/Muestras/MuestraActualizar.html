@@ -1,0 +1,20 @@
+{% extends 'Muestras/Muestra.html' %}
+{% load static %}
+
+{% block tittle %}Actualizacion de muestras{% endblock %}
+{% block content %}
+<form class="formulario" method="POST" action="{% url 'actualizar_muestras' id=muestras.0.id %}">
+  {% csrf_token %}
+  <p>
+    <label>Nombre</label>
+    <input type="text" name="nombre" required value="{{ muestras.0.nombre }}">
+  </p>
+  <p>
+  </p>
+  <p>
+    
+    <p class="full">
+      <button class="boton-actualizar">Actualizar</button>
+    </p>  
+</form>
+{% endblock %}
