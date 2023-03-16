@@ -1,5 +1,5 @@
 {% load static %}
-<LINK REL=StyleSheet HREF="{% static 'css/MuestrasStyle/styleMuestras.css' %}" TYPE="text/css" MEDIA=screen>
+<LINK REL=StyleSheet HREF="{% static 'css/Tipos/tipo.css' %}" TYPE="text/css" MEDIA=screen>
 
  <head> 
   <meta http-equiv="Expires" content="0">
@@ -7,7 +7,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <header class="contenedorcargo"> 
-    <title>{% block tittle %}Registro de Muestras{% endblock %}</title>
+    <title>{% block tittle %}Registro de Tipos{% endblock %}</title>
   </header> 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
@@ -15,7 +15,7 @@
  </head> 
 
 <div class="contenedor">
-    <h1 class="logo"><span class="nombre-empresa">Muestras Medical Rescue</span></h1>
+    <h1 class="logo"><span class="nombre-empresa">Tipos Medical Rescue</span></h1>
     <div class="wrapper animated bounceInLeft">
       <div class="info-empresa">
         <h3>Medical Rescue</h3>
@@ -23,7 +23,7 @@
           <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
           <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
           <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-          <button class="bcargo"><a href ="/CLINICA/templates/Muestras/BuscarMuestra.html">Buscar</a> </button>
+          <button class="bcargo"><a href ="/CLINICA/templates/Tipos/buscartipo.html">Buscar</a> </button>
 
 
         </ul>
@@ -31,20 +31,35 @@
       <div class="contacto">
         <h3></h3>
         {% block content %}
-        <form method="POST" action="{% url 'crear_muestras' %}">
+        <form method="POST" action="{% url 'crear_tipo' %}">
           {% csrf_token %}
-          <p>
-            <label>Fecha</label>
-            <input type="text" name="fecha" required style="width: 40%;height: 40px;">
-          </p>
           
-      
+        
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required style="width: 40%;height: 40px;">
+          </p>
+
+          <label class="campo-registro" for="idsubtipo" style="position: relative; left: 400px; bottom: 40px;">SubTipo</label>
+          <select name="idsubtipo" id="idsubtipo" style="position: relative; left: 300px; bottom: 40px;" >
+              {% for subtipos in subtipo %}
+                  <option value="{{ subtipos.id }}">{{ subtipos.nombre }}</option>
+              {% endfor %}
+          
+          
+        <p class="full">
+            <label>Descripción</label>
+            <textarea name="descripcion" required style="width: 100%;height: 100px;"></textarea>
+          </p>
 
           <p>
+           
            
           <p class="full">
             <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Guardar</button>
           </p>
+          
+
         </form>
         {% if mensaje %}
         <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>

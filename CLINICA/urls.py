@@ -8,6 +8,9 @@ from views_api import views_impuesto
 from views_api import views_Pacientes
 from views_api import views_especialidades
 from views_api import views_muestras
+from views_api import views_TipoMuestra
+from views_api import views_subtipo
+from views_api import views_tipo
 
 
 
@@ -42,13 +45,32 @@ urlpatterns = [
     path('',views_impuesto.buscar_Impuestos, name='buscar_Impuestos'),
     path('',views_impuesto.crear_Impuestos, name='crear_Impuestos'),
 
+    #SubTipo
+    path('',views_subtipo.abrir_actualizar_subtipo , name='abrir_actualizar_subtipo'),
+    path('',views_subtipo.actualizar_subtipo , name='actualizar_subtipo'),
+    path('',views_subtipo.eliminar_subtipo , name='eliminar_subtipo'),
+    path('',views_subtipo.listar_subtipo, name='buscar_subtipo'),
+    path('',views_subtipo.buscar_subtipo, name='buscar_subtipo'),
+    path('',views_subtipo.crear_subtipo, name='crear_subtipo'),
+
+
     #Pacientes
-    #path('',views_Pacientes.abrir_actualizar_pacientes, name='abrir_actualizar_pacientes'),
-    #path('',views_Pacientes.actualizar_pacientes , name='actualizar_pacientes'),
-    #path('',views_Pacientes.eliminar_pacientes , name='eliminar_pacientes'),
+    path('',views_Pacientes.abrir_actualizar_pacientes, name='abrir_actualizar_pacientes'),
+    path('',views_Pacientes.actualizar_pacientes , name='actualizar_pacientes'),
+    path('',views_Pacientes.eliminar_pacientes , name='eliminar_pacientes'),
     path('',views_Pacientes.listar_pacientes, name='buscar_pacientes'),
-    #path('',views_Pacientes.buscar_pacientes, name='buscar_pacientes'),
-    path('',views_Pacientes.crear_pacientes, name='crear_pacientes'),
+    path('',views_Pacientes.buscar_pacientes, name='buscar_pacientes'),
+    path('',views_Pacientes.crear_paciente, name='crear_paciente'),
+
+
+    #Tipo
+    path('',views_tipo.abrir_actualizar_tipo , name='abrir_actualizar_tipo'),
+    path('',views_tipo.actualizar_tipo , name='actualizar_tipo'),
+    path('',views_tipo.eliminar_tipo , name='eliminar_tipo'),
+    path('',views_tipo.listar_tipo, name='buscar_tipo'),
+    path('',views_tipo.buscar_tipo, name='buscar_tipo'),
+    path('',views_tipo.crear_tipo, name='crear_tipo'),
+
 
     #Especialidad
     path('',views_especialidades.abrir_actualizar_especialidades, name='abrir_actualizar_especialidades'),
@@ -57,6 +79,14 @@ urlpatterns = [
     path('',views_especialidades.listar_especialidades, name='buscar_especialidades'),
     path('',views_especialidades.buscar_especialidades, name='buscar_especialidades'),
     path('',views_especialidades.crear_especialidades, name='crear_especialidades'),
+
+    #Tipo Muestra
+    path('',views_TipoMuestra.abrir_actualizar_TipoMuestra , name='abrir_actualizar_TipoMuestra'),
+    path('',views_TipoMuestra.actualizar_TipoMuestra , name='actualizar_TipoMuestra'),
+    path('',views_TipoMuestra.eliminar_TipoMuestra , name='eliminar_TipoMuestra'),
+    path('',views_TipoMuestra.listar_TipoMuestra, name='buscar_TipoMuestra'),
+    path('',views_TipoMuestra.buscar_TipoMuestra, name='buscar_TipoMuestra'),
+    path('',views_TipoMuestra.crear_TipoMuestra, name='crear_TipoMuestra'),
 
     #Muestras
     path('',views_muestras.abrir_actualizar_muestras , name='abrir_actualizar_muestras'),

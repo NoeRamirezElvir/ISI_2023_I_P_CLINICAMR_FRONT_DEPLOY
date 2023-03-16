@@ -1,0 +1,82 @@
+{% load static %}
+<header class="contenedorbuscarempleado"> 
+    {% include 'base_principal.html' %} 
+  </header>
+<head>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+<title>Tipos de muestra</title>
+</head>
+<LINK REL=StyleSheet HREF="/CLINICA/static/css/TMuestra/BuscarTMuestra.css  " TYPE="text/css" MEDIA=screen>
+  <body class="body-listar">
+    <a href="/CLINICA/templates/TipoMuestra/TMuestra.html" class="texto-boton-agregar" style="
+        text-decoration: none;
+        color:black;
+        background-image: url(/CLINICA/static/img/icons/icadd.png);
+        background-repeat: no-repeat;
+        position: relative; top: 130px;
+        left: 4%;
+        width: 40px;
+        height: 40px;
+        z-index: 100;
+    "></a>
+    <div class="contenedor-listar-campos">
+        <h1 class="h1-listar">Buscar Tipos de Muestra</h1>
+        <div class="container-listar">
+            <div class="busqueda-listar">
+                <div class="buscador-listar">
+                    <form method="GET" action="{% url 'buscar_TipoMuestra' %}" >
+                        {% csrf_token %}
+                        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+                        </div>
+                        <div class="btnBusqueda-listar">
+                            <input id="btnBuscarUsuario "type="submit" value="Buscar">
+                        </div>
+                    </form>
+            </div>
+            <div class="tabla-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
+                <table class="tftable-listar" ,border="1">
+                    <tr class="tfheader-listar">
+                        <th style="color:aliceblue">ID Tipo Muestra</th>
+                        <th style="color:aliceblue">Nombre</th>
+                        <th style="color:aliceblue">Metodo de Conservacion</th>
+                        
+                        <th style="color:aliceblue">Acciones</th>
+                    </tr>
+                    {% if tmuestra %}
+                    {% for tmuestras in tmuestra %}
+                    <tr>
+                        <td>{{ tmuestras.id }}</td>
+                        <td>{{ tmuestras.nombre }}</td>
+                        <td>{{ tmuestras.metodoConservacion }}</td>
+                        
+                        <td> 
+                            <form action="{% url 'abrir_actualizar_TipoMuestra' %}" method="post" class="form-botones">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_tmuestra" value="{{ tmuestras.id }}">
+                            <button class="btnEditar" name="editar" id="editar">
+                                  <img src="{% static 'img/icons/icedit.png' %}">
+                            </button>
+                            </form>
+                            <form action="{% url 'eliminar_TipoMuestra' id=tmuestras.id  %}"  method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_tmuestra" value="{{ tmuestras.id }}">
+                            <button class="btnEliminar" name="eliminar" id="eliminar">
+                              <img src="{% static 'img/icons/icdelete.png' %}">
+                            </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="3">No se encontraron Tipos de muestra.</td>
+                      </tr>
+                    {% endif %}
+            </table>
+            
+        </div>
+    </div>
+</div>

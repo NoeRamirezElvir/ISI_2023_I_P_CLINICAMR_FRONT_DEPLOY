@@ -1,160 +1,93 @@
+{% load static %}
+<LINK REL=StyleSheet HREF="{% static 'css/PacienteStyle/StylePaciente.css  ' %}" TYPE="text/css" MEDIA=screen>
 
-
-<!DOCTYPE html>
-<html>
-  
-
-<head>
+ <head> 
   <meta http-equiv="Expires" content="0">
   <meta http-equiv="Last-Modified" content="0">
   <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
   <meta http-equiv="Pragma" content="no-cache">
+  <header class="contenedorcargo"> 
+    <title>{% block tittle %}Registro de Pacientes{% endblock %}</title>
+  </header> 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+
+ </head> 
+
+<div class="contenedor">
+    <h1 class="logo"><span class="nombre-empresa">Pacientes Medical Rescue</span></h1>
+    <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+          <button class="bcargo"><a href ="/CLINICA/templates/Pacientes/buscarPaciente.html">Buscar</a> </button>
 
 
+        </ul>
+      </div>
+      <div class="contacto" style="background-color: rgb(18, 55, 78); padding: 5rem; border: 1px solid #ccd7dc;  " >
+        <h3></h3>
+        {% block content %}
+        <form method="POST" action="{% url 'crear_paciente' %}">
+          {% csrf_token %}
+          <p>
+            <label  style="position: relative; bottom: 100px;">Nombre</label>
+            <input type="text" name="nombre" required style="width: 80%;height: 30px; position: relative; bottom: 100px; left: 10px; ">
+          </p>
+          
+          <p>
+          </p>
+          <p>
+            <label  style="position: relative; bottom: 80px;">Apellido</label>
+            <input type="text" name="apellido" required style="width: 80%;height: 30px; position: relative; bottom: 80px; left: 10px;">
+          </p>
+          <p>
+            <label  style="position: relative; bottom: 60px;">Teléfono</label>
+            <input type="text" name="telefono" required style="width: 80%;height: 30px; position: relative; bottom: 60px; left: 7px;">
+          </p>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
-  <LINK REL=StyleSheet HREF="/CLINICA/static/css/PacienteStyle/StylePaciente.css" TYPE="text/css" MEDIA=screen>
-    <header class="contenedorempleado"> 
-      {% include 'base_principal.html' %} 
-    </header> 
-  <name class="circles">
-
-                    <li></li>
-                    <li></li>
-                    <li></li>                     
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-
-                    </ul>
-                    
-
-
-
-</head>
-
-
-<body class="area">
-
-
-  
-<LINK REL=StyleSheet HREF="stilo.css" TYPE="text/css" MEDIA=screen>
-
-  
-<form >
-
-  
-
-  <button class="redondo"><a href ="/CLINICA/templates/Pacientes/buscarPaciente.html ">Buscar</a> </button>
-      <fieldset>
-
-        
-
-        <legend class="empleado">Paciente  </legend>  
-       
-
-        <div class="form-control">
-          <label for="name">Nombre</label>
-          <input type="name" id="name" placeholder="Introduce tu nombre" required />
+          <p>
+            <label style="position: relative; bottom: 40px;" >Fecha de nacimiento</label>
+            <input type="text" name="fechaNacimiento" required style="width: 62%;height: 30px; position: relative; bottom: 40px; left: 5px; ">
+          </p>
+          <p>
+            <label style="position: relative; bottom: 20px;" >Documento</label>
+            <input type="text" name="documento" required style="width: 76%;height: 30px; position: relative;bottom: 20px; left: 7px; ">
+          </p>
+          <p>
+            <label>Correo</label>
+            <input type="text" name="correo" required style="width: 83%;height: 30px; position: relative; left: 10px;">
+          </p>
+          
+          <p>
+            <label style="position: relative; top: 15px;">Dirección</label>
+            <input type="text" name="direccion" required style="width: 80%;height: 30px; position: relative; top: 15px; left: 7px;">
+          </p>
+          <div style="position: relative; top:30px">
+            <label class="campo-registro" for="idTipoDocument1" style="margin-top: 20px;">Tipo Documento</label>
+            <select name="idTipoDocument1" id="idTipoDocument1">
+                {% for TipoDocumentos in TipoDocumento %}
+                    <option value="{{ TipoDocumentos.id }}">{{ TipoDocumentos.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
+          
 
-<div class="form-control">
-          <label for="apellido">Apellido</label>
-          <input type="apellido" id="apellido" placeholder="Introduce tu apellido" required />
-        </div>
-
-
-        <div class="form-control">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Introduce tu Email"
-            required
-          />
-       
-        <div class="form-control">
-          <label for="fecha">Fecha de nacimiento</label>
-          <input
-            type="fecha"
-            id="fecha"
-            placeholder="Introduce tu fecha de nacimiento"
-            required
-          />
-        </div>
-        <div class="form-control">
-          <label for="Tel">Teléfono</label>
-          <input
-            type="Tel"
-            id="Tel"
-            placeholder="Introduce tu Teléfono"
-            required
-          />
-        </div>
-        <div class="form-control">
-          <label for="direc">Dirección</label>
-          <input
-            type="direc"
-            id="direc"
-            placeholder="Introduce tu Dirección"
-            required
-          />
-        </div><div class="form-control">
-          <label for="doc">Documento</label>
-          <input
-            type="doc"
-            id="doc"
-            placeholder="Introduce tu documento"
-            required
-          />
-        </div>
-        <INPUT type="submit" value="Guardar"> <p> </p> 
-          <INPUT type="reset"value="Restablecer">
-
-            <div>
-              <label class="campo-registro" for="idtipodocumentos1" style="height: 70px; width: 70px;">Tipo de Documento</label>
-              <select name="idtipodocumentos1" id="idtipodocumentos1" style="height: 30px; width: 180px; bottom: 2px;">
-                  {% for tipoDocumento in tipoDocumentos %}
-                      <option value="{{ tipodocumentos.id }}">{{ tipodocumentos.nombre }}</option>
-                  {% endfor %}   
-                </div> 
-
-        
-        
-          </fieldset>
-
-
-
-    
-        
-
-<br>   </br>
-
-  </select>
-</div>
-
-</fieldset>
-
-
-   
-
-     
-      
-        
-    </div >
-
+          <p>
+           
+          <p class="full">
+            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px; position: relative; top:55px; left: 40px ; ">Guardar</button>
+          </p>
+        </form>
+        {% if mensaje %}
+        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
+        {% endif %}
+      </div>
     </div>
-
-    
-
-  
-
-
-
-
+  </div>
+  {% endblock %}
+  {% include 'base_principal.html' %} 
+ 

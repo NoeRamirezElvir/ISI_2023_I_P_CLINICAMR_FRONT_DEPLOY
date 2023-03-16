@@ -13,10 +13,10 @@
 <LINK REL=StyleSheet HREF="/CLINICA/static/css/MuestrasStyle/styleBuscarMuestras.css" TYPE="text/css" MEDIA=screen>
   <body class="body-listar">
     <div class="contenedor-listar-campos">
-        <h1 class="h1-listar">Buscar Impuestos</h1>
+        <h1 class="h1-listar">Buscar muestras</h1>
         <div class="container-listar">
             <div class="busqueda-listar">
-              <form method="GET" action="{% url 'buscar_Impuestos' %}" >
+              <form method="GET" action="{% url 'buscar_muestras' %}" >
                 <div class="buscador-listar">
                     <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
                     </div>
@@ -30,29 +30,31 @@
                     <thead>
                       <tr class="tfheader-listar">
                         <th style="color:aliceblue">ID</th>
-                        <th style="color:aliceblue">Nombre</th>
+                        <th style="color:aliceblue">Fecha</th>
+                        <th style="color:aliceblue">Id Paciente</th>
+                        <th style="color:aliceblue">Documento</th>
                     
                         <th style="color:aliceblue">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% if Impuestos %}
-                      {% for Impuesto in Impuestos %}
+                      {% if muestras %}
+                      {% for muestra in muestras %}
                         <tr>
-                          <td>{{ Impuesto.id }}</td>
-                          <td>{{ Impuesto.nombre }}</td>
+                          <td>{{ muestras.id }}</td>
+                          <td>{{ muestras.fecha }}</td>
                           
                           <td> 
-                            <form action="{% url 'abrir_actualizar_Impuestos' %}" method="post" class="form-botones">
+                            <form action="{% url 'abrir_actualizar_muestras' %}" method="post" class="form-botones">
                               {% csrf_token %}
-                              <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
+                              <input type="hidden" name="id_muestra" value="{{ muestra.id }}">
                               <button class="btnEditar" name="editar" id="editar">
                                   <img src="{% static 'img/icons/icedit.png' %}">
                             </button>
                             </form>
-                            <form action="{% url 'eliminar_Impuestos' id=Impuesto.id  %}"  method="post">
+                            <form action="{% url 'eliminar_muestras' id=muestra.id  %}"  method="post">
                               {% csrf_token %}
-                              <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
+                              <input type="hidden" name="id_muestra" value="{{ muestra.id }}">
                             <button class="btnEliminar" name="eliminar" id="eliminar">
                               <img src="{% static 'img/icons/icdelete.png' %}">
                             </button>
@@ -62,7 +64,7 @@
                       {% endfor %}
                     {% else %}
                       <tr>
-                        <td colspan="3">No se encontraron documentos.</td>
+                        <td colspan="3">No se encontraron muestras.</td>
                       </tr>
                     {% endif %}
                     </tbody>

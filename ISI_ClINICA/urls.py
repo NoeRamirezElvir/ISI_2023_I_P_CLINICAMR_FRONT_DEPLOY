@@ -27,6 +27,9 @@ from CLINICA.views_api.views_impuesto import *
 from CLINICA.views_api.views_Pacientes import *
 from CLINICA.views_api.views_muestras  import *
 from CLINICA.views_api.views_login import *
+from CLINICA.views_api.views_TipoMuestra import *
+from CLINICA.views_api.views_subtipo import *
+from CLINICA.views_api.views_tipo import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -82,14 +85,38 @@ urlpatterns = [
     path('CLINICA/templates/BuscarEspecialidad.html',listar_especialidades, name="listar_especialidades"),
 
 
+    #SubTipo
+    path('CLINICA/templates/SubTipo/subtipoActualizar.html',abrir_actualizar_subtipo,name="abrir_actualizar_subtipo"),
+    path('CLINICA/templates/SubTipo/subtipoActualizar.html/<int:id>',actualizar_subtipo,name="actualizar_subtipo"),
+    path('CLINICA/templates/SubTipo/buscarsubtipo.html/<int:id>',eliminar_subtipo,name = 'eliminar_subtipo'),
+    path('CLINICA/templates/SubTipo/buscarsubtipo.html',buscar_subtipo,name = 'buscar_subtipo'),
+    path('CLINICA/templates/SubTipo/subtipo.html',crear_subtipo, name="crear_subtipo"),
+    path('CLINICA/templates/SubTipo/buscarsubtipo.html',listar_subtipo, name="listar_subtipo"),
+
+    #Tipo
+    path('CLINICA/templates/Tipos/tipoactualizar.html',abrir_actualizar_tipo,name="abrir_actualizar_tipo"),
+    path('CLINICA/templates/Tipos/tipoactualizar.html/<int:id>',actualizar_tipo,name="actualizar_tipo"),
+    path('CLINICA/templates/Tipos/buscartipo.html/<int:id>',eliminar_tipo,name = 'eliminar_tipo'),
+    path('CLINICA/templates/Tipos/buscartipo.html',buscar_tipo,name = 'buscar_tipo'),
+    path('CLINICA/templates/Tipos/tipo.html',crear_tipo, name="crear_tipo"),
+    path('CLINICA/templates/Tipos/buscartipo.html',listar_tipo, name="listar_tipo"),
+
     #Pacientes
-    #path('CLINICA/templates/Impuestos/ImpuestoActualizar.html',abrir_actualizar_Impuestos,name="abrir_actualizar_Impuestos"),
-    #path('CLINICA/templates/Impuestos/ImpuestoActualizar.html/<int:id>',actualizar_Impuestos,name="actualizar_Impuestos"),
-    #path('CLINICA/templates/Impuestos/BuscarImpuesto.html/<int:id>',eliminar_Impuestos,name = 'eliminar_Impuestos'),
-    #path('CLINICA/templates/Impuestos/BuscarImpuesto.html',buscar_Impuestos,name = 'buscar_Impuestos'),
-    path('CLINICA/templates/Pacientes/Paciente.html',crear_pacientes, name="crear_pacientes"),
+    path('CLINICA/templates/Pacientes/PacienteActualizar.html',abrir_actualizar_pacientes,name="abrir_actualizar_pacientes"),
+    path('CLINICA/templates/Pacientes/PacienteActualizar.html/<int:id>',actualizar_pacientes,name="actualizar_pacientes"),
+    path('CLINICA/templates/Pacientes/buscarPaciente.html/<int:id>',eliminar_pacientes,name = 'eliminar_pacientes'),
+    path('CLINICA/templates/Pacientes/buscarPaciente.html',buscar_pacientes,name = 'buscar_pacientes'),
+    path('CLINICA/templates/Pacientes/Paciente.html',crear_paciente, name="crear_paciente"),
     path('CLINICA/templates/Pacientes/buscarPaceinte.html',listar_pacientes, name="listar_pacientes"),
 
+
+    # Tipo Muestra
+    path('CLINICA/templates/TipoMuestra/TMuestraActualizar.html',abrir_actualizar_TipoMuestra,name="abrir_actualizar_TipoMuestra"),
+    path('CLINICA/templates/TipoMuestra/TMuestraActualizar.html/<int:id>',actualizar_TipoMuestra,name="actualizar_TipoMuestra"),
+    path('CLINICA/templates/TipoMuestra/BuscarTMuestra.html/<int:id>',eliminar_TipoMuestra,name = 'eliminar_TipoMuestra'),
+    path('CLINICA/templates/TipoMuestra/BuscarTMuestra.html',buscar_TipoMuestra,name = 'buscar_TipoMuestra'),
+    path('CLINICA/templates/TipoMuestra/TMuestra.html',crear_TipoMuestra, name="crear_TipoMuestra"),
+    path('CLINICA/templates/TipoMuestra/BuscarTMuestra.html',listar_TipoMuestra, name="listar_TipoMuestra"),
 
 
     #Muestras

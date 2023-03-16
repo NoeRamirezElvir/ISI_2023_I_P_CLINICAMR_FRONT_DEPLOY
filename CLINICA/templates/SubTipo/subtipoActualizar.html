@@ -1,0 +1,33 @@
+{% extends 'SubTipo/subtipo.html' %}
+{% load static %}
+{% block tittle %}Actualizacion de Cargos{% endblock %}
+        {% block content %}
+        <form method="POST" action="{% url 'actualizar_subtipo' id=subtipo.0.id %}">
+          {% csrf_token %}
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required style="width: 40%;height: 40px;" value="{{ subtipos.0.nombre }}">
+          </p>
+          <fieldset id="payment_method" style="height: 70px;">
+          <legend>Activo/Inactivo</legend>
+          <div class="fieldgroup">
+          <input type="radio" name="payment_method" id="activo" value=1 {% if subtipos.0.activo == 1 %}checked {% endif %}><label for= "payment1">Activo
+          </label>
+          </div>
+          <div class="fieldgroup">
+          <input type="radio" name="payment_method" id="inactivo" value=0 {% if subtipos.0.activo == 0 %}checked {% endif %}><label for= "payment2">Inactivo</label>
+          </div>
+          </fieldset>
+        
+          <p> 
+          <p class="full">
+            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Actualizar</button>
+          </p>
+        </form>
+        {% if mensaje %}
+        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}

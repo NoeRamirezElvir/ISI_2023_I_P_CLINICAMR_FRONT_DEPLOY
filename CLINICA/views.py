@@ -43,6 +43,45 @@ def eliminar_Impuestos(request,id):#
     return render(request,'Impuestos/Impuesto.html')
 
 
+#SubTipo
+def abrir_actualizar_subtipo(request):#
+    return render(request,'SubTipo/subtipoActualizar.html')
+def actualizar_subtipo(request,id):#
+    return render(request,'SubTipo/subtipoActualizar.html')
+def buscar_subtipo(request):#
+    return render(request,'SubTipo/buscarsubtipo.html')
+def crear_subtipo(request):#
+    return render(request,'SubTipo/subtipo.html')
+def eliminar_subtipo(request,id):#
+    return render(request,'SubTipo/subtipo.html')
+
+
+#Tipos
+def abrir_actualizar_tipo(request):#
+    return render(request,'Tipos/tipoactualizar.html')
+def actualizar_tipo(request,id):#
+    return render(request,'Tipos/tipoactualizar.html')
+def buscar_tipo(request):#
+    return render(request,'Tipos/buscartipo.html')
+def crear_tipo(request):#
+    return render(request,'Tipos/tipo.html')
+def eliminar_tipo(request,id):#
+    return render(request,'Tipos/tipo.html')
+
+
+#Tipo Muestra
+def abrir_actualizar_TipoMuestra(request):#
+    return render(request,'TipoMuestra/TMuestraActualizar.html')
+def actualizar_TipoMuestra(request,id):#
+    return render(request,'TipoMuestra/TMuestraActualizar.html')
+def buscar_TipoMuestra(request):#
+    return render(request,'TipoMuestra/BuscarTMuestra.html')
+def crear_TipoMuestra(request):#
+    return render(request,'TipoMuestra/TMuestra.html')
+def eliminar_TipoMuestra(request,id):#
+    return render(request,'TipoMuestra/TMuestra.html')
+
+
 #Pacientes
 def abrir_actualizar_pacientes(request):#
     return render(request,'Pacientes/PacienteActualizar.html')
@@ -50,7 +89,7 @@ def actualizar_pacientes(request,id):#
     return render(request,'Pacientes/PacienteActualizar.html')
 def buscar_pacientes(request):#
     return render(request,'Pacientes/buscarPaciente.html')
-def crear_pacientes(request):#
+def crear_paciente(request):#
     return render(request,'Pacientes/Paciente.html')
 def eliminar_pacientes(request,id):#
     return render(request,'Pacientes/Paciente.html')

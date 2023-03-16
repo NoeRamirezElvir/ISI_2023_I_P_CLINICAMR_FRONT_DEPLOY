@@ -18,37 +18,46 @@ def listar_pacientes(request):
 
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
 #CUANDO DETECTA QUE EL METODO ES POST ESTE FUNCIONA PARA PODER CREAR UN NUEVO USUARIO
-def crear_pacientes(request):
-    rsp_pacientes = requests.get(url+'pacientes/')
-    if rsp_pacientes.status_code == 200:
-            data = rsp_pacientes.json()
-            pacientes = data['pacientes']
+def crear_paciente(request):
+    rsp_TipoDocumento = requests.get(url+'documentos/')
+    if rsp_TipoDocumento.status_code == 200:
+            data = rsp_TipoDocumento.json()
+            TipoDocumento = data['documentos']
     else:
-            pacientes = []
+            TipoDocumento = []
     if request.method == 'POST':
-        idTipoDocumento = int(request.POST['idTipoDocumento'])
         
         nombre = request.POST['nombre']
         apellido = request.POST['apellido']
-        FechaNacimiento = request.POST['FechaNacimiento']
-        Tel = request.POST['Tel']
-        Correo = request.POST['Correo']
-        Direccion = request.Post ['Direccion']
-        Documento= request.Post ['Documento']
+        fechaNacimiento = request.POST['fechaNacimiento']
+        idTipoDocumento = int(request.POST['idTipoDocument1'])
+        documento= request.POST ['documento']
+        telefono = request.POST['telefono']
+        correo = request.POST['correo']
+        direccion = request.POST ['direccion']
+        
 
-        response = requests.post(url+'pacientes/', json={'idTipoDocumento':idTipoDocumento, 'nombre': nombre,'apellido': apellido,'FechaNacimiento': FechaNacimiento,'Tel': Tel,'Correo': Correo,'Direccion': Direccion,'Documento': Documento, })
-        data={}
+        response = requests.post(url+'pacientes/', json={'nombre': nombre,'apellido': apellido,'fechaNacimiento': fechaNacimiento,'idTipoDocumento':idTipoDocumento,'documento': documento,'telefono': telefono,'correo': correo,'direccion': direccion })
+        pacientedata={}
         if response.status_code == 200:
-            data = response.json()
-            mensaje = data['message']
-            return render(request, 'Pacientes/Paciente.html')
+            pacientedata = response.json()
+            mensaje = pacientedata['message']
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento})
         else:
-            mensaje = data['pacientes']
-            print(mensaje)
-            return render(request, 'Pacientes/Paciente.html')
+            mensaje = pacientedata['message']
+            
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento})
     else:
-        return render(request, 'Pacientes/Paciente.html')
+        return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento})
+
+
 def abrir_actualizar_pacientes(request):
+    rsp_TipoDocumento = requests.get(url+'documentos/')
+    if rsp_TipoDocumento.status_code == 200:
+            data = rsp_TipoDocumento.json()
+            TipoDocumento = data['documentos']
+    else:
+            TipoDocumento = []
     if request.method == 'POST':
          resp = requests.get(url+'pacientes/busqueda/id/'+str(request.POST['id_pacientes']))
          data = resp.json()
@@ -59,20 +68,34 @@ def abrir_actualizar_pacientes(request):
             mensaje = data['message']
          else:
             pacientes = []
-         context = {'pacientes': pacientes, 'mensaje':mensaje}
+         context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Pacientes/PacienteActualizar.html', context)   
     
 def actualizar_pacientes(request, id):
+    rsp_TipoDocumento = requests.get(url+'documentos/')
+    if rsp_TipoDocumento.status_code == 200:
+            data = rsp_TipoDocumento.json()
+            TipoDocumento = data['documentos']
+    else:
+            TipoDocumento = []
+                # FIN Metodo para llenar el SELECT de los Empleados
+        #Obtener los datos para hacer la actualizacion
     if request.method == 'POST':
         idTemporal = id
         nombre = request.POST['nombre']
-        descripcion = request.POST['descripcion']
+        apellido = request.POST['apellido']
+        fechaNacimiento = request.POST['fechaNacimiento']
+        idTipoDocumento = int(request.POST['idTipoDocument1'])
+        documento= request.POST ['documento']
+        telefono = request.POST['telefono']
+        correo = request.POST['correo']
+        direccion = request.POST ['direccion']
         
 
 
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'pacientes/id/{idTemporal}', json={'nombre': nombre, 'descripcion': descripcion})
+        response = requests.put(url+f'pacientes/id/{idTemporal}', json={'nombre': nombre,'apellido': apellido,'fechaNacimiento': fechaNacimiento,'idTipoDocumento':idTipoDocumento,'documento': documento,'telefono': telefono,'correo': correo,'direccion': direccion })
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el cargo relacionado con el id
@@ -82,21 +105,21 @@ def actualizar_pacientes(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes })
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'pacientes/busqueda/id/{idTemporal}')
         if response.status_code == 200:
             data = response.json()
-            usuario = data['pacientes']
+            pacientes = data['pacientes']
             mensaje = data['message']
-            return render(request, 'cargoactualizar.html', {'pacientes': pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes})
         else:
             mensaje = data['message']
-            return render(request, 'PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
 
 def eliminar_pacientes(request, id):
     if request.method == 'POST':
@@ -111,7 +134,7 @@ def eliminar_pacientes(request, id):
             pacientes = []
         mensaje = res['message']
         context = {'pacientes': pacientes, 'mensaje': mensaje}
-        return render(request, 'buscarPaciente.html', context)     
+        return render(request, 'Pacientes/buscarPaciente.html', context)     
     
 def buscar_pacientes(request):
         valor = request.GET.get('buscador', None)
@@ -129,7 +152,7 @@ def buscar_pacientes(request):
                     pacientes = data['pacientes']
                     context = {'pacientes': pacientes, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'buscarPaciente.html', context)       
+                    return render(request, 'Pacientes/buscarPaciente.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -138,16 +161,16 @@ def buscar_pacientes(request):
                     pacientes = {}
                     pacientes = data['pacientes']
                     context = {'pacientes': pacientes, 'mensaje':mensaje}
-                    return render(request, 'buscarPaciente.html', context)
+                    return render(request, 'Pacientes/buscarPaciente.html', context)
         else:
             response = requests.get(url+'pacientes/')
             if response.status_code == 200:
                 data = response.json()
                 pacientes = data['pacientes']
                 mensaje = data['message']   
-                return render(request, 'buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
+                return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
             else:
-                usuarios = []
+                pacientes = []
                 mensaje = 'No se encontro paciente'
-            return render(request, 'buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
+            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
     
