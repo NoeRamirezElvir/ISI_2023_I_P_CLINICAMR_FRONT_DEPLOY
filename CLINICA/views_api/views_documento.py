@@ -12,7 +12,7 @@ def listar_documentos(request):
     else:
         documentos = []
     context = {'documentos': documentos}
-    return render(request, 'buscarDocumento.html', context)
+    return render(request, 'documentos/buscarDocumento.html', context)
 
 def crear_documento(request):
     if request.method == 'POST':
@@ -23,12 +23,12 @@ def crear_documento(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'documento.html', {'mensaje': mensaje})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje})
         else:
             mensaje = data['message']
-            return render(request, 'documento.html', {'mensaje': mensaje})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje})
     else:
-        return render(request, 'documento.html')
+        return render(request, 'documentos/documento.html')
     
 def abrir_actualizar_documentos(request):
     if request.method == 'POST':
@@ -43,7 +43,7 @@ def abrir_actualizar_documentos(request):
             documentos = []
          context = {'documentos': documentos, 'mensaje':mensaje}
          mensaje = data['message']
-         return render(request, 'documentoactualizar.html', context)
+         return render(request, 'documentos/documentoactualizar.html', context)
     
 def actualizar_documento(request, id):
     if request.method == 'POST':
@@ -61,10 +61,10 @@ def actualizar_documento(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos })
+            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'documentos/busqueda/id/{idTemporal}')
@@ -72,10 +72,10 @@ def actualizar_documento(request, id):
             data = response.json()
             documentos = data['documentos']
             mensaje = data['message']
-            return render(request, 'documentoactualizar.html', {'documentos': documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'documentos': documentos})
         else:
             mensaje = data['message']
-            return render(request, 'documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
 
 def eliminar_documento(request, id):
     if request.method == 'POST':
@@ -90,7 +90,7 @@ def eliminar_documento(request, id):
             documentos = []
         mensaje = res['message']
         context = {'documentos': documentos, 'mensaje': mensaje}
-        return render(request, 'buscarDocumento.html', context)     
+        return render(request, 'documentos/buscarDocumento.html', context)     
     
 def buscar_documentos(request):
         valor = request.GET.get('buscador', None)
@@ -108,7 +108,7 @@ def buscar_documentos(request):
                     documentos = data['documentos']
                     context = {'documentos': documentos, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'buscarDocumento.html', context)       
+                    return render(request, 'documentos/buscarDocumento.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -117,16 +117,16 @@ def buscar_documentos(request):
                     documentos = {}
                     documentos = data['documentos']
                     context = {'documentos': documentos, 'mensaje':mensaje}
-                    return render(request, 'buscarDocumento.html', context)
+                    return render(request, 'documentos/buscarDocumento.html', context)
         else:
             response = requests.get(url+'documentos/')
             if response.status_code == 200:
                 data = response.json()
                 documentos = data['documentos']
                 mensaje = data['message']   
-                return render(request, 'buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+                return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
             else:
                 usuarios = []
                 mensaje = 'No se encontraron documentos'
-            return render(request, 'buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+            return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
     

@@ -37,7 +37,7 @@ def crear_TipoMuestra(request):
     
 def abrir_actualizar_TipoMuestra(request):
     if request.method == 'POST':
-         resp = requests.get(url+'tmuestra/busqueda/id/'+str(request.POST['tmuestra']))
+         resp = requests.get(url+'tmuestra/busqueda/id/'+str(request.POST['id_tmuestra']))
          data = resp.json()
          mensaje = data['message']
          if resp.status_code == 200:

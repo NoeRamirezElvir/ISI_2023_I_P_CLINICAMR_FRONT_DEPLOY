@@ -13,7 +13,7 @@ def listar_cargos(request):
     else:
         cargos = []
     context = {'cargos': cargos}
-    return render(request, 'buscarCargo.html', context)
+    return render(request, 'cargos/buscarCargo.html', context)
 
 def crear_cargo(request):
     if request.method == 'POST':
@@ -25,12 +25,12 @@ def crear_cargo(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'cargo.html', {'mensaje': mensaje})
+            return render(request, 'cargos/cargo.html', {'mensaje': mensaje})
         else:
             mensaje = data['message']
-            return render(request, 'cargo.html', {'mensaje': mensaje})
+            return render(request, 'cargos/cargo.html', {'mensaje': mensaje})
     else:
-        return render(request, 'cargo.html')
+        return render(request, 'cargos/cargo.html')
     
 def abrir_actualizar_cargos(request):
     if request.method == 'POST':
@@ -45,7 +45,7 @@ def abrir_actualizar_cargos(request):
             cargos = []
          context = {'cargos': cargos, 'mensaje':mensaje}
          mensaje = data['message']
-         return render(request, 'cargoactualizar.html', context)
+         return render(request, 'cargos/cargoactualizar.html', context)
     
 def actualizar_cargo(request, id):
     if request.method == 'POST':
@@ -64,10 +64,10 @@ def actualizar_cargo(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos })
+            return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos})
+            return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'cargos/busqueda/id/{idTemporal}')
@@ -75,10 +75,10 @@ def actualizar_cargo(request, id):
             data = response.json()
             usuario = data['cargos']
             mensaje = data['message']
-            return render(request, 'cargoactualizar.html', {'cargos': cargos})
+            return render(request, 'cargos/cargoactualizar.html', {'cargos': cargos})
         else:
             mensaje = data['message']
-            return render(request, 'cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos})
+            return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos})
 
 def eliminar_cargo(request, id):
     if request.method == 'POST':
@@ -93,7 +93,7 @@ def eliminar_cargo(request, id):
             cargos = []
         mensaje = res['message']
         context = {'cargos': cargos, 'mensaje': mensaje}
-        return render(request, 'buscarCargo.html', context)     
+        return render(request, 'cargos/buscarCargo.html', context)     
     
 def buscar_cargos(request):
         valor = request.GET.get('buscador', None)
@@ -111,7 +111,7 @@ def buscar_cargos(request):
                     cargos = data['cargos']
                     context = {'cargos': cargos, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'buscarCargo.html', context)       
+                    return render(request, 'cargos/buscarCargo.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -120,16 +120,16 @@ def buscar_cargos(request):
                     cargos = {}
                     cargos = data['cargos']
                     context = {'cargos': cargos, 'mensaje':mensaje}
-                    return render(request, 'buscarCargo.html', context)
+                    return render(request, 'cargos/buscarCargo.html', context)
         else:
             response = requests.get(url+'cargos/')
             if response.status_code == 200:
                 data = response.json()
                 cargos = data['cargos']
                 mensaje = data['message']   
-                return render(request, 'buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
+                return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
             else:
                 usuarios = []
                 mensaje = 'No se encontraron cargos'
-            return render(request, 'buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
+            return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
     

@@ -15,20 +15,20 @@ def registrar_login(request):
 def usuariosignup(request):##############
     return render(request,'presentacion/usuariosignup.html')
 def abrir_actualizar_cargos(request):#
-    return render(request,'cargoactualizar.html')
+    return render(request,'cargos/cargoactualizar.html')
 def actualizar_cargo(request,id):#
-    return render(request,'cargoactualizar.html')
+    return render(request,'cargos/cargoactualizar.html')
 def buscar_cargos(request):#
-    return render(request,'buscarCargo.html')
+    return render(request,'cargos/buscarCargo.html')
 #Documentos
 def abrir_actualizar_documentos(request):#
-    return render(request,'documentoactualizar.html')
+    return render(request,'documentos/documentoactualizar.html')
 def actualizar_documento(request,id):#
-    return render(request,'documentoactualizar.html')
+    return render(request,'documentos/documentoactualizar.html')
 def buscar_documentos(request):#
-    return render(request,'buscarDocumento.html')
+    return render(request,'documentos/buscarDocumento.html')
 def crear_documento(request):#
-    return render(request,'documento.html')
+    return render(request,'documentos/documento.html')
 
 #Impuesto
 def abrir_actualizar_Impuestos(request):#
@@ -97,15 +97,15 @@ def eliminar_pacientes(request,id):#
 
 #Especialidades
 def abrir_actualizar_especialidades(request):#
-    return render(request,'especialidadActualizar.html')
+    return render(request,'especialidad/especialidadActualizar.html')
 def actualizar_especialidades(request,id):#
-    return render(request,'especialidadActualizar.html')
+    return render(request,'especialidad/especialidadActualizar.html')
 def buscar_especialidades(request):#
-    return render(request,'BuscarEspecialidad.html')
+    return render(request,'especialidad/BuscarEspecialidad.html')
 def crear_especialidades(request):#
-    return render(request,'especialidad.html')
+    return render(request,'especialidad/especialidad.html')
 def eliminar_especialidades(request,id):#
-    return render(request,'especialidad.html')
+    return render(request,'especialidad/especialidad.html')
 
 
 #Muestra
@@ -143,12 +143,12 @@ def buscar_usuarios(request):#
     return render(request,'usuario/listar.html')
 
 def inicio(request):
-    return render(request,'usuario/inicio.html',)
+    return render(request,'inicio.html',)
 def empleado(request):
     return render(request,'empleado/empleado.html')
 
 def crear_cargo(request):#
-    return render(request,'cargo.html')
+    return render(request,'cargos/cargo.html')
 
 def especialidad(request):
     return render(request,'especialidad.html')

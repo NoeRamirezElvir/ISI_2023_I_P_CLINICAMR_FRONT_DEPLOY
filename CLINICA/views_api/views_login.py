@@ -15,7 +15,7 @@ def iniciar_sesion(request):
         data = response.json()
         if data['mensaje'] == 'Inicio Exitoso':
             mensaje = data['mensaje']
-            return render(request, 'usuario/inicio.html', {'mensaje': mensaje})
+            return render(request, 'inicio.html', {'mensaje': mensaje})
         else:
             mensaje = data['mensaje']
             return render(request, 'presentacion/usuariologin.html', {'mensaje': mensaje})

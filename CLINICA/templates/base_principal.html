@@ -1,61 +1,100 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Expires" content="0">
-        <meta http-equiv="Last-Modified" content="0">
-        <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-        <meta http-equiv="Pragma" content="no-cache">
 
-    </head>
-    <body class="body-principal">
-        <link rel="stylesheet" href="{% static 'css/base_principal.css' %}">
-        <div class="container-base">
-            <header>
-                <div class="titulo-base">
-                    <a href="#" class="logo-base">Menu</a>
-                </div>
-                <nav class="menu-base">
-                    <ul>
-                        <li class = "opcion-base"><a href="">Usuarios <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"></a>
-                        <ul class="submenu-base">
-                            <li><a href="/CLINICA/templates/usuario/inicio.html">Usuario</a></li>
-                            <li class = "opcion"><a href="/CLINICA/templates/empleado/empleado.html">Empleado <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
-                                <ul class = "submenu2-base">
-                                    <li><a href="/CLINICA/templates/cargo.html">Cargos</a></li>
-                                    <li><a href="/CLINICA/templates/especialidad.html">Especialidad Médica</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="/CLINICA/templates/documento.html">Documentos</a></li>
-                            <li><a href="/CLINICA/templates/Pacientes/Paciente.html">Pacientes</a></li>
-                            <li><a href="#">Proveedores</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Citas</a></li>
-                    <li><a href="#">Consultas</a></li>
-                    <li class = "opcion"><a href="">Facturacion <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
-                        <ul class = "submenu2-base">
-                            <li><a href="/CLINICA/templates/Impuestos/Impuesto.html">Impuestos</a></li>
-                            <li><a href="">Impuesto Historico</a></li> </ul>
+<head>
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <!--STYLES-->
+  <link rel="stylesheet" href="{% static 'css/base_principal.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style_general.css' %}">
 
-                            <li class = "opcion"><a href="/CLINICA/templates/Muestras/Muestra.html">Muestras <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
-                                <ul class = "submenu2-base">
-                                    <li><a href="/CLINICA/templates/TipoMuestra/TMuestra.html ">Tipo Muestra</a></li>
-                                </ul>
+  <title>{% block title %}Menu Principal{% endblock %}</title>
+</head>
 
-                                    <li class = "opcion"><a href="/CLINICA/templates/SubTipo/subtipo.html">SubTipos <img class="icono-base" src="{% static 'img/icons/icdragmenu.png' %}" alt="No se encontró la imagen"> </a>
-                                        <ul class = "submenu2-base">
-                                            <li><a href="/CLINICA/templates/Tipos/tipo.html">Tipo </a></li>
-                            
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    </body>
+<body id="body-base">
+  <div id="lateral-nav">
+    <div class="encabezado-menu-lateral">
+      <img class="img-menu-base" src="{% static 'img/icons/icclinicamenu.png' %}" alt="No Image">
+      <h2 class="titulo-menu-base">CLINICA MR</h2>
+    </div>
+    <div class="menu">
+      <ul>
+        <li class="opcion"><img src="{% static 'img/icons/icagentes.png' %}"><a href="#">Agentes</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="/CLINICA/templates/usuario/registro.html">Usuarios</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/Pacientes/Paciente.html">Pacientes</a></li>
+            <li class="opcion-link"><a href="#">Proveedores</a></li>
+            <li class="opcion"><a href="#">Personal</a>
+              <ul class="subopcion">
+                <li class="opcion-link"><a href="#">Empleados</a></li>
+                <li class="opcion-link"><a href="/CLINICA/templates/cargos/cargo.html">Cargo</a></li>
+                <li class="opcion-link"><a href="/CLINICA/templates/especialidad/especialidad.html">Especialidad Medíca</a></li>
+              </ul>
+            </li>
+            <li class="opcion-link"><a href="/CLINICA/templates/documentos/documento.html">Documentos</a></li>
+          </ul>
+        </li>
+        <li class="opcion-link"><img src="{% static 'img/icons/iccitas.png' %}"><a href="#">Citas</a></li>
+        <li class="opcion"><img src="{% static 'img/icons/icservicios.png' %}"><a href="#">Servicios</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="#">Consultas</a></li>
+            <li class="opcion-link"><a href="#">Examenes</a></li>
+            <li class="opcion-link"><a href="#">Tratamientos</a></li>
+            <li class="opcion-link"><a href="#">Resultados</a></li>
+          </ul>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/icmuestras.png' %}"><a href="#">Muestras Clinicas</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="/CLINICA/templates/Muestras/Muestra.html">Muestras</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/TipoMuestra/TMuestra.html">Tipos de Muestra</a></li>
+          </ul>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/icfacturacion.png' %}"><a href="#">Facturación</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="/CLINICA/templates/Impuestos/Impuesto.html">Impuesto</a></li>
+          </ul>
+        </li>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/icinventario.png' %}"><a href="#">Inventario</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="#">Medicamentos</a></li>
+          </ul>
+        </li>
+        </li>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/ichistoricos.png' %}"><a href="#">Historicos</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="#">Impuesto Historico</a></li>
+          </ul>
+        </li>
+        </li>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/icother.png' %}"><a href="#">Otros</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="/CLINICA/templates/Tipos/tipo.html">Tipos</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/SubTipo/subtipo.html">Subtipos</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <div id="contenido">
+    <div id="superior-nav">
+      <a href="#" class="superior-nav-logout">CERRAR SESION</a>
+      <a href="#" class="superior-nav-userinfo">USUARIO</a>
+      <a href="/CLINICA/templates/inicio.html" class="superior-nav-inicio">INICIO</a>
+    </div>
+    <div id="main">
+      {% block content%}
+      {% endblock %}
+    </div>
+  </div>
+  <!--SCRIPTS-->
+  <script src="{% static 'js/base_principal.js' %}"></script>
+</body>
+
 </html>
-
-
-
-
-

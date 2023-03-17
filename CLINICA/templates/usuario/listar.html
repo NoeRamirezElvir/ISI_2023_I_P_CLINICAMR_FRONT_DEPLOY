@@ -1,63 +1,53 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <link rel="stylesheet" href="{% static 'css/usuariostyle/styleslistar.css' %}">
-    <link rel="stylesheet" href="{% static 'css/usuariostyle/navbar_usuarios.css' %}">
-    <title>Registros de Usuarios</title>
-</head>
-<body class="body-listar">
-    
-    <div class="contenedor-listar-campos">
-        <h1 class="h1-listar">Registros de Usuarios</h1>
-        <div class="container-listar">
-            <div class="busqueda-listar">
-                <form method="GET" action="{% url 'buscar_usuarios' %}" >
-                    {% csrf_token %}
-                <div class="buscador-listar">
-                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Usuario">
-                </div>
-                <div class="btnBusqueda-listar">
-                    <input id="btnBuscarUsuario "type="submit" value="Buscar">
-                </div>
-            </form>
+
+{% block tittle %}USUARIOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+    <h1 class="h1-listar">Registro de Usuarios</h1>
+    <div class="busqueda-listar">
+        <form method="GET" action="{% url 'buscar_usuarios' %}">
+            {% csrf_token %}
+            <div class="buscador-listar">
+                <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Usuario">
             </div>
-            <div class="tabla-listar">
-            <table class="tftable-listar" >
+            <div class="btnBusqueda-listar">
+                <input id="btnBuscarUsuario " type="submit" value="Buscar">
+            </div>
+        </form>
+        <a class="btn-agregar" href="/CLINICA/templates/usuario/registro.html" class="btn-agregar-link">Agregar</a>
+    </div>
+    <div class="container-listar">
+        <div class="tabla-listar">
+            <table class="tftable-listar">
                 <thead>
-                  <tr class="tfheader-listar" ,border="1">
+                    <tr class="tfheader-listar" ,border="1">
                         <th style="color:aliceblue">ID Usuario</th>
                         <th style="color:aliceblue">ID Empleado</th>
-                        <th style="color:aliceblue" >Nombre </th>
-                        <th style="color:aliceblue" >Contraseña</th>
-                        <th style="color:aliceblue" >Activo</th>
-                        <th style="color:aliceblue" >Bloqueado</th>
-                        <th style="color:aliceblue" >Fecha Creación</th>
-                        <th style="color:aliceblue" >Fecha Modificado</th>
-                        <th style="color:aliceblue" >Acciones</th>
+                        <th style="color:aliceblue">Nombre </th>
+                        <th style="color:aliceblue">Contraseña</th>
+                        <th style="color:aliceblue">Activo</th>
+                        <th style="color:aliceblue">Bloqueado</th>
+                        <th style="color:aliceblue">Fecha Creacion</th>
+                        <th style="color:aliceblue">Fecha Modificado</th>
+                        <th style="color:aliceblue">Acciones</th>
 
-                  </tr>
+                    </tr>
                 </thead>
                 <tbody>
-                    {% if usuariosr and usuariosr|length > 0 %}
+                    {% if usuariosr %}
                     {% for usuario in usuariosr %}
                     <tr>
                         <td>{{ usuario.id }}</td>
                         <td>{{ usuario.idEmpleado_id }}</td>
                         <td>{{ usuario.nombreUsuario }}</td>
-                        <td class="td" style="max-width: 50vh; word-wrap: break-word;">{{ usuario.password }}</td>
+                        <td class="td" style="max-width: 200px; word-wrap: break-word;">{{ usuario.password }}</td>
                         <td>{{ usuario.activo }}</td>
                         <td>{{ usuario.bloqueado }}</td>
                         <td>{{ usuario.fechaCreacion }}</td>
                         <td>{{ usuario.fechaModificacion }}</td>
-                        <td> 
+                        <td>
                             <form action="{% url 'abrir_actualizar_usuarios' %}" method="post" class="form-botones">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_usuario" value="{{ usuario.id }}">
@@ -65,36 +55,25 @@
                                     <img src="{% static 'img/icons/icedit.png' %}">
                                 </button>
                             </form>
-                            <form action="{% url 'eliminar_usuario' id=usuario.id %}" method="post" class="form-botones">
+                            <form action="{% url 'eliminar_usuario' id=usuario.id %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_usuario" value="{{ usuario.id }}">
                                 <button class="btnEliminar" name="eliminar" id="eliminar">
                                     <img src="{% static 'img/icons/icdelete.png' %}">
                                 </button>
-                            </form>                        
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
-                      <tr>
-                        <td colspan="3">No se encontraron documentos.</td>
-                      </tr>
+                    <tr>
+                        <td colspan="9">No se encontraron documentos.</td>
+                    </tr>
                     {% endif %}
                 </tbody>
-              </table>
-            
+            </table>
+
         </div>
     </div>
 </div>
-<div class="container-menu-nav">
-    <nav class = "nav-menu-nav">
-        <ul>
-            <a href="/CLINICA/templates/usuario/inicio.html">Inicio</a>
-            <a href="/CLINICA/templates/usuario/registro.html">Registrar Usuarios</a>
-            <a href="/CLINICA/templates/usuario/listar.html">Visualizar Registros</a>
-        </ul>
-    </nav>
-</div>
-{% include 'base_principal.html' %}
-</body>
-</html>
+{% endblock %}

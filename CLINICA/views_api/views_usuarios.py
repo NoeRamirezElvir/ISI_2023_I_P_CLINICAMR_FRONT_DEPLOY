@@ -43,7 +43,7 @@ def crear_usuario(request):
             return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado})
         else:
             mensaje = userdata['usuariosr']
-            print(mensaje)
+            (mensaje)
             return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado})
     else:
         return render(request, 'usuario/registro.html', { 'empleado': empleado})
@@ -146,7 +146,6 @@ def buscar_usuarios(request):
                     usuarios = {}
                     usuarios = data['usuariosr']
                     context = {'usuariosr': usuarios, 'mensaje':mensaje}
-                    print(context)
                     return render(request, 'usuario/listar.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)

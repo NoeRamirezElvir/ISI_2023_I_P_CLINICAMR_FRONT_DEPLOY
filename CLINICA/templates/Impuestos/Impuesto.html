@@ -1,47 +1,73 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<LINK REL=StyleSheet HREF="/CLINICA/static/css/Impuesto.css" TYPE="text/css" MEDIA=screen>
 
- <head> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
-<meta http-equiv="Expires" content="0">
-<meta http-equiv="Last-Modified" content="0">
-<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-<meta http-equiv="Pragma" content="no-cache">
- </head> 
- <body> 
-<title>{% block tittle %}Registro de Impuestos{% endblock %}</title>
+{% block tittle %}Registro de Impuestos{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 95%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
 <div class="contenedor">
-    <h1 class="logo"> <span class="nombre-empresa">Impues</span>tos</h1>
-    <div class="wrapper animated bounceInLeft">
-      <div class="info-empresa">
-        <h3 style="color: beige;" >Medical Rescue</h3>
-        <ul class="servicios">
-          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
-          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
-          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-          <button class="bDocumento"><a href ="/CLINICA/templates/Impuestos/BuscarImpuesto.html">Buscar</a> </button>
-        </ul>
-      </div>
-      <div class="contacto">
-        <h3></h3>
-        {% block content %}
-        <form class="formulario" method="POST" action="{% url 'crear_Impuestos' %}" >
-          {% csrf_token %}
-          <p>
-            <label>Nombre</label>
-            <input type="text" name="nombre" required>
-          </p>
-          
-            <p class="full">
-              <button class="boton-enviar">Guardar</button>
-            </p>
-        </form>
-        {% endblock %}
-        {% if mensaje %}
-        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
-        {% endif %}
-      </div>
+  <h1 class="logo"> <span class="nombre-empresa">Impues</span>tos</h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3 style="color: beige;">Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Impuestos/BuscarImpuesto.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <form class="formulario" method="POST" action="{% url 'crear_Impuestos' %}">
+        {% csrf_token %}
+        <p>
+          <label>Nombre</label>
+          <input type="text" name="nombre" required>
+        </p>
+        <p>
+          <label>Valor</label>
+          <input type="text" name="valor" required>
+        </p>
+        <p class="full">
+          <button class="boton-enviar">Guardar</button>
+        </p>
+      </form>
+      {% if mensaje %}
+      <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
+      {% endif %}
     </div>
   </div>
-</body> 
-  {% include 'base_principal.html' %}
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -15,7 +15,7 @@ def listar_especialidades(request):
     else:
         especialidad = []
     context = {'especialidad': especialidad}
-    return render(request, 'BuscarEspecialidad.html', context)
+    return render(request, 'especialidad/BuscarEspecialidad.html', context)
 
 
 def crear_especialidades(request):
@@ -28,12 +28,12 @@ def crear_especialidades(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'especialidad.html', {'mensaje': mensaje})
+            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje})
         else:
             mensaje = data['message']
-            return render(request, 'especialidad.html', {'mensaje': mensaje})
+            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje})
     else:
-        return render(request, 'especialidad.html')
+        return render(request, 'especialidad/especialidad.html')
     
 def abrir_actualizar_especialidades(request):
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def abrir_actualizar_especialidades(request):
             especialidad = []
          context = {'especialidad': especialidad, 'mensaje':mensaje}
          mensaje = data['message']
-         return render(request, 'especialidadActualizar.html', context)
+         return render(request, 'especialidad/especialidadActualizar.html', context)
     
 def actualizar_especialidades(request, id):
     if request.method == 'POST':
@@ -67,10 +67,10 @@ def actualizar_especialidades(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad })
+            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'especialidad/busqueda/id/{idTemporal}')
@@ -78,10 +78,10 @@ def actualizar_especialidades(request, id):
             data = response.json()
             usuario = data['especialidad']
             mensaje = data['message']
-            return render(request, 'especialidadActualizar.html', {'especialidad': especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'especialidad': especialidad})
         else:
             mensaje = data['message']
-            return render(request, 'especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
 
 def eliminar_especialidades(request, id):
     if request.method == 'POST':
@@ -96,7 +96,7 @@ def eliminar_especialidades(request, id):
             especialidad = []
         mensaje = res['message']
         context = {'especialidad': especialidad, 'mensaje': mensaje}
-        return render(request, 'BuscarEspecialidad.html', context)     
+        return render(request, 'especialidad/BuscarEspecialidad.html', context)     
     
 def buscar_especialidades(request):
         valor = request.GET.get('buscador', None)
@@ -114,7 +114,7 @@ def buscar_especialidades(request):
                     especialidad = data['especialidad']
                     context = {'especialidad': especialidad, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'BuscarEspecialidad.html', context)       
+                    return render(request, 'especialidad/BuscarEspecialidad.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -123,16 +123,16 @@ def buscar_especialidades(request):
                     especialidad = {}
                     especialidad = data['especialidad']
                     context = {'especialidad': especialidad, 'mensaje':mensaje}
-                    return render(request, 'BuscarEspecialidad.html', context)
+                    return render(request, 'especialidad/BuscarEspecialidad.html', context)
         else:
             response = requests.get(url+'especialidad/')
             if response.status_code == 200:
                 data = response.json()
                 especialidad = data['especialidad']
                 mensaje = data['message']   
-                return render(request, 'BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+                return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
             else:
                 especialidad = []
                 mensaje = 'No se encontraron especialidades'
-            return render(request, 'BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+            return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
     

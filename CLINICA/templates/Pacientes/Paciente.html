@@ -1,19 +1,33 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<LINK REL=StyleSheet HREF="{% static 'css/PacienteStyle/StylePaciente.css  ' %}" TYPE="text/css" MEDIA=screen>
 
- <head> 
-  <meta http-equiv="Expires" content="0">
-  <meta http-equiv="Last-Modified" content="0">
-  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <header class="contenedorcargo"> 
-    <title>{% block tittle %}Registro de Pacientes{% endblock %}</title>
-  </header> 
+{% block tittle %}Registro de Pacientes{% endblock %}
+{% block content %}
+<style type="text/css">
+    input[type="text"] {
+        width: 90%;
+        height: 40px;
+    }
+    input[type="date"] {
+        width: 90%;
+        height: 40px;
+    }
+    input[type="password"] {
+        width: 90%;
+        height: 40px;
+    }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
-
- </head> 
-
+    select {
+        width: 90%;
+        height: 40px;
+    }
+    fieldset{
+        width: 95%;
+    }
+    .boton-enviar{
+      margin-top: 10px;
+    }
+</style>
 <div class="contenedor">
     <h1 class="logo"><span class="nombre-empresa">Pacientes Medical Rescue</span></h1>
     <div class="wrapper animated bounceInLeft">
@@ -23,71 +37,67 @@
           <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
           <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
           <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-          <button class="bcargo"><a href ="/CLINICA/templates/Pacientes/buscarPaciente.html">Buscar</a> </button>
-
-
+          <button class="button"><a href ="/CLINICA/templates/Pacientes/buscarPaciente.html">Buscar</a> </button>
         </ul>
       </div>
-      <div class="contacto" style="background-color: rgb(18, 55, 78); padding: 5rem; border: 1px solid #ccd7dc;  " >
+      <div class="contacto">
         <h3></h3>
-        {% block content %}
         <form method="POST" action="{% url 'crear_paciente' %}">
           {% csrf_token %}
-          <p>
-            <label  style="position: relative; bottom: 100px;">Nombre</label>
-            <input type="text" name="nombre" required style="width: 80%;height: 30px; position: relative; bottom: 100px; left: 10px; ">
-          </p>
-          
-          <p>
-          </p>
-          <p>
-            <label  style="position: relative; bottom: 80px;">Apellido</label>
-            <input type="text" name="apellido" required style="width: 80%;height: 30px; position: relative; bottom: 80px; left: 10px;">
-          </p>
-          <p>
-            <label  style="position: relative; bottom: 60px;">Teléfono</label>
-            <input type="text" name="telefono" required style="width: 80%;height: 30px; position: relative; bottom: 60px; left: 7px;">
-          </p>
-
-          <p>
-            <label style="position: relative; bottom: 40px;" >Fecha de nacimiento</label>
-            <input type="text" name="fechaNacimiento" required style="width: 62%;height: 30px; position: relative; bottom: 40px; left: 5px; ">
-          </p>
-          <p>
-            <label style="position: relative; bottom: 20px;" >Documento</label>
-            <input type="text" name="documento" required style="width: 76%;height: 30px; position: relative;bottom: 20px; left: 7px; ">
-          </p>
-          <p>
-            <label>Correo</label>
-            <input type="text" name="correo" required style="width: 83%;height: 30px; position: relative; left: 10px;">
-          </p>
-          
-          <p>
-            <label style="position: relative; top: 15px;">Dirección</label>
-            <input type="text" name="direccion" required style="width: 80%;height: 30px; position: relative; top: 15px; left: 7px;">
-          </p>
-          <div style="position: relative; top:30px">
-            <label class="campo-registro" for="idTipoDocument1" style="margin-top: 20px;">Tipo Documento</label>
-            <select name="idTipoDocument1" id="idTipoDocument1">
-                {% for TipoDocumentos in TipoDocumento %}
-                    <option value="{{ TipoDocumentos.id }}">{{ TipoDocumentos.nombre }}</option>
-                {% endfor %}
-            </select>
-        </div>
-          
-
-          <p>
-           
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Nombre</label>
+              <input type="text" name="nombre" required>
+            </div>
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Apellido</label>
+              <input type="text" name="apellido" required>
+            </div>
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" for="idTipoDocument1">Tipo Documento</label>
+              <select name="idTipoDocument1" id="idTipoDocument1">
+                  {% for TipoDocumentos in TipoDocumento %}
+                      <option value="{{ TipoDocumentos.id }}">{{ TipoDocumentos.nombre }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" >Documento</label>
+              <input type="text" name="documento" required>
+            </div>
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Fecha de nacimiento</label>
+              <input type="date" name="fechaNacimiento" required>
+            </div>
+            <div style="display: block;width: 100%">
+              <label  class="campo-registro">Teléfono</label>
+              <input type="text" name="telefono" required >
+            </div>
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Correo</label>
+              <input type="text" name="correo" required>
+            </div>
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Dirección</label>
+            <input type="text" name="direccion" required >
+            </div>
+          </div>
           <p class="full">
-            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px; position: relative; top:55px; left: 40px ; ">Guardar</button>
+            <button class="boton-enviar">Guardar</button>
           </p>
         </form>
-        {% if mensaje %}
-        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
-        {% endif %}
       </div>
     </div>
-  </div>
-  {% endblock %}
-  {% include 'base_principal.html' %} 
- 
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

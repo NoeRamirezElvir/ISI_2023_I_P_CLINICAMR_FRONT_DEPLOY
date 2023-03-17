@@ -105,10 +105,10 @@ def actualizar_pacientes(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes })
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'pacientes/busqueda/id/{idTemporal}')
@@ -116,10 +116,10 @@ def actualizar_pacientes(request, id):
             data = response.json()
             pacientes = data['pacientes']
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento})
         else:
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento})
 
 def eliminar_pacientes(request, id):
     if request.method == 'POST':

@@ -1,42 +1,25 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<header class="contenedorbuscarempleado"> 
-    {% include 'base_principal.html' %} 
-  </header>
-<head>
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-<title>Cargos</title>
-</head>
-<LINK REL=StyleSheet HREF="/CLINICA/static/css/styleBuscarCargo.css" TYPE="text/css" MEDIA=screen>
-  <body class="body-listar">
-    <a href="/CLINICA/templates/cargo.html" class="texto-boton-agregar" style="
-        text-decoration: none;
-        color:black;
-        background-image: url(/CLINICA/static/img/icons/icadd.png);
-        background-repeat: no-repeat;
-        position: relative; top: 130px;
-        left: 4%;
-        width: 40px;
-        height: 40px;
-        z-index: 100;
-    "></a>
-    <div class="contenedor-listar-campos">
-        <h1 class="h1-listar">Buscar Cargos</h1>
-        <div class="container-listar">
-            <div class="busqueda-listar">
-                <div class="buscador-listar">
-                    <form method="GET" action="{% url 'buscar_cargos' %}" >
-                        {% csrf_token %}
-                        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
-                        </div>
-                        <div class="btnBusqueda-listar">
-                            <input id="btnBuscarUsuario "type="submit" value="Buscar">
-                        </div>
-                    </form>
+
+{% block tittle %}CARGOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+    <h1 class="h1-listar">Registros de Cargos</h1>
+    <div class="busqueda-listar">
+        <form method="GET" action="{% url 'buscar_cargos' %}">
+            {% csrf_token %}
+            <div class="buscador-listar">
+                <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
             </div>
-            <div class="tabla-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
+            <div class="btnBusqueda-listar">
+                <input id="btnBuscarUsuario " type="submit" value="Buscar">
+            </div>
+        </form>
+        <a class="btn-agregar" href="/CLINICA/templates/cargos/cargo.html" class="btn-agregar-link">Agregar</a>
+    </div>
+    <div class="container-listar">
+            <div class="tabla-listar">
                 <table class="tftable-listar" ,border="1">
                     <tr class="tfheader-listar">
                         <th style="color:aliceblue">ID Cargo</th>
@@ -72,11 +55,12 @@
                     {% endfor %}
                     {% else %}
                       <tr>
-                        <td colspan="3">No se encontraron cargos.</td>
+                        <td colspan="5">No se encontraron cargos.</td>
                       </tr>
                     {% endif %}
             </table>
-            
+        </div>
         </div>
     </div>
 </div>
+{% endblock %}

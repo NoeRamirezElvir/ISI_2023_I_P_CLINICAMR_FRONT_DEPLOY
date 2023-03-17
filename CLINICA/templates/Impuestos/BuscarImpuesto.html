@@ -1,83 +1,68 @@
+{% extends 'base_principal.html' %}
 {% load static %}
 
-<header class="contenedorbuscarDocumento"> 
-    {% include 'base_principal.html' %} 
-  </header>
-<head>
-  <meta http-equiv="Expires" content="0">
-  <meta http-equiv="Last-Modified" content="0">
-  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-</head>
-<title>Impuestos</title>
-<LINK REL=StyleSheet HREF="/CLINICA/static/css/BuscarImpuesto.css" TYPE="text/css" MEDIA=screen>
-  <body class="body-listar">
-    <a href="/CLINICA/templates/Impuestos/Impuesto.html" class="texto-boton-agregar" style="
-        text-decoration: none;
-        color:black;
-        background-image: url(/CLINICA/static/img/icons/icadd.png);
-        background-repeat: no-repeat;
-        position: relative; top: 130px;
-        left: 4%;
-        width: 40px;
-        height: 40px;
-        z-index: 100;
-    "></a>
-    <div class="contenedor-listar-campos">
-        <h1 class="h1-listar">Buscar Impuestos</h1>
-        <div class="container-listar">
-            <div class="busqueda-listar">
-              <form method="GET" action="{% url 'buscar_Impuestos' %}" >
-                <div class="buscador-listar">
-                    <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
-                    </div>
-                    <div class="btnBusqueda-listar">
-                        <input id="btnBuscarUsuario "type="submit" value="Buscar">
-                    </div>
+{% block tittle %}IMPUESTOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Impuestos</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_Impuestos' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+    <a class="btn-agregar" href="/CLINICA/templates/Impuestos/Impuesto.html" class="btn-agregar-link">Agregar</a>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Nombre</th>
+            <th style="color:aliceblue">Valor</th>
+            <th style="color:aliceblue">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if Impuestos %}
+          {% for Impuesto in Impuestos %}
+          <tr>
+            <td>{{ Impuesto.id }}</td>
+            <td>{{ Impuesto.nombre }}</td>
+            <td></td>
+
+            <td>
+              <form action="{% url 'abrir_actualizar_Impuestos' %}" method="post" class="form-botones">
+                {% csrf_token %}
+                <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
+                <button class="btnEditar" name="editar" id="editar">
+                  <img src="{% static 'img/icons/icedit.png' %}">
+                </button>
               </form>
-            </div>
-            <div class="tabla-listar">
-                <table class="tftable-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
-                    <thead>
-                      <tr class="tfheader-listar">
-                        <th style="color:aliceblue">ID</th>
-                        <th style="color:aliceblue">Nombre</th>
-                    
-                        <th style="color:aliceblue">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% if Impuestos %}
-                      {% for Impuesto in Impuestos %}
-                        <tr>
-                          <td>{{ Impuesto.id }}</td>
-                          <td>{{ Impuesto.nombre }}</td>
-                          
-                          <td> 
-                            <form action="{% url 'abrir_actualizar_Impuestos' %}" method="post" class="form-botones">
-                              {% csrf_token %}
-                              <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
-                              <button class="btnEditar" name="editar" id="editar">
-                                  <img src="{% static 'img/icons/icedit.png' %}">
-                            </button>
-                            </form>
-                            <form action="{% url 'eliminar_Impuestos' id=Impuesto.id  %}"  method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
-                            <button class="btnEliminar" name="eliminar" id="eliminar">
-                              <img src="{% static 'img/icons/icdelete.png' %}">
-                            </button>
-                            </form>
-                        </td>
-                        </tr>
-                      {% endfor %}
-                    {% else %}
-                      <tr>
-                        <td colspan="3">No se encontraron documentos.</td>
-                      </tr>
-                    {% endif %}
-                    </tbody>
-                  </table>
-        </div>
+              <form action="{% url 'eliminar_Impuestos' id=Impuesto.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_Impuestos" value="{{ Impuesto.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="3">No se encontraron documentos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}DOCUMENTOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Documentos</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_documentos' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+    <a class="btn-agregar" href="/CLINICA/templates/documentos/documento.html" class="btn-agregar-link">Agregar</a>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Nombre</th>
+            <th style="color:aliceblue">Longitud</th>
+            <th style="color:aliceblue">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if documentos %}
+          {% for documento in documentos %}
+          <tr>
+            <td>{{ documento.id }}</td>
+            <td>{{ documento.nombre }}</td>
+            <td>{{ documento.longitud }}</td>
+            <td>
+              <form action="{% url 'abrir_actualizar_documentos' %}" method="post" class="form-botones">
+                {% csrf_token %}
+                <input type="hidden" name="id_documento" value="{{ documento.id }}">
+                <button class="btnEditar" name="editar" id="editar">
+                  <img src="{% static 'img/icons/icedit.png' %}">
+                </button>
+              </form>
+              <form action="{% url 'eliminar_documento' id=documento.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_documento" value="{{ documento.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="4">No se encontraron documentos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,92 +1,100 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <link rel="stylesheet" href="{% static 'css/usuariostyle/stylesregistro.css' %}">
-    <link rel="stylesheet" href="{% static 'css/usuariostyle/navbar_usuarios.css' %}">
-    
-    <title>Registrar Usuarios</title>
-</head>
-<body clas="boby-registro">
-    <div class="contenedor-registro">
-        <div class="container-box-registro">
-            {% block content %}
+
+{% block tittle %}Registro de Usuarios{% endblock %}
+{% block content %}
+<style type="text/css">
+    input[type="text"] {
+        width: 90%;
+        height: 40px;
+    }
+
+    input[type="password"] {
+        width: 90%;
+        height: 40px;
+    }
+
+    select {
+        width: 90%;
+        height: 40px;
+    }
+    fieldset{
+        width: 95%;
+    }
+</style>
+<div class="contenedor">
+    <h1 class="logo"><span class="nombre-empresa">Registro de Usuarios</span></h1>
+    <div class="wrapper animated bounceInLeft">
+        <div class="info-empresa">
+            <h3>Medical Rescue</h3>
+            <ul class="servicios">
+                <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+                </li>
+                <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+                <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+                <button class="button"><a href="/CLINICA/templates/usuario/listar.html">BUSCAR</a></button>
+            </ul>
+        </div>
+        <div class="contacto">
+            <h3></h3>
             <form method="POST" action="{% url 'crear_usuario' %}">
-            {% csrf_token %}
-            <div class="container-box-registro">
-                <div class="titulo-registro">
-                    <h1 class = "h1-registro">Registro de Usuarios</h1>
-                </div>
-            </div>
-            <div class="campos-registro" style="max-width: 600px;">
-                <div>
-                    <h4 class="h4-registro">Ingrese la información requerida</h4>
-                </div>
-                <div>
-                    <label class="campo-registro" for="idEmpleadl" style="margin-top: 20px;">Empleado</label>
-                    <select name="idEmpleadl" id="idEmpleado">
-                        {% for empleados in empleado %}
-                            <option value="{{ empleados.id }}">{{ empleados.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div>
-                <label class="campo-registro" for="user" style="margin-left:10px">Nombre de Usuario</label>
-                <input type="text" name="user" id="username" style="margin-left:10px" required>
-            </div>
-            <div>
-                <label class="campo-registro" for="password" style="margin-left:10px">Contraseña</label>
-                <input type="password" name="password" id="password" style="margin-left:10px" required>
-            </div>
-            <div class="estado-registro">
-                <div>
-                    <h4 style="margin-left:10px">Usuario activo</h4>
-                    <div class="radio-container-registro" style="margin-right: 10px;">
-                        <input type="radio" id="activar" name="activado" value=1 > 
-                        <label class="rad-registro" for="activar">Activar</label>
-                        <input type="radio"  id="noactivado" name="activado" value=0 checked> 
-                        <label class="rad-registro" for="noactivado">Desactivar</label>   
+                {% csrf_token %}
+                <div class="campos-registro" style="max-width: 600px;">
+                    <div>
+                        <h4 class="h4-registro">Ingrese la información requerida</h4>
                     </div>
-                </div>
-                
-                <div>
-                    <h4 style="margin-left:10px">Bloqueo de usuario</h4>
-                    <div class="radio-container" style="margin-left:10px">
-                        <input type="radio" id="bloquear" name="bloqueo" value=0 checked> 
-                        <label class="rad-registro" for="bloquear">Desbloquear</label>
-                        <input type="radio"  id="Desbloquear" name="bloqueo" value=1> 
-                        <label class="rad-registro" for="Desbloquear">Bloquear</label>   
+                    <div style="display: inline-flex ;width: 100%;">
+                        <div style="display: block;width: 100%">
+                            <label class="campo-registro" for="idEmpleadl">Empleado</label>
+                            <select name="idEmpleadl" id="idEmpleado">
+                                {% for empleados in empleado %}
+                                <option value="{{ empleados.id }}">{{ empleados.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div style="display: block;width: 100%">
+                            <label class="campo-registro" for="user">Nombre de Usuario</label>
+                            <input type="text" name="user" id="username" required>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="botones-registro">
-                <input type="submit" value="Guardar">
-            </div>
+                    <div style="display: inline-flex ;width: 100%">
+                        <div style="display: block;width: 100%">
+                            <label class="campo-registro" for="password">Contraseña</label>
+                            <input type="password" name="password" id="password" required>
+                        </div>
+                        <div style="display: block;width: 100%">
+                            <label class="campo-registro" for="password">Confirmar Contraseña</label>
+                            <input type="password" name="passwordc" id="password" required>
+                        </div>
+                    </div>
+                    <div style="display:inline-block;width: 100%">
+                        <fieldset id="payment_method">
+                            <legend>Activo/Inactivo</legend>
+                            <div class="fieldgroup">
+                                <input type="radio" id="activar" name="activado" value=1>
+                                <label class="rad-registro" for="activar">Activar</label>
+                                <input type="radio" id="noactivado" name="activado" value=0 checked>
+                                <label class="rad-registro" for="noactivado">Desactivar</label>
+                            </div>
+                        </fieldset>
+                        <fieldset id="payment_method">
+                            <legend>Bloquear/Descbloquear</legend>
+                            <div class="fieldgroup">
+                                <input type="radio" id="bloquear" name="bloqueo" value=0 checked>
+                                <label class="rad-registro" for="bloquear">Desbloquear</label>
+                                <input type="radio" id="Desbloquear" name="bloqueo" value=1>
+                                <label class="rad-registro" for="Desbloquear">Bloquear</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <button class="boton-enviar">GUARDAR</button>
             </form>
-            {% if mensaje %}
-                <div class="alert alert-info" style="color:rgb(255, 255, 255);font-size: 20px;">{{ mensaje }}</div>
-            {% endif %}
-            {% endblock %}
         </div>
     </div>
 </div>
-</header>
-<div class="container-menu-nav">
-    <nav class = "nav-menu-nav">
-        <ul>
-            <a href="/CLINICA/templates/usuario/inicio.html">Inicio</a>
-            <a href="/CLINICA/templates/usuario/registro.html">Registrar Usuarios</a>
-            <a href="/CLINICA/templates/usuario/listar.html">Visualizar Registros</a>
-        </ul>
-    </nav>
+{% if mensaje %}
+<div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
 </div>
-{% include 'base_principal.html' %}
-</body>
-</html>
+{% endif %}
+{% endblock %}

@@ -39,21 +39,21 @@ urlpatterns = [
     path('CLINICA/templates/presentacion/usuariosignup.html',registrar_login, name="registrar_login"),
     path('CLINICA/templates/presentacion/usuariosignup.html',usuariosignup, name="usuariosignup"),
     path('CLINICA/templates/presentacion/usuariologin.html',iniciar_sesion, name="iniciar_sesion"),
-    path('CLINICA/templates/cargoactualizar.html',abrir_actualizar_cargos,name="abrir_actualizar_cargos"),
-    path('CLINICA/templates/cargoactualizar.html/<int:id>',actualizar_cargo,name="actualizar_cargo"),
-    path('CLINICA/templates/buscarCargo.html/<int:id>',eliminar_cargo,name = 'eliminar_cargo'),
-    path('CLINICA/templates/buscarCargo.html',buscar_cargos,name = 'buscar_cargos'),
+    path('CLINICA/templates/cargos/cargoactualizar.html',abrir_actualizar_cargos,name="abrir_actualizar_cargos"),
+    path('CLINICA/templates/cargos/cargoactualizar.html/<int:id>',actualizar_cargo,name="actualizar_cargo"),
+    path('CLINICA/templates/cargos/buscarCargo.html/<int:id>',eliminar_cargo,name = 'eliminar_cargo'),
+    path('CLINICA/templates/cargos/buscarCargo.html',buscar_cargos,name = 'buscar_cargos'),
     ##
-    path('CLINICA/templates/documentoactualizar.html',abrir_actualizar_documentos,name="abrir_actualizar_documentos"),
-    path('CLINICA/templates/documentoactualizar.html/<int:id>',actualizar_documento,name="actualizar_documento"),
-    path('CLINICA/templates/buscarDocumento.html/<int:id>',eliminar_documento,name = 'eliminar_documento'),
-    path('CLINICA/templates/buscarDocumento.html',buscar_documentos,name = 'buscar_documentos'),
-    path('CLINICA/templates/documento.html',crear_documento, name="crear_documento"),
+    path('CLINICA/templates/documentos/documentoactualizar.html',abrir_actualizar_documentos,name="abrir_actualizar_documentos"),
+    path('CLINICA/templates/documentos/documentoactualizar.html/<int:id>',actualizar_documento,name="actualizar_documento"),
+    path('CLINICA/templates/documentos/buscarDocumento.html/<int:id>',eliminar_documento,name = 'eliminar_documento'),
+    path('CLINICA/templates/documentos/buscarDocumento.html',buscar_documentos,name = 'buscar_documentos'),
+    path('CLINICA/templates/documentos/documento.html',crear_documento, name="crear_documento"),
     #
     path('CLINICA/templates/home.html',home),
     path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
     path('CLINICA/templates/usuario/usuario.html',usuario),
-    path('CLINICA/templates/usuario/inicio.html',inicio),
+    path('CLINICA/templates/inicio.html',inicio),
     path('CLINICA/templates/empleado/empleado.html',empleado),
     #
     path('CLINICA/templates/usuario/listar.html',buscar_usuarios,name = 'buscar_usuarios'),
@@ -61,12 +61,12 @@ urlpatterns = [
     path('CLINICA/templates/usuario/<int:id>',eliminar_usuario,name = 'eliminar_usuario'),
     path('CLINICA/templates/usuario/registro.html',crear_usuario,name="crear_usuario"),
     path('CLINICA/templates/usuario/actualizar.html',abrir_actualizar_usuarios,name="abrir_actualizar_usuarios"),
-    path('CLINICA/templates/cargo.html',crear_cargo, name="crear_cargo"),
+    path('CLINICA/templates/cargos/cargo.html',crear_cargo, name="crear_cargo"),
     path('CLINICA/templates/usuario/actualizar.html/<int:id>',actualizar_usuario,name="actualizar_usuario"),
     path('CLINICA/templates/empleado/buscarEmpleado.html',listar_empleados, name="listar_empleados"),
 
-    path('CLINICA/templates/buscarCargo.html',listar_cargos, name="listar_cargos"),
-    path('CLINICA/templates/buscarDocumento.html',listar_documentos, name= 'lista_documentos'),
+    path('CLINICA/templates/cargos/buscarCargo.html',listar_cargos, name="listar_cargos"),
+    path('CLINICA/templates/cargos/buscarDocumento.html',listar_documentos, name= 'lista_documentos'),
 
     #impuestos
     path('CLINICA/templates/Impuestos/ImpuestoActualizar.html',abrir_actualizar_Impuestos,name="abrir_actualizar_Impuestos"),
@@ -77,12 +77,12 @@ urlpatterns = [
     path('CLINICA/templates/Impuestos/BuscarImpuesto.html',listar_Impuestos, name="listar_Impuestos"),
 
     #Especialidades
-    path('CLINICA/templates/especialidadActualizar.html',abrir_actualizar_especialidades,name="abrir_actualizar_especialidades"),
-    path('CLINICA/templates/especialidadActualizar.html/<int:id>',actualizar_especialidades,name="actualizar_especialidades"),
-    path('CLINICA/templates/BuscarEspecialidad.html/<int:id>',eliminar_especialidades,name = 'eliminar_especialidades'),
-    path('CLINICA/templates/BuscarEspecialidad.html',buscar_especialidades,name = 'buscar_especialidades'),
-    path('CLINICA/templates/especialidad.html',crear_especialidades, name="crear_especialidades"),
-    path('CLINICA/templates/BuscarEspecialidad.html',listar_especialidades, name="listar_especialidades"),
+    path('CLINICA/templates/especialidad/especialidadActualizar.html',abrir_actualizar_especialidades,name="abrir_actualizar_especialidades"),
+    path('CLINICA/templates/especialidad/especialidadActualizar.html/<int:id>',actualizar_especialidades,name="actualizar_especialidades"),
+    path('CLINICA/templates/especialidad/BuscarEspecialidad.html/<int:id>',eliminar_especialidades,name = 'eliminar_especialidades'),
+    path('CLINICA/templates/especialidad/BuscarEspecialidad.html',buscar_especialidades,name = 'buscar_especialidades'),
+    path('CLINICA/templates/especialidad/especialidad.html',crear_especialidades, name="crear_especialidades"),
+    path('CLINICA/templates/especialidad/BuscarEspecialidad.html',listar_especialidades, name="listar_especialidades"),
 
 
     #SubTipo

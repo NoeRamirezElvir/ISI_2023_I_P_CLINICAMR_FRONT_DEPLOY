@@ -1,20 +1,77 @@
-{% extends 'Impuestos/Impuesto.html' %}
+{% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Actualizacion de Impuestos{% endblock %}
+{% block tittle %}Actualizar Impuestos{% endblock %}
 {% block content %}
-<form class="formulario" method="POST" action="{% url 'actualizar_Impuestos' id=Impuestos.0.id %}">
-  {% csrf_token %}
-  <p>
-    <label>Nombre</label>
-    <input type="text" name="nombre" required value="{{ Impuestos.0.nombre }}">
-  </p>
-  <p>
-  </p>
-  <p>
-    
-    <p class="full">
-      <button class="boton-actualizar">Actualizar</button>
-    </p>  
-</form>
+
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 95%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Impuesto</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+        </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Impuestos/BuscarImpuesto.html">BUSCAR</a></button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form class="formulario" method="POST" action="{% url 'actualizar_Impuestos' id=Impuestos.0.id %}">
+        {% csrf_token %}
+        <p>
+          <label>Nombre</label>
+          <input type="text" name="nombre" required value="{{ Impuestos.0.nombre }}">
+        </p>
+        <p>
+          <label>Valor</label>
+          <input type="text" name="valor" required>
+        </p>
+        <p>
+        </p>
+        <p>
+
+        <p class="full">
+          <button class="boton-enviar">Actualizar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

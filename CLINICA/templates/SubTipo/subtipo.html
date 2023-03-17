@@ -1,66 +1,81 @@
+{% extends 'base_principal.html' %}
 {% load static %}
-<LINK REL=StyleSheet HREF="{% static 'css/styleCargo.css' %}" TYPE="text/css" MEDIA=screen>
 
- <head> 
-  <meta http-equiv="Expires" content="0">
-  <meta http-equiv="Last-Modified" content="0">
-  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <header class="contenedorcargo"> 
-    <title>{% block tittle %}subtipos{% endblock %}</title>
-  </header> 
+{% block tittle %}Registro de Subtipo{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
 
- </head> 
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
 
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 95%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
 <div class="contenedor">
-    <h1 class="logo"><span class="nombre-empresa">SubTipos Medical Rescue</span></h1>
-    <div class="wrapper animated bounceInLeft">
-      <div class="info-empresa">
-        <h3>Medical Rescue</h3>
-        <ul class="servicios">
-          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
-          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
-          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-          <button class="bcargo"><a href ="/CLINICA/templates/SubTipo/buscarsubtipo.html">Buscar</a> </button>
+  <h1 class="logo"><span class="nombre-empresa">SubTipos Medical Rescue</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/SubTipo/buscarsubtipo.html">Buscar</a> </button>
 
 
-        </ul>
-      </div>
-      <div class="contacto">
-        <h3></h3>
-        {% block content %}
-        <form method="POST" action="{% url 'crear_subtipo' %}">
-          {% csrf_token %}
-          <p>
-            <label>Nombre</label>
-            <input type="text" name="nombre" required style="width: 40%;height: 40px;">
-          </p>
-          <fieldset id="payment_method" style="height: 70px;">
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'crear_subtipo' %}">
+        {% csrf_token %}
+        <p>
+          <label>Nombre</label>
+          <input type="text" name="nombre">
+        </p>
+        <fieldset id="payment_method" style="height: 70px;">
           <legend>Activo/Inactivo</legend>
           <div class="fieldgroup">
-          <input type="radio" name="payment_method" id="activo" value=1><label for= "payment1">Activo
-          </label>
+            <input type="radio" name="payment_method" id="activo" value=1><label for="payment1">Activo
+            </label>
           </div>
           <div class="fieldgroup">
-          <input type="radio" name="payment_method" id="inactivo" value=0 checked><label for= "payment2">Inactivo</label>
+            <input type="radio" name="payment_method" id="inactivo" value=0 checked><label
+              for="payment2">Inactivo</label>
           </div>
-          </fieldset>
-        
-
-          <p>
-           
-          <p class="full">
-            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Guardar</button>
-          </p>
-        </form>
-        {% if mensaje %}
-        <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
-        {% endif %}
-      </div>
+        </fieldset>
+        <p>
+        <p class="full">
+          <button class="boton-enviar">Guardar</button>
+        </p>
+      </form>
     </div>
   </div>
-  {% endblock %}
-  {% include 'base_principal.html' %} 
- 
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}
