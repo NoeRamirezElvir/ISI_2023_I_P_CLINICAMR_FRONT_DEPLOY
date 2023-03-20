@@ -23,15 +23,16 @@ def crear_especialidades(request):
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
         
+        registro_temp={'nombre': nombre, 'descripcion': descripcion}
         response = requests.post(url+'especialidad/', json={'nombre': nombre, 'descripcion': descripcion})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje})
+            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje})
+            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
         return render(request, 'especialidad/especialidad.html')
     

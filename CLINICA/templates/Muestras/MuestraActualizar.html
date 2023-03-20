@@ -1,33 +1,27 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Actualizar Muestras{% endblock %}
+{% block tittle %}Actualizacion de Muestras{% endblock %}
 {% block content %}
-
 <style type="text/css">
   input[type="text"] {
-      width: 90%;
-      height: 40px;
+    width: 90%;
+    height: 40px;
   }
-
-  input[type="password"] {
-      width: 90%;
-      height: 40px;
+  input[type="date"] {
+        width: 95%;
+        height: 40px;
+        text-align: center;
   }
-  input[type="number"] {
-      width: 90%;
-      height: 40px;
-  }
-
   select {
-      width: 90%;
-      height: 40px;
+    width: 90%;
+    height: 40px;
   }
-  fieldset{
-      width: 95%;
+  #alert-alert-info {
+    top: 70vh;
   }
-  #alert-alert-info{
-    top:70vh;
+  .boton-enviar{
+    margin-top: 20px;
   }
 </style>
 <div class="contenedor">
@@ -36,29 +30,47 @@
     <div class="info-empresa">
       <h3>Medical Rescue</h3>
       <ul class="servicios">
-        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
-        </li>
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
         <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
         <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-        <button class="button"><a href="/CLINICA/templates/Muestras/BuscarMuestra.html">BUSCAR</a></button>
+        <button class="button"><a href="/CLINICA/templates/cargos/buscarCargo.html">Buscar</a> </button>
       </ul>
     </div>
     <div class="contacto">
       <h3></h3>
-<form class="formulario" method="POST" action="{% url 'actualizar_muestras' id=muestras.0.id %}">
-  {% csrf_token %}
-  <p>
-    <label>Nombre</label>
-    <input type="text" name="nombre" required value="{{ muestras.0.nombre }}">
-  </p>
-  <p>
-  </p>
-  <p>
-    
-    <p class="full">
-      <button class="boton-actualizar">Actualizar</button>
-    </p>  
-</form>
+      <form method="POST" action="{% url 'actualizar_muestras' id=muestras.0.id %}">
+        {% csrf_token %}
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+            <select name="idPaciente" id="idTipoDocument1">
+              {% for pacientes in paciente_list %}
+              <option value="{{ pacientes.id }}"{% if pacientes.id == muestras.0.idPaciente %}selected{% endif %}>{{pacientes.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Tipo de Muestra</label>
+            <select name="idTipoMuestra" id="idTipoDocument1">
+              {% for tipo in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == muestras.0.idTipoMuestra %}selected{% endif %}>{{tipo.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Fecha Actual</label>
+            <input type="date" name="fechaActual" required value="{{muestras.0.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+          </div>
+        </div>
+        <p class="full">
+          <button class="boton-enviar" >Guardar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
 {% if mensaje %}
 <div id="alert-alert-info">
   <p>{{ mensaje }}</p>

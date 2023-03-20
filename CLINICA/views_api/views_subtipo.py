@@ -18,17 +18,18 @@ def listar_subtipo(request):
 def crear_subtipo(request):
     if request.method == 'POST':
         nombre = request.POST['nombre']
-        
         activo = int(request.POST['payment_method'])
+
+        registro_temp={'nombre': nombre,  'activo': activo}
         response = requests.post(url+'subtipo/', json={'nombre': nombre,  'activo': activo})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje})
+            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje})
+            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
         return render(request, 'SubTipo/subtipo.html')
     

@@ -46,12 +46,12 @@
         {% csrf_token %}
         <p>
           <label>Nombre</label>
-          <input type="text" name="nombre">
+          <input type="text" name="nombre" value="{{registro_temp.nombre}}">
         </p>
 
         <p class="full">
           <label>Descripción</label>
-          <textarea name="descripcion"></textarea>
+          <textarea name="descripcion">{{registro_temp.descripcion}}</textarea>
         </p>
 
         <p>

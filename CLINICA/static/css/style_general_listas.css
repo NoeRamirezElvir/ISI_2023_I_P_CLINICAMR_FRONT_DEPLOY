@@ -110,7 +110,6 @@
 .btn-agregar{
     position: absolute;
     width: 100px;
-    left: 80px;
     top:25%;
     left:90%;
     border: none;
@@ -125,5 +124,26 @@
     padding:5px;
 }
 .btn-agregar:hover{
+    background: #579396;;
+}
+
+.btn-agregar-link{
+    position: absolute;
+    width: 100px;
+    top:25%;
+    left:82%;
+    border: none;
+    outline: none;
+    height: 35px;
+    background: #035D62;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+    text-align: center;
+    padding:5px;
+
+}
+.btn-agregar-link:hover{
     background: #579396;;
 }

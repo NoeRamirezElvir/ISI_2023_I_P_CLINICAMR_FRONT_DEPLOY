@@ -1,0 +1,96 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Citas{% endblock %}
+{% block content %}
+<style type="text/css">
+    input[type="text"] {
+        width: 90%;
+        height: 40px;
+    }
+    input[type="datetime-local"] {
+        width: 90%;
+        height: 40px;
+    }
+    select {
+        width: 90%;
+        height: 40px;
+    }
+    fieldset{
+        width: 95%;
+    }
+    .boton-enviar{
+      margin-top: 10px;
+    }
+    #alert-alert-info{
+        top:70vh;
+    }
+</style>
+<div class="contenedor">
+    <h1 class="logo"><span class="nombre-empresa">Registro de Citas</span></h1>
+    <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+          <button class="button"><a href ="/CLINICA/templates/citas/cita_buscar.html">Buscar</a> </button>
+        </ul>
+      </div>
+      <div class="contacto">
+        <form method="POST" action="{% url 'crear_citas' %}">
+          {% csrf_token %}
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+              <select name="idPaciente" id="idTipoDocument1">
+                  {% for pacientes in paciente_list %}
+                      <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{ pacientes.id }} - {{ pacientes.nombre }} {{ pacientes.apellido}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div style="display: block;width: 100%">
+                <fieldset id="payment_method">
+                    <legend>Activo/Inactivo</legend>
+                    <div class="fieldgroup">
+                        <input type="radio" id="activar" name="activado" value=1 {% if registro_temp.activa == 1 %} checked {% else %} checked {% endif %}>
+                        <label class="rad-registro" for="activar">Activar</label>
+                        <input type="radio" id="noactivado" name="activado" value=0 {% if registro_temp.activa == 0 %} checked {% endif %}>
+                        <label class="rad-registro" for="noactivado">Desactivar</label>
+                    </div>
+                </fieldset>
+            </div>
+          </div>
+          
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Fecha Actual</label>
+              <input type="datetime-local" name="fechaActual" required value="{{registro_temp.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+            </div>
+            <div style="display: block;width: 100%">
+              <label  class="campo-registro">Fecha Programada</label>
+              <input type="datetime-local" name="fechaProgramada" required value="{{registro_temp.fechaProgramada}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
+            </div>
+          </div>
+          <div style="display: inline-flex ;width: 71%">
+            <div style="display: block;width: 71%">
+              <label class="campo-registro">Fecha Maxima</label>
+              <input type="datetime-local" name="fechaMaxima" required value="{{registro_temp.fechaMaxima}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
+            </div>
+          </div>
+          <p class="full">
+            <button class="boton-enviar">Guardar</button>
+          </p>
+          {%if registro_temp %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

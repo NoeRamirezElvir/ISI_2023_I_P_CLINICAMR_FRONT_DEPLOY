@@ -30,10 +30,13 @@ from CLINICA.views_api.views_login import *
 from CLINICA.views_api.views_TipoMuestra import *
 from CLINICA.views_api.views_subtipo import *
 from CLINICA.views_api.views_tipo import *
+from CLINICA.views_api.views_citas import *
+from CLINICA.views_api.views_impuesto_historico import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', presentacion),
+    path('CLINICA/templates/presentacion/presentacion.html', salir_presentacion, name='salir_presentacion'),
 
 ###################
     path('CLINICA/templates/presentacion/usuariosignup.html',registrar_login, name="registrar_login"),
@@ -43,6 +46,7 @@ urlpatterns = [
     path('CLINICA/templates/cargos/cargoactualizar.html/<int:id>',actualizar_cargo,name="actualizar_cargo"),
     path('CLINICA/templates/cargos/buscarCargo.html/<int:id>',eliminar_cargo,name = 'eliminar_cargo'),
     path('CLINICA/templates/cargos/buscarCargo.html',buscar_cargos,name = 'buscar_cargos'),
+    
     ##
     path('CLINICA/templates/documentos/documentoactualizar.html',abrir_actualizar_documentos,name="abrir_actualizar_documentos"),
     path('CLINICA/templates/documentos/documentoactualizar.html/<int:id>',actualizar_documento,name="actualizar_documento"),
@@ -127,9 +131,22 @@ urlpatterns = [
     path('CLINICA/templates/Muestras/Muestra.html',crear_muestras, name="crear_muestras"),
     path('CLINICA/templates/Muestras/BuscarMuestra.html',listar_muestras, name="listar_muestras"),
 
+    #Citas
+    path('CLINICA/templates/citas/cita_actualizar.html',abrir_actualizar_citas,name="abrir_actualizar_citas"),
+    path('CLINICA/templates/citas/cita_actualizar.html/<int:id>',actualizar_citas,name="actualizar_citas"),
+    path('CLINICA/templates/citas/cita_buscar.html/<int:id>',eliminar_citas,name = 'eliminar_citas'),
+    path('CLINICA/templates/citas/cita_buscar.html',buscar_citas,name = 'buscar_citas'),
+    path('CLINICA/templates/citas/cita.html',crear_citas, name="crear_citas"),
+    path('CLINICA/templates/citas/cita_buscar.html',listar_citas, name="listar_citas"),
+    path('CLINICA/templates/citas/cita_calendario.html',abrir_calendario, name="abrir_calendario"),
 
-
-
+    #impuesto historico
+    path('CLINICA/templates/impuesto_historico/impuesto_historico_actualizar.html',abrir_actualizar_impuesto_historico,name="abrir_actualizar_impuesto_historico"),
+    path('CLINICA/templates/impuesto_historico/impuesto_historico_actualizar.html/<int:id>',actualizar_impuesto_historico,name="actualizar_impuesto_historico"),
+    path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html/<int:id>',eliminar_impuesto_historico,name = 'eliminar_impuesto_historico'),
+    path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html',buscar_impuesto_historico,name = 'buscar_impuesto_historico'),
+    path('CLINICA/templates/impuesto_historico/impuesto_historico.html',crear_impuesto_historico, name="crear_impuesto_historico"),
+    path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html',listar_impuesto_historico, name="listar_impuesto_historico"),
     
 
     path('CLINICA/templates/documento.html',documento),

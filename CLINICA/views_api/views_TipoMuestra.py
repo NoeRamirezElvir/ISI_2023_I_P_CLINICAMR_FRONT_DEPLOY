@@ -23,15 +23,16 @@ def crear_TipoMuestra(request):
         nombre = request.POST['nombre']
         metodoConservacion = request.POST['metodoConservacion']
         
+        registro_temp={'nombre': nombre, 'metodoConservacion': metodoConservacion}
         response = requests.post(url+'tmuestra/', json={'nombre': nombre, 'metodoConservacion': metodoConservacion})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje})
+            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje,  'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje})
+            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje,  'registro_temp':registro_temp})
     else:
         return render(request, 'TipoMuestra/TMuestra.html')
     

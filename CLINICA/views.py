@@ -1,12 +1,11 @@
 from django.http import HttpResponse
 import json
-from django.shortcuts import render
-import requests
-
-
+from django.shortcuts import render, redirect
 
 def presentacion(request):
     return render(request,'presentacion/presentacion.html')
+def salir_presentacion(request):
+    return render(request, 'presentacion/presentacion.html')
 def iniciar_sesion(request):
     return render(request,'presentacion/usuariologin.html')
 def registrar_login(request):
@@ -120,6 +119,31 @@ def crear_muestras(request):#
 def eliminar_muestras(request,id):#
     return render(request,'Muestras/Muestra.html')
 
+#Citas
+def abrir_actualizar_citas(request):#
+    return render(request,'citas/cita_actualizar.html')
+def actualizar_citas(request,id):#
+    return render(request,'citas/cita_actualizar.html')
+def buscar_citas(request):#
+    return render(request,'citas/cita_buscar.html')
+def crear_citas(request):#
+    return render(request,'citas/cita.html')
+def eliminar_citas(request,id):#
+    return render(request,'citas/cita.html')
+def abrir_calendario(request):#
+    return render(request,'citas/cita_calendario.html')
+
+#impuesto historico
+def abrir_actualizar_impuesto_historico(request):#
+    return render(request,'impuesto_historico/impuesto_historico_actualizar.html')
+def actualizar_impuesto_historico(request,id):#
+    return render(request,'impuesto_historico/impuesto_historico_buscar.html')
+def buscar_impuesto_historico(request):#
+    return render(request,'impuesto_historico/impuesto_historico_buscar.html')
+def crear_impuesto_historico(request):#
+    return render(request,'impuesto_historico/impuesto_historico.html')
+def eliminar_impuesto_historico(request,id):#
+    return render(request,'impuesto_historico/impuesto_historico.html')
 
 
 

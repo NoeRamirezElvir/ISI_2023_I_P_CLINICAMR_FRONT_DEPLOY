@@ -17,15 +17,17 @@ def listar_Impuestos(request):
 def crear_Impuestos(request):
     if request.method == 'POST':
         nombre = request.POST['nombre']
-        response = requests.post(url+'Impuestos/', json={'nombre': nombre})
+        valor = float(request.POST['valor'])
+        registro_temp = {'nombre': nombre, 'valor': valor}
+        response = requests.post(url+'Impuestos/', json={'nombre': nombre, 'valor': valor})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'Impuestos/Impuesto.html', {'mensaje': mensaje})
+            return render(request, 'Impuestos/Impuesto.html', {'mensaje': mensaje, 'impuestos': registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'Impuestos/Impuesto.html', {'mensaje': mensaje})
+            return render(request, 'Impuestos/Impuesto.html', {'mensaje': mensaje, 'impuestos': registro_temp})
     else:
         return render(request, 'Impuestos/Impuesto.html')
     
@@ -48,9 +50,9 @@ def actualizar_Impuestos(request, id):
     if request.method == 'POST':
         idTemporal = id
         nombre = request.POST['nombre']
-        
+        valor = float(request.POST['valor'])
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'Impuestos/id/{idTemporal}', json={'nombre': nombre})
+        response = requests.put(url+f'Impuestos/id/{idTemporal}', json={'nombre': nombre, 'valor': valor})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el cargo relacionado con el id

@@ -18,15 +18,17 @@ def crear_documento(request):
     if request.method == 'POST':
         nombre = request.POST['nombre']
         longitud = int(request.POST['longitud'])
+
+        registro_temp={'nombre': nombre, 'longitud': longitud}
         response = requests.post(url+'documentos/', json={'nombre': nombre, 'longitud': longitud})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'documentos/documento.html', {'mensaje': mensaje})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'documentos/documento.html', {'mensaje': mensaje})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
         return render(request, 'documentos/documento.html')
     

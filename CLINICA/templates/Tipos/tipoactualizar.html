@@ -62,7 +62,7 @@
           <input type="text" name="nombre" required value="{{ tipo.0.nombre }}">
         </p>
         <label class="campo-registro" for="idsubtipo">SubTipo</label>
-        <select name="idsubtipo" id="idsubtipo">
+        <select name="idsubtipo" id="idsubtipo" required>
           {% for subtipos in subtipo %}
           <option value="{{ subtipos.id }}">{{ subtipos.nombre }}</option>
           {% endfor %}

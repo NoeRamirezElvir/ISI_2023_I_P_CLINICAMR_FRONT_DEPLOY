@@ -48,41 +48,41 @@
                             <label class="campo-registro" for="idEmpleadl">Empleado</label>
                             <select name="idEmpleadl" id="idEmpleado">
                                 {% for empleados in empleado %}
-                                <option value="{{ empleados.id }}">{{ empleados.nombre }}</option>
+                                <option value="{{ empleados.id }}"{% if empleados.id == registro_temp.idEmpleado %}selected{% endif %}>{{ empleados.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div style="display: block;width: 100%">
                             <label class="campo-registro" for="user">Nombre de Usuario</label>
-                            <input type="text" name="user" id="username" required>
+                            <input type="text" name="user" id="username" required value="{{registro_temp.nombreUsuario}}">
                         </div>
                     </div>
                     <div style="display: inline-flex ;width: 100%">
                         <div style="display: block;width: 100%">
                             <label class="campo-registro" for="password">Contraseña</label>
-                            <input type="password" name="password" id="password" required>
+                            <input type="password" name="password" id="password" required value="{{registro_temp.password}}">
                         </div>
                         <div style="display: block;width: 100%">
                             <label class="campo-registro" for="password">Confirmar Contraseña</label>
-                            <input type="password" name="passwordc" id="password" required>
+                            <input type="password" name="passwordc" id="password" required value="{{registro_temp.passwordc}}">
                         </div>
                     </div>
                     <div style="display:inline-block;width: 100%">
                         <fieldset id="payment_method">
                             <legend>Activo/Inactivo</legend>
                             <div class="fieldgroup">
-                                <input type="radio" id="activar" name="activado" value=1>
+                                <input type="radio" id="activar" name="activado" value=1  {% if registro_temp.activo == 1 %} checked {% else %} checked {% endif %}>
                                 <label class="rad-registro" for="activar">Activar</label>
-                                <input type="radio" id="noactivado" name="activado" value=0 checked>
+                                <input type="radio" id="noactivado" name="activado" value=0 {% if registro_temp.activo == 0 %} checked {% endif %}>
                                 <label class="rad-registro" for="noactivado">Desactivar</label>
                             </div>
                         </fieldset>
                         <fieldset id="payment_method">
                             <legend>Bloquear/Descbloquear</legend>
                             <div class="fieldgroup">
-                                <input type="radio" id="bloquear" name="bloqueo" value=0 checked>
+                                <input type="radio" id="bloquear" name="bloqueo" value=0  {% if registro_temp.bloqueado == 0 %} checked {% else %} checked {% endif %}>
                                 <label class="rad-registro" for="bloquear">Desbloquear</label>
-                                <input type="radio" id="Desbloquear" name="bloqueo" value=1>
+                                <input type="radio" id="Desbloquear" name="bloqueo" value=1 {% if registro_temp.bloqueado == 1 %} checked {% endif %}>
                                 <label class="rad-registro" for="Desbloquear">Bloquear</label>
                             </div>
                         </fieldset>

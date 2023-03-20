@@ -27,16 +27,17 @@ def crear_tipo(request):
         idsubtipo = int(request.POST['idsubtipo'])
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
+        registro_temp = {'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo}
         response = requests.post(url+'tipo/', json={'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
 
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo})
+            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo})
+            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo, 'registro_temp':registro_temp})
     else:
         return render(request, 'Tipos/tipo.html',{'subtipo': Subtipo})
     

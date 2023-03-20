@@ -20,15 +20,17 @@ def crear_cargo(request):
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
         activo = int(request.POST['payment_method'])
+
+        registro_temp={'nombre': nombre, 'descripcion': descripcion, 'activo': activo}
         response = requests.post(url+'cargos/', json={'nombre': nombre, 'descripcion': descripcion, 'activo': activo})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'cargos/cargo.html', {'mensaje': mensaje})
+            return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'cargos/cargo.html', {'mensaje': mensaje})
+            return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
         return render(request, 'cargos/cargo.html')
     

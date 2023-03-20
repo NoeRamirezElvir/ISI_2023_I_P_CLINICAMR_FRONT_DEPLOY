@@ -33,18 +33,19 @@ def crear_usuario(request):
         idEmpleado = int(request.POST['idEmpleadl'])
         nombreUsuario = request.POST['user']
         password = request.POST['password']
+        passwordc = request.POST['passwordc']
         activo = int(request.POST['activado'])
         bloqueado = int(request.POST['bloqueo'])
-        response = requests.post(url+'usuarios/', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado})
+        registro_temp = {'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado, 'passwordc':passwordc}
+        response = requests.post(url+'usuarios/', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado, 'passwordc':passwordc})
         userdata={}
         if response.status_code == 200:
             userdata = response.json()
             mensaje = userdata['message']
-            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado})
+            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
         else:
             mensaje = userdata['usuariosr']
-            (mensaje)
-            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado})
+            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
     else:
         return render(request, 'usuario/registro.html', { 'empleado': empleado})
 
@@ -86,10 +87,11 @@ def actualizar_usuario(request, id):
         idEmpleado = int(request.POST['idEmpleadl'])
         nombreUsuario = request.POST['user']
         password = request.POST['password']
+        passwordc = request.POST['passwordc']
         activo = int(request.POST['activado'])
         bloqueado = int(request.POST['bloqueo'])
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'usuarios/id/{idTemporal}', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado})
+        response = requests.put(url+f'usuarios/id/{idTemporal}', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado, 'passwordc':passwordc})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el usuario relacionado con el id

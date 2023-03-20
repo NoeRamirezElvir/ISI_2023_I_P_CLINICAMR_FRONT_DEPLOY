@@ -11,11 +11,14 @@ from views_api import views_muestras
 from views_api import views_TipoMuestra
 from views_api import views_subtipo
 from views_api import views_tipo
+from views_api import views_citas
+from views_api import views_impuesto_historico
 
 
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
+    path('', views.salir_presentacion,name='salir_presentacion'),
     path('',views.usuariosignup, name='usuariosignup'),
     path('',views_login.iniciar_sesion, name='iniciar_sesion'),
     path('',views_login.registrar_login, name='registrar_login'),
@@ -96,8 +99,22 @@ urlpatterns = [
     path('',views_muestras.buscar_muestras, name='buscar_muestras'),
     path('',views_muestras.crear_muestras, name='crear_muestras'),
 
+    #citas
+    path('',views_citas.abrir_actualizar_citas , name='abrir_actualizar_citas'),
+    path('',views_citas.actualizar_citas , name='actualizar_citas'),
+    path('',views_citas.eliminar_citas , name='eliminar_citas'),
+    path('',views_citas.listar_citas, name='listar_citas'),
+    path('',views_citas.buscar_citas, name='buscar_citas'),
+    path('',views_citas.crear_citas, name='crear_citas'),
+    path('',views_citas.abrir_calendario, name='abrir_calendario'),
 
-
+    #Impuesto historico
+    path('',views_impuesto_historico.abrir_actualizar_impuesto_historico , name='abrir_impuesto_historico'),
+    path('',views_impuesto_historico.actualizar_impuesto_historico , name='actualizar_impuesto_historico'),
+    path('',views_impuesto_historico.eliminar_impuesto_historico , name='eliminar_impuesto_historico'),
+    path('',views_impuesto_historico.listar_impuesto_historico, name='listar_impuesto_historico'),
+    path('',views_impuesto_historico.buscar_impuesto_historico, name='buscar_impuesto_historico'),
+    path('',views_impuesto_historico.crear_impuesto_historico, name='crear_impuesto_historico'),
 
     path('',views.home, name='home'),
     path('',views.iniciomenu, name='iniciomenu'),

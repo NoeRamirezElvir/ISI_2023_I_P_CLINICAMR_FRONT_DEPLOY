@@ -12,7 +12,7 @@
         width: 90%;
         height: 40px;
     }
-    input[type="password"] {
+    input[type="number"] {
         width: 90%;
         height: 40px;
     }
@@ -47,11 +47,11 @@
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Nombre</label>
-              <input type="text" name="nombre" required>
+              <input type="text" name="nombre" required value="{{registro_temp.nombre}}">
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro">Apellido</label>
-              <input type="text" name="apellido" required>
+              <input type="text" name="apellido" required value="{{registro_temp.apellido}}">
             </div>
           </div>
           <div style="display: inline-flex ;width: 100%">
@@ -59,33 +59,34 @@
               <label class="campo-registro" for="idTipoDocument1">Tipo Documento</label>
               <select name="idTipoDocument1" id="idTipoDocument1">
                   {% for TipoDocumentos in TipoDocumento %}
-                      <option value="{{ TipoDocumentos.id }}">{{ TipoDocumentos.nombre }}</option>
+                      <option value="{{ TipoDocumentos.id }}"{% if TipoDocumentos.id == registro_temp.idTipoDocumento %}selected{% endif %}>{{ TipoDocumentos.nombre }}</option>
                   {% endfor %}
               </select>
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro" >Documento</label>
-              <input type="text" name="documento" required>
+              <input type="text" name="documento" required value="{{registro_temp.documento}}">
             </div>
           </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Fecha de nacimiento</label>
-              <input type="date" name="fechaNacimiento" required>
+              <input type="date" name="fechaNacimiento" required value="{{registro_temp.fechaNacimiento}}">
             </div>
             <div style="display: block;width: 100%">
               <label  class="campo-registro">Teléfono</label>
-              <input type="text" name="telefono" required >
+              <input type="number" name="telefono" required value="{{registro_temp.telefono}}"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
             </div>
           </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Correo</label>
-              <input type="text" name="correo" required>
+              <input type="text" name="correo" required value="{{registro_temp.correo}}">
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro">Dirección</label>
-            <input type="text" name="direccion" required >
+            <input type="text" name="direccion" required value="{{registro_temp.direccion}}">
             </div>
           </div>
           <p class="full">

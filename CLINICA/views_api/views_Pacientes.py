@@ -36,17 +36,17 @@ def crear_paciente(request):
         correo = request.POST['correo']
         direccion = request.POST ['direccion']
         
-
+        registro_temp={'nombre': nombre,'apellido': apellido,'fechaNacimiento': fechaNacimiento,'idTipoDocumento':idTipoDocumento,'documento': documento,'telefono': telefono,'correo': correo,'direccion': direccion }
         response = requests.post(url+'pacientes/', json={'nombre': nombre,'apellido': apellido,'fechaNacimiento': fechaNacimiento,'idTipoDocumento':idTipoDocumento,'documento': documento,'telefono': telefono,'correo': correo,'direccion': direccion })
         pacientedata={}
         if response.status_code == 200:
             pacientedata = response.json()
             mensaje = pacientedata['message']
-            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento})
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp})
         else:
             mensaje = pacientedata['message']
             
-            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento})
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp})
     else:
         return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento})
 

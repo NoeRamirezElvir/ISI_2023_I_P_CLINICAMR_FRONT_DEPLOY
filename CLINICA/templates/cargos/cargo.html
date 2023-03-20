@@ -21,22 +21,22 @@
         {% csrf_token %}
         <p>
           <label>Nombre</label>
-          <input type="text" name="nombre">
+          <input type="text" name="nombre" value="{{registro_temp.nombre}}">
         </p>
         <fieldset id="payment_method">
           <legend>Activo/Inactivo</legend>
           <div class="fieldgroup">
-            <input type="radio" name="payment_method" id="activo" value=1><label for="payment1">Activo
+            <input type="radio" name="payment_method" id="activo" value=1 {% if registro_temp.activo == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Activo
             </label>
           </div>
           <div class="fieldgroup">
-            <input type="radio" name="payment_method" id="inactivo" value=0 checked><label
+            <input type="radio" name="payment_method" id="inactivo" value=0  {% if registro_temp.activo == 0 %} checked {% endif %}><label
               for="payment2">Inactivo</label>
           </div>
         </fieldset>
         <p class="full">
           <label>Descripción</label>
-          <textarea name="descripcion"></textarea>
+          <textarea name="descripcion">{{registro_temp.nombre}}</textarea>
         </p>
 
         <p>

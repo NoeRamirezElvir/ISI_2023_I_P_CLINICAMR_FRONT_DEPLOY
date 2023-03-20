@@ -49,19 +49,18 @@
         {% csrf_token %}
         <p>
           <label>Nombre</label>
-          <input type="text" name="nombre" required>
+          <input type="text" name="nombre" required value="{{ impuestos.nombre}}">
         </p>
         <p>
           <label>Valor</label>
-          <input type="text" name="valor" required>
+          <input type="text" placeholder="0.00" required name="valor" min="0"  step="0.01" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{ impuestos.valor}}">
+          
+          
         </p>
         <p class="full">
           <button class="boton-enviar">Guardar</button>
         </p>
       </form>
-      {% if mensaje %}
-      <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
-      {% endif %}
     </div>
   </div>
   {% if mensaje %}

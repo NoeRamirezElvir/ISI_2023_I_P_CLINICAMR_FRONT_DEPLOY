@@ -29,7 +29,7 @@
             <li class="opcion-link"><a href="#">Proveedores</a></li>
             <li class="opcion"><a href="#">Personal</a>
               <ul class="subopcion">
-                <li class="opcion-link"><a href="#">Empleados</a></li>
+                <li class="opcion-link"><a href="/CLINICA/templates/empleado/empleado.html">Empleados</a></li>
                 <li class="opcion-link"><a href="/CLINICA/templates/cargos/cargo.html">Cargo</a></li>
                 <li class="opcion-link"><a href="/CLINICA/templates/especialidad/especialidad.html">Especialidad Medíca</a></li>
               </ul>
@@ -37,7 +37,7 @@
             <li class="opcion-link"><a href="/CLINICA/templates/documentos/documento.html">Documentos</a></li>
           </ul>
         </li>
-        <li class="opcion-link"><img src="{% static 'img/icons/iccitas.png' %}"><a href="#">Citas</a></li>
+        <li class="opcion-link"><img src="{% static 'img/icons/iccitas.png' %}"><a href="/CLINICA/templates/citas/cita.html">Citas</a></li>
         <li class="opcion"><img src="{% static 'img/icons/icservicios.png' %}"><a href="#">Servicios</a>
           <ul class="subopcion">
             <li class="opcion-link"><a href="#">Consultas</a></li>
@@ -67,7 +67,7 @@
         </li>
         <li class="opcion"><img src="{% static 'img/icons/ichistoricos.png' %}"><a href="#">Historicos</a>
           <ul class="subopcion">
-            <li class="opcion-link"><a href="#">Impuesto Historico</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/impuesto_historico/impuesto_historico.html">Impuesto Historico</a></li>
           </ul>
         </li>
         </li>
@@ -84,8 +84,7 @@
   </div>
   <div id="contenido">
     <div id="superior-nav">
-      <a href="#" class="superior-nav-logout">CERRAR SESION</a>
-      <a href="#" class="superior-nav-userinfo">USUARIO</a>
+      <a href="/CLINICA/templates/presentacion/presentacion.html" class="superior-nav-logout">CERRAR SESION</a>
       <a href="/CLINICA/templates/inicio.html" class="superior-nav-inicio">INICIO</a>
     </div>
     <div id="main">

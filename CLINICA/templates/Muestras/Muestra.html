@@ -8,28 +8,20 @@
     width: 90%;
     height: 40px;
   }
-
-  input[type="password"] {
-    width: 90%;
-    height: 40px;
+  input[type="date"] {
+        width: 95%;
+        height: 40px;
+        text-align: center;
   }
-
-  input[type="number"] {
-    width: 90%;
-    height: 40px;
-  }
-
   select {
     width: 90%;
     height: 40px;
   }
-
-  fieldset {
-    width: 95%;
-  }
-
   #alert-alert-info {
     top: 70vh;
+  }
+  .boton-enviar{
+    margin-top: 20px;
   }
 </style>
 <div class="contenedor">
@@ -42,31 +34,40 @@
         <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
         <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
         <button class="button"><a href="/CLINICA/templates/Muestras/BuscarMuestra.html">Buscar</a> </button>
-
-
       </ul>
     </div>
     <div class="contacto">
       <h3></h3>
-      {% block content %}
       <form method="POST" action="{% url 'crear_muestras' %}">
         {% csrf_token %}
-        <p>
-          <label>Fecha</label>
-          <input type="text" name="fecha" required style="width: 40%;height: 40px;">
-        </p>
-
-
-
-        <p>
-
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+            <select name="idPaciente" id="idTipoDocument1">
+              {% for pacientes in paciente_list %}
+              <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{pacientes.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Tipo de Muestra</label>
+            <select name="idTipoMuestra" id="idTipoDocument1">
+              {% for tipo in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idTipoMuestra %}selected{% endif %}>{{tipo.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Fecha Actual</label>
+            <input type="date" name="fecha" required value="{{registro_temp.fecha}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+          </div>
+        </div>
         <p class="full">
-          <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Guardar</button>
+          <button class="boton-enviar" >Guardar</button>
         </p>
       </form>
-      {% if mensaje %}
-      <div class="alert alert-info" style="color:rgb(255, 255, 255);">{{ mensaje }}</div>
-      {% endif %}
     </div>
   </div>
 </div>
