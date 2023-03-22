@@ -78,20 +78,31 @@ def actualizar_Impuestos(request, id):
             mensaje = data['message']
             return render(request, 'Impuestos/ImpuestoActualizar.html', {'mensaje': mensaje,'Impuestos':Impuestos})
 
-def eliminar_Impuestos(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'Impuestos/id/{idTemporal}')
-        res = response.json()
+def eliminar_Impuestos(request, id):  
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'Impuestos/id/{idTemporal}')
+            res = response.json()
+            rsp_Impuestos = requests.get(url + 'Impuestos/') 
+            if rsp_Impuestos.status_code == 200:
+                data = rsp_Impuestos.json()
+                Impuestos = data['Impuestos']
+            else:
+                Impuestos = []
+                mensaje = res['message']
+                context = {'Impuestos': Impuestos, 'mensaje': mensaje}
+                return render(request, 'Impuestos/BuscarImpuesto.html', context) 
+    except:
         rsp_Impuestos = requests.get(url + 'Impuestos/') 
-        if rsp_Impuestos.status_code == 200:
+        if  rsp_Impuestos.status_code == 200:
             data = rsp_Impuestos.json()
             Impuestos = data['Impuestos']
         else:
             Impuestos = []
-        mensaje = res['message']
-        context = {'Impuestos': Impuestos, 'mensaje': mensaje}
-        return render(request, 'Impuestos/BuscarImpuesto.html', context)     
+        mensaje = 'No se puede eliminar el registro, esta siendo utilizando en impuesto historico'
+        context = {'Impuestos': Impuestos, 'error': mensaje}
+        return render(request, 'Impuestos/BuscarImpuesto.html', context)
     
 def buscar_Impuestos(request):
         valor = request.GET.get('buscador', None)

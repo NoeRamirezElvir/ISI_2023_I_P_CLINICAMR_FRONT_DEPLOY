@@ -49,7 +49,7 @@
         {% csrf_token %}
         <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
-              <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+              <label class="campo-registro" for="idTipoDocument1">Nombre</label>
               <select name="idImpuesto" id="idTipoDocument1">
                   {% for impuestos in impuesto_list %}
                       <option value="{{ impuestos.id }}"{% if impuestos.id == registro_temp.idImpuesto %}selected{% endif %}>{{ impuestos.nombre }}</option>

@@ -52,7 +52,9 @@
         {% csrf_token %}
         <p>
           <label>Nombre</label>
-          <input type="text" name="nombre" required value="{{registro_temp.nombre}}">
+          <input type="text" name="nombre" required value="{{registro_temp.nombre}}"
+          oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{registro_temp.nombre}}"/>
+
         </p>
         <fieldset id="payment_method" style="height: 70px;" required>
           <legend>Activo/Inactivo</legend>

@@ -60,6 +60,14 @@
             <td colspan="3">No se encontraron documentos.</td>
           </tr>
           {% endif %}
+          {% if error %}
+        <div id="alert-alert-info" style="top:100px">
+          <p>{{ error }}</p>
+        </div>
+        </div>
+        {% endif %}
+
+          
         </tbody>
       </table>
     </div>

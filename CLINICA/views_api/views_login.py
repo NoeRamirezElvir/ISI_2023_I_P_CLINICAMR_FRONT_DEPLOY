@@ -37,7 +37,7 @@ def registrar_login(request):
         activo = 1
         bloqueado = 0
         if password == passwordc: 
-            response = requests.post(url+'usuarios/', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password, 'activo': activo, 'bloqueado': bloqueado})
+            response = requests.post(url+'usuarios/', json={'idEmpleado':idEmpleado, 'nombreUsuario': nombreUsuario, 'password': password,'passwordc':passwordc, 'activo': activo, 'bloqueado': bloqueado})
             userdata={}
             if response.status_code == 200:
                 userdata = response.json()
@@ -45,7 +45,7 @@ def registrar_login(request):
                 return render(request, 'presentacion/usuariosignup.html', {'mensaje': mensaje,  'empleado': empleado})
             else:
                 mensaje = userdata['usuariosr']
-                print(mensaje)
+                
                 return render(request, 'presentacion/usuariosignup.html', {'mensaje': mensaje,  'empleado': empleado})
         else:
             mensaje = 'Las contraseñas no coinciden'

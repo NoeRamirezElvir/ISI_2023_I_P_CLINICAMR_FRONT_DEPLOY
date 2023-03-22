@@ -47,11 +47,13 @@
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Nombre</label>
-              <input type="text" name="nombre" required value="{{registro_temp.nombre}}">
+              <input type="text" name="nombre" required value="{{registro_temp.nombre}}"
+              oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.nombre}}"/>
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro">Apellido</label>
-              <input type="text" name="apellido" required value="{{registro_temp.apellido}}">
+              <input type="text" name="apellido" required value="{{registro_temp.apellido}}"
+              oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.apellido}}"/>
             </div>
           </div>
           <div style="display: inline-flex ;width: 100%">
