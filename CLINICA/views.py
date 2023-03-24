@@ -134,17 +134,64 @@ def abrir_calendario(request):#
     return render(request,'citas/cita_calendario.html')
 
 #impuesto historico
-def abrir_actualizar_impuesto_historico(request):#
-    return render(request,'impuesto_historico/impuesto_historico_actualizar.html')
-def actualizar_impuesto_historico(request,id):#
-    return render(request,'impuesto_historico/impuesto_historico_buscar.html')
 def buscar_impuesto_historico(request):#
     return render(request,'impuesto_historico/impuesto_historico_buscar.html')
-def crear_impuesto_historico(request):#
-    return render(request,'impuesto_historico/impuesto_historico.html')
 def eliminar_impuesto_historico(request,id):#
     return render(request,'impuesto_historico/impuesto_historico.html')
 
+#Sintomas
+def abrir_actualizar_sintomas(request):#
+    return render(request,'sintomas/actualizar_sintomas.html')
+def actualizar_sintomas(request,id):#
+    return render(request,'sintomas/buscar_sintomas.html')
+def buscar_sintomas(request):#
+    return render(request,'sintomas/buscar_sintomas.html')
+def crear_sintomas(request):#
+    return render(request,'sintomas/sintomas.html')
+def eliminar_sintomas(request,id):#
+    return render(request,'sintomas/sintomas.html')
+
+#precio historico
+def buscar_precio_historico_medicamento(request):#
+    return render(request,'precio_historico_medicamento/buscar_precio_historico_medicamento.html')
+def eliminar_precio_historico_medicamento(request,id):#
+    return render(request,'precio_historico_medicamento/buscar_precio_historico_medicamento.html')
+
+#costo historico
+def buscar_costo_historico_medicamento(request):#
+    return render(request,'costo_historico_medicamento/buscar_costo_historico_medicamento.html')
+def eliminar_costo_historico_medicamento(request,id):#
+    return render(request,'costo_historico_medicamento/buscar_costo_historico_medicamento.html')
+
+#Medicamento
+def abrir_actualizar_medicamentos(request):#
+    return render(request,'medicamentos/actualizar_medicamentos.html')
+def actualizar_medicamentos(request,id):#
+    return render(request,'medicamentos/buscar_medicamentos.html')
+def buscar_medicamentos(request):#
+    return render(request,'medicamentos/buscar_medicamentos.html')
+def crear_medicamentos(request):#
+    return render(request,'medicamentos/medicamentos.html')
+def eliminar_medicamentos(request,id):#
+    return render(request,'medicamentos/medicamentos.html')
+
+#Enfermedad
+def abrir_actualizar_enfermedad(request):#
+    return render(request,'enfermedad/actualizar_enfermedad.html')
+def actualizar_enfermedad(request,id):#
+    return render(request,'enfermedad/buscar_enfermedad.html')
+def buscar_enfermedad(request):#
+    return render(request,'enfermedad/buscar_menfermedad.html')
+def crear_enfermedad(request):#
+    return render(request,'enfermedad/enfermedad.html')
+def eliminar_enfermedad(request,id):#
+    return render(request,'enfermedad/enfermedad.html')
+
+#costo historico
+def buscar_enfermedad_detalle(request):#
+    return render(request,'enfermedad_detalle/buscar_enfermedad_detalle.html')
+def eliminar_enfermedad_detalle(request,id):#
+    return render(request,'enfermedad_detalle/buscar_enfermedad_detalle.html')
 
 
 def home(request):

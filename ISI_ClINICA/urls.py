@@ -32,6 +32,13 @@ from CLINICA.views_api.views_subtipo import *
 from CLINICA.views_api.views_tipo import *
 from CLINICA.views_api.views_citas import *
 from CLINICA.views_api.views_impuesto_historico import *
+from CLINICA.views_api.views_sintomas import *
+from CLINICA.views_api.views_precio_historico_medicamento import *
+from CLINICA.views_api.views_costo_historico_medicamento import *
+from CLINICA.views_api.views_medicamento import *
+from CLINICA.views_api.views_enfermedad import *
+from CLINICA.views_api.views_enfermedad_detalle import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -53,6 +60,7 @@ urlpatterns = [
     path('CLINICA/templates/documentos/buscarDocumento.html/<int:id>',eliminar_documento,name = 'eliminar_documento'),
     path('CLINICA/templates/documentos/buscarDocumento.html',buscar_documentos,name = 'buscar_documentos'),
     path('CLINICA/templates/documentos/documento.html',crear_documento, name="crear_documento"),
+    path('CLINICA/templates/documento.html',documento),
     #
     path('CLINICA/templates/home.html',home),
     path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
@@ -141,13 +149,44 @@ urlpatterns = [
     path('CLINICA/templates/citas/cita_calendario.html',abrir_calendario, name="abrir_calendario"),
 
     #impuesto historico
-    path('CLINICA/templates/impuesto_historico/impuesto_historico_actualizar.html',abrir_actualizar_impuesto_historico,name="abrir_actualizar_impuesto_historico"),
-    path('CLINICA/templates/impuesto_historico/impuesto_historico_actualizar.html/<int:id>',actualizar_impuesto_historico,name="actualizar_impuesto_historico"),
     path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html/<int:id>',eliminar_impuesto_historico,name = 'eliminar_impuesto_historico'),
     path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html',buscar_impuesto_historico,name = 'buscar_impuesto_historico'),
-    path('CLINICA/templates/impuesto_historico/impuesto_historico.html',crear_impuesto_historico, name="crear_impuesto_historico"),
-    path('CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html',listar_impuesto_historico, name="listar_impuesto_historico"),
-    
 
-    path('CLINICA/templates/documento.html',documento),
+    #Sintoma
+    path('CLINICA/templates/sintomas/actualizar_sintomas.html',abrir_actualizar_sintomas,name="abrir_actualizar_sintomas"),
+    path('CLINICA/templates/sintomas/actualizar_sintomas.html/<int:id>',actualizar_sintomas,name="actualizar_sintomas"),
+    path('CLINICA/templates/sintomas/buscar_sintomas.html/<int:id>',eliminar_sintomas,name = 'eliminar_sintomas'),
+    path('CLINICA/templates/sintomas/buscar_sintomas.html',buscar_sintomas,name = 'buscar_sintomas'),
+    path('CLINICA/templates/sintomas/sintomas.html',crear_sintomas, name="crear_sintomas"),
+    path('CLINICA/templates/sintomas/buscar_sintomas.html',listar_sintomas, name="listar_sintomas"),
+
+    #precio historico
+    path('CLINICA/templates/precio_historico_medicamento/buscar_precio_historico_medicamento.html/<int:id>',eliminar_precio_historico_medicamento,name = 'eliminar_precio_historico_medicamento'),
+    path('CLINICA/templates/precio_historico_medicamento/buscar_precio_historico_medicamento.html',buscar_precio_historico_medicamento,name = 'buscar_precio_historico_medicamento'),
+
+    #costo historico
+    path('CLINICA/templates/costo_historico_medicamento/buscar_costo_historico_medicamento.html/<int:id>',eliminar_costo_historico_medicamento,name = 'eliminar_costo_historico_medicamento'),
+    path('CLINICA/templates/costo_historico_medicamento/buscar_costo_historico_medicamento.html',buscar_costo_historico_medicamento,name = 'buscar_costo_historico_medicamento'),
+
+    #Medicamentos
+    path('CLINICA/templates/medicamentos/actualizar_medicamentos.html',abrir_actualizar_medicamentos,name="abrir_actualizar_medicamentos"),
+    path('CLINICA/templates/medicamentos/actualizar_medicamentos.html/<int:id>',actualizar_medicamentos,name="actualizar_medicamentos"),
+    path('CLINICA/templates/medicamentos/buscar_medicamentos.html/<int:id>',eliminar_medicamentos,name = 'eliminar_medicamentos'),
+    path('CLINICA/templates/medicamentos/buscar_medicamentos.html',buscar_medicamentos,name = 'buscar_medicamentos'),
+    path('CLINICA/templates/medicamentos/medicamentos.html',crear_medicamentos, name="crear_medicamentos"),
+    path('CLINICA/templates/medicamentos/buscar_medicamentos.html',listar_medicamentos, name="listar_medicamentos"),
+
+    #Enfermedad
+    path('CLINICA/templates/enfermedad/actualizar_enfermedad.html',abrir_actualizar_enfermedad,name="abrir_actualizar_enfermedad"),
+    path('CLINICA/templates/enfermedad/actualizar_enfermedad.html/<int:id>',actualizar_enfermedad,name="actualizar_enfermedad"),
+    path('CLINICA/templates/enfermedad/buscar_enfermedad.html/<int:id>',eliminar_enfermedad,name = 'eliminar_enfermedad'),
+    path('CLINICA/templates/enfermedad/buscar_enfermedad.html',buscar_enfermedad,name = 'buscar_enfermedad'),
+    path('CLINICA/templates/enfermedad/enfermedad.html',crear_enfermedad, name="crear_enfermedad"),
+    path('CLINICA/templates/enfermedad/buscar_enfermedad.html',listar_enfermedad, name="listar_enfermedad"),
+
+    #costo historico
+    path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html/<int:id>',eliminar_enfermedad_detalle,name = 'eliminar_enfermedad_detalle'),
+    path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html',buscar_enfermedad_detalle,name = 'buscar_enfermedad_detalle'),
+
+
 ]

@@ -75,7 +75,7 @@ def actualizar_cargo(request, id):
         response = requests.get(url+f'cargos/busqueda/id/{idTemporal}')
         if response.status_code == 200:
             data = response.json()
-            usuario = data['cargos']
+            cargos = data['cargos']
             mensaje = data['message']
             return render(request, 'cargos/cargoactualizar.html', {'cargos': cargos})
         else:

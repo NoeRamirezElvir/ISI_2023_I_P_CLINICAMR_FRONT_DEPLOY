@@ -13,6 +13,12 @@ from views_api import views_subtipo
 from views_api import views_tipo
 from views_api import views_citas
 from views_api import views_impuesto_historico
+from views_api import views_sintomas
+from views_api import views_precio_historico_medicamento
+from views_api import views_costo_historico_medicamento
+from views_api import views_medicamento
+from views_api import views_enfermedad 
+from views_api import views_enfermedad_detalle
 
 
 
@@ -109,12 +115,45 @@ urlpatterns = [
     path('',views_citas.abrir_calendario, name='abrir_calendario'),
 
     #Impuesto historico
-    path('',views_impuesto_historico.abrir_actualizar_impuesto_historico , name='abrir_impuesto_historico'),
-    path('',views_impuesto_historico.actualizar_impuesto_historico , name='actualizar_impuesto_historico'),
     path('',views_impuesto_historico.eliminar_impuesto_historico , name='eliminar_impuesto_historico'),
-    path('',views_impuesto_historico.listar_impuesto_historico, name='listar_impuesto_historico'),
     path('',views_impuesto_historico.buscar_impuesto_historico, name='buscar_impuesto_historico'),
-    path('',views_impuesto_historico.crear_impuesto_historico, name='crear_impuesto_historico'),
+
+    #Sintomas
+    path('',views_sintomas.abrir_actualizar_sintomas , name='abrir_actualizar_sintomas'),
+    path('',views_sintomas.actualizar_sintomas , name='actualizar_sintomas'),
+    path('',views_sintomas.eliminar_sintomas , name='eliminar_sintomas'),
+    path('',views_sintomas.listar_sintomas, name='listar_sintomas'),
+    path('',views_sintomas.buscar_sintomas, name='buscar_sintomas'),
+    path('',views_sintomas.crear_sintomas, name='crear_sintomas'),
+
+    #Precio historico
+    path('',views_precio_historico_medicamento.eliminar_precio_historico_medicamento , name='eliminar_precio_historico_medicamento'),
+    path('',views_precio_historico_medicamento.buscar_precio_historico_medicamento, name='buscar_precio_historico_medicamento'),
+
+    #Costo historico
+    path('',views_costo_historico_medicamento.eliminar_costo_historico_medicamento , name='eliminar_costo_historico_medicamento'),
+    path('',views_costo_historico_medicamento.buscar_costo_historico_medicamento, name='buscar_costo_historico_medicamento'),
+
+    #Medicamentos
+    path('',views_medicamento.abrir_actualizar_medicamentos , name='abrir_actualizar_medicamentos'),
+    path('',views_medicamento.actualizar_medicamentos , name='actualizar_medicamentos'),
+    path('',views_medicamento.eliminar_medicamentos , name='eliminar_medicamentos'),
+    path('',views_medicamento.listar_medicamentos, name='listar_medicamentos'),
+    path('',views_medicamento.buscar_medicamentos, name='buscar_medicamentos'),
+    path('',views_medicamento.crear_medicamentos, name='crear_medicamentos'),
+
+    #Enfermedad
+    path('',views_enfermedad.abrir_actualizar_enfermedad , name='abrir_actualizar_enfermedad'),
+    path('',views_enfermedad.actualizar_enfermedad , name='actualizar_enfermedad'),
+    path('',views_enfermedad.eliminar_enfermedad , name='eliminar_enfermedad'),
+    path('',views_enfermedad.listar_enfermedad, name='listar_enfermedad'),
+    path('',views_enfermedad.buscar_enfermedad, name='buscar_enfermedad'),
+    path('',views_enfermedad.crear_enfermedad, name='crear_enfermedad'),
+
+    #Enfermedad detalle
+    path('',views_enfermedad_detalle.eliminar_enfermedad_detalle , name='eliminar_enfermedad_detalle'),
+    path('',views_enfermedad_detalle.buscar_enfermedad_detalle, name='buscar_enfermedad_detalle'),
+
 
     path('',views.home, name='home'),
     path('',views.iniciomenu, name='iniciomenu'),

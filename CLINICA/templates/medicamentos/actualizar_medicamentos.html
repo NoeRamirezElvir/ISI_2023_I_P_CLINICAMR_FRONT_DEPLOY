@@ -1,0 +1,138 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Medicamentos{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 90%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"> <span class="nombre-empresa">Medicamentos</h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3 style="color: beige;">Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/medicamentos/buscar_medicamentos.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <form class="formulario" method="POST" action="{% url 'actualizar_medicamentos' id=medicamentos.0.id %}">
+        {% csrf_token %}
+        <div style="display: block;width: 200%;">
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" >Nombre</label>
+              <input type="text" name="nombre" required oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.nombre}}">
+            </div>
+            <div style="display: block;width: 100%">
+                <label class="campo-registro" for="idTipoDocument1">Tipo</label>
+                <select name="idTipo" id="idTipoDocument1">
+                  <option value="0" {% if medicamentos.0.idTipo_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo.id }}"{% if tipo.id == medicamentos.0.idTipo_id %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" >Stock Actual</label>
+              <input type="text" name="stockActual" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.stockActual}}">
+            </div>
+            <div style="display: block;width: 100%">
+                <fieldset id="payment_method">
+                    <legend>Activo/Inactivo</legend>
+                    <div class="fieldgroup">
+                      <input type="radio" name="payment_method" id="activo" value=1 {% if medicamentos.0.activo == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Activo
+                      </label>
+                    </div>
+                    <div class="fieldgroup">
+                      <input type="radio" name="payment_method" id="inactivo" value=0  {% if medicamentos.0.activo == 0 %} checked {% endif %}><label
+                        for="payment2">Inactivo</label>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro" >Stock Minimo</label>
+              <input type="text" name="stockMinimo" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.stockMinimo}}">
+            </div>
+            <div style="display: block;width: 100%">
+                <label class="campo-registro" >Stock Maximo</label>
+                <input type="text" name="stockMaximo" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.stockMaximo}}">
+            </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+                <label class="campo-registro" for="idTipoDocument1">Proveedor</label>
+                <select name="idProveedor" id="idTipoDocument1">
+                  <option value="0" {% if medicamentos.0.idProveedor_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                    {% for proveedor in proveedores %}
+                        <option value="{{ proveedor.id }}"{% if proveedor.id == medicamentos.0.idProveedor_id %}selected{% endif %}>{{proveedor.id}}&#41 {{ proveedor.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="display: block;width: 100%">
+                <label class="campo-registro" for="idTipoDocument1">Impuesto</label>
+                <select name="idImpuesto" id="idTipoDocument1">
+                  <option value="0" {% if medicamentos.0.idImpuesto_id == 0 %} selected {% endif %}>Seleccione una opción</option>"
+                    {% for impuesto in impuestos %}
+                        <option value="{{ impuesto.id }}"{% if impuesto.id == medicamentos.0.idImpuesto_id %} selected {% endif %}>{{impuesto.id}}&#41 {{ impuesto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" >Costo Compra</label>
+            <input type="text" name="costoCompra"  placeholder="00.00" required min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{medicamentos.0.costoCompra}}">
+          </div>
+          <div style="display: block;width: 100%">
+              <label class="campo-registro" >Precio Venta</label>
+              <input type="text" name="precioVenta" placeholder="00.00" required min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{medicamentos.0.precioVenta}}">
+          </div>
+      </div>
+        </div>
+        <p class="full">
+          <button class="boton-enviar">Guardar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

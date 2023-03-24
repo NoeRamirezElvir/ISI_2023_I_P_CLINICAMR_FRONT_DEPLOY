@@ -85,22 +85,26 @@ def eliminar_Impuestos(request, id):
             response = requests.delete(url + f'Impuestos/id/{idTemporal}')
             res = response.json()
             rsp_Impuestos = requests.get(url + 'Impuestos/') 
+            context ={}
             if rsp_Impuestos.status_code == 200:
                 data = rsp_Impuestos.json()
                 Impuestos = data['Impuestos']
+                context = {'Impuestos': Impuestos}
             else:
                 Impuestos = []
                 mensaje = res['message']
                 context = {'Impuestos': Impuestos, 'mensaje': mensaje}
-                return render(request, 'Impuestos/BuscarImpuesto.html', context) 
+            return render(request, 'Impuestos/BuscarImpuesto.html', context) 
     except:
         rsp_Impuestos = requests.get(url + 'Impuestos/') 
+        context ={}
         if  rsp_Impuestos.status_code == 200:
             data = rsp_Impuestos.json()
             Impuestos = data['Impuestos']
+            context = {'Impuestos': Impuestos}
         else:
             Impuestos = []
-        mensaje = 'No se puede eliminar el registro, esta siendo utilizando en impuesto historico'
+        mensaje = 'No se puede eliminar, esta siendo utilizando en otros registros'
         context = {'Impuestos': Impuestos, 'error': mensaje}
         return render(request, 'Impuestos/BuscarImpuesto.html', context)
     

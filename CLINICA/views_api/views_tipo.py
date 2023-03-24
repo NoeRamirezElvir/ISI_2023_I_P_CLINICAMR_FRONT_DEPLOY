@@ -22,7 +22,6 @@ def crear_tipo(request):
             Subtipo = data['subtipo']
     else:
             Subtipo= []
-
     if request.method == 'POST':
         idsubtipo = int(request.POST['idsubtipo'])
         nombre = request.POST['nombre']

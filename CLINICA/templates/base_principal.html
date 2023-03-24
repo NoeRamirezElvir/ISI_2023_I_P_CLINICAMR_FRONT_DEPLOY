@@ -60,14 +60,16 @@
         </li>
         <li class="opcion"><img src="{% static 'img/icons/icinventario.png' %}"><a href="#">Inventario</a>
           <ul class="subopcion">
-            <li class="opcion-link"><a href="#">Medicamentos</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/medicamentos/medicamentos.html">Medicamentos</a></li>
           </ul>
         </li>
         </li>
         </li>
         <li class="opcion"><img src="{% static 'img/icons/ichistoricos.png' %}"><a href="#">Historicos</a>
           <ul class="subopcion">
-            <li class="opcion-link"><a href="/CLINICA/templates/impuesto_historico/impuesto_historico.html">Impuesto Historico</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/impuesto_historico/impuesto_historico_buscar.html">Impuesto Historico</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/precio_historico_medicamento/buscar_precio_historico_medicamento.html">Precio Historico Medicamento</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/costo_historico_medicamento/buscar_costo_historico_medicamento.html">Costo Historico Medicamento</a></li>
           </ul>
         </li>
         </li>
@@ -76,6 +78,13 @@
           <ul class="subopcion">
             <li class="opcion-link"><a href="/CLINICA/templates/Tipos/tipo.html">Tipos</a></li>
             <li class="opcion-link"><a href="/CLINICA/templates/SubTipo/subtipo.html">Subtipos</a></li>
+          </ul>
+        </li>
+        <li class="opcion"><img src="{% static 'img/icons/icvirus.png' %}"><a href="#">Enfermedad</a>
+          <ul class="subopcion">
+            <li class="opcion-link"><a href="/CLINICA/templates/enfermedad/enfermedad.html">Enfermedad</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/sintomas/sintomas.html">Sintomas</a></li>
+            <li class="opcion-link"><a href="/CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html">Detalles</a></li>
           </ul>
         </li>
       </ul>

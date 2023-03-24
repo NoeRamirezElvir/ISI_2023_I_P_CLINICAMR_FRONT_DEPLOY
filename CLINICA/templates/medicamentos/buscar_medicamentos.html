@@ -1,0 +1,87 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}MEDICAMENTOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+    <h1 class="h1-listar">Registros de Medicamentos</h1>
+    <div class="busqueda-listar">
+        <form method="GET" action="{% url 'buscar_medicamentos' %}">
+            {% csrf_token %}
+            <div class="buscador-listar">
+                <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+            </div>
+            <div class="btnBusqueda-listar">
+                <input id="btnBuscarUsuario " type="submit" value="Buscar">
+            </div>
+        </form>
+        <a class="btn-agregar" href="/CLINICA/templates/medicamentos/medicamentos.html" class="btn-agregar-link">Agregar</a>
+    </div>
+<div class="container-listar">
+  <div class="tabla-listar"  >
+    <table class="tftable-listar" style="overflow-y: scroll; height: auto; max-height: 400px;">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Nombre</th>
+            <th style="color:aliceblue">Stock Minimo</th>
+            <th style="color:aliceblue">Stock Actual</th>
+            <th style="color:aliceblue">Stock Maximo</th>
+            <th style="color:aliceblue">Costo Compra</th>
+            <th style="color:aliceblue">Precio Venta</th>
+            <th style="color:aliceblue">Fecha Registro</th>
+            
+            <th style="color:aliceblue">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if medicamentos %}
+          {% for medicamento in medicamentos %}
+            <tr>
+              <td>{{ medicamento.id }}</td>
+              <td>{{ medicamento.nombre }}</td>
+              <td>{{ medicamento.stockMinimo }}</td>
+              <td>{{ medicamento.stockActual }}</td>
+              <td>{{ medicamento.stockMaximo }}</td>
+              <td>{{ medicamento.costoCompra }}</td>
+              <td>{{ medicamento.precioVenta }}</td>
+              <td>{{ medicamento.fechaRegistro }}</td>
+              
+              
+              <td>
+                <form action="{% url 'abrir_actualizar_medicamentos' %}" method="post" class="form-botones">
+                  {% csrf_token %}
+                    <input type="hidden" name="id_medicamentos" value="{{ medicamento.id }}">
+                    <button class="btnEditar" name="editar" id="editar">
+                          <img src="{% static 'img/icons/icedit.png' %}">
+                    </button>
+                    </form>
+                <form action="{% url 'eliminar_medicamentos' id=medicamento.id  %}"  method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_medicamentos" value="{{ medicamento.id }}">
+                    <button class="btnEliminar" name="eliminar" id="eliminar">
+                          <img src="{% static 'img/icons/icdelete.png' %}">
+                    </button>
+                    </form>
+                    </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9">No se encontraron documentos.</td>
+          </tr>
+        {% endif %}
+        {% if error %}
+        <div id="alert-alert-info" style="top:100px">
+        <p>{{ error }}</p>
+        </div>
+        </div>
+        {% endif %}
+        </tbody>
+      </table>
+  </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
