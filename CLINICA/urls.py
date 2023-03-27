@@ -19,7 +19,9 @@ from views_api import views_costo_historico_medicamento
 from views_api import views_medicamento
 from views_api import views_enfermedad 
 from views_api import views_enfermedad_detalle
-
+from views_api import views_empleados
+from views_api import views_laboratorios
+from views_api import views_metodo_de_pago
 
 
 urlpatterns = [
@@ -70,6 +72,13 @@ urlpatterns = [
     path('',views_Pacientes.listar_pacientes, name='buscar_pacientes'),
     path('',views_Pacientes.buscar_pacientes, name='buscar_pacientes'),
     path('',views_Pacientes.crear_paciente, name='crear_paciente'),
+
+     path('',views_empleados.abrir_actualizar_empleados, name='abrir_actualizar_empleados'),
+    path('',views_empleados.actualizar_empleados , name='actualizar_empleados'),
+    path('',views_empleados.eliminar_empleados, name='eliminar_empleados'),
+    path('',views_empleados.listar_empleados, name='listar_empleados'),
+    path('',views_empleados.buscar_empleados, name='buscar_empleados'),
+    path('',views_empleados.crear_empleados, name='crear_empleados'),
 
 
     #Tipo
@@ -168,14 +177,32 @@ urlpatterns = [
     path('',views_usuarios.actualizar_usuario , name='actualizar_usuario'),
     path('',views_usuarios.eliminar_usuario , name='eliminar_usuario'),
 
-    path('',views.buscarDocumento, name='lista_documentos'),
-    path('',views.BuscarEspecialidad, name='lista_especialidades'),
     
-    path('',views.empleado, name='empleado'),
+    
+  
     
     path('',views.especialidad, name='especialidad'),
     path('',views.documento, name='documento'),
-    path('',views.buscarEmpleado, name='buscarEmpleado'), 
+
+
+    #Laboratorios
+    path('',views_laboratorios.abrir_actualizar_laboratorios , name='abrir_actualizar_laboratorios'),
+    path('',views_laboratorios.actualizar_laboratorios , name='actualizar_laboratorios'),
+    path('',views_laboratorios.eliminar_laboratorios , name='eliminar_laboratorios'),
+    path('',views_laboratorios.listar_laboratorios, name='buscar_laboratorios'),
+    path('',views_laboratorios.buscar_laboratorios, name='buscar_laboratorios'),
+    path('',views_laboratorios.crear_laboratorios, name='crear_laboratorios'),
+
+
+    #Metodo de pago
+    path('',views_metodo_de_pago.abrir_actualizar_metodos_De_pago , name='abrir_actualizar_metodos_De_pago'),
+    path('',views_metodo_de_pago.actualizar_metodos_De_pago , name='actualizar_metodos_De_pago'),
+    path('',views_metodo_de_pago.eliminar_metodos_De_pago , name='eliminar_metodos_De_pago'),
+    path('',views_metodo_de_pago.listar_metodos_De_pago, name='buscar_metodos_De_pago'),
+    path('',views_metodo_de_pago.buscar_metodos_De_pago, name='buscar_metodos_De_pago'),
+    path('',views_metodo_de_pago.crear_metodos_De_pago, name='crear_metodos_De_pago'),
+   
+   
     
 
 ]

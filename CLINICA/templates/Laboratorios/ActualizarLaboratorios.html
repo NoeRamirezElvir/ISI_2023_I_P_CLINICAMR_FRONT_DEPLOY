@@ -1,0 +1,62 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar Laboratorio{% endblock %}
+{% block content %}
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Laboratorio</span></h1>
+  <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+          <h3>Medical Rescue</h3>
+          <ul class="servicios">
+              <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+              </li>
+              <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+              <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+              <button class="button"><a href="/CLINICA/templates/Laboratorios/BuscarLaboratorios.html ">BUSCAR</a></button>
+          </ul>
+      </div>
+      <div class="contacto">
+          <h3></h3>
+        <form method="POST" action="{% url 'actualizar_laboratorios' id=laboratorios.0.id %}">
+          {% csrf_token %}
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="{{ laboratorios.0.nombre }}">
+          </p>
+          
+        <p class="full">
+            <label>Direccion</label>
+            <textarea name="direccion">{{ laboratorios.0.direccion }}</textarea>
+          </p>
+
+          <p class="full">
+            <label>Telefono</label>
+            <textarea name="telefono">{{ laboratorios.0.telefono }}</textarea>
+          </p>
+
+          <fieldset id="payment_method" style="height: 70px;">
+            <legend>Disponibilidad</legend>
+            <div class="fieldgroup">
+            <input type="radio" name="payment_method" id="activo" value=1 {% if laboratorios.0.disponibilidad == 1 %}checked {% endif %}><label for= "payment1">Si
+            </label>
+            </div>
+            <div class="fieldgroup">
+            <input type="radio" name="payment_method" id="inactivo" value=0 {% if laboratorios.0.disponibilidad == 0 %}checked {% endif %}><label for= "payment2">No</label>
+            </div>
+            </fieldset>
+
+          <p> 
+          <p class="full">
+            <button class="boton-enviar">Actualizar</button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% if mensaje %}
+    <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+    </div>
+  {% endif %}
+  {% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Laboratorios{% endblock %}
+{% block content %}
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Laboratorios Medical Rescue</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Laboratorios/BuscarLaboratorios.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'crear_laboratorios' %}">
+        {% csrf_token %}
+       
+        <label>Nombre</label>
+        <input type="text" name="nombre" style="position: relative; left: 7px;"  value="{{registro_temp.nombre}}">
+        
+    <br>
+    </br>
+        
+        <label>Direccion</label>
+        <input type="text" name="direccion" value="{{registro_temp.direccion}}">
+          
+    <br>
+    </br>
+         
+        <label>Telefono</label>
+        <input type="text" name="telefono"  style="position: relative; left: 7px;" value="{{registro_temp.telefono}}">
+    <br>
+    </br>
+
+       
+            <fieldset id="payment_method">
+                <legend>Disponibilidad</legend>
+                <div class="fieldgroup">
+                  <input type="radio" name="payment_method" id="activo" value=1 {% if registro_temp.disponibilidad == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Si
+                  </label>
+                </div>
+                <div class="fieldgroup">
+                  <input type="radio" name="payment_method" id="inactivo" value=0  {% if registro_temp.disponibilidad == 0 %} checked {% endif %}><label
+                    for="payment2">No</label>
+                </div>
+              </fieldset>
+              <br>
+            </br>
+
+        <p class="full">
+          <button class="boton-enviar" >Guardar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

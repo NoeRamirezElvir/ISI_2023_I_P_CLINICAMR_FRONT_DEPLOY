@@ -231,3 +231,39 @@ def buscarEmpleado(request):
 
 
 #Empleados
+def abrir_actualizar_empleados(request):#
+    return render(request,'empleado/EmpleadoActualizar.html')
+def actualizar_empleados(request,id):#
+    return render(request,'empleado/EmpleadoActualizar.html')
+def buscar_empleados(request):#
+    return render(request,'empleado/buscarEmpleado.html')
+def crear_empleados(request):#
+    return render(request,'empleado/empleado.html')
+def eliminar_empleados(request,id):#
+    return render(request,'empleado/empleado.html')
+
+
+
+#Laboratorios
+def abrir_actualizar_laboratorios(request):#
+    return render(request,'Laboratorios/ActualizarLaboratorios.html')
+def actualizar_laboratorios(request,id):#
+    return render(request,'Laboratorios/ActualizarLaboratorios.html')
+def buscar_laboratorios(request):#
+    return render(request,'Laboratorios/BuscarLaboratorios.html')
+def crear_laboratorios(request):#
+    return render(request,'Laboratorios/Laboratorios.html')
+def eliminar_laboratorios(request,id):#
+    return render(request,'Laboratorios/Laboratorios.html')
+
+#Metodo de pago
+def abrir_actualizar_metodos_De_pago(request):#
+    return render(request,'MetodoDePago/ActualizarMetodoDePago.html')
+def actualizar_metodos_De_pago(request,id):#
+    return render(request,'MetodoDePago/ActualizarMetodoDePago.html')
+def buscar_metodos_De_pago(request):#
+    return render(request,'MetodoDePago/BuscarMetodoDePago.html')
+def crear_metodos_De_pago(request):#
+    return render(request,'MetodoDePago/MetodoDePago.html')
+def eliminar_metodos_De_pago(request,id):#
+    return render(request,'MetodoDePago/MetodoDePago.html')

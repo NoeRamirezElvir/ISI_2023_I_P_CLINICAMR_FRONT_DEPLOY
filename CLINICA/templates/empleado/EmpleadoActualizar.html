@@ -1,7 +1,7 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Registro de Pacientes{% endblock %}
+{% block tittle %}Actualizacion de empleados{% endblock %}
 {% block content %}
 <style type="text/css">
     input[type="text"] {
@@ -12,7 +12,7 @@
         width: 90%;
         height: 40px;
     }
-    input[type="number"] {
+    input[type="password"] {
         width: 90%;
         height: 40px;
     }
@@ -29,7 +29,7 @@
     }
 </style>
 <div class="contenedor">
-    <h1 class="logo"><span class="nombre-empresa">Empleados Medical Rescue</span></h1>
+    <h1 class="logo"><span class="nombre-empresa">empleados Medical Rescue</span></h1>
     <div class="wrapper animated bounceInLeft">
       <div class="info-empresa">
         <h3>Medical Rescue</h3>
@@ -37,15 +37,14 @@
           <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
           <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
           <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-          
-
           <button class="button"><a href ="/CLINICA/templates/empleado/buscarEmpleado.html">Buscar</a> </button>
         </ul>
       </div>
       <div class="contacto">
         <h3></h3>
-        <form method="POST" action="{% url 'crear_empleados' %}">
+        <form method="POST" action="{% url 'actualizar_empleados' id=empleados.0.id %}">
           {% csrf_token %}
+
         <fieldset id="payment_method">
           <legend>Activo/Inactivo</legend>
           <div class="fieldgroup">
@@ -60,37 +59,25 @@
         
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
-            
-
-            
-
-              
-              
               <label class="campo-registro">Nombre</label>
-              <input type="text" name="nombre" required value="{{registro_temp.nombre}}"
-              oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.nombre}}"/>
+              <input type="text" name="nombre" required value="{{ empleados.0.nombre }}">
             </div>
-            
-
             <div style="display: block;width: 100%">
               <label class="campo-registro">Apellido</label>
-              <input type="text" name="apellidos" required value="{{registro_temp.apellidos}}"
-              oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.apellido}}"/>
+              <input type="text" name="apellidos" required value="{{ empleados.0.apellidos }}">
             </div>
           </div>
-
-
-          
-
-          
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
+              {% if empleados.0 %}
+              <input type="hidden" name="id_paciente" value="{{ empleados.0.id }}" required>
               <label class="campo-registro" for="idTipoDocument1">Tipo Documento</label>
               <select name="idTipoDocument1" id="idTipoDocument1">
                   {% for TipoDocumentos in TipoDocumento %}
-                      <option value="{{ TipoDocumentos.id }}"{% if TipoDocumentos.id == registro_temp.idTipoDocumento %}selected{% endif %}>{{ TipoDocumentos.nombre }}</option>
+                      <option value="{{ TipoDocumentos.id }}" {% if TipoDocumentos.id == empleados.0.idTipoDocumento_id %}selected{% endif %}>{{ TipoDocumentos.nombre }}</option>
                   {% endfor %}
               </select>
+              {% endif %}
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idEspecialidadMedic1"> Especialidad </label>
@@ -109,39 +96,34 @@
                   {% endfor %}
               </select>
             </div>
-            
+
+
 
             <div style="display: block;width: 100%">
               <label class="campo-registro" >Documento</label>
-              <input type="text" name="documento" required value="{{registro_temp.documento}}">
+              <input type="text" name="documento" required value="{{ empleados.0.documento}}">
             </div>
           </div>
-
-
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Fecha de nacimiento</label>
-              <input type="date" name="fechaNacimiento" required value="{{registro_temp.fechaNacimiento}}">
+              <input type="date" name="fechaNacimiento" required value="{{ empleados.0.fechaNacimiento }}">
             </div>
             <div style="display: block;width: 100%">
               <label  class="campo-registro">Teléfono</label>
-              <input type="number" name="telefono" required value="{{registro_temp.telefono}}"
-              oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+              <input type="text" name="telefono" required value="{{ empleados.0.telefono }}">
             </div>
           </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
               <label class="campo-registro">Correo</label>
-              <input type="text" name="email" required value="{{registro_temp.email}}">
+              <input type="text" name="email" required   value="{{ empleados.0.email}}">
             </div>
             <div style="display: block;width: 100%">
               <label class="campo-registro">Dirección</label>
-            <input type="text" name="direccion" required value="{{registro_temp.direccion}}">
+            <input type="text" name="direccion" required value="{{ empleados.0.direccion }}">
             </div>
           </div>
-
-            
-
           <p class="full">
             <button class="boton-enviar">Guardar</button>
           </p>
@@ -155,3 +137,10 @@
 </div>
 {% endif %}
 {% endblock %}
+
+
+  
+
+
+
+ 

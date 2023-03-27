@@ -1,0 +1,70 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}LABORATORIOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+    <h1 class="h1-listar">Registros de Laboratorioss</h1>
+    <div class="busqueda-listar">
+        <form method="GET" action="{% url 'buscar_laboratorios' %}">
+            {% csrf_token %}
+            <div class="buscador-listar">
+                <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+            </div>
+            <div class="btnBusqueda-listar">
+                <input id="btnBuscarUsuario " type="submit" value="Buscar">
+            </div>
+        </form>
+        <a class="btn-agregar" href="/CLINICA/templates/Laboratorios/Laboratorios.html " class="btn-agregar-link">Agregar</a>
+    </div>
+    <div class="container-listar">
+            <div class="tabla-listar">
+                <table class="tftable-listar" ,border="1">
+                    <tr class="tfheader-listar">
+                        <th style="color:aliceblue">ID Laboratorio</th>
+                        <th style="color:aliceblue">Nombre</th>
+                        
+                        <th style="color:aliceblue">Disponibilidad</th>
+                        <th style="color:aliceblue">Direccion</th>
+                        <th style="color:aliceblue">Telefono</th>
+                        <th style="color:aliceblue">Acciones</th>
+                    </tr>
+                    {% if laboratorios %}
+                    {% for laboratorio in laboratorios %}
+                    <tr>
+                        <td>{{ laboratorio.id }}</td>
+                        <td>{{ laboratorio.nombre }}</td>
+                        
+                        <td>{{ laboratorio.disponibilidad }}</td>
+                        <td>{{ laboratorio.direccion }}</td>
+                        <td>{{ laboratorio.telefono }}</td>
+                        <td> 
+                            <form action="{% url 'abrir_actualizar_laboratorios' %}" method="post" class="form-botones">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_laboratorios" value="{{ laboratorio.id }}">
+                            <button class="btnEditar" name="editar" id="editar">
+                                  <img src="{% static 'img/icons/icedit.png' %}">
+                            </button>
+                            </form>
+                            <form action="{% url 'eliminar_laboratorios' id=laboratorio.id  %}"  method="post">
+                                {% csrf_token %}
+                            <input type="hidden" name="id_laboratorios" value="{{ laboratorios.id }}">
+                            <button class="btnEliminar" name="eliminar" id="eliminar">
+                              <img src="{% static 'img/icons/icdelete.png' %}">
+                            </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="5">No se encontraron cargos.</td>
+                      </tr>
+                    {% endif %}
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
