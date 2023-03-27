@@ -38,6 +38,8 @@ from CLINICA.views_api.views_costo_historico_medicamento import *
 from CLINICA.views_api.views_medicamento import *
 from CLINICA.views_api.views_enfermedad import *
 from CLINICA.views_api.views_enfermedad_detalle import *
+from CLINICA.views_api.views_laboratorios import *
+from CLINICA.views_api.views_metodo_de_pago import *
 
 
 urlpatterns = [
@@ -66,7 +68,7 @@ urlpatterns = [
     path('CLINICA/templates/presentacion/iniciomenu.html',iniciomenu),
     path('CLINICA/templates/usuario/usuario.html',usuario),
     path('CLINICA/templates/inicio.html',inicio),
-    path('CLINICA/templates/empleado/empleado.html',empleado),
+    
     #
     path('CLINICA/templates/usuario/listar.html',buscar_usuarios,name = 'buscar_usuarios'),
     path('CLINICA/templates/usuario/listar.html',listar_usuarios,name = 'lista_usuarios'),
@@ -75,8 +77,7 @@ urlpatterns = [
     path('CLINICA/templates/usuario/actualizar.html',abrir_actualizar_usuarios,name="abrir_actualizar_usuarios"),
     path('CLINICA/templates/cargos/cargo.html',crear_cargo, name="crear_cargo"),
     path('CLINICA/templates/usuario/actualizar.html/<int:id>',actualizar_usuario,name="actualizar_usuario"),
-    path('CLINICA/templates/empleado/buscarEmpleado.html',listar_empleados, name="listar_empleados"),
-
+    
     path('CLINICA/templates/cargos/buscarCargo.html',listar_cargos, name="listar_cargos"),
     path('CLINICA/templates/cargos/buscarDocumento.html',listar_documentos, name= 'lista_documentos'),
 
@@ -121,6 +122,15 @@ urlpatterns = [
     path('CLINICA/templates/Pacientes/Paciente.html',crear_paciente, name="crear_paciente"),
     path('CLINICA/templates/Pacientes/buscarPaceinte.html',listar_pacientes, name="listar_pacientes"),
 
+
+    #Empleados
+   
+    path('CLINICA/templates/empleado/EmpleadoActualizar.html',abrir_actualizar_empleados,name="abrir_actualizar_empleados"),
+    path('CLINICA/templates/empleado/EmpleadoActualizar.html/<int:id>',actualizar_empleados,name="actualizar_empleados"),
+    path('CLINICA/templates/empleado/buscarEmpleado.html/<int:id>',eliminar_empleados,name = 'eliminar_empleados'),
+    path('CLINICA/templates/empleado/buscarEmpleado.html',buscar_empleados,name = 'buscar_empleados'),
+    path('CLINICA/templates/empleado/empleado.html',crear_empleados, name="crear_empleados"),
+    path('CLINICA/templates/empleado/buscarEmpleado.html',listar_empleados, name="listar_empleados"),
 
     # Tipo Muestra
     path('CLINICA/templates/TipoMuestra/TMuestraActualizar.html',abrir_actualizar_TipoMuestra,name="abrir_actualizar_TipoMuestra"),
@@ -184,9 +194,24 @@ urlpatterns = [
     path('CLINICA/templates/enfermedad/enfermedad.html',crear_enfermedad, name="crear_enfermedad"),
     path('CLINICA/templates/enfermedad/buscar_enfermedad.html',listar_enfermedad, name="listar_enfermedad"),
 
+    #Laboratorios
+    path('CLINICA/templates/Laboratorios/ActualizarLaboratorios.html',abrir_actualizar_laboratorios,name="abrir_actualizar_laboratorios"),
+    path('CLINICA/templates/Laboratorios/ActualizarLaboratorios.html/<int:id>',actualizar_laboratorios,name="actualizar_laboratorios"),
+    path('CLINICA/templates/Laboratorios/BuscarLaboratorios.html/<int:id>',eliminar_laboratorios,name = 'eliminar_laboratorios'),
+    path('CLINICA/templates/Laboratorios/BuscarLaboratorios.html',buscar_laboratorios,name = 'buscar_laboratorios'),
+    path('CLINICA/templates/Laboratorios/Laboratorios.html',crear_laboratorios, name="crear_laboratorios"),
+    path('CLINICA/templates/Laboratorios/BuscarLaboratorios.html',listar_laboratorios, name="listar_laboratorios"),
+
     #costo historico
     path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html/<int:id>',eliminar_enfermedad_detalle,name = 'eliminar_enfermedad_detalle'),
     path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html',buscar_enfermedad_detalle,name = 'buscar_enfermedad_detalle'),
 
+    #Metodos de pago
+    path('CLINICA/templates/MetodoDePago/ActualizarMetodoDePago.html',abrir_actualizar_metodos_De_pago,name="abrir_actualizar_metodos_De_pago"),
+    path('CLINICA/templates/MetodoDePago/ActualizarMetodoDePago.html/<int:id>',actualizar_metodos_De_pago,name="actualizar_metodos_De_pago"),
+    path('CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html/<int:id>',eliminar_metodos_De_pago,name = 'eliminar_metodos_De_pago'),
+    path('CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html',buscar_metodos_De_pago,name = 'buscar_metodos_De_pago'),
+    path('CLINICA/templates/MetodoDePago/MetodoDePago.html',crear_metodos_De_pago, name="crear_metodos_De_pago"),
+    path('CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html',listar_metodos_De_pago, name="listar_metodos_De_pago"),
 
 ]

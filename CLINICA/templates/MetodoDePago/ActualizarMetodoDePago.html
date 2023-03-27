@@ -1,0 +1,71 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar Metodo de pago{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+      width: 90%;
+      height: 40px;
+  }
+
+  input[type="password"] {
+      width: 90%;
+      height: 40px;
+  }
+  input[type="number"] {
+      width: 90%;
+      height: 40px;
+  }
+
+  select {
+      width: 90%;
+      height: 40px;
+  }
+  fieldset{
+      width: 95%;
+  }
+  #alert-alert-info{
+    top:70vh;
+  }
+  </style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Metodo de pago</span></h1>
+  <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+          <h3>Medical Rescue</h3>
+          <ul class="servicios">
+              <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+              </li>
+              <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+              <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+              <button class="button"><a href="/CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html">BUSCAR</a></button>
+          </ul>
+      </div>
+      <div class="contacto">
+          <h3></h3>
+        <form method="POST" action="{% url 'actualizar_metodos_De_pago' id=metodop.0.id %}">
+          {% csrf_token %}
+          <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required style="width: 40%;height: 40px;" value="{{ metodop.0.nombre }}">
+          </p>
+          
+        <p class="full">
+            <label>Descripción</label>
+            <textarea name="descripcion" required style="width: 100%;height: 100px;">{{ metodop.0.descripcion }}</textarea>
+          </p>
+          <p> 
+          <p class="full">
+            <button class="boton-enviar" style="width: 80%; height: 30px; margin: 2px;">Actualizar</button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% if mensaje %}
+    <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+    </div>
+  {% endif %}
+  {% endblock %}
