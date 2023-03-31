@@ -64,8 +64,8 @@
                 <form id="myForm" class="formulario" method="POST" action="{% url 'crear_diagnosticos' %}">
                     {% csrf_token %}
                     <input type="hidden" id="valoresSeleccionadosInput" name="valoresSeleccionados">
-                    <div style="display: block ;width: 200%">
-                        <div style="display: block;width: 200%">
+                    <div style="display: block ;width: 170%">
+                        <div style="display: block;width: 170%">
                             <label class="campo-registro">Descripcion</label>
                             <input type="text" name="descripcion" id="descripcion" required 
                                 oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');"

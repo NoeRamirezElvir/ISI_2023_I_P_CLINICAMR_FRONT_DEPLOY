@@ -1,0 +1,60 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}DIAGNOSTICO DETALLES{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Diagnostico Detalle</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_diagnostico_detalle' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Diagnostico</th>
+            <th style="color:aliceblue">Enfermedad</th>
+            <th style="color:aliceblue">Accion Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if detalles %}
+          {% for detalle in detalles %}
+          <tr>
+            <td>{{ detalle.id }}</td>
+            <td>{{ detalle.idDiagnostico.descripcion }}</td>
+            <td>{{ detalle.idEnfermedad.nombre }}</td>
+
+            <td>
+              <form action="{% url 'eliminar_diagnostico_detalle' id=detalle.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_detalle" value="{{ detalle.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="6">No se encontraron precios historicos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

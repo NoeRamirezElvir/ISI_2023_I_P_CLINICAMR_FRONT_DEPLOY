@@ -1,15 +1,15 @@
+from decimal import Decimal
 from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
-
 
 url = 'http://localhost:8080/api/'
 def listar_tipo(request):
     response = requests.get(url+'tipo/')
     if response.status_code == 200:
         data = response.json()
-        tipo = data['tipo']
+        tipo = data['tipos']
     else:
         tipo = []
     context = {'tipo': tipo}
@@ -26,8 +26,13 @@ def crear_tipo(request):
         idsubtipo = int(request.POST['idsubtipo'])
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
-        registro_temp = {'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo}
-        response = requests.post(url+'tipo/', json={'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo})
+        if 'precio' in request.POST: #Validar que precio este en la consulta, si no esta es que viene como 0 o vacio
+            precio = request.POST['precio']
+        else:
+            precio = '0.00'
+
+        registro_temp = {'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo, 'precio': precio}
+        response = requests.post(url+'tipo/', json={'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo, 'precio':precio})
         data={}
         if response.status_code == 200:
             data = response.json()
@@ -54,7 +59,7 @@ def abrir_actualizar_tipo(request):
          mensaje = data['message']
          if resp.status_code == 200:
             data = resp.json()
-            tipo = data['tipo']
+            tipo = data['tipos']
             mensaje = data['message']
          else:
             tipo = []
@@ -71,19 +76,23 @@ def actualizar_tipo(request, id):
             subtipo= []
     if request.method == 'POST':
         idTemporal = id
-        idsubtipo = int (request.POST['idsubtipo'])
+        idsubtipo = int(request.POST['idsubtipo'])
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
+        if 'precio' in request.POST: #Validar que precio este en la consulta, si no esta es que viene como 0 o vacio
+            precio = request.POST['precio']
+        else:
+            precio = '0.00'
         
         
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'tipo/id/{idTemporal}', json={'idsubtipo': idsubtipo,'nombre': nombre, 'descripcion': descripcion})
+        response = requests.put(url+f'tipo/id/{idTemporal}', json={'idsubtipo': idsubtipo,'nombre': nombre, 'descripcion': descripcion, 'precio':precio})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el tipo relacionado con el id
         res = requests.get(url+f'tipo/busqueda/id/{idTemporal}')
         data = res.json()#se guarda en otra variable
-        tipo = data['tipo']
+        tipo = data['tipos']
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
@@ -96,7 +105,7 @@ def actualizar_tipo(request, id):
         response = requests.get(url+f'tipo/busqueda/id/{idTemporal}')
         if response.status_code == 200:
             data = response.json()
-            tipo = data['tipo']
+            tipo = data['tipos']
             mensaje = data['message']
             return render(request, 'Tipos/tipoactualizar.html', {'tipo': tipo,'subtipo':subtipo})
         else:
@@ -111,7 +120,7 @@ def eliminar_tipo(request, id):
         rsp_tipo = requests.get(url + 'tipo/') 
         if rsp_tipo.status_code == 200:
             data = rsp_tipo.json()
-            tipo = data['tipo']
+            tipo = data['tipos']
         else:
             tipo = []
         mensaje = res['message']
@@ -131,9 +140,8 @@ def buscar_tipo(request):
                     data = response.json()
                     mensaje = data['message']
                     tipo = {}
-                    tipo = data['tipo']
+                    tipo = data['tipos']
                     context = {'tipo': tipo, 'mensaje':mensaje}
-                    print(context)
                     return render(request, 'Tipos/buscartipo.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -141,14 +149,14 @@ def buscar_tipo(request):
                     data = response.json()
                     mensaje = data['message']
                     tipo = {}
-                    tipo = data['tipo']
+                    tipo = data['tipos']
                     context = {'tipo': tipo, 'mensaje':mensaje}
                     return render(request, 'Tipos/buscartipo.html', context)
         else:
             response = requests.get(url+'tipo/')
             if response.status_code == 200:
                 data = response.json()
-                tipo = data['tipo']
+                tipo = data['tipos']
                 mensaje = data['message']   
                 return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})
             else:

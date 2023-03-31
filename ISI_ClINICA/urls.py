@@ -45,6 +45,9 @@ from CLINICA.views_api.views_parametros_generales import *
 from CLINICA.views_api.views_tratamientos import*
 from CLINICA.views_api.views_resultado import *
 from CLINICA.views_api.views_diagnostico import *
+from CLINICA.views_api.views_precio_historico_tratamiento import *
+from CLINICA.views_api.views_precio_historico_examen import *
+from CLINICA.views_api.views_diagnostico_detalle import *
 
 
 urlpatterns = [
@@ -207,7 +210,7 @@ urlpatterns = [
     path('CLINICA/templates/Laboratorios/Laboratorios.html',crear_laboratorios, name="crear_laboratorios"),
     path('CLINICA/templates/Laboratorios/BuscarLaboratorios.html',listar_laboratorios, name="listar_laboratorios"),
 
-    #costo historico
+    #Detalle enfermedad
     path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html/<int:id>',eliminar_enfermedad_detalle,name = 'eliminar_enfermedad_detalle'),
     path('CLINICA/templates/enfermedad_detalle/buscar_enfermedad_detalle.html',buscar_enfermedad_detalle,name = 'buscar_enfermedad_detalle'),
 
@@ -263,5 +266,17 @@ urlpatterns = [
     path('CLINICA/templates/diagnostico/diagnostico.html',crear_diagnosticos, name="crear_diagnosticos"),
     path('CLINICA/templates/diagnostico/Buscar_diagnostico.html',listar_diagnosticos, name="listar_diagnosticos"),
 
+    #Detalle Diagnostico
+    path('CLINICA/templates/diagnostico_detalle/buscar_diagnostico_detalle.html/<int:id>',eliminar_diagnostico_detalle,name = 'eliminar_diagnostico_detalle'),
+    path('CLINICA/templates/diagnostico_detalle/buscar_diagnostico_detalle.html',buscar_diagnostico_detalle,name = 'buscar_diagnostico_detalle'),
+
+
+    #precio historico tratamiento
+    path('CLINICA/templates/precio_historico_tratamiento/buscar_precio_historico_tratamiento.html/<int:id>',eliminar_precio_historico_tratamiento,name = 'eliminar_precio_historico_tratamiento'),
+    path('CLINICA/templates/precio_historico_tratamiento/buscar_precio_historico_tratamiento.html',buscar_precio_historico_tratamiento,name = 'buscar_precio_historico_tratamiento'),
+
+    #precio historico examen
+    path('CLINICA/templates/precio_historico_examen/buscar_precio_historico_examen.html/<int:id>',eliminar_precio_historico_examen,name = 'eliminar_precio_historico_examen'),
+    path('CLINICA/templates/precio_historico_examen/buscar_precio_historico_examen.html',buscar_precio_historico_examen,name = 'buscar_precio_historico_examen'),
 
 ]

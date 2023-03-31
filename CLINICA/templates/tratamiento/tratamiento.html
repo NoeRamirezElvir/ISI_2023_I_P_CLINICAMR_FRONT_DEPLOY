@@ -9,7 +9,7 @@
     height: 40px;
   }
   input[type="date"] {
-        width: 95%;
+        width: 90%;
         height: 40px;
         text-align: center;
   }
@@ -43,25 +43,42 @@
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
             <label class="campo-registro" for="idTipoDocument1">Paciente</label>
-            <select name="idPaciente" id="idTipoDocument1">
+            <select name="idPaciente" id="idPaciente">
+              <option value="0" {% if registro_temp.idPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
               {% for pacientes in paciente_list %}
               <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{pacientes.nombre }}</option>
               {% endfor %}
             </select>
           </div>
           <div style="display: block;width: 100%">
-            <label class="campo-registro" for="idTipoDocument1">Tipo</label>
-            <select name="idTipo" id="idTipoDocument1">
-              {% for tipo in tipo_list %}
-              <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idTipo %}selected{% endif %}>{{tipo.nombre }}</option>
-              {% endfor %}
-            </select>
+            <label class="campo-registro">Fecha Actual</label>
+            <input type="date" name="fecha" id="fecha" required value="{{registro_temp.fecha}}">
           </div>
         </div>
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro">Fecha Actual</label>
-            <input type="date" name="fecha" required value="{{registro_temp.fecha}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+            <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+            <label class="campo-registro" for="idTipoDocument1">Tipo</label>
+            <select name="idTipo" id="idTipo" onchange="activarInput()">
+              <option value="0" {% if registro_temp.idTipo == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for tipo in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idTipo %}selected{% endif %} data-dato="{{ tipo.precio }}">{{tipo.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label>Precio</label>
+            <input type="text" name="precio" id="precio" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Estado Actual</label>
+            <input type="text" name="estado" id="estado" value="{{registro_temp.estado}}" >
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Dias de Tratamiento</label>
+            <input type="text" name="diasTratamiento" id="diasTratamiento" value="{{registro_temp.diasTratamiento}}" placeholder="0" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d]|\.(?=.*\.)/g, '')">
           </div>
         </div>
         <p class="full">
@@ -76,4 +93,23 @@
   <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+<script>
+  window.addEventListener("load", function() {
+		  activarInput();
+	});
+  function activarInput() {
+  var select = document.getElementById("idTipo");
+  var input = document.getElementById("precio");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "0") {
+    input.removeAttribute("disabled");
+  } else {
+    input.setAttribute("disabled", "disabled");
+    input.value = dato;
+  }
+}
+
+</script>
 {% endblock %}

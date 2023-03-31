@@ -45,17 +45,6 @@
         <form method="POST" action="{% url 'crear_proveedor' %}">
         {% csrf_token %}
         
-        <div style="display: block;width: 50%">
-          <label class="campo-registro" for="idTipoDocument1">Tipo</label>
-          <select name="idTipo" id="idTipoDocument1">
-            <option value="0" {% if registro_temp.idTipo == 0 %}selected{% endif %}>Seleccione una opción</option>"
-              {% for tipo in tipos %}
-                  <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idTipo %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
-              {% endfor %}
-          </select>
-          </div>
-        
-
         <div style="display: inline-flex ;width: 100%">
         <div style="display: block;width: 70%">
         <label class="campo-registro">Nombre</label>

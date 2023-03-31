@@ -1,7 +1,7 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Actualizar de Enfermedades{% endblock %}
+{% block tittle %}Actualizar de Diagnosticos{% endblock %}
 {% block content %}
 <style type="text/css">
     input[type="text"] {
@@ -64,12 +64,12 @@
                 <form id="myForm" class="formulario" method="POST" action="{% url 'actualizar_diagnosticos' id=registro_temp.id %}">
                     {% csrf_token %}
                     <input type="hidden" id="valoresSeleccionadosInput" name="valoresSeleccionados">
-                    <div style="display: block ;width: 200%">
-                        <div style="display: block;width: 200%">
-                            <label class="campo-registro">Descrpcion</label>
+                    <div style="display: block ;width: 170%">
+                        <div style="display: block;width: 170%">
+                            <label class="campo-registro">Descripcion</label>
                             <input type="text" name="descripcion" id="descripcion" required 
                                 oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');"
-                                value="{{ registro_temp.descrpcion }}" />
+                                value="{{ registro_temp.descripcion }}" />
                         </div>
                     </div>
                     <p class="full">
@@ -79,10 +79,10 @@
                     </p>
                 </form>
                     <div style="display: block;width: 100%;margin-left: 100px;">
-                        <label class="campo-registro" for="idTipoDocument1">Enfermedad</label>
-                        <select name="idEnfermedad" id="idTipoDocument1">
+                        <label class="campo-registro" for="idTipoDocument1">Sintomas</label>
+                        <select name="idSintoma" id="idTipoDocument1">
                             <option value="0" selected>Seleccione una opción</option>"
-                            {% for enfermedad in enfermemdades %}
+                            {% for enfermedad in enfermedades %}
                             <option value="{{ enfermedad.id }}-{{ enfermedad.nombre }}">{{enfermedad.id}}&#41 {{ enfermedad.nombre }}</option>
                             {% endfor %}
                         </select>
@@ -96,7 +96,7 @@
             <table id="myTable" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 200px;">Enfermedad</th>
+                    <th style="width: 200px;">Enfermedades</th>
                     <th style="width: 200px">Acciones</th>
                   </tr>
                 </thead>
@@ -118,10 +118,10 @@
 <script>
 var valoresSeleccionados = [];
 
-{% for enfermedad in registro_temp.lista %}
-  var enfermedadObj = "{{ enfermedad.id }}-{{ enfermedad.nombre }}";
-  if (!valoresSeleccionados.includes(enfermedadObj) && enfermedadObj != 0) {
-    valoresSeleccionados.push(enfermedadObj);
+{% for sintoma in registro_temp.lista %}
+  var sintomaObj = "{{ sintoma.id }}-{{ sintoma.nombre }}";
+  if (!valoresSeleccionados.includes(sintomaObj) && sintomaObj != 0) {
+    valoresSeleccionados.push(sintomaObj);
     cargarTabla();
   }
 {% endfor %}

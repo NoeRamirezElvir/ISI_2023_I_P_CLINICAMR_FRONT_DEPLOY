@@ -3,7 +3,6 @@ import json
 from django.shortcuts import render
 import requests
 
-
 url = 'http://localhost:8080/api/'
 def listar_proveedor(request):
     response = requests.get(url+'proveedores/')
@@ -18,14 +17,13 @@ def listar_proveedor(request):
 def crear_proveedor(request):
     tipos = list_tipos()
     if request.method == 'POST':
-        idTipo = request.POST['idTipo']
         nombre = request.POST['nombre']
         telefono = request.POST['telefono']
         correo = request.POST['correo']
         direccion = request.POST ['direccion']
 
-        registro_temp = {'idTipo': idTipo, 'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion}
-        response = requests.post(url+'proveedores/', json={'idTipo': idTipo, 'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion})
+        registro_temp = {'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion}
+        response = requests.post(url+'proveedores/', json={'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion})
         data={}
         if response.status_code == 200:
             data = response.json()
@@ -55,13 +53,12 @@ def abrir_actualizar_proveedor(request):
 def actualizar_proveedor(request, id):
     if request.method == 'POST':
         idTemporal = id
-        idTipo = request.POST['idTipo']
         nombre = request.POST['nombre']
         telefono = request.POST['telefono']
         correo = request.POST['correo']
         direccion = request.POST ['direccion']
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'proveedores/id/{idTemporal}', json={'idTipo': idTipo, 'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion})
+        response = requests.put(url+f'proveedores/id/{idTemporal}', json={'nombre': nombre,'telefono': telefono,'correo': correo,'direccion': direccion})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el cargo relacionado con el id
@@ -115,7 +112,6 @@ def buscar_proveedor(request):
                     proveedores = {}
                     proveedores = data['proveedores']
                     context = {'proveedores': proveedores, 'mensaje':mensaje}
-                    print(context)
                     return render(request, 'Proveedor/BuscarProveedor.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)

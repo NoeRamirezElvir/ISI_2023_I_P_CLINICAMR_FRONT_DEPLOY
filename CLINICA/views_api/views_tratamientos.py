@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse
 import json
 from django.shortcuts import render
@@ -16,24 +17,17 @@ def listar_tratamientos(request):
     return render(request, 'tratamiento/Buscar_tratamiento.html', context)
 
 def crear_tratamientos(request):
-    rsp_paciente = requests.get(url+'pacientes/')
-    if rsp_paciente.status_code == 200:
-            data = rsp_paciente.json()
-            pacientes_list = data['pacientes']
-    else:
-            pacientes_list = []
-    rsp_tipo = requests.get(url+'tipo/')
-    if rsp_paciente.status_code == 200:
-            data = rsp_tipo.json()
-            tipo_list = data['tipo']
-    else:
-            tipo_list = []
+    pacientes_list = list_pacientes()
+    tipo_list = list_tipos()
+
     if request.method == 'POST':
         idPaciente = int(request.POST['idPaciente'])
         idTipo = int(request.POST['idTipo'])
         fecha = request.POST['fecha']
-        registro_temp = {'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha}
-        response = requests.post(url+'tratamientos/', json={'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha})
+        diasTratamiento = int(request.POST['diasTratamiento'])
+        estado = request.POST['estado']
+        registro_temp = {'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha, 'diasTratamiento':diasTratamiento, 'estado':estado}
+        response = requests.post(url+'tratamientos/', json={'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha, 'diasTratamiento':diasTratamiento, 'estado':estado})
         data={}
         if response.status_code == 200:
             data = response.json()
@@ -46,6 +40,8 @@ def crear_tratamientos(request):
         return render(request, 'tratamiento/tratamiento.html', {'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 def abrir_actualizar_tratamientos(request):
+    pacientes_list = list_pacientes()
+    tipo_list = list_tipos()
     if request.method == 'POST':
          resp = requests.get(url+'tratamientos/busqueda/id/'+str(request.POST['id_tratamientos']))
          data = resp.json()
@@ -56,18 +52,22 @@ def abrir_actualizar_tratamientos(request):
             mensaje = data['message']
          else:
             tratamientos = []
-         context = {'tratamientos': tratamientos, 'mensaje':mensaje}
+         context = {'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
          mensaje = data['message']
          return render(request, 'tratamiento/Actualizar_tratamiento.html', context)
     
 def actualizar_tratamientos(request, id):
+    pacientes_list = list_pacientes()
+    tipo_list = list_tipos()
     if request.method == 'POST':
         idTemporal = id
         idPaciente = int(request.POST['idPaciente'])
         idTipo = int(request.POST['idTipo'])
         fecha = request.POST['fecha']
+        diasTratamiento = int(request.POST['diasTratamiento'])
+        estado = request.POST['estado']
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'tratamientos/id/{idTemporal}', json={'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha})
+        response = requests.put(url+f'tratamientos/id/{idTemporal}', json={'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha, 'diasTratamiento':diasTratamiento, 'estado':estado})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el cargo relacionado con el id
@@ -77,10 +77,10 @@ def actualizar_tratamientos(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos })
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tratamientos/busqueda/id/{idTemporal}')
@@ -88,10 +88,10 @@ def actualizar_tratamientos(request, id):
             data = response.json()
             tratamientos = data['tratamientos']
             mensaje = data['message']
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'tratamientos': tratamientos})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = data['message']
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
 
 def eliminar_tratamientos(request, id):
     if request.method == 'POST':
@@ -153,3 +153,13 @@ def list_tipos():
     else:
         tipos_list = []
         return tipos_list
+
+def list_pacientes():
+    rsp_paciente = requests.get(url+'pacientes/')
+    if rsp_paciente.status_code == 200:
+        data = rsp_paciente.json()
+        pacientes_list = data['pacientes']
+        return pacientes_list
+    else:
+        pacientes_list = []
+        return pacientes_list

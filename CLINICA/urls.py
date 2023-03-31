@@ -27,6 +27,9 @@ from views_api import views_parametros_generales
 from views_api import views_tratamientos
 from views_api import views_resultado
 from views_api import views_diagnostico
+from views_api import views_precio_historico_tratamiento
+from views_api import views_precio_historico_examen
+from views_api import views_diagnostico_detalle
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -180,14 +183,9 @@ urlpatterns = [
     path('',views_usuarios.abrir_actualizar_usuarios , name='abrir_actualizar_usuarios'),
     path('',views_usuarios.actualizar_usuario , name='actualizar_usuario'),
     path('',views_usuarios.eliminar_usuario , name='eliminar_usuario'),
-
-    
-    
   
-    
     path('',views.especialidad, name='especialidad'),
     path('',views.documento, name='documento'),
-
 
     #Laboratorios
     path('',views_laboratorios.abrir_actualizar_laboratorios , name='abrir_actualizar_laboratorios'),
@@ -197,7 +195,6 @@ urlpatterns = [
     path('',views_laboratorios.buscar_laboratorios, name='buscar_laboratorios'),
     path('',views_laboratorios.crear_laboratorios, name='crear_laboratorios'),
 
-
     #Metodo de pago
     path('',views_metodo_de_pago.abrir_actualizar_metodos_De_pago , name='abrir_actualizar_metodos_De_pago'),
     path('',views_metodo_de_pago.actualizar_metodos_De_pago , name='actualizar_metodos_De_pago'),
@@ -206,7 +203,6 @@ urlpatterns = [
     path('',views_metodo_de_pago.buscar_metodos_De_pago, name='buscar_metodos_De_pago'),
     path('',views_metodo_de_pago.crear_metodos_De_pago, name='crear_metodos_De_pago'),
    
-
     #Proveedor
     path('',views_proveedor.abrir_actualizar_proveedor , name='abrir_actualizar_proveedor'),
     path('',views_proveedor.actualizar_proveedor , name='actualizar_proveedor'),
@@ -214,8 +210,6 @@ urlpatterns = [
     path('',views_proveedor.listar_proveedor, name='buscar_proveedor'),
     path('',views_proveedor.buscar_proveedor, name='buscar_proveedor'),
     path('',views_proveedor.crear_proveedor, name='crear_proveedor'),
-   
-
    
     #parametros_generales
     path('',views_parametros_generales.abrir_actualizar_parametros_generales , name='abrir_actualizar_parametros_generales'),
@@ -240,6 +234,20 @@ urlpatterns = [
     path('',views_diagnostico.listar_diagnosticos, name='buscar_diagnosticos'),
     path('',views_diagnostico.buscar_diagnosticos, name='buscar_diagnosticos'),
     path('',views_diagnostico.crear_diagnosticos, name='crear_diagnosticos'),
+
+    #Diagnostico detalle
+    path('',views_diagnostico_detalle.eliminar_diagnostico_detalle , name='eliminar_diagnostico_detalle'),
+    path('',views_diagnostico_detalle.buscar_diagnostico_detalle, name='buscar_diagnostico_detalle'),
+
+
+    #Precio historico
+    path('',views_precio_historico_tratamiento.eliminar_precio_historico_tratamiento , name='eliminar_precio_historico_tratamiento'),
+    path('',views_precio_historico_tratamiento.buscar_precio_historico_tratamiento, name='buscar_precio_historico_tratamiento'),
+
+    #Precio historico
+    path('',views_precio_historico_examen.eliminar_precio_historico_examen , name='eliminar_precio_historico_examen'),
+    path('',views_precio_historico_examen.buscar_precio_historico_examen, name='buscar_precio_historico_examen'),
+
 
 ]
 #path('',views.cargo, name='cargo'),

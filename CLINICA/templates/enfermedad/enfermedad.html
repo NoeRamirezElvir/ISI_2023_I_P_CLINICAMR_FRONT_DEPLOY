@@ -118,6 +118,17 @@
 <script>
 var valoresSeleccionados = [];
 
+{% for sintoma in registro_temp.lista %}
+  var sintomaObj = "{{ sintoma.id }}-{{ sintoma.nombre }}";
+  if (!valoresSeleccionados.includes(sintomaObj) && sintomaObj != 0) {
+    valoresSeleccionados.push(sintomaObj);
+    cargarTabla();
+  }
+{% endfor %}
+
+
+
+
 function guardarValor() {
   var valorSeleccionado = document.getElementById("idTipoDocument1").value;
   if (!valoresSeleccionados.includes(valorSeleccionado) && valorSeleccionado != 0) {

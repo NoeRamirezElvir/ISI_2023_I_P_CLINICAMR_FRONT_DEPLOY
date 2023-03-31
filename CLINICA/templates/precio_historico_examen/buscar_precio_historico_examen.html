@@ -1,0 +1,63 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}PRECIOS HISTORICOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Precio Historico Examen</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_precio_historico_examen' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Examen</th>
+            <th style="color:aliceblue">Precio</th>
+            <th style="color:aliceblue">fecha Inicio</th>
+            <th style="color:aliceblue">fecha Final</th>
+            <th style="color:aliceblue">Accion Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if historicos %}
+          {% for historico in historicos %}
+          <tr>
+            <td>{{ historico.id }}</td>
+            <td>{{ historico.idTipo.nombre }}</td>
+            <td>{{ historico.precio }}</td>
+            <td>{{ historico.fechaInicio }}</td>
+            <td>{{ historico.fechaFinal }}</td>
+            <td>
+              <form action="{% url 'eliminar_precio_historico_examen' id=historico.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_historicos" value="{{ historico.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="6">No se encontraron precios historicos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

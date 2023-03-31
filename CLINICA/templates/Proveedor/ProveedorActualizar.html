@@ -40,17 +40,6 @@
       <h3></h3>
       <form method="POST" action="{% url 'actualizar_proveedor' id=proveedores.0.id %}">
         {% csrf_token %}
-        <div style="display: block;width: 100%">
-          <label class="campo-registro" for="idTipoDocument1">Tipo</label>
-          <select name="idTipo" id="idTipoDocument1">
-            <option value="0" {% if proveedores.0.idTipo_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
-              {% for tipo in tipos %}
-                  <option value="{{ tipo.id }}"{% if tipo.id == proveedores.0.idTipo_id %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
-              {% endfor %}
-          </select>
-      </div>
-        
-
         <div style="display: inline-flex ;width: 100%">
         <div style="display: block;width: 70%">
         <label class="campo-registro">Nombre</label>

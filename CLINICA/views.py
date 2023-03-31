@@ -187,7 +187,7 @@ def crear_enfermedad(request):#
 def eliminar_enfermedad(request,id):#
     return render(request,'enfermedad/enfermedad.html')
 
-#costo historico
+#Enfermedad Detalle
 def buscar_enfermedad_detalle(request):#
     return render(request,'enfermedad_detalle/buscar_enfermedad_detalle.html')
 def eliminar_enfermedad_detalle(request,id):#
@@ -228,8 +228,6 @@ def documento(request):
 def buscarEmpleado(request):
     return render(request,'empleado/buscarEmpleado.html')
 
-
-
 #Empleados
 def abrir_actualizar_empleados(request):#
     return render(request,'empleado/EmpleadoActualizar.html')
@@ -241,8 +239,6 @@ def crear_empleados(request):#
     return render(request,'empleado/empleado.html')
 def eliminar_empleados(request,id):#
     return render(request,'empleado/empleado.html')
-
-
 
 #Laboratorios
 def abrir_actualizar_laboratorios(request):#
@@ -292,7 +288,6 @@ def crear_parametros_generalesr(request):#
 def eliminar_parametros_generales(request,id):#
     return render(request,'parametros_generales/parametros_generales.html')
 
-
 #Tratamientos
 def abrir_actualizar_tratamientos(request):#
     return render(request,'tratamiento/Actualizar_tratamiento.html')
@@ -304,8 +299,6 @@ def crear_tratamientos(request):#
     return render(request,'tratamiento/tratamiento.html')
 def eliminar_tratamientos(request,id):#
     return render(request,'tratamiento/tratamiento.html')
-
-
 
 #resultados
 def abrir_actualizar_resultados(request):#
@@ -319,7 +312,7 @@ def crear_resultados(request):#
 def eliminar_resultados(request,id):#
     return render(request,'Resultados/Resultados.html')
 
-#resultados
+#Diagnostico
 def abrir_actualizar_diagnosticos(request):#
     return render(request,'diagnostico/Actualizar_diagnostico.html')
 def actualizar_diagnosticos(request,id):#
@@ -330,3 +323,22 @@ def crear_diagnosticos(request):#
     return render(request,'diagnostico/diagnostico.html')
 def eliminar_diagnosticos(request,id):#
     return render(request,'diagnostico/diagnostico.html')
+
+#Diagnostico Detalle
+def buscar_diagnostico_detalle(request):#
+    return render(request,'diagnostico_detalle/buscar_diagnostico_detalle.html')
+def eliminar_diagnostico_detalle(request,id):#
+    return render(request,'diagnostico_detalle/buscar_diagnostico_detalle.html')
+
+
+#precio historico tratamiento
+def buscar_precio_historico_tratamiento(request):#
+    return render(request,'precio_historico_tratamiento/buscar_precio_historico_tratamiento.html')
+def eliminar_precio_historico_tratamiento(request,id):#
+    return render(request,'precio_historico_tratamiento/buscar_precio_historico_tratamiento.html')
+
+#precio historico examen
+def buscar_precio_historico_examen(request):#
+    return render(request,'precio_historico_examen/buscar_precio_historico_examen.html')
+def eliminar_precio_historico_examen(request,id):#
+    return render(request,'precio_historico_examen/buscar_precio_historico_examen.html')

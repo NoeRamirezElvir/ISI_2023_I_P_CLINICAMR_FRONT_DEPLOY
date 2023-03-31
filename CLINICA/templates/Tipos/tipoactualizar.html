@@ -57,24 +57,32 @@
       <h3></h3>
       <form method="POST" action="{% url 'actualizar_tipo' id=tipo.0.id %}">
         {% csrf_token %}
-        <p>
-          <label>Nombre</label>
-          <input type="text" name="nombre" required value="{{ tipo.0.nombre }}">
-        </p>
-        <label class="campo-registro" for="idsubtipo">SubTipo</label>
-        <select name="idsubtipo" id="idsubtipo" required>
-          {% for subtipos in subtipo %}
-          <option value="{{ subtipos.id }}">{{ subtipos.nombre }}</option>
-          {% endfor %}
-
-          <p class="full">
+        <div style="display: flex ;width: 100%;height: 50px;">
+          <div style="display: flex;width: 50%;">
+            <label>Nombre</label>
+            <input type="text" name="nombre" required value="{{tipo.0.nombre}}">
+          </div>
+          <div style="display: flex;width: 50%;">
             <label>Descripción</label>
-            <textarea name="descripcion">{{ tipo.0.descripcion }}</textarea>
-          </p>
-          <p>
-          <p class="full">
-            <button class="boton-enviar">Actualizar</button>
-          </p>
+            <textarea name="descripcion" required style="height: 40px;">{{tipo.0.descripcion}}</textarea>
+          </div>
+        </div>
+        <div style="display: flex ;width: 100%;height: 50px;">
+          <div style="display: flex;width: 50%;">
+            <label class="campo-registro" for="idsubtipo">SubTipo</label>
+            <select name="idsubtipo" id="idsubtipo" required onchange="activarInput()">
+                <option value="0" {% if tipo.0.idsubtipo.id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                {% for subtipos in subtipo %}
+                    <option value="{{ subtipos.id }}"{% if subtipos.id == tipo.0.idsubtipo.id %}selected{% endif %} data-dato="{{subtipos.nombre}}">{{ subtipos.nombre }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div style="display: flex;width: 50%;">
+            <label>Precio</label>
+            <input type="text" name="precio" id="precio" value="{{tipo.0.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" style="width: 70%;margin-left: 45px;">                  
+          </div>
+        </div>
+          <button class="boton-enviar">Actualizar</button>
       </form>
     </div>
   </div>
@@ -84,4 +92,20 @@
   <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+<script>
+  window.addEventListener("load", activarInput);
+  function activarInput() {
+  var select = document.getElementById("idsubtipo");
+  var input = document.getElementById("precio");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "examen" || dato === "tratamiento") {
+    input.removeAttribute("disabled");
+  } else {
+    input.setAttribute("disabled", "disabled");
+    input.value = "00.00"
+  }
+}
+</script>
 {% endblock %}

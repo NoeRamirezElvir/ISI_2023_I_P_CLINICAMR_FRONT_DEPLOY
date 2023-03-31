@@ -7,7 +7,7 @@
 <div class="contenedor-listar-campos">
   <h1 class="h1-listar">Registros de Enfermedades</h1>
   <div class="busqueda-listar">
-    <form method="GET" action="{% url 'buscar_impuesto_historico' %}">
+    <form method="GET" action="{% url 'buscar_enfermedad' %}">
       {% csrf_token %}
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">

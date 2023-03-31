@@ -9,7 +9,7 @@
     height: 40px;
   }
   input[type="date"] {
-        width: 95%;
+        width: 90%;
         height: 40px;
         text-align: center;
   }
@@ -38,30 +38,47 @@
     </div>
     <div class="contacto">
       <h3></h3>
-      <form method="POST" action="{% url 'actualizar_tratamientos' id=tratamiento.0.id %}">
+      <form method="POST" action="{% url 'actualizar_tratamientos' id=tratamientos.0.id %}">
         {% csrf_token %}
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
             <label class="campo-registro" for="idTipoDocument1">Paciente</label>
-            <select name="idPaciente" id="idTipoDocument1">
+            <select name="idPaciente" id="idPaciente">
+              <option value="0" {% if tratamientos.0.idPaciente.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
               {% for pacientes in paciente_list %}
-              <option value="{{ pacientes.id }}"{% if pacientes.id == tratamiento.0.idPaciente %}selected{% endif %}>{{pacientes.nombre }}</option>
+              <option value="{{ pacientes.id }}"{% if pacientes.id == tratamientos.0.idPaciente.id %}selected{% endif %}>{{pacientes.nombre }}</option>
               {% endfor %}
             </select>
           </div>
           <div style="display: block;width: 100%">
-            <label class="campo-registro" for="idTipoDocument1">Tipo</label>
-            <select name="idTipo" id="idTipoDocument1">
-              {% for tipo in tipo_list %}
-              <option value="{{ tipo.id }}"{% if tipo.id == tratamiento.0.idTipo %}selected{% endif %}>{{tipo.nombre }}</option>
-              {% endfor %}
-            </select>
+            <label class="campo-registro">Fecha Actual</label>
+            <input type="date" name="fecha" required value="{{tratamientos.0.fecha}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
           </div>
         </div>
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro">Fecha Actual</label>
-            <input type="date" name="fechaActual" required value="{{tratamiento.0.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+            <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+            <label class="campo-registro" for="idTipoDocument1">Tipo</label>
+            <select name="idTipo" id="idTipo" onchange="activarInput()">
+              <option value="0" {% if tratamientos.0.idTipo.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for tipo in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == tratamientos.0.idTipo.id %}selected{% endif %} data-dato="{{ tipo.precio }}">{{tipo.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label>Precio</label>
+            <input type="text" name="precio" id="precio" value="{{tratamientos.0.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Estado Actual</label>
+            <input type="text" name="estado" id="estado" value="{{tratamientos.0.estado}}" >
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Dias de Tratamiento</label>
+            <input type="text" name="diasTratamiento" id="diasTratamiento" value="{{tratamientos.0.diasTratamiento}}" placeholder="0" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d]|\.(?=.*\.)/g, '')">
           </div>
         </div>
         <p class="full">
@@ -76,4 +93,19 @@
   <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+<script>
+  function activarInput() {
+  var select = document.getElementById("idTipo");
+  var input = document.getElementById("precio");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "0") {
+    input.removeAttribute("disabled");
+  } else {
+    input.setAttribute("disabled", "disabled");
+    input.value = dato;
+  }
+}
+</script>
 {% endblock %}

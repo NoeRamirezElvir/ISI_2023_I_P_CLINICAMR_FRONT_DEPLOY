@@ -18,7 +18,7 @@ def crear_parametros_generales(request):
     if request.method == 'POST':
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
-        valor = float(request.POST['valor'])
+        valor = request.POST['valor']
         registro_temp = {'nombre': nombre,'descripcion': descripcion, 'valor': valor}
         response = requests.post(url+'parametrosgenerales/', json={'nombre': nombre,'descripcion': descripcion, 'valor': valor})
         data={}
@@ -52,7 +52,7 @@ def actualizar_parametros_generales(request, id):
         idTemporal = id
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
-        valor = float(request.POST['valor'])
+        valor = request.POST['valor']
         #LLamar la consulta put, con la url especifica
         response = requests.put(url+f'parametrosgenerales/id/{idTemporal}', json={'nombre': nombre,'descripcion': descripcion, 'valor': valor})
         #obtener la respuesta en la variable rsp

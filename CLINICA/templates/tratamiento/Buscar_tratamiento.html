@@ -26,7 +26,8 @@
             <th style="color:aliceblue">ID</th>
             <th style="color:aliceblue">Paciente</th>
             <th style="color:aliceblue">Tipo</th>
-            <th style="color:aliceblue">Fecha</th>
+            <th style="color:aliceblue">Tiempo del Tratamiento</th>
+            <th style="color:aliceblue">Estado</th>
             <th style="color:aliceblue">Acciones</th>
           </tr>
         </thead>
@@ -37,7 +38,8 @@
             <td>{{ tratamiento.id }}</td>
             <td>{{ tratamiento.idPaciente.nombre }}</td>
             <td>{{ tratamiento.idTipo.nombre }}</td>
-            <td>{{ tratamiento.fecha }}</td>
+            <td>{{ tratamiento.diasTratamiento }}</td>
+            <td>{{ tratamiento.estado }}</td>
 
             <td>
               <form action="{% url 'abrir_actualizar_tratamientos' %}" method="post" class="form-botones">

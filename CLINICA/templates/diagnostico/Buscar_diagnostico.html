@@ -30,26 +30,26 @@
           </tr>
         </thead>
         <tbody>
-          {% if diagnosticos %}
-          {% for diagnostico in diagnosticos %}
+          {% if diagnostico %}
+          {% for diagnosticos in diagnostico %}
           <tr>
-            <td>{{ diagnostico.id }}</td>
-            <td>{{ diagnostico.descripcion }}</td>
-            <td style="max-width: 20vh; word-wrap: break-word;">{% for enfermedad in diagnostico.idEnfermedades.values %}
+            <td>{{ diagnosticos.id }}</td>
+            <td>{{ diagnosticos.descripcion }}</td>
+            <td style="max-width: 20vh; word-wrap: break-word;">{% for enfermedad in diagnosticos.idEnfermedades.values %}
                 {{ enfermedad.id }}&#41 {{ enfermedad.nombre }} 
                 {% endfor %}
             </td>
             <td>
               <form action="{% url 'abrir_actualizar_diagnosticos' %}" method="post" class="form-botones">
                 {% csrf_token %}
-                <input type="hidden" name="id_diagnostico" value="{{ diagnostico.id }}">
+                <input type="hidden" name="id_diagnostico" value="{{ diagnosticos.id }}">
                 <button class="btnEditar" name="editar" id="editar">
                     <img src="{% static 'img/icons/icedit.png' %}">
                 </button>
               </form>
-              <form action="{% url 'eliminar_diagnosticos' id=diagnostico.id  %}" method="post">
+              <form action="{% url 'eliminar_diagnosticos' id=diagnosticos.id  %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="id_diagnostico" value="{{ diagnostico.id }}">
+                <input type="hidden" name="id_diagnostico" value="{{ diagnosticos.id }}">
                 <button class="btnEliminar" name="eliminar" id="eliminar">
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>

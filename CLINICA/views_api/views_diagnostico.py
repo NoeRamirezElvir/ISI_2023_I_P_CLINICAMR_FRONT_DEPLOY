@@ -10,7 +10,7 @@ def listar_diagnosticos(request):
     response = requests.get(url+'diagnostico/')
     if response.status_code == 200:
         data = response.json()
-        diagnostico = data['diagnostico']
+        diagnostico = data['diagnosticos']
     else:
         diagnostico = []
     context = {'diagnostico': diagnostico}
@@ -66,7 +66,7 @@ def abrir_actualizar_diagnosticos(request):
          if resp.status_code == 200:
             data = resp.json()
             mensaje = data['message']
-            diagnostico = data['diagnostico'][0]
+            diagnostico = data['diagnosticos'][0]
             id = diagnostico['id']
             descripcion = diagnostico['descripcion']
             idEnfermedades = diagnostico['idEnfermedades']
@@ -86,9 +86,9 @@ def actualizar_diagnosticos(request, id):
     enfermedades = list_enfermedades()
     if request.method == 'POST':
         idTemporal = id
-        nombre = request.POST['nombre']
+        descripcion = request.POST['descripcion']
         valores_seleccionados_json = request.POST['valoresSeleccionados']
-        valores_seleccionados = json.load(valores_seleccionados_json)
+        valores_seleccionados = json.loads(valores_seleccionados_json)
         # Crear la lista de diccionarios para los sintomas seleccionados
         enfermedades_seleccionados = []
         for valor in valores_seleccionados:
@@ -99,7 +99,7 @@ def actualizar_diagnosticos(request, id):
 
         # Crear el diccionario final
         resultado = {}
-        resultado['nombre'] = nombre
+        resultado['descripcion'] = descripcion
         resultado['idEnfermedades'] = enfermedades_seleccionados
 
         # Convertir el diccionario a JSON
@@ -112,15 +112,15 @@ def actualizar_diagnosticos(request, id):
         #Ya que se necesita llenar de nuevo el formulario se busca el cargo relacionado con el id
         res = requests.get(url+f'diagnostico/busqueda/id/{idTemporal}')
         data = res.json()#se guarda en otra variable
-        diagnostico = data['diagnostico'][0]
-        id_diagnostico = diagnostico['id']
-        descripcion = diagnostico['descripcion']
-        idEnfermedades = diagnostico['idEnfermedades']
+        diagnosticos = data['diagnosticos'][0]
+        id_diagnosticos = diagnosticos['id']
+        descripcion = diagnosticos['descripcion']
+        idEnfermedades = diagnosticos['idEnfermedades']
         # crear una lista de IDs de síntomas
         ids_enfermedades = [{'id': idEnfermedades[str(key)]['id'], 'nombre': idEnfermedades[str(key)]['nombre']} for key in idEnfermedades]
 
         # crear un diccionario con los datos deseados
-        registro_temp = {'id':id_diagnostico, 'descripcion': descripcion, 'lista': enfermedades_seleccionados}
+        registro_temp = {'id':id_diagnosticos, 'descripcion': descripcion, 'lista': enfermedades_seleccionados}
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
@@ -133,19 +133,20 @@ def actualizar_diagnosticos(request, id):
         response = requests.get(url+f'diagnostico/busqueda/id/{idTemporal}')
         if response.status_code == 200:
             data = response.json()
-            diagnostico = data['diagnostico'][0]
-            id_diagnostico = diagnostico['id']
-            nombre = enfermedades['nombre']
-            idEnfermedades = diagnostico['idEnfermedades']
+            diagnosticos = data['diagnosticos'][0]
+            id_diagnosticos = diagnosticos['id']
+            descripcion = diagnosticos['descripcion']
+            idEnfermedades = diagnosticos['idEnfermedades']
             # crear una lista de IDs de síntomas
             ids_enfermedades = [{'id': idEnfermedades[str(key)]['id'], 'nombre': idEnfermedades[str(key)]['nombre']} for key in idEnfermedades]
 
             # crear un diccionario con los datos deseados
-            registro_temp = {'id':id_diagnostico, 'descripcion': descripcion, 'lista': ids_enfermedades}
+            registro_temp = {'id':id_diagnosticos, 'descripcion': descripcion, 'lista': ids_enfermedades}
             return render(request, 'diagnostico/Actualizar_diagnostico.html', {'registro_temp': registro_temp, 'enfermedades':enfermedades})
         else:
             mensaje = data['message']
             return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades})
+
 
 
 def buscar_diagnosticos(request):
@@ -159,26 +160,23 @@ def buscar_diagnosticos(request):
                     data = response.json()
                     mensaje = data['message']
                     diagnostico = {}
-                    diagnostico = data['diagnostico']
+                    diagnostico = data['diagnosticos']
                     context = {'diagnostico': diagnostico, 'mensaje':mensaje}
                     return render(request, 'diagnostico/Buscar_diagnostico.html', context)       
             else:
-                response = requests.get(url2+'nombre/'+valor)
+                response = requests.get(url2+'descripcion/'+valor)
                 if response.status_code == 200:
                     data = response.json()
                     mensaje = data['message']
                     diagnostico = {}
-                    diagnostico = data['diagnostico']
-                    
+                    diagnostico = data['diagnosticos']
                     context = {'diagnostico': diagnostico, 'mensaje':mensaje}
                     return render(request, 'diagnostico/Buscar_diagnostico.html', context)
         else:
             response = requests.get(url+'diagnostico/')
             if response.status_code == 200:
                 data = response.json()
-                diagnostico = data['diagnostico']
-                print(diagnostico)
-                print(1)
+                diagnostico = data['diagnosticos']
                 
                 mensaje = data['message']   
                 return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje})
@@ -197,7 +195,7 @@ def eliminar_diagnosticos(request, id):
             context ={}
             if rsp_diagnostico.status_code == 200:
                 data = rsp_diagnostico.json()
-                diagnostico = data['diagnostico']
+                diagnostico = data['diagnosticos']
                 context = {'diagnostico': diagnostico}
             else:
                 diagnostico = []
@@ -209,7 +207,7 @@ def eliminar_diagnosticos(request, id):
         context ={}
         if  rsp_diagnostico.status_code == 200:
             data = rsp_diagnostico.json()
-            diagnostico = data['diagnostico']
+            diagnostico = data['diagnosticos']
             context = {'diagnostico': diagnostico}
         else:
             diagnostico = []
