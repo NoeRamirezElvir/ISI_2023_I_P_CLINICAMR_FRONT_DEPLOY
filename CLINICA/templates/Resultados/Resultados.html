@@ -1,0 +1,80 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Muestras{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+  input[type="date"] {
+        width: 95%;
+        height: 40px;
+        text-align: center;
+  }
+  select {
+    width: 90%;
+    height: 40px;
+  }
+  #alert-alert-info {
+    top: 70vh;
+  }
+  .boton-enviar{
+    margin-top: 20px;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Resultados Medical Rescue</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Resultados/BuscarResultados.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'crear_resultados' %}">
+        {% csrf_token %}
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idipo">Tipo</label>
+            <select name="idtipo" id="idtipo">
+              {% for tipos in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idtipo %}selected{% endif %}>{{tipos.nombre}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          </div>
+          
+        
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Observacion</label>
+              <input type="text" name="observacion" required value="{{registro_temp.observacion}}">
+            </div>
+          </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Fecha Actual</label>
+            <input type="date" name="fecha" required value="{{registro_temp.fecha}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+          </div>
+        </div>
+        
+        <p class="full">
+          <button class="boton-enviar" >Guardar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

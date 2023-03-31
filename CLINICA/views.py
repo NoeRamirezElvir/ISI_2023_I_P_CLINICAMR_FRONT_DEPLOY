@@ -267,3 +267,66 @@ def crear_metodos_De_pago(request):#
     return render(request,'MetodoDePago/MetodoDePago.html')
 def eliminar_metodos_De_pago(request,id):#
     return render(request,'MetodoDePago/MetodoDePago.html')
+
+#proveedores
+def abrir_actualizar_proveedor(request):#
+    return render(request,'Proveedor/ProveedorActualizar.html')
+def actualizar_proveedor(request,id):#
+    return render(request,'Proveedor/ProveedorActualizar.html')
+def buscar_proveedor(request):#
+    return render(request,'Proveedor/BuscarProveedor.html')
+def crear_proveedor(request):#
+    return render(request,'Proveedor/Proveedor.html')
+def eliminar_proveedor(request,id):#
+    return render(request,'Proveedor/Proveedor.html')
+
+#parametros_generales
+def abrir_actualizar_parametros_generales(request):#
+    return render(request,'parametros_generales/Actualizar_parametros_generales.html')
+def actualizar_parametros_generales(request,id):#
+    return render(request,'parametros_generales/Actualizar_parametros_generales.html')
+def buscar_parametros_generales(request):#
+    return render(request,'parametros_generales/Buscar_parametros_generales.html')
+def crear_parametros_generalesr(request):#
+    return render(request,'parametros_generales/parametros_generales.html')
+def eliminar_parametros_generales(request,id):#
+    return render(request,'parametros_generales/parametros_generales.html')
+
+
+#Tratamientos
+def abrir_actualizar_tratamientos(request):#
+    return render(request,'tratamiento/Actualizar_tratamiento.html')
+def actualizar_tratamientos(request,id):#
+    return render(request,'tratamiento/Actualizar_tratamiento.html')
+def buscar_tratamientos(request):#
+    return render(request,'tratamiento/Buscar_tratamiento.html')
+def crear_tratamientos(request):#
+    return render(request,'tratamiento/tratamiento.html')
+def eliminar_tratamientos(request,id):#
+    return render(request,'tratamiento/tratamiento.html')
+
+
+
+#resultados
+def abrir_actualizar_resultados(request):#
+    return render(request,'Resultados/ActualizarResultados.html')
+def actualizar_resultados(request,id):#
+    return render(request,'Resultados/ActualizarResultados.html')
+def buscar_resultados(request):#
+    return render(request,'Resultados/BuscarResultados.html')
+def crear_resultados(request):#
+    return render(request,'Resultados/Resultados.html')
+def eliminar_resultados(request,id):#
+    return render(request,'Resultados/Resultados.html')
+
+#resultados
+def abrir_actualizar_diagnosticos(request):#
+    return render(request,'diagnostico/Actualizar_diagnostico.html')
+def actualizar_diagnosticos(request,id):#
+    return render(request,'diagnostico/Actualizar_diagnostico.html')
+def buscar_diagnosticos(request):#
+    return render(request,'diagnostico/Buscar_diagnostico.html')
+def crear_diagnosticos(request):#
+    return render(request,'diagnostico/diagnostico.html')
+def eliminar_diagnosticos(request,id):#
+    return render(request,'diagnostico/diagnostico.html')

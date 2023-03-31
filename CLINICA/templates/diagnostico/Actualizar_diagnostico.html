@@ -1,0 +1,178 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar de Enfermedades{% endblock %}
+{% block content %}
+<style type="text/css">
+    input[type="text"] {
+        width: 90%;
+        height: 40px;
+    }
+
+    input[type="password"] {
+        width: 90%;
+        height: 40px;
+    }
+
+    input[type="number"] {
+        width: 90%;
+        height: 40px;
+    }
+
+    select {
+        width: 90%;
+        height: 40px;
+    }
+
+    fieldset {
+        width: 95%;
+    }
+
+    #alert-alert-info {
+        top: 70vh;
+    }
+    .eliminar-btn{
+        background-color: rgba(215, 3, 3, 0.543);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 50px;
+    }
+    .eliminar-btn:hover{
+        background-color: rgba(255, 3, 3, 0.75);
+    }
+
+
+</style>
+<div class="contenedor">
+    <h1 class="logo"> <span class="nombre-empresa">Diagnosticos</h1>
+    <div class="wrapper animated bounceInLeft">
+        <div class="info-empresa">
+            <h3 style="color: beige;">Medical Rescue</h3>
+            <ul class="servicios">
+                <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+                </li>
+                <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+                <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+                <button class="button"><a href="/CLINICA/templates/diagnostico/Buscar_diagnostico.html">Buscar</a> </button>
+            </ul>
+        </div>
+        <div class="contacto">
+            <div style="display: flex;width: 100%">
+                <form id="myForm" class="formulario" method="POST" action="{% url 'actualizar_diagnosticos' id=registro_temp.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="valoresSeleccionadosInput" name="valoresSeleccionados">
+                    <div style="display: block ;width: 200%">
+                        <div style="display: block;width: 200%">
+                            <label class="campo-registro">Descrpcion</label>
+                            <input type="text" name="descripcion" id="descripcion" required 
+                                oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');"
+                                value="{{ registro_temp.descrpcion }}" />
+                        </div>
+                    </div>
+                    <p class="full">
+                        <button class="boton-enviar" type="submit" style="left: calc(-5%);
+                        max-height: 40px;
+                        height: 40px;width: 200px;">Actualizar</button>
+                    </p>
+                </form>
+                    <div style="display: block;width: 100%;margin-left: 100px;">
+                        <label class="campo-registro" for="idTipoDocument1">Enfermedad</label>
+                        <select name="idEnfermedad" id="idTipoDocument1">
+                            <option value="0" selected>Seleccione una opción</option>"
+                            {% for enfermedad in enfermemdades %}
+                            <option value="{{ enfermedad.id }}-{{ enfermedad.nombre }}">{{enfermedad.id}}&#41 {{ enfermedad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="boton-enviar" id="myButton" onclick="guardarValor()" style="left: calc(-35%);
+                    top: 14vh;
+                    max-height: 40px;
+                    height: 40px;">Agregar Enfermedad</button>
+            </div>
+            <div style="max-height: 200px;overflow-y: scroll;height:200px">
+            <table id="myTable" style="max-height: 300px;overflow-y: scroll;">
+                <thead>
+                  <tr>
+                    <th style="width: 200px;">Enfermedad</th>
+                    <th style="width: 200px">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se agregarán las filas de la tabla con los datos de la lista -->
+                </tbody>
+              </table>
+            </div>
+              
+              
+        </div>
+    </div>
+    {% if mensaje %}
+    <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+    </div>
+</div>
+{% endif %}
+<script>
+var valoresSeleccionados = [];
+
+{% for enfermedad in registro_temp.lista %}
+  var enfermedadObj = "{{ enfermedad.id }}-{{ enfermedad.nombre }}";
+  if (!valoresSeleccionados.includes(enfermedadObj) && enfermedadObj != 0) {
+    valoresSeleccionados.push(enfermedadObj);
+    cargarTabla();
+  }
+{% endfor %}
+
+
+
+
+function guardarValor() {
+  var valorSeleccionado = document.getElementById("idTipoDocument1").value;
+  if (!valoresSeleccionados.includes(valorSeleccionado) && valorSeleccionado != 0) {
+    valoresSeleccionados.push(valorSeleccionado);
+    cargarTabla();
+  }
+}
+
+
+function cargarTabla() {
+  var tbody = document.querySelector("#myTable tbody");
+  tbody.innerHTML = ""; // Elimina todas las filas de la tabla
+
+  for (var i = 0; i < valoresSeleccionados.length; i++) {
+    var fila = document.createElement("tr");
+    var valor = document.createElement("td");
+    valor.innerText = valoresSeleccionados[i];
+    fila.classList.add("td-fila-valor");
+    var botonEliminar = document.createElement("button");
+    botonEliminar.innerText = "Eliminar";
+    botonEliminar.classList.add("eliminar-btn");
+    botonEliminar.onclick = function() {
+      var filaAEliminar = this.parentNode.parentNode;
+      var valorAEliminar = filaAEliminar.getElementsByTagName("td")[0].innerText;
+      var indice = valoresSeleccionados.indexOf(valorAEliminar);
+      valoresSeleccionados.splice(indice, 1);
+      cargarTabla();
+    }
+    var acciones = document.createElement("td");
+    acciones.appendChild(botonEliminar);
+    fila.appendChild(valor);
+    fila.appendChild(acciones);
+    tbody.appendChild(fila);
+  }
+}
+//Este metodo es para poder acceder a la lista de sintomas (detalles de la enfermedad)
+document.getElementById("myForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Previene que el formulario se envíe automáticamente
+  
+  var valoresSeleccionadosInput = document.getElementById("valoresSeleccionadosInput");
+  valoresSeleccionadosInput.value = JSON.stringify(valoresSeleccionados);
+  
+  this.submit(); // Envía el formulario
+});
+
+</script>
+{% endblock %}
