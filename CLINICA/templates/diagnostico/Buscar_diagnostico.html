@@ -1,0 +1,77 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}DIAGNOSTICOS{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Diagnosticos</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_diagnosticos' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+    <a class="btn-agregar" href="/CLINICA/templates/diagnostico/diagnostico.html" class="btn-agregar-link">Agregar</a>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Descripcion</th>
+            <th style="color:aliceblue; max-width: 20vh;">Enfermedad(id,nombre)</th>
+            <th style="color:aliceblue">Accion Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if diagnosticos %}
+          {% for diagnostico in diagnosticos %}
+          <tr>
+            <td>{{ diagnostico.id }}</td>
+            <td>{{ diagnostico.descripcion }}</td>
+            <td style="max-width: 20vh; word-wrap: break-word;">{% for enfermedad in diagnostico.idEnfermedades.values %}
+                {{ enfermedad.id }}&#41 {{ enfermedad.nombre }} 
+                {% endfor %}
+            </td>
+            <td>
+              <form action="{% url 'abrir_actualizar_diagnosticos' %}" method="post" class="form-botones">
+                {% csrf_token %}
+                <input type="hidden" name="id_diagnostico" value="{{ diagnostico.id }}">
+                <button class="btnEditar" name="editar" id="editar">
+                    <img src="{% static 'img/icons/icedit.png' %}">
+                </button>
+              </form>
+              <form action="{% url 'eliminar_diagnosticos' id=diagnostico.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_diagnostico" value="{{ diagnostico.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="6">No se encontraron Diagnosticos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if error %}
+<div id="alert-alert-info" style="top:100px">
+  <p>{{ error }}</p>
+</div>
+</div>
+{% endif %}
+
+{% endblock %}

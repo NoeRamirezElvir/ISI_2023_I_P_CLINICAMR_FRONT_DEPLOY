@@ -13,7 +13,7 @@ def listar_muestras(request):
     else:
         muestras = []
     context = {'muestras': muestras}
-    return render(request, 'Muestrs/buscarMuestra.html', context)
+    return render(request, 'Muestras/buscarMuestra.html', context)
 
 def crear_muestras(request):
     rsp_paciente = requests.get(url+'pacientes/')

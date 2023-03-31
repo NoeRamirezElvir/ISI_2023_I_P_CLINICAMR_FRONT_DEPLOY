@@ -1,0 +1,100 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizacion de Muestras{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+  input[type="date"] {
+        width: 95%;
+        height: 40px;
+        text-align: center;
+  }
+  select {
+    width: 90%;
+    height: 40px;
+  }
+  #alert-alert-info {
+    top: 70vh;
+  }
+  .boton-enviar{
+    margin-top: 20px;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Proveedores</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Proveedor/BuscarProveedor.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'actualizar_proveedor' id=proveedores.0.id %}">
+        {% csrf_token %}
+        <div style="display: block;width: 100%">
+          <label class="campo-registro" for="idTipoDocument1">Tipo</label>
+          <select name="idTipo" id="idTipoDocument1">
+            <option value="0" {% if proveedores.0.idTipo_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+              {% for tipo in tipos %}
+                  <option value="{{ tipo.id }}"{% if tipo.id == proveedores.0.idTipo_id %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
+              {% endfor %}
+          </select>
+      </div>
+        
+
+        <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 70%">
+        <label class="campo-registro">Nombre</label>
+        <input type="text" name="nombre" required value="{{proveedores.0.nombre}}"
+        oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.nombre}}"/>
+
+        </div>
+        </div>
+        
+
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 70%">
+          <label class="campo-registro">Telefono</label>
+          <input type="text" name="telefono" required value="{{proveedores.0.telefono}}"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+  
+          </div>
+          </div>
+
+
+        <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 70%">
+        <label class="campo-registro">Correo</label>
+        <input type="text" name="correo" required value="{{proveedores.0.correo}}">
+        </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 70%">
+        <label class="campo-registro">Dirección</label>
+        <input type="text" name="direccion" required value="{{proveedores.0.direccion}}">
+        </div>
+        </div>
+
+      
+        <p class="full">
+          <button class="boton-enviar" >Actualizar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -22,7 +22,11 @@ from views_api import views_enfermedad_detalle
 from views_api import views_empleados
 from views_api import views_laboratorios
 from views_api import views_metodo_de_pago
-
+from views_api import views_proveedor
+from views_api import views_parametros_generales
+from views_api import views_tratamientos
+from views_api import views_resultado
+from views_api import views_diagnostico
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -202,8 +206,40 @@ urlpatterns = [
     path('',views_metodo_de_pago.buscar_metodos_De_pago, name='buscar_metodos_De_pago'),
     path('',views_metodo_de_pago.crear_metodos_De_pago, name='crear_metodos_De_pago'),
    
+
+    #Proveedor
+    path('',views_proveedor.abrir_actualizar_proveedor , name='abrir_actualizar_proveedor'),
+    path('',views_proveedor.actualizar_proveedor , name='actualizar_proveedor'),
+    path('',views_proveedor.eliminar_proveedor , name='eliminar_proveedor'),
+    path('',views_proveedor.listar_proveedor, name='buscar_proveedor'),
+    path('',views_proveedor.buscar_proveedor, name='buscar_proveedor'),
+    path('',views_proveedor.crear_proveedor, name='crear_proveedor'),
    
-    
+
+   
+    #parametros_generales
+    path('',views_parametros_generales.abrir_actualizar_parametros_generales , name='abrir_actualizar_parametros_generales'),
+    path('',views_parametros_generales.actualizar_parametros_generales , name='actualizar_parametros_generales'),
+    path('',views_parametros_generales.eliminar_parametros_generales , name='eliminar_parametros_generales'),
+    path('',views_parametros_generales.listar_parametros_generales, name='buscar_parametros_generales'),
+    path('',views_parametros_generales.buscar_parametros_generales, name='buscar_parametros_generales'),
+    path('',views_parametros_generales.crear_parametros_generales, name='crear_parametros_generales'),
+   
+   #tratamientos
+    path('',views_tratamientos.abrir_actualizar_tratamientos , name='abrir_actualizar_tratamientos'),
+    path('',views_tratamientos.actualizar_tratamientos , name='actualizar_tratamientos'),
+    path('',views_tratamientos.eliminar_tratamientos , name='eliminar_tratamientos'),
+    path('',views_tratamientos.listar_tratamientos, name='buscar_tratamientos'),
+    path('',views_tratamientos.buscar_tratamientos, name='buscar_tratamientos'),
+    path('',views_tratamientos.crear_tratamientos, name='crear_tratamientos'),
+   
+     #diagnosticos
+    path('',views_diagnostico.abrir_actualizar_diagnosticos , name='abrir_actualizar_diagnosticos'),
+    path('',views_diagnostico.actualizar_diagnosticos , name='actualizar_diagnosticos'),
+    path('',views_diagnostico.eliminar_diagnosticos , name='eliminar_diagnosticos'),
+    path('',views_diagnostico.listar_diagnosticos, name='buscar_diagnosticos'),
+    path('',views_diagnostico.buscar_diagnosticos, name='buscar_diagnosticos'),
+    path('',views_diagnostico.crear_diagnosticos, name='crear_diagnosticos'),
 
 ]
 #path('',views.cargo, name='cargo'),

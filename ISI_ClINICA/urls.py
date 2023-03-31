@@ -40,6 +40,11 @@ from CLINICA.views_api.views_enfermedad import *
 from CLINICA.views_api.views_enfermedad_detalle import *
 from CLINICA.views_api.views_laboratorios import *
 from CLINICA.views_api.views_metodo_de_pago import *
+from CLINICA.views_api.views_proveedor import *
+from CLINICA.views_api.views_parametros_generales import *
+from CLINICA.views_api.views_tratamientos import*
+from CLINICA.views_api.views_resultado import *
+from CLINICA.views_api.views_diagnostico import *
 
 
 urlpatterns = [
@@ -213,5 +218,50 @@ urlpatterns = [
     path('CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html',buscar_metodos_De_pago,name = 'buscar_metodos_De_pago'),
     path('CLINICA/templates/MetodoDePago/MetodoDePago.html',crear_metodos_De_pago, name="crear_metodos_De_pago"),
     path('CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html',listar_metodos_De_pago, name="listar_metodos_De_pago"),
+
+
+    #Proveedores
+    path('CLINICA/templates/Proveedor/ProveedorActualizar.html',abrir_actualizar_proveedor,name="abrir_actualizar_proveedor"),
+    path('CLINICA/templates/Proveedor/ProveedorActualizar.html/<int:id>',actualizar_proveedor,name="actualizar_proveedor"),
+    path('CLINICA/templates/Proveedor/BuscarProveedor.html/<int:id>',eliminar_proveedor,name = 'eliminar_proveedor'),
+    path('CLINICA/templates/Proveedor/BuscarProveedor.html',buscar_proveedor,name = 'buscar_proveedor'),
+    path('CLINICA/templates/Proveedor/Proveedor.html',crear_proveedor, name="crear_proveedor"),
+    path('CLINICA/templates/Proveedor/BuscarProveedor.html',listar_proveedor, name="listar_proveedor"),
+
+
+    #parametros_generales
+    path('CLINICA/templates/parametros_generales/Actualizar_parametros_generales.html',abrir_actualizar_parametros_generales,name="abrir_actualizar_parametros_generales"),
+    path('CLINICA/templates/parametros_generales/Actualizar_parametros_generales.html/<int:id>',actualizar_parametros_generales,name="actualizar_parametros_generales"),
+    path('CLINICA/templates/parametros_generales/Buscar_parametros_generales.html/<int:id>',eliminar_parametros_generales,name = 'eliminar_parametros_generales'),
+    path('CLINICA/templates/parametros_generales/Buscar_parametros_generales.html',buscar_parametros_generales,name = 'buscar_parametros_generales'),
+    path('CLINICA/templates/parametros_generales/parametros_generales.html',crear_parametros_generales, name="crear_parametros_generales"),
+    path('CLINICA/templates/parametros_generales/Buscar_parametros_generales.html',listar_parametros_generales, name="listar_parametros_generales"),
+
+
+    #Tratamientos
+    path('CLINICA/templates/tratamiento/Actualizar_tratamiento.html',abrir_actualizar_tratamientos,name="abrir_actualizar_tratamientos"),
+    path('CLINICA/templates/tratamiento/Actualizar_tratamiento.html/<int:id>',actualizar_tratamientos,name="actualizar_tratamientos"),
+    path('CLINICA/templates/tratamiento/Buscar_tratamiento.html/<int:id>',eliminar_tratamientos,name = 'eliminar_tratamientos'),
+    path('CLINICA/templates/tratamiento/Buscar_tratamiento.html',buscar_tratamientos,name = 'buscar_tratamientos'),
+    path('CLINICA/templates/tratamiento/tratamiento.html',crear_tratamientos, name="crear_tratamientos"),
+    path('CLINICA/templates/tratamiento/Buscar_tratamiento.html',listar_tratamientos, name="listar_tratamientos"),
+
+    #Resultados
+    path('CLINICA/templates/Resultados/ActualizarResultados.html',abrir_actualizar_resultados,name="abrir_actualizar_resultados"),
+    path('CLINICA/templates/Resultados/ActualizarResultados.html/<int:id>',actualizar_resultados,name="actualizar_resultados"),
+    path('CLINICA/templates/Resultados/BuscarResultados.html/<int:id>',eliminar_resultados,name = 'eliminar_resultados'),
+    path('CLINICA/templates/Resultados/BuscarResultados.html',buscar_resultados,name = 'buscar_resultados'),
+    path('CLINICA/templates/Resultados/Resultados.html',crear_resultados, name="crear_resultados"),
+    path('CLINICA/templates/Resultados/BuscarResultados.html',listar_resultados, name="listar_resultados"),
+
+
+        #Diagnostico
+    path('CLINICA/templates/diagnostico/Actualizar_diagnostico.html',abrir_actualizar_diagnosticos,name="abrir_actualizar_diagnosticos"),
+    path('CLINICA/templates/diagnostico/Actualizar_diagnostico.html/<int:id>',actualizar_diagnosticos,name="actualizar_diagnosticos"),
+    path('CLINICA/templates/diagnostico/Buscar_diagnostico.html/<int:id>',eliminar_diagnosticos,name = 'eliminar_diagnosticos'),
+    path('CLINICA/templates/diagnostico/Buscar_diagnostico.html',buscar_diagnosticos,name = 'buscar_diagnosticos'),
+    path('CLINICA/templates/diagnostico/diagnostico.html',crear_diagnosticos, name="crear_diagnosticos"),
+    path('CLINICA/templates/diagnostico/Buscar_diagnostico.html',listar_diagnosticos, name="listar_diagnosticos"),
+
 
 ]

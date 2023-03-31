@@ -1,0 +1,72 @@
+            {% extends 'base_principal.html' %}
+            {% load static %}
+
+            {% block tittle %}Actualizacion de Muestras{% endblock %}
+            {% block content %}
+            <style type="text/css">
+            input[type="text"] {
+            width: 90%;
+            height: 40px;
+            }
+            input[type="date"] {
+            width: 95%;
+            height: 40px;
+            text-align: center;
+            }
+            select {
+            width: 90%;
+            height: 40px;
+            }
+            #alert-alert-info {
+            top: 70vh;
+            }
+            .boton-enviar{
+            margin-top: 20px;
+            }
+            </style>
+            <div class="contenedor">
+            <h1 class="logo"><span class="nombre-empresa">Actualizar Parametros Generales</span></h1>
+            <div class="wrapper animated bounceInLeft">
+            <div class="info-empresa">
+            <h3>Medical Rescue</h3>
+            <ul class="servicios">
+            <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+            <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+            <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+            <button class="button"><a href="/CLINICA/templates/parametros_generales/Buscar_parametros_generales.html">Buscar</a> </button>
+            </ul>
+            </div>
+            <div class="contacto">
+            <h3></h3>
+            <form method="POST" action="{% url 'actualizar_parametros_generales' id=parametrosgenerales.0.id %}">
+            {% csrf_token %}
+            <p>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required value="{{ parametrosgenerales.0.nombre }}">
+            </p>
+            <p>
+            <label>Descripcion</label>
+            <input type="text" name="descripcion" required value="{{ parametrosgenerales.0.descripcion }}">
+            </p>
+            <p>
+            <label>Valor</label>
+            <input input type="text" placeholder="0.00" required name="valor" min="0"  step="0.01" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{ parametrosgenerales.0.valor }}">
+            </p>
+            <p>
+            </p>
+            <p>
+
+            <p class="full">
+            <button class="boton-enviar">Actualizar</button>
+            </p>
+            </form>
+            </div>
+            </div>
+            {% if mensaje %}
+            <div id="alert-alert-info">
+            <p>{{ mensaje }}</p>
+            </div>
+            {% endif %}
+            </div>
+            {% endblock %}
+        
