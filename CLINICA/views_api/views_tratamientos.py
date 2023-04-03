@@ -28,9 +28,8 @@ def crear_tratamientos(request):
         estado = request.POST['estado']
         registro_temp = {'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha, 'diasTratamiento':diasTratamiento, 'estado':estado}
         response = requests.post(url+'tratamientos/', json={'idPaciente': idPaciente, 'idTipo': idTipo, 'fecha': fecha, 'diasTratamiento':diasTratamiento, 'estado':estado})
-        data={}
+        data = response.json()
         if response.status_code == 200:
-            data = response.json()
             mensaje = data['message']
             return render(request, 'tratamiento/tratamiento.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
@@ -84,8 +83,8 @@ def actualizar_tratamientos(request, id):
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tratamientos/busqueda/id/{idTemporal}')
+        data = response.json()
         if response.status_code == 200:
-            data = response.json()
             tratamientos = data['tratamientos']
             mensaje = data['message']
             return render(request, 'tratamiento/Actualizar_tratamiento.html', {'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
@@ -163,3 +162,4 @@ def list_pacientes():
     else:
         pacientes_list = []
         return pacientes_list
+

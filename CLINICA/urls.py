@@ -30,6 +30,14 @@ from views_api import views_diagnostico
 from views_api import views_precio_historico_tratamiento
 from views_api import views_precio_historico_examen
 from views_api import views_diagnostico_detalle
+from views_api import views_recaudo_detalle_examen
+from views_api import views_recaudo_detalle_medicamento
+from views_api import views_recaudo_detalle_tratamiento
+from views_api import views_consulta_detalle
+from views_api import views_precio_historico_consulta
+from views_api import views_examen
+from views_api import views_consulta
+from views_api import views_expediente
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -227,13 +235,22 @@ urlpatterns = [
     path('',views_tratamientos.buscar_tratamientos, name='buscar_tratamientos'),
     path('',views_tratamientos.crear_tratamientos, name='crear_tratamientos'),
    
-     #diagnosticos
+    #diagnosticos
     path('',views_diagnostico.abrir_actualizar_diagnosticos , name='abrir_actualizar_diagnosticos'),
     path('',views_diagnostico.actualizar_diagnosticos , name='actualizar_diagnosticos'),
     path('',views_diagnostico.eliminar_diagnosticos , name='eliminar_diagnosticos'),
     path('',views_diagnostico.listar_diagnosticos, name='buscar_diagnosticos'),
     path('',views_diagnostico.buscar_diagnosticos, name='buscar_diagnosticos'),
     path('',views_diagnostico.crear_diagnosticos, name='crear_diagnosticos'),
+
+    #Examen
+    path('',views_examen.actualizar_examenes , name='actualizar_examenes'),
+    path('',views_examen.actualizar_examenes , name='actualizar_examenes'),
+    path('',views_examen.eliminar_examenes , name='eliminar_examenes'),
+    path('',views_examen.listar_examenes, name='listar_examenes'),
+    path('',views_examen.buscar_examenes, name='buscar_examenes'),
+    path('',views_examen.crear_examenes, name='crear_examenes'),
+
 
     #Diagnostico detalle
     path('',views_diagnostico_detalle.eliminar_diagnostico_detalle , name='eliminar_diagnostico_detalle'),
@@ -247,6 +264,44 @@ urlpatterns = [
     #Precio historico
     path('',views_precio_historico_examen.eliminar_precio_historico_examen , name='eliminar_precio_historico_examen'),
     path('',views_precio_historico_examen.buscar_precio_historico_examen, name='buscar_precio_historico_examen'),
+
+    #Recaudo detalle examen
+    path('',views_recaudo_detalle_examen.eliminar_recaudo_detalle_examen , name='eliminar_recaudo_detalle_examen'),
+    path('',views_recaudo_detalle_examen.buscar_recaudo_detalle_examen, name='buscar_recaudo_detalle_examen'),
+
+    #Recaudo detalle tratamiento
+    path('',views_recaudo_detalle_tratamiento.eliminar_recaudo_detalle_tratamiento , name='eliminar_recaudo_detalle_tratamiento'),
+    path('',views_recaudo_detalle_tratamiento.buscar_recaudo_detalle_tratamiento, name='buscar_recaudo_detalle_tratamiento'),
+
+    #Recaudo detalle medicamento
+    path('',views_recaudo_detalle_medicamento.eliminar_recaudo_detalle_medicamento , name='eliminar_recaudo_detalle_medicamento'),
+    path('',views_recaudo_detalle_medicamento.buscar_recaudo_detalle_medicamento, name='buscar_recaudo_detalle_medicamento'),
+
+    #Consulta
+    path('',views_consulta.abrir_actualizar_consulta , name='abrir_actualizar_consulta'),
+    path('',views_consulta.actualizar_consulta , name='actualizar_consulta'),
+    path('',views_consulta.eliminar_consulta , name='eliminar_consulta'),
+    path('',views_consulta.listar_consulta, name='listar_consulta'),
+    path('',views_consulta.buscar_consulta, name='buscar_consulta'),
+    path('',views_consulta.crear_consulta, name='crear_consulta'),
+
+    #Expediente
+    path('',views_expediente.abrir_actualizar_expediente , name='abrir_actualizar_expediente'),
+    path('',views_expediente.abrir_detalle_expediente , name='ver_detalle_expediente'),
+    path('',views_expediente.actualizar_expediente , name='actualizar_expediente'),
+    path('',views_expediente.eliminar_expediente , name='eliminar_expediente'),
+    path('',views_expediente.listar_expediente, name='listar_expediente'),
+    path('',views_expediente.buscar_expediente, name='buscar_expediente'),
+    path('',views_expediente.crear_expediente, name='crear_expediente'),
+
+    #detalle consulta
+    path('',views_consulta_detalle.eliminar_detalle_consulta , name='eliminar_detalle_consulta'),
+    path('',views_consulta_detalle.buscar_detalle_consulta, name='buscar_detalle_consulta'),
+
+    #Precio historico consulta
+    path('',views_precio_historico_consulta.eliminar_precio_historico_consulta , name='eliminar_precio_historico_consulta'),
+    path('',views_precio_historico_consulta.buscar_precio_historico_consulta, name='buscar_precio_historico_consulta'),
+
 
 
 ]

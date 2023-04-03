@@ -1,0 +1,118 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizacion de Muestras{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+  input[type="datetime-local"] {
+        width: 90%;
+        height: 40px;
+        text-align: center;
+  }
+  select {
+    width: 90%;
+    height: 40px;
+  }
+  #alert-alert-info {
+    top: 75vh;
+  }
+  .boton-enviar{
+    margin-top: 20px;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Tratamientos</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/examen/buscar_examen.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'actualizar_examenes' id=examenes.0.id %}">
+        {% csrf_token %}
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Muestra</label>
+            <select name="idMuestra" id="idMuestra">
+              <option value="0" {% if examenes.0.idMuestra.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for muestra in muestra_list %}
+              <option value="{{ muestra.id }}"{% if muestra.id == examenes.0.idMuestra.id %}selected{% endif %}>{{ muestra.idTipoMuestra.id }} {{ muestra.idTipoMuestra.nombre }} - {{ muestra.idPaciente.nombre }}: {{ muestra.idPaciente.documento }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Fecha Programada</label>
+            <input type="datetime-local" name="fechaProgramada" id="fechaProgramada" required value="{{examenes.0.fechaProgramada}}">
+          </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Tipo</label>
+            <select name="idTipo" id="idTipo" onchange="activarInput()">
+              <option value="0" {% if examenes.0.idTipo.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for tipo in tipo_list %}
+              <option value="{{ tipo.id }}"{% if tipo.id == examenes.0.idTipo.id %}selected{% endif %} data-dato="{{ tipo.precio }}">{{tipo.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div style="display: block;width: 100%">
+            <label>Precio</label>
+            <input type="text" name="precio" id="precio" value="{{examenes.0.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+        </div>
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro">Observación(Expediente)</label>
+            <input type="text" name="observacion" id="estado" value="{{examenes.0.observacion}}" >
+          </div>
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Laboratorio</label>
+            <select name="idLaboratorio" id="idLaboratorio">
+              <option value="0" {% if examenes.0.idLaboratorio.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for laboratorio in laboratorio_list %}
+              <option value="{{ laboratorio.id }}"{% if laboratorio.id == examenes.0.idLaboratorio.id %}selected{% endif %}>{{ laboratorio.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <p class="full">
+          <button class="boton-enviar">Actualizar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+<script>
+  window.addEventListener("load", function() {
+		activarInput();
+	});
+  function activarInput() {
+  var select = document.getElementById("idTipo");
+  var input = document.getElementById("precio");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "0") {
+    input.removeAttribute("disabled");
+  } else {
+    input.setAttribute("disabled", "disabled");
+    input.value = dato;
+  }
+}
+</script>
+{% endblock %}

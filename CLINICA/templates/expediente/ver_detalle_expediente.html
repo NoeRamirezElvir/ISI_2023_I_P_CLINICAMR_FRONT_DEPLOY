@@ -1,0 +1,147 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}EXPEDIENTE{% endblock %}
+{% block content %}
+<style>
+    .contacto{
+        background-color: #263645;
+    }
+    table.cinereousTable {
+    border: 6px solid #94A3B1;
+    background-color: #D7DCE1;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+        }
+    table.cinereousTable td, table.cinereousTable th {
+    border: 1px solid #6E7983;
+    padding: 3px 10px;
+    }
+    table.cinereousTable td{
+        width: 100px;
+        max-width: 100px;
+    }
+    table.cinereousTable th{
+        width: 100px;
+        max-width: 100px;
+    }
+    table.cinereousTable tbody td {
+    font-size: 13px;
+    color: #263645;
+    }
+    table.cinereousTable thead {
+    background: #94A3B1;
+    background: -moz-linear-gradient(top, #afbac4 0%, #9eacb8 66%, #94A3B1 100%);
+    background: -webkit-linear-gradient(top, #afbac4 0%, #9eacb8 66%, #94A3B1 100%);
+    background: linear-gradient(to bottom, #afbac4 0%, #9eacb8 66%, #94A3B1 100%);
+    }
+    table.cinereousTable thead th {
+    font-size: 17px;
+    font-weight: bold;
+    color: #263645;
+    text-align: center;
+    border-left: 2px solid #94A3B1;
+    }
+    table.cinereousTable thead th:first-child {
+    border-left: none;
+    }
+</style>
+<div style="max-width: 90%;max-height: 90%;overflow-y: scroll;position: relative;inset: 20px 60px 20px 60px;box-shadow: 19px 30px 55px 6px rgba(0,0,0,0.59);
+    -webkit-box-shadow: 19px 30px 55px 6px rgba(0,0,0,0.59);
+    -moz-box-shadow: 19px 30px 55px 6px rgba(0,0,0,0.59);">
+    <div class="contacto">
+        <h1 class="logo"><span class="nombre-empresa" style="color: aliceblue;">Expediente Clínico</span></h1>
+    </div>
+    <div class="contacto" style="background-color: #BEC3C7; color:#263645bb ;">
+        <h2>Paciente</h2>
+        <div style="display:inline-flex"><h4>Documento de identificación: {{ expediente.0.idPaciente.documento }}</h4> <h4 style="position: relative;left:400px;">Identificador: {{expediente.0.id}}</h4></div><br>    
+        <div style="display:inline-flex"><h4>Nombre:{{ expediente.0.idPaciente.nombre }} {{ expediente.0.idPaciente.apellido  }}</h4><h4 style="position: relative;left: 560px;">Fecha de registro: {{expediente.0.fecha}}</h4></div>
+        <h4>No. de teléfono: {{ expediente.0.idPaciente.telefono }}</h4>
+        <br>
+        <p>{{ expediente.0.observacion }}</p>
+    </div>
+    <div class="contacto">
+    </div>
+    <div class="contacto" style="background-color: #BEC3C7;">
+        <h2 style="color:#6E7983">Examenes</h2>
+        <table class="cinereousTable">
+            <thead>
+            <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% if expediente.0.examenes.values  %}
+                {% for examen in expediente.0.examenes.values %}
+                <tr>
+                    <td>{{ examen.id }}</td>
+                    <td>{{ examen.nombre }}</td>
+                    <td>{{ examen.observacion }}</td>
+                    <tr>
+                {% endfor %}
+                {% else %}
+                <td colspan="3">No hay examenes a nombre del paciente</td>
+               {% endif %}
+            </tbody>
+            </tr>
+            </table>
+            <h2 style="color:#6E7983">Tratamientos</h2>
+            <table class="cinereousTable">
+                <thead>
+                <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% if expediente.0.tratamientos.values  %}
+                    {% for tratamiento in expediente.0.tratamientos.values %}
+                    <tr>
+                        <td>{{ tratamiento.id }}</td>
+                        <td>{{ tratamiento.nombre }}</td>
+                        <td>{{ tratamiento.resultado }}</td>
+                        <tr>
+                    {% endfor %}
+                    {% else %}
+                    <td colspan="3">No hay tratamientos a nombre del paciente</td>
+                   {% endif %}
+                </tbody>
+                </tr>
+                </table>
+                <h2 style="color:#6E7983">Consultas</h2>
+                <table class="cinereousTable">
+                    <thead>
+                    <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if expediente.0.consultas.values  %}
+                            {% for consulta in expediente.0.consultas.values %}
+                            <tr>
+                                <td>{{ consulta.id }}</td>
+                                <td>{{ consulta.nombre }}</td>
+                                <td>{{ consulta.resultado }}</td>
+                                <tr>
+                            {% endfor %}
+                        {% else %}
+                         <td colspan="3">No hay consultas a nombre del paciente</td>
+                        {% endif %}
+                    </tbody>
+                    </tr>
+                    </table>
+    </div>
+    <div class="contacto">
+    </div>
+</div>
+
+
+
+
+{% endblock %}

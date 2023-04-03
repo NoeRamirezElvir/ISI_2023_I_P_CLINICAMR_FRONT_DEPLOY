@@ -1,0 +1,68 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}RECAUDO DETALLES{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Recaudo Detalle Medicamento</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_recaudo_detalle_medicamento' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue" colspan="1"></th>
+            <th style="color:aliceblue" colspan="1"></th>
+            <th style="color:aliceblue;text-align: center;" colspan="4">Medicamento</th>
+            <tr class="tfheader-listar">
+              <th style="color:aliceblue">ID</th>
+              <th style="color:aliceblue">Cliente</th>
+              <th style="color:aliceblue">Nombre</th>
+              <th style="color:aliceblue">Cantidad</th>
+              <th style="color:aliceblue">Descuento</th>
+              <th style="color:aliceblue">Accion Eliminar</th>
+            </tr>
+          </tr>
+        </thead>
+        <tbody>
+          {% if detalles %}
+          {% for detalle in detalles %}
+          <tr>
+            <td>{{ detalle.id }}</td>
+            <td>{{ detalle.idRecaudo.cliente }}</td>
+            <td>{{ detalle.idMedicamento.nombre }}</td>
+            <td>{{ detalle.idMedicamento.cantidad }}</td>
+            <td>{{ detalle.idMedicamento.descuento }}</td>
+            <td>
+              <form action="{% url 'eliminar_recaudo_detalle_medicamento' id=detalle.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_detalle" value="{{ detalle.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="6">No se encontraron detalles.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

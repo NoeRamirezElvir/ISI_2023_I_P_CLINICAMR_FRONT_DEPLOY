@@ -48,6 +48,14 @@ from CLINICA.views_api.views_diagnostico import *
 from CLINICA.views_api.views_precio_historico_tratamiento import *
 from CLINICA.views_api.views_precio_historico_examen import *
 from CLINICA.views_api.views_diagnostico_detalle import *
+from CLINICA.views_api.views_precio_historico_consulta import *
+from CLINICA.views_api.views_recaudo_detalle_examen import *
+from CLINICA.views_api.views_recaudo_detalle_medicamento import *
+from CLINICA.views_api.views_recaudo_detalle_tratamiento import *
+from CLINICA.views_api.views_consulta_detalle import *
+from CLINICA.views_api.views_examen import *
+from CLINICA.views_api.views_consulta import *
+from CLINICA.views_api.views_expediente import *
 
 
 urlpatterns = [
@@ -258,13 +266,22 @@ urlpatterns = [
     path('CLINICA/templates/Resultados/BuscarResultados.html',listar_resultados, name="listar_resultados"),
 
 
-        #Diagnostico
+    #Diagnostico
     path('CLINICA/templates/diagnostico/Actualizar_diagnostico.html',abrir_actualizar_diagnosticos,name="abrir_actualizar_diagnosticos"),
     path('CLINICA/templates/diagnostico/Actualizar_diagnostico.html/<int:id>',actualizar_diagnosticos,name="actualizar_diagnosticos"),
     path('CLINICA/templates/diagnostico/Buscar_diagnostico.html/<int:id>',eliminar_diagnosticos,name = 'eliminar_diagnosticos'),
     path('CLINICA/templates/diagnostico/Buscar_diagnostico.html',buscar_diagnosticos,name = 'buscar_diagnosticos'),
     path('CLINICA/templates/diagnostico/diagnostico.html',crear_diagnosticos, name="crear_diagnosticos"),
     path('CLINICA/templates/diagnostico/Buscar_diagnostico.html',listar_diagnosticos, name="listar_diagnosticos"),
+
+    #Examen
+    path('CLINICA/templates/examen/actualizar_examen.html',abrir_actualizar_examenes,name="abrir_actualizar_examenes"),
+    path('CLINICA/templates/examen/actualizar_examen.html/<int:id>',actualizar_examenes,name="actualizar_examenes"),
+    path('CLINICA/templates/examen/buscar_examen.html/<int:id>',eliminar_examenes,name = 'eliminar_examenes'),
+    path('CLINICA/templates/examen/buscar_examen.html',buscar_examenes,name = 'buscar_examenes'),
+    path('CLINICA/templates/examen/examen.html',crear_examenes, name="crear_examenes"),
+    path('CLINICA/templates/examen/buscar_examen.html',listar_examenes, name="listar_examenes"),
+
 
     #Detalle Diagnostico
     path('CLINICA/templates/diagnostico_detalle/buscar_diagnostico_detalle.html/<int:id>',eliminar_diagnostico_detalle,name = 'eliminar_diagnostico_detalle'),
@@ -278,5 +295,46 @@ urlpatterns = [
     #precio historico examen
     path('CLINICA/templates/precio_historico_examen/buscar_precio_historico_examen.html/<int:id>',eliminar_precio_historico_examen,name = 'eliminar_precio_historico_examen'),
     path('CLINICA/templates/precio_historico_examen/buscar_precio_historico_examen.html',buscar_precio_historico_examen,name = 'buscar_precio_historico_examen'),
+
+    #recaudo detalle examen
+    path('CLINICA/templates/recaudo_detalle_examen/buscar_recaudo_detalle_examen.html/<int:id>',eliminar_recaudo_detalle_examen,name = 'eliminar_recaudo_detalle_examen'),
+    path('CLINICA/templates/recaudo_detalle_examen/buscar_recaudo_detalle_examen.html',buscar_recaudo_detalle_examen,name = 'buscar_recaudo_detalle_examen'),
+
+    #recaudo detalle tratamiento
+    path('CLINICA/templates/recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html/<int:id>',eliminar_recaudo_detalle_tratamiento,name = 'eliminar_recaudo_detalle_tratamiento'),
+    path('CLINICA/templates/recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html',buscar_recaudo_detalle_tratamiento,name = 'buscar_recaudo_detalle_tratamiento'),
+
+    #recaudo detalle medicamento
+    path('CLINICA/templates/recaudo_detalle_medicamento/buscar_recaudo_detalle_medicamento.html/<int:id>',eliminar_recaudo_detalle_medicamento,name = 'eliminar_recaudo_detalle_medicamento'),
+    path('CLINICA/templates/recaudo_detalle_medicamento/buscar_recaudo_detalle_medicamento.html',buscar_recaudo_detalle_medicamento,name = 'buscar_recaudo_detalle_medicamento'),
+
+    #Consulta
+    path('CLINICA/templates/consulta/actualizar_consulta.html',abrir_actualizar_consulta,name="abrir_actualizar_consulta"),
+    path('CLINICA/templates/consulta/actualizar_consulta.html/<int:id>',actualizar_consulta,name="actualizar_consulta"),
+    path('CLINICA/templates/consulta/buscar_consulta.html/<int:id>',eliminar_consulta,name = 'eliminar_consulta'),
+    path('CLINICA/templates/consulta/buscar_consulta.html',buscar_consulta,name = 'buscar_consulta'),
+    path('CLINICA/templates/consulta/consulta.html',crear_consulta, name="crear_consulta"),
+    path('CLINICA/templates/consulta/buscar_consulta.html',listar_consulta, name="listar_consulta"),
+
+    #Expediente
+    path('CLINICA/templates/expediente/actualizar_expediente.html',abrir_actualizar_expediente,name="abrir_actualizar_expediente"),
+    path('CLINICA/templates/expediente/actualizar_expediente.html/<int:id>',actualizar_expediente,name="actualizar_expediente"),
+    path('CLINICA/templates/expediente/buscar_expediente.html/<int:id>',eliminar_expediente,name = 'eliminar_expediente'),
+    path('CLINICA/templates/expediente/buscar_expediente.html',buscar_expediente,name = 'buscar_expediente'),
+    path('CLINICA/templates/expediente/expediente.html',crear_expediente, name="crear_expediente"),
+    path('CLINICA/templates/expediente/buscar_expediente.html',listar_expediente, name="listar_expediente"),
+    path('CLINICA/templates/expediente/ver_detalle_expediente.html',abrir_detalle_expediente, name="ver_detalle_expediente"),
+
+
+
+    #detalle consulta
+    path('CLINICA/templates/detalle_consulta/buscar_detalle_consulta.html/<int:id>',eliminar_detalle_consulta,name = 'eliminar_detalle_consulta'),
+    path('CLINICA/templates/detalle_consulta/buscar_detalle_consulta.html',buscar_detalle_consulta,name = 'buscar_detalle_consulta'),
+
+    #precio historico consulta
+    path('CLINICA/templates/precio_historico_consulta/buscar_precio_historico_consulta.html/<int:id>',eliminar_precio_historico_consulta,name = 'eliminar_precio_historico_consulta'),
+    path('CLINICA/templates/precio_historico_consulta/buscar_precio_historico_consulta.html',buscar_precio_historico_consulta,name = 'buscar_precio_historico_consulta'),
+
+
 
 ]

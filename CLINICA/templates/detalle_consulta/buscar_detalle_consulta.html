@@ -1,0 +1,61 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}RECAUDO DETALLES{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros Detalle Consulta</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_detalle_consulta' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Paciente</th>
+            <th style="color:aliceblue">Diagnosticos(ID,Enfermedad)</th>
+            <th style="color:aliceblue">Accion Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if detalles %}
+          {% for detalle in detalles %}
+          <tr>
+            <td>{{ detalle.id }}</td>
+            <td>{{ detalle.idConsulta.paciente }}</td>
+            <td style="max-width: 20vh; word-wrap: break-word;">{% for enfermedad in detalle.idDiagnostico.idEnfermedades.values %}
+              {{ enfermedad.id }}&#41 {{ enfermedad.nombre }} <br/>
+              {% endfor %}
+          </td>
+            <td>
+              <form action="{% url 'eliminar_detalle_consulta' id=detalle.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_detalle" value="{{ detalle.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="4">No se encontraron detalles.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

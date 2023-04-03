@@ -1,0 +1,80 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar Expediente{% endblock %}
+{% block content %}
+
+<style type="text/css">
+  input[type="text"] {
+      width: 90%;
+      height: 40px;
+  }
+  select {
+      width: 90%;
+      height: 40px;
+  }
+  fieldset{
+      width: 95%;
+  }
+  #alert-alert-info{
+    top:70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Expediente</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+        </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/expediente/buscar_expediente.html">BUSCAR</a></button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form class="formulario" method="POST" action="{% url 'actualizar_expediente' id=expediente.0.id %}">
+        {% csrf_token %}
+        <p>
+        <p>
+          <fieldset id="payment_method" style="position:relative; left:150px;">
+            <legend>Activo/Inactivo</legend>
+            <div class="fieldgroup" style="display: flex;">
+                <input type="radio" id="activar" name="activo" value=1 {% if expediente.0.activo == 1 %} checked {% else %} checked {% endif %}>
+                <label class="rad-registro" for="activar">Activar</label>
+                <input type="radio" id="noactivado" name="activo" value=0 {% if expediente.0.activo == 0 %} checked {% endif %} style="margin-left:20px">
+                <label class="rad-registro" for="noactivado">Desactivar</label>
+            </div>
+          </fieldset>
+        </p>
+        <p style="position: relative;left:150px;">
+          <label class="campo-registro" for="idTipoDocument1">Paciente</label>
+          <select name="idPaciente" id="idPaciente">
+            <option value="0" {% if expediente.0.idPaciente.id == '0' %}selected{% endif %}>Seleccione una opción</option>"
+            {% for paciente in paciente_list %}
+            <option value="{{ paciente.id }}"{% if paciente.id == expediente.0.idPaciente.id %}selected{% endif %}>{{paciente.nombre }}: {{ paciente.documento }}</option>
+            {% endfor %}
+          </select>
+        </p>
+        <p>
+          <div style="display: block;width: 100%; position:relative; left:150px;">
+            <label class="campo-registro">Observación</label>
+            <input type="text" name="observacion" id="observacion" value="{{ expediente.0.observacion }}">
+          </div>
+        </p>
+        <p class="full" style="position: relative;right:50px">
+          <button class="boton-enviar">Guardar</button>
+        </p>
+      </p>
+      </form>
+    </div>
+  </div>
+</div>
+      {% if mensaje %}
+      <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+      </div>
+      {% endif %}
+      {% endblock %}

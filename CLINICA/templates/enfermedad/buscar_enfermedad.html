@@ -36,7 +36,7 @@
             <td>{{ enfermedad.id }}</td>
             <td>{{ enfermedad.nombre }}</td>
             <td style="max-width: 20vh; word-wrap: break-word;">{% for sintoma in enfermedad.idSintomas.values %}
-                {{ sintoma.id }}&#41 {{ sintoma.nombre }} 
+                {{ sintoma.id }}&#41 {{ sintoma.nombre }} <br/>
                 {% endfor %}
             </td>
             <td>

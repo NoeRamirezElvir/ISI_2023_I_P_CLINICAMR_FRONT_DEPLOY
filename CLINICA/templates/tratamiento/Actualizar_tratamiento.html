@@ -18,7 +18,7 @@
     height: 40px;
   }
   #alert-alert-info {
-    top: 70vh;
+    top: 75vh;
   }
   .boton-enviar{
     margin-top: 20px;
@@ -73,7 +73,7 @@
         </div>
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro">Estado Actual</label>
+            <label class="campo-registro">Estado Actual(Expediente)</label>
             <input type="text" name="estado" id="estado" value="{{tratamientos.0.estado}}" >
           </div>
           <div style="display: block;width: 100%">
@@ -94,6 +94,9 @@
 </div>
 {% endif %}
 <script>
+  window.addEventListener("load", function() {
+    activarInput();
+	});
   function activarInput() {
   var select = document.getElementById("idTipo");
   var input = document.getElementById("precio");

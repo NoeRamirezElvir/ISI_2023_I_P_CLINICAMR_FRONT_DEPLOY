@@ -1,7 +1,7 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Registro de Muestras{% endblock %}
+{% block tittle %}Registro de Tratamiento{% endblock %}
 {% block content %}
 <style type="text/css">
   input[type="text"] {
@@ -18,7 +18,7 @@
     height: 40px;
   }
   #alert-alert-info {
-    top: 70vh;
+    top: 75vh;
   }
   .boton-enviar{
     margin-top: 20px;
@@ -73,7 +73,7 @@
         </div>
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro">Estado Actual</label>
+            <label class="campo-registro">Estado Actual(Expediente)</label>
             <input type="text" name="estado" id="estado" value="{{registro_temp.estado}}" >
           </div>
           <div style="display: block;width: 100%">

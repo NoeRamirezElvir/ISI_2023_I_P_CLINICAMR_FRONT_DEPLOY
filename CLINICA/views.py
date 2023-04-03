@@ -298,7 +298,7 @@ def buscar_tratamientos(request):#
 def crear_tratamientos(request):#
     return render(request,'tratamiento/tratamiento.html')
 def eliminar_tratamientos(request,id):#
-    return render(request,'tratamiento/tratamiento.html')
+    return render(request,'tratamiento/Buscar_tratamiento.html')
 
 #resultados
 def abrir_actualizar_resultados(request):#
@@ -310,7 +310,7 @@ def buscar_resultados(request):#
 def crear_resultados(request):#
     return render(request,'Resultados/Resultados.html')
 def eliminar_resultados(request,id):#
-    return render(request,'Resultados/Resultados.html')
+    return render(request,'Resultados/BuscarResultados.html')
 
 #Diagnostico
 def abrir_actualizar_diagnosticos(request):#
@@ -322,7 +322,20 @@ def buscar_diagnosticos(request):#
 def crear_diagnosticos(request):#
     return render(request,'diagnostico/diagnostico.html')
 def eliminar_diagnosticos(request,id):#
-    return render(request,'diagnostico/diagnostico.html')
+    return render(request,'diagnostico/Buscar_diagnostico.html')
+
+#Examen
+def abrir_actualizar_examenes(request):#
+    return render(request,'examen/actualizar_examen.html')
+def actualizar_examenes(request,id):#
+    return render(request,'examen/actualizar_examen.html')
+def buscar_examenes(request):#
+    return render(request,'examen/buscar_examen.html')
+def crear_examenes(request):#
+    return render(request,'examen/examen.html')
+def eliminar_examenes(request,id):#
+    return render(request,'examen/buscar_examen.html')
+
 
 #Diagnostico Detalle
 def buscar_diagnostico_detalle(request):#
@@ -342,3 +355,59 @@ def buscar_precio_historico_examen(request):#
     return render(request,'precio_historico_examen/buscar_precio_historico_examen.html')
 def eliminar_precio_historico_examen(request,id):#
     return render(request,'precio_historico_examen/buscar_precio_historico_examen.html')
+
+#recaudo detalle examen 
+def buscar_recaudo_detalle_examen(request):#
+    return render(request,'recaudo_detalle_examen/buscar_recaudo_detalle_examen.html')
+def eliminar_recaudo_detalle_examen(request,id):#
+    return render(request,'recaudo_detalle_examen/buscar_recaudo_detalle_examen.html')
+
+#recaudo detalle tratamiento 
+def buscar_recaudo_detalle_tratamiento(request):#
+    return render(request,'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html')
+def eliminar_recaudo_detalle_tratamiento(request,id):#
+    return render(request,'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html')
+
+#recaudo detalle medicamento 
+def buscar_recaudo_detalle_medicamento(request):#
+    return render(request,'recaudo_detalle_medicamento/buscar_recaudo_detalle_medicamento.html')
+def eliminar_recaudo_detalle_medicamento(request,id):#
+    return render(request,'recaudo_detalle_medicamento/buscar_recaudo_detalle_medicamento.html')
+
+#Consulta
+def abrir_actualizar_consulta(request):#
+    return render(request,'consulta/actualizar_consulta.html')
+def actualizar_consulta(request,id):#
+    return render(request,'consulta/buscar_consulta.html')
+def buscar_consulta(request):#
+    return render(request,'consulta/buscar_consulta.html')
+def crear_consulta(request):#
+    return render(request,'consulta/consulta.html')
+def eliminar_consulta(request,id):#
+    return render(request,'consulta/consulta.html')
+
+#Expediente
+def ver_detalle_expediente(request):#
+    return render(request,'expediente/ver_detalle_expediente.html')
+def abrir_actualizar_expediente(request):#
+    return render(request,'expediente/actualizar_expediente.html')
+def actualizar_expediente(request,id):#
+    return render(request,'expediente/buscar_expediente.html')
+def buscar_expediente(request):#
+    return render(request,'expediente/buscar_mexpediente.html')
+def crear_expediente(request):#
+    return render(request,'expediente/expediente.html')
+def eliminar_expediente(request,id):#
+    return render(request,'expediente/expediente.html')
+
+#detalle consulta 
+def buscar_detalle_consulta(request):#
+    return render(request,'detalle_consulta/buscar_detalle_consulta.html')
+def eliminar_detalle_consulta(request,id):#
+    return render(request,'detalle_consulta/buscar_detalle_consulta.html')
+
+#precio historico consulta
+def buscar_precio_historico_consulta(request):#
+    return render(request,'precio_historico_consulta/buscar_precio_historico_consulta.html')
+def eliminar_precio_historico_consulta(request,id):#
+    return render(request,'precio_historico_consulta/buscar_precio_historico_consulta.html')

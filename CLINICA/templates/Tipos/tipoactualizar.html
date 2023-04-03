@@ -100,7 +100,7 @@
   var opcionSeleccionada = select.options[select.selectedIndex];
   var dato = opcionSeleccionada.getAttribute("data-dato");
   
-  if (dato === "examen" || dato === "tratamiento") {
+  if (dato === "examen" || dato === "tratamiento" || dato === "consulta") {
     input.removeAttribute("disabled");
   } else {
     input.setAttribute("disabled", "disabled");
