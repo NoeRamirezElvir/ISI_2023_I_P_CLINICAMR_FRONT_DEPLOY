@@ -1,0 +1,99 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Documentos{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+      width: 90%;
+      height: 40px;
+  }
+
+  input[type="password"] {
+      width: 90%;
+      height: 40px;
+  }
+  input[type="number"] {
+      width: 90%;
+      height: 40px;
+  }
+
+  select {
+      width: 90%;
+      height: 40px;
+  }
+  fieldset{
+      width: 95%;
+  }
+  #alert-alert-info{
+    top:70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"> <span class="CAI-empresa">Correlativo</span>SAR</h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3 style="color: beige;">Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/correlativo/buscar_correlativo.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form class="formulario" method="POST" action="{% url 'crear_correlativo' %}">
+        {% csrf_token %}
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                    <label>CAI</label>
+                    <input type="text" name="cai" required value="{{registro_temp.cai}}">
+                </div>
+            </div> 
+
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                    <label class="campo-registro" >Rango Inicial</label>
+                    <input type="text" name="rangoInicial" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{registro_temp.rangoInicial}}"> </input>
+                </div>
+            </div> 
+
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                    <label class="campo-registro" >Rango Final</label>
+                    <input type="text" name="rangoFinal" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{registro_temp.rangoFinal}}"> </input>
+                </div>
+            </div> 
+
+           
+
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                    <label class="campo-registro">Fecha Limite de emicion</label>
+                    <input type="date" name="fechaLimiteEmision" id="fecha" style="position: relative; width: 300px;" required value="{{registro_temp.fechaLimiteEmision}}"></input>
+                </div> 
+            </div>
+
+                
+            
+
+
+                    
+                    <p class="full">
+                    <button class="boton-enviar">Guardar</button>
+                    </p>
+                    </form>
+                    </div>
+                    </div>
+                    </div>
+                    {% if mensaje %}
+                    <div id="alert-alert-info">
+                    <p>{{ mensaje }}</p>
+                    </div>
+                    {% endif %}
+                    {% endblock %}

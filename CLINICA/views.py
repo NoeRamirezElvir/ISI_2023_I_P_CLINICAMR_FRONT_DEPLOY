@@ -411,3 +411,44 @@ def buscar_precio_historico_consulta(request):#
     return render(request,'precio_historico_consulta/buscar_precio_historico_consulta.html')
 def eliminar_precio_historico_consulta(request,id):#
     return render(request,'precio_historico_consulta/buscar_precio_historico_consulta.html')
+
+
+#precio historico Autorizacion Paciente
+def abrir_actualizar_autorizacion(request):#
+    return render(request,'Autorizacion/Autorizaractualizar.html')
+def actualizar_autorizacion(request,id):#
+    return render(request,'Autorizacion/AutorizarActualizar.html')
+def buscar_autorizacion(request):#
+    return render(request,'Autorizacion/buscarAutorizar.html')
+def crear_autorizacion(request):#
+    return render(request,'Autorizacion/Autorizar.html')
+def eliminar_autorizacion(request,id):#
+    return render(request,'Autorizacion/Autorizar.html')
+
+
+
+
+#Traslado Paciente
+def abrir_actualizar_traslados(request):#
+    return render(request,'Traslados/actualizar_traslado.html')
+def actualizar_traslados(request,id):#
+    return render(request,'Traslados/actualizar_traslado.html')
+def buscar_traslados(request):#
+    return render(request,'Traslados/buscar_traslado.html')
+def crear_traslados(request):#
+    return render(request,'Traslados/traslado.html')
+def eliminar_traslados(request,id):#
+    return render(request,'Traslados/traslado.html')
+
+
+#correlativo
+def abrir_actualizar_correlativo(request):#
+    return render(request,'correlativo/actualizar_correlativo.html')
+def actualizar_correlativo(request,id):#
+    return render(request,'correlativo/actualizar_correlativo.html')
+def buscar_correlativo(request):#
+    return render(request,'correlativo/buscar_correlativo.html')
+def crear_correlativo(request):#
+    return render(request,'correlativo/correlativo.html')
+def eliminar_correlativo(request,id):#
+    return render(request,'correlativo/correlativo.html')
