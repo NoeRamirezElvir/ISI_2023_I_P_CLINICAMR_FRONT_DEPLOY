@@ -1,0 +1,121 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizacion de Correlativo{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+  input[type="datetime-local"] {
+        width: 90%;
+        height: 40px;
+        text-align: center;
+  }
+  select {
+    width: 90%;
+    height: 40px;
+  }
+  #alert-alert-info {
+    top: 75vh;
+  }
+  .boton-enviar{
+    margin-top: 20px;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Correlativo</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/correlativo/buscar_correlativo.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form method="POST" action="{% url 'actualizar_correlativo' id=correlativo.0.id %}">
+        {% csrf_token %}
+
+        <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+              <label class="campo-registro">Nombre CAI</label>
+              <input type="text" name="cai" id="cai" value="{{correlativo.0.cai}}" >
+            </div>
+        </div>
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                <label class="campo-registro">Rango Inicial</label>
+                <input type="text" name="rangoInicial" id="rangoInicial" value="{{correlativo.0.rangoInicial}}" placeholder="0" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d]|\.(?=.*\.)/g, '')">
+              </div>
+            </div>
+           
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                <label class="campo-registro">Rango Final</label>
+                <input type="text" name="rangoFinal" id="rangoFinal" value="{{correlativo.0.rangoFinal}}" placeholder="0" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d]|\.(?=.*\.)/g, '')">
+              </div>
+            </div>
+           
+            <div style="display: inline-flex ;width: 100%">
+              <div style="display: block;width: 100%">
+                <label class="campo-registro">Consecutivo</label>
+                <input type="text" name="consecutivo" id="consecutivo" disabled value="{{correlativo.0.consecutivo}}" placeholder="0" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d]|\.(?=.*\.)/g, '')">
+              </div>
+            </div>
+           
+       
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro" style="position: relative; left:340px;" >Fecha Limite de emision</label>
+            <input type="date" name="fechaLimiteEmision"  style="position: relative; left:160px; top: 30px;" id="fecha" required value="{{correlativo.0.fechaLimiteEmision}}">
+          </div>
+        </div>
+        
+
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+            <label class="campo-registro"  style="position: relative; bottom:39px;">Fecha Inicial</label>
+            <input type="date" name="fechaInicio"   style="position: relative; bottom: 10px; right:93px;  "  disabled id="fecha" required value="{{correlativo.0.fechaInicio}}">
+          </div>
+        </div>
+       
+        
+         
+        <p class="full">
+          <button class="boton-enviar">Actualizar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+<script>
+  window.addEventListener("load", function() {
+		activarInput();
+	});
+  function activarInput() {
+  var select = document.getElementById("idTipo");
+  var input = document.getElementById("precio");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "0") {
+    input.removeAttribute("disabled");
+  } else {
+    input.setAttribute("disabled", "disabled");
+    input.value = dato;
+  }
+}
+</script>
+{% endblock %}

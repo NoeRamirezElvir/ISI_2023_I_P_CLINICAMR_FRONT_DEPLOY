@@ -1,0 +1,124 @@
+        {% extends 'base_principal.html' %}
+        {% load static %}
+
+        {% block tittle %}Registro de Traslados{% endblock %}
+        {% block content %}
+        <style type="text/css">
+        input[type="text"] {
+        width: 90%;
+        height: 40px;
+        }
+        input[type="datetime-local"] {
+        width: 90%;
+        height: 40px;
+        text-align: center;
+        }
+        select {
+        width: 90%;
+        height: 40px;
+        }
+        #alert-alert-info {
+        top: 75vh;
+        }
+        .boton-enviar{
+        margin-top: 20px;
+        }
+        </style>
+        <div class="contenedor">
+        <h1 class="logo"><span class="nombre-empresa">Traslados Medical Rescue</span></h1>
+        <div class="wrapper animated bounceInLeft">
+        <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Traslados/buscar_traslado.html">Buscar</a> </button>
+        </ul>
+        </div>
+        <div class="contacto">
+        <h3></h3>
+        <form method="POST" action="{% url 'crear_traslados' %}">
+        {% csrf_token %}
+
+
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro" for="idTipoDocument1">Autorizacion</label>
+        <select name="idAutorizacionPaciente" id="idAutorizacionPaciente">
+        <option value="0" {% if registro_temp.idAutorizacionPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
+        {% for autorizacion in autorizacion_list %}
+        <option value="{{ autorizacion.id }}"{% if autorizacion.id == registro_temp.idAutorizacionPaciente %}selected{% endif %}>{{ autorizacion.id }} {{ autorizacion.motivos }}</option>
+        {% endfor %}
+        </select>
+        </div>
+      </div>
+      
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro" for="idTipoDocument1">Empleado</label>
+        <select name="idEmpleado" id="idEmpleado">
+        <option value="0" {% if registro_temp.idEmpleado == '0' %}selected{% endif %}>Seleccione una opción</option>"
+        {% for empleado in empleado_list %}
+        <option value="{{ empleado.id }}"{% if empleado.id == registro_temp.idEmpleado %}selected{% endif %}>{{ empleado.id }} {{ empleado.nombre }} {{ empleado.apellido }}</option>
+        {% endfor %}
+        </select>
+        </div>
+      </div>
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro" for="idTipoDocument1">Informacion paciente</label>
+        <select name="idPaciente" id="idPaciente">
+        <option value="0" {% if registro_temp.idPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
+        {% for pacientes in pacientes_list %}
+        <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{ pacientes.id }} {{ pacientes.nombre }} {{ pacientes.apellido }} - {{ pacientes.documento }}</option>
+        {% endfor %}
+        </select>
+        </div>
+      </div>
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro">Dirección</label>
+        <input type="text" name="direccion" required value="{{registro_temp.direccion}}"></input>
+        </div>
+      </div>
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro">Telefono(lugar)</label>
+        <input type="text" name="telefono" required value="{{registro_temp.telefono}}"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.telefono}}"/></input>
+        </div>
+      </div>
+
+      <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro">Nombre (lugar)</label>
+        <input type="text" name="nombre" required value="{{registro_temp.nombre}}"
+          oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.nombre}}"/></input>
+        </div>
+      </div>
+
+      
+      
+
+  
+
+
+
+
+        <p class="full">
+        <button class="boton-enviar" >Guardar</button>
+        </p>
+        </form>
+
+        {% if mensaje %}
+        <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+        </div>
+        {% endif %}
+        {% endblock %}

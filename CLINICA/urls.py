@@ -38,6 +38,9 @@ from views_api import views_precio_historico_consulta
 from views_api import views_examen
 from views_api import views_consulta
 from views_api import views_expediente
+from views_api import views_autorizacion_paciente
+from views_api import views_traslado_paciente
+from views_api import views_correlativo_SAR
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -302,6 +305,39 @@ urlpatterns = [
     path('',views_precio_historico_consulta.eliminar_precio_historico_consulta , name='eliminar_precio_historico_consulta'),
     path('',views_precio_historico_consulta.buscar_precio_historico_consulta, name='buscar_precio_historico_consulta'),
 
+
+    #Expediente
+    path('',views_autorizacion_paciente.abrir_actualizar_autorizacion , name='abrir_actualizar_autorizacion'),
+    path('',views_autorizacion_paciente.actualizar_autorizacion , name='actualizar_autorizacion'),
+    path('',views_autorizacion_paciente.eliminar_autorizacion , name='eliminar_autorizacion'),
+    path('',views_autorizacion_paciente.listar_autorizacion , name='listar_autorizacion'),
+    path('',views_autorizacion_paciente.buscar_autorizacion , name='buscar_autorizacion'),
+    path('',views_autorizacion_paciente.crear_autorizacion , name='crear_autorizacion'),
+
+    #Traslado Paciente
+    path('',views_traslado_paciente.abrir_actualizar_traslados , name='abrir_actualizar_traslados'),
+    path('',views_traslado_paciente.actualizar_traslados , name='actualizar_traslados'),
+    path('',views_traslado_paciente.eliminar_traslados , name='eliminar_traslados'),
+    path('',views_traslado_paciente.listar_traslados , name='listar_traslados'),
+    path('',views_traslado_paciente.buscar_traslados , name='buscar_traslados'),
+    path('',views_traslado_paciente.crear_traslados , name='crear_traslados'),
+
+    #Resultados
+    path('',views_resultado.abrir_actualizar_resultados , name='abrir_actualizar_resultados'),
+    path('',views_resultado.actualizar_resultados , name='actualizar_resultados'),
+    path('',views_resultado.eliminar_resultados , name='eliminar_resultados'),
+    path('',views_resultado.listar_resultados , name='listar_resultados'),
+    path('',views_resultado.buscar_resultados , name='buscar_resultados'),
+    path('',views_resultado.crear_resultados , name='crear_resultados'),
+
+
+    #Correlativo
+    path('',views_correlativo_SAR.abrir_actualizar_correlativo , name='abrir_actualizar_correlativo'),
+    path('',views_correlativo_SAR.actualizar_correlativo , name='actualizar_correlativo'),
+    path('',views_correlativo_SAR.eliminar_correlativo , name='eliminar_correlativo'),
+    path('',views_correlativo_SAR.listar_correlativo , name='listar_correlativo'),
+    path('',views_correlativo_SAR.buscar_correlativo , name='buscar_correlativo'),
+    path('',views_correlativo_SAR.crear_correlativo , name='crear_correlativo'),
 
 
 ]

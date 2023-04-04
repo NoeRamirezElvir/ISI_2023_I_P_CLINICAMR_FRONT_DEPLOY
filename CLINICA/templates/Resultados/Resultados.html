@@ -1,15 +1,15 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Registro de Muestras{% endblock %}
+{% block tittle %}Registro de Examenes{% endblock %}
 {% block content %}
 <style type="text/css">
   input[type="text"] {
     width: 90%;
     height: 40px;
   }
-  input[type="date"] {
-        width: 95%;
+  input[type="datetime-local"] {
+        width: 90%;
         height: 40px;
         text-align: center;
   }
@@ -18,7 +18,7 @@
     height: 40px;
   }
   #alert-alert-info {
-    top: 70vh;
+    top: 75vh;
   }
   .boton-enviar{
     margin-top: 20px;
@@ -42,39 +42,48 @@
         {% csrf_token %}
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro" for="idipo">Tipo</label>
-            <select name="idtipo" id="idtipo">
-              {% for tipos in tipo_list %}
-              <option value="{{ tipo.id }}"{% if tipo.id == registro_temp.idtipo %}selected{% endif %}>{{tipos.nombre}}</option>
+            <label class="campo-registro" for="idTipoDocument1">Tratamiento</label>
+            <select name="idTratamiento" id="idTratamiento">
+              <option value="0" {% if registro_temp.idTratamiento == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              {% for tratamiento in tratamiento_list %}
+              <option value="{{ tratamiento.id }}"{% if tratamiento.id == registro_temp.idTratamiento %}selected{% endif %}>{{ tratamiento.id }} - {{ tratamiento.idPaciente.nombre }} - {{ tratamiento.idTipo.nombre }} -  {{ tratamiento.fecha }}</option>
               {% endfor %}
             </select>
           </div>
-          </div>
-          
-        
-        <div style="display: inline-flex ;width: 100%">
-            <div style="display: block;width: 100%">
-              <label class="campo-registro">Observacion</label>
-              <input type="text" name="observacion" required value="{{registro_temp.observacion}}">
-            </div>
-          </div>
+        </div>
+
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro">Fecha Actual</label>
-            <input type="date" name="fecha" required value="{{registro_temp.fecha}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+            <label class="campo-registro">Observación</label>
+            <input type="text" name="observacion" id="observacion" value="{{registro_temp.observacion}}" >
+          </div>
+        </div>
+
+
+      <br></br>
+
+        <div style="display: inline-flex ;width: 225%">
+          <div style="display: block;width: 225%">
+            <label class="campo-registro"  style="position: relative; bottom: 30px;" >fecha</label>
+            <input type="date" name="fecha" id="fecha"  style="position: relative; right: 45px;" value="{{registro_temp.fecha}}" >
           </div>
         </div>
         
+        
+          
+        
+          
         <p class="full">
           <button class="boton-enviar" >Guardar</button>
         </p>
       </form>
     </div>
-  </div>
-</div>
+</div>    
+ 
 {% if mensaje %}
 <div id="alert-alert-info">
   <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+
 {% endblock %}

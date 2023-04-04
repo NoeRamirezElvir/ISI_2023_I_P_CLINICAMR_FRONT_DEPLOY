@@ -56,6 +56,9 @@ from CLINICA.views_api.views_consulta_detalle import *
 from CLINICA.views_api.views_examen import *
 from CLINICA.views_api.views_consulta import *
 from CLINICA.views_api.views_expediente import *
+from CLINICA.views_api.views_autorizacion_paciente import *
+from CLINICA.views_api.views_traslado_paciente import *
+from CLINICA.views_api.views_correlativo_SAR import *
 
 
 urlpatterns = [
@@ -262,7 +265,7 @@ urlpatterns = [
     path('CLINICA/templates/Resultados/ActualizarResultados.html/<int:id>',actualizar_resultados,name="actualizar_resultados"),
     path('CLINICA/templates/Resultados/BuscarResultados.html/<int:id>',eliminar_resultados,name = 'eliminar_resultados'),
     path('CLINICA/templates/Resultados/BuscarResultados.html',buscar_resultados,name = 'buscar_resultados'),
-    path('CLINICA/templates/Resultados/Resultados.html',crear_resultados, name="crear_resultados"),
+    path('CLINICA/templates/Resultados/Resultados.html',crear_resultados, name='crear_resultados'),
     path('CLINICA/templates/Resultados/BuscarResultados.html',listar_resultados, name="listar_resultados"),
 
 
@@ -334,6 +337,33 @@ urlpatterns = [
     #precio historico consulta
     path('CLINICA/templates/precio_historico_consulta/buscar_precio_historico_consulta.html/<int:id>',eliminar_precio_historico_consulta,name = 'eliminar_precio_historico_consulta'),
     path('CLINICA/templates/precio_historico_consulta/buscar_precio_historico_consulta.html',buscar_precio_historico_consulta,name = 'buscar_precio_historico_consulta'),
+
+
+
+    #Autorizacion_Paciente
+    path('CLINICA/templates/Autorizacion/Autorizaractualizar.html',abrir_actualizar_autorizacion,name="abrir_actualizar_autorizacion"),
+    path('CLINICA/templates/Autorizacion/Autorizaractualizar.html/<int:id>',actualizar_autorizacion,name="actualizar_autorizacion"),
+    path('CLINICA/templates/Autorizacion/buscarAutorizar.html/<int:id>',eliminar_autorizacion,name = 'eliminar_autorizacion'),
+    path('CLINICA/templates/Autorizacion/buscarAutorizar.html',buscar_autorizacion,name = 'buscar_autorizacion'),
+    path('CLINICA/templates/Autorizacion/Autorizar.html',crear_autorizacion, name="crear_autorizacion"),
+    path('CLINICA/templates/Autorizacion/buscarAutorizar.html',listar_autorizacion, name="listar_autorizacion"),
+    
+    #Traslados Pacientes
+    path('CLINICA/templates/Traslados/actualizar_traslado.html',abrir_actualizar_traslados,name="abrir_actualizar_traslados"),
+    path('CLINICA/templates/Traslados/actualizar_traslado.html/<int:id>',actualizar_traslados,name="actualizar_traslados"),
+    path('CLINICA/templates/Traslados/buscar_traslado.html/<int:id>',eliminar_traslados,name = 'eliminar_traslados'),
+    path('CLINICA/templates/Traslados/buscar_traslado.html',buscar_traslados,name = 'buscar_traslados'),
+    path('CLINICA/templates/Traslados/traslado.html',crear_traslados, name="crear_traslados"),
+    path('CLINICA/templates/Traslados/buscar_traslado.html',listar_traslados, name="listar_traslados"),
+
+    #Correlativo
+    path('CLINICA/templates/correlativo/actualizar_correlativo.html',abrir_actualizar_correlativo,name="abrir_actualizar_correlativo"),
+    path('CLINICA/templates/correlativo/actualizar_correlativo.html/<int:id>',actualizar_correlativo,name="actualizar_correlativo"),
+    path('CLINICA/templates/correlativo/buscar_correlativo.html/<int:id>',eliminar_correlativo,name = 'eliminar_correlativo'),
+    path('CLINICA/templates/correlativo/buscar_correlativo.html',buscar_correlativo,name = 'buscar_correlativo'),
+    path('CLINICA/templates/correlativo/correlativo.html',crear_correlativo, name="crear_correlativo"),
+    path('CLINICA/templates/correlativo/buscar_correlativo.html',listar_correlativo, name="listar_correlativo"),
+
 
 
 

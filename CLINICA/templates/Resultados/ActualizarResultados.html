@@ -1,0 +1,88 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Medicamentos{% endblock %}
+{% block content %}
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 90%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"> <span class="nombre-empresa">Resultados</h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3 style="color: beige;">Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Resultados/BuscarResultados.html">Buscar</a> </button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <form class="formulario" method="POST" action="{% url 'actualizar_resultados' id=resultados.0.id %}">
+        {% csrf_token %}
+       
+            <div style="display: block;width: 100%">
+                <label class="campo-registro" for="idTipoDocument1">Tratamiento</label>
+            <select name="idTratamiento" id="idTratamiento">
+                  <option value="0" {% if tratamiento.0.idTratamiento_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                    {% for tratamiento in tratamiento_list %}
+                        <option value="{{ tratamiento.id }}"{% if tratamiento.id == tratamiento.0.idTratamiento_id %}selected{% endif %}>{{tratamiento.id}}  - {{ tratamiento.idPaciente.nombre }} - {{ tratamiento.idTipo.nombre }} - {{ tratamiento.fecha }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="display: inline-flex ;width: 100%">
+                <div style="display: block;width: 100%">
+                  <label class="campo-registro">Observación</label>
+                  <input type="text" name="observacion" id="observacion" value="{{resultados.0.observacion}}" >
+                </div>
+            </div>
+
+                <div style="display: block;width: 100%">
+                    <label class="campo-registro">Fecha </label>
+                    <input type="date" name="fecha" id="fecha" required value="{{resultados.0.fecha}}">
+                  </div>
+                
+        
+        
+            
+        <p class="full">
+          <button class="boton-enviar">Guardar</button>
+        </p>
+      </form>
+    
+  </div>
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
