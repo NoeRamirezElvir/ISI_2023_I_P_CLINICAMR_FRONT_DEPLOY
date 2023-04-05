@@ -83,7 +83,7 @@
               <label class="campo-registro" for="idEspecialidadMedic1"> Especialidad </label>
               <select name="idEspecialidadMedic1" id="idEspecialidadMedic1">
                   {% for EspecialidadMedicos in EspecialidadMedico %}
-                      <option value="{{ EspecialidadMedicos.id }}"{% if EspecialidadMedicos.id == registro_temp.idEspecialidadMedico %}selected{% endif %}>{{ EspecialidadMedicos.nombre }}</option>
+                      <option value="{{ EspecialidadMedicos.id }}"{% if EspecialidadMedicos.id == empleados.0.idEspecialidadMedico_id %}selected{% endif %}>{{ EspecialidadMedicos.nombre }}</option>
                   {% endfor %}
               </select>
               
