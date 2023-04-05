@@ -199,6 +199,10 @@ def buscar_consulta(request):
                         consultas = data['consultas']
                         context = {'consultas': consultas, 'mensaje':mensaje}
                         return render(request, 'consulta/buscar_consulta.html', context)
+                    else:
+                        consultas = []
+                        mensaje = 'No se encontraron muestras'
+                        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()

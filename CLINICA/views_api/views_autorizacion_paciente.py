@@ -23,8 +23,8 @@ def crear_autorizacion(request):
         registro_temp={'motivos': motivos, 'confirmacion': confirmacion}
         response = requests.post(url+'autorizar/', json={'motivos': motivos,  'confirmacion': confirmacion})
         data={}
+        data = response.json()
         if response.status_code == 200:
-            data = response.json()
             mensaje = data['message']
             return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
@@ -72,8 +72,8 @@ def actualizar_autorizacion(request, id):
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'autorizar/busqueda/id/{idTemporal}')
+        data = response.json()
         if response.status_code == 200:
-            data = response.json()
             autorizar = data['autorizar']
             mensaje = data['message']
             return render(request, 'Autorizacion/Autorizaractualizar.html', {'autorizar': autorizar})
@@ -112,7 +112,11 @@ def buscar_autorizacion(request):
                     autorizar = data['autorizar']
                     context = {'autorizar': autorizar, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'Autorizacion/buscarAutorizar.html', context)       
+                    return render(request, 'Autorizacion/buscarAutorizar.html', context)
+                else:
+                    autorizar = []
+                    mensaje = 'No se encontraron Autorizaciones de pacientes'
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje})    
             else:
                 response = requests.get(url2+'motivos/'+valor)
                 if response.status_code == 200:
@@ -122,6 +126,10 @@ def buscar_autorizacion(request):
                     autorizar = data['autorizar']
                     context = {'autorizar': autorizar, 'mensaje':mensaje}
                     return render(request, 'Autorizacion/buscarAutorizar.html', context)
+                else:
+                    autorizar = []
+                    mensaje = 'No se encontraron Autorizaciones de pacientes'
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje})    
         else:
             response = requests.get(url+'autorizar/')
             if response.status_code == 200:

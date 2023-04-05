@@ -117,7 +117,12 @@ def buscar_resultados(request):
                     resultados = {}
                     resultados = data['resultados']
                     context = {'resultados': resultados, 'mensaje':mensaje}
-                    return render(request, 'Resultados/BuscarResultados.html', context)
+                    return render(request, 'Resultados/BuscarResultados.html', context) 
+                else:
+                    resultados = []
+                    mensaje = 'No se encontraron resultados'
+                    return render(request, 'Resultados/BuscarResultados.html', {'resultados': resultados, 'mensaje': mensaje})
+
                 
             else:        
                 response = requests.get(url2+'nombre/'+valor)
@@ -128,6 +133,11 @@ def buscar_resultados(request):
                     resultados = data['resultados']
                     context = {'resultados': resultados, 'mensaje':mensaje}
                     return render(request, 'Resultados/BuscarResultados.html', context)
+                else:
+                    resultados = []
+                    mensaje = 'No se encontraron resultados'
+                    return render(request, 'Resultados/BuscarResultados.html', {'resultados': resultados, 'mensaje': mensaje})
+
         else:
             response = requests.get(url+'resultados/')
             if response.status_code == 200:

@@ -114,8 +114,12 @@ def buscar_metodos_De_pago(request):
                     metodop = {}
                     metodop = data['metodop']
                     context = {'metodop': metodop, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)       
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
+                else:
+                    metodop = []
+                    mensaje = 'No se encontraron Metodos de pago'
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+           
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -125,6 +129,11 @@ def buscar_metodos_De_pago(request):
                     metodop = data['metodop']
                     context = {'metodop': metodop, 'mensaje':mensaje}
                     return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
+                else:
+                    metodop = []
+                    mensaje = 'No se encontraron Metodos de pago'
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'metodop/')
             if response.status_code == 200:

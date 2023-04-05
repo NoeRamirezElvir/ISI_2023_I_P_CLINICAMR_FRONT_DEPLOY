@@ -35,6 +35,11 @@ def buscar_recaudo_detalle_tratamiento(request):
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'detalles': detalles, 'mensaje': mensaje})
+
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -44,6 +49,11 @@ def buscar_recaudo_detalle_tratamiento(request):
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)      
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'detalles': detalles, 'mensaje': mensaje})
+
         else:
             response = requests.get(url+'recaudoDetalleTratamiento/')
             if response.status_code == 200:

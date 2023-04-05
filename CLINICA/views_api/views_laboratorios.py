@@ -114,8 +114,12 @@ def buscar_laboratorios(request):
                     laboratorios = {}
                     laboratorios = data['laboratorios']
                     context = {'laboratorios': laboratorios, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'Laboratorios/BuscarLaboratorios.html', context)       
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', context)  
+                else:
+                    laboratorios = []
+                    mensaje = 'No se encontraron laboratorios'
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
+             
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -125,6 +129,10 @@ def buscar_laboratorios(request):
                     laboratorios = data['laboratorios']
                     context = {'laboratorios': laboratorios, 'mensaje':mensaje}
                     return render(request, 'Laboratorios/BuscarLaboratorios.html', context)
+                else:
+                    laboratorios = []
+                    mensaje = 'No se encontraron laboratorios'
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
         else:
             response = requests.get(url+'laboratorios/')
             if response.status_code == 200:

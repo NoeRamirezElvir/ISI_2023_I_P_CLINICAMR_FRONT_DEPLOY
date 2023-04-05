@@ -131,6 +131,11 @@ def buscar_tratamientos(request):
                     tratamientos = data['tratamientos']
                     context = {'tratamientos': tratamientos, 'mensaje':mensaje}
                     return render(request, 'tratamiento/Buscar_tratamiento.html', context)
+                else:
+                    tratamientos = []
+                    mensaje = 'No se encontraron muestras'
+                    return render(request, 'tratamiento/Buscar_tratamiento.html', {'tratamientos': tratamientos, 'mensaje': mensaje})
+
         else:
             response = requests.get(url+'tratamientos/')
             if response.status_code == 200:

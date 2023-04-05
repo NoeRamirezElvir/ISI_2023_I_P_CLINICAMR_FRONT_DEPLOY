@@ -110,7 +110,12 @@ def buscar_documentos(request):
                     documentos = data['documentos']
                     context = {'documentos': documentos, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'documentos/buscarDocumento.html', context)       
+                    return render(request, 'documentos/buscarDocumento.html', context) 
+                else:
+                    documentos = []
+                    mensaje = 'No se encontraron documentos'
+                    return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+        
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -120,6 +125,10 @@ def buscar_documentos(request):
                     documentos = data['documentos']
                     context = {'documentos': documentos, 'mensaje':mensaje}
                     return render(request, 'documentos/buscarDocumento.html', context)
+                else:
+                    documentos = []
+                    mensaje = 'No se encontraron documentos'
+                    return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'documentos/')
             if response.status_code == 200:
@@ -128,7 +137,7 @@ def buscar_documentos(request):
                 mensaje = data['message']   
                 return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
             else:
-                usuarios = []
+                documentos = []
                 mensaje = 'No se encontraron documentos'
             return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
     

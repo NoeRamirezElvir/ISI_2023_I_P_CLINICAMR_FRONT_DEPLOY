@@ -112,7 +112,12 @@ def buscar_proveedor(request):
                     proveedores = {}
                     proveedores = data['proveedores']
                     context = {'proveedores': proveedores, 'mensaje':mensaje}
-                    return render(request, 'Proveedor/BuscarProveedor.html', context)       
+                    return render(request, 'Proveedor/BuscarProveedor.html', context) 
+                else:
+                    proveedores = []
+                    mensaje = 'No se encontraron proveedores'
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+      
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -122,6 +127,11 @@ def buscar_proveedor(request):
                     proveedores = data['proveedores']
                     context = {'proveedores': proveedores, 'mensaje':mensaje}
                     return render(request, 'Proveedor/BuscarProveedor.html', context)
+                else:
+                    proveedores = []
+                    mensaje = 'No se encontraron proveedores'
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+
         else:
             response = requests.get(url+'proveedores/')
             if response.status_code == 200:

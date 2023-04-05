@@ -37,13 +37,12 @@ def crear_citas(request):
         registro_temp = {'idPaciente':idPaciente,'fechaActual': fechaActual,'fechaProgramada': fechaProgramada,'fechaMaxima': fechaMaxima,'activa': activa }
         response = requests.post(url+'citas/', json={'idPaciente':idPaciente,'fechaActual': fechaActual,'fechaProgramada': fechaProgramada,'fechaMaxima': fechaMaxima,'activa': activa })
         pacientedata={}
+        pacientedata = response.json()
         if response.status_code == 200:
-            pacientedata = response.json()
             mensaje = pacientedata['message']
             return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp})
         else:
             mensaje = pacientedata['message']
-            
             return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp})
     else:
         return render(request, 'citas/cita.html', { 'paciente_list': pacientes_list})
@@ -132,17 +131,31 @@ def buscar_citas(request):
             if valor.isdigit():
                 id = int(valor)
                 response = requests.get(url2 + f'id/{id}')
-                if response.status_code == 200:
+                data = response.json()
+                if data['citas']:
                     data = response.json()
                     mensaje = data['message']
                     citas = {}
                     citas = data['citas']
                     context = {'citas': citas, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'citas/cita_buscar.html', context)       
+                    return render(request, 'citas/cita_buscar.html', context)
+                
+                else:
+                    response = requests.get(url2+f'documento/{valor}')
+                    data = response.json()
+                    if data['citas']:
+                        mensaje = data['message']
+                        citas = {}
+                        citas = data['citas']
+                        context = {'citas': citas, 'mensaje':mensaje}
+                        return render(request, 'citas/cita_buscar.html', context)
+                    else:
+                        citas = []
+                        mensaje = 'No se encontrarón citas'
+                        context = {'citas': citas, 'mensaje':mensaje}
+                        return render(request, 'citas/cita_buscar.html', context)  
             else:
-                fecha = str(valor)
-                response = requests.get(url2+f'fechaProgramada/{fecha}')
+                response = requests.get(url2+f'documento/{valor}')
                 if response.status_code == 200:
                     data = response.json()
                     mensaje = data['message']
@@ -150,6 +163,11 @@ def buscar_citas(request):
                     citas = data['citas']
                     context = {'citas': citas, 'mensaje':mensaje}
                     return render(request, 'citas/cita_buscar.html', context)
+                else:
+                    citas = []
+                    mensaje = 'No se encontrarón citas'
+                    context = {'citas': citas, 'mensaje':mensaje}
+                    return render(request, 'citas/cita_buscar.html', context)  
         else:
             response = requests.get(url+'citas/')
             if response.status_code == 200:

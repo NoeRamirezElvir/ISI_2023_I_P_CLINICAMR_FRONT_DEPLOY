@@ -161,7 +161,11 @@ def buscar_enfermedad(request):
                     enfermedades = {}
                     enfermedades = data['enfermedades']
                     context = {'enfermedades': enfermedades, 'mensaje':mensaje}
-                    return render(request, 'enfermedad/buscar_enfermedad.html', context)       
+                    return render(request, 'enfermedad/buscar_enfermedad.html', context)  
+                else:
+                    enfermedades = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})     
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -171,6 +175,10 @@ def buscar_enfermedad(request):
                     enfermedades = data['enfermedades']
                     context = {'enfermedades': enfermedades, 'mensaje':mensaje}
                     return render(request, 'enfermedad/buscar_enfermedad.html', context)
+                else:
+                    enfermedades = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})
         else:
             response = requests.get(url+'enfermedades/')
             if response.status_code == 200:

@@ -139,6 +139,10 @@ def buscar_expediente(request):
                         expediente = data['expedientes']
                         context = {'expediente': expediente, 'mensaje':mensaje}
                         return render(request, 'expediente/buscar_expediente.html', context)
+                    else:
+                        expediente = []
+                        mensaje = 'No se encontraron documentos'
+                        return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 if response.status_code == 200:
@@ -148,6 +152,10 @@ def buscar_expediente(request):
                     expediente = data['expedientes']
                     context = {'expediente': expediente, 'mensaje':mensaje}
                     return render(request, 'expediente/buscar_expediente.html', context)
+                else:
+                    expediente = []
+                    mensaje = 'No se encontraron documentos'
+                    return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
         else:
             response = requests.get(url+'expediente/')
             if response.status_code == 200:

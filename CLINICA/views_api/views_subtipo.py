@@ -111,8 +111,12 @@ def buscar_subtipo(request):
                     subtipo = {}
                     subtipo = data['subtipo']
                     context = {'subtipo': subtipo, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'SubTipo/buscarsubtipo.html', context)       
+                    return render(request, 'SubTipo/buscarsubtipo.html', context)
+                else:
+                    subtipo = []
+                    mensaje = 'No se encontraron subtipo'
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+           
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -122,6 +126,11 @@ def buscar_subtipo(request):
                     subtipo = data['subtipo']
                     context = {'subtipo': subtipo, 'mensaje':mensaje}
                     return render(request, 'SubTipo/buscarsubtipo.html', context)
+                else:
+                    subtipo = []
+                    mensaje = 'No se encontraron subtipo'
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'subtipo/')
             if response.status_code == 200:

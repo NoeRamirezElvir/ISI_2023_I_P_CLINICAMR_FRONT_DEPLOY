@@ -108,8 +108,12 @@ def buscar_parametros_generales(request):
                     parametrosgenerales = {}
                     parametrosgenerales = data['parametrosgenerales']
                     context = {'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
-                    print(context)
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)       
+                else:
+                    parametrosgenerales = []
+                    mensaje = 'No se encontraron parametros generales'
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+      
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -119,6 +123,11 @@ def buscar_parametros_generales(request):
                     parametrosgenerales = data['parametrosgenerales']
                     context = {'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)
+                else:
+                    parametrosgenerales = []
+                    mensaje = 'No se encontraron parametros generales'
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+      
         else:
             response = requests.get(url+'parametrosgenerales/')
             if response.status_code == 200:

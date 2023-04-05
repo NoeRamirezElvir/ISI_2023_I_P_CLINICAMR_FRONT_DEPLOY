@@ -134,6 +134,10 @@ def buscar_examenes(request):
                         examenes = data['examenes']
                         context = {'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
+                    else:
+                        examenes = []
+                        mensaje = 'No se encontraron muestras'
+                        return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()
@@ -153,6 +157,10 @@ def buscar_examenes(request):
                         examenes = data['examenes']
                         context = {'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
+                    else:
+                        examenes = []
+                        mensaje = 'No se encontraron muestras'
+                        return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
         else:
             response = requests.get(url+'examen/')
             if response.status_code == 200:

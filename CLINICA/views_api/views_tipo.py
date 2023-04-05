@@ -142,16 +142,33 @@ def buscar_tipo(request):
                     tipo = {}
                     tipo = data['tipos']
                     context = {'tipo': tipo, 'mensaje':mensaje}
-                    return render(request, 'Tipos/buscartipo.html', context)       
+                    return render(request, 'Tipos/buscartipo.html', context)
+                else:
+                    tipo = []
+                    mensaje = 'No se encontraron tipo'
+                    return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})       
             else:
                 response = requests.get(url2+'nombre/'+valor)
-                if response.status_code == 200:
-                    data = response.json()
+                data = response.json()
+                if data['tipos']:
                     mensaje = data['message']
                     tipo = {}
                     tipo = data['tipos']
                     context = {'tipo': tipo, 'mensaje':mensaje}
                     return render(request, 'Tipos/buscartipo.html', context)
+                else:
+                    response = requests.get(url2+'subtipo/'+valor)
+                    data = response.json()
+                    if data['tipos']:
+                        mensaje = data['message']
+                        tipo = {}
+                        tipo = data['tipos']
+                        context = {'tipo': tipo, 'mensaje':mensaje}
+                        return render(request, 'Tipos/buscartipo.html', context)
+                    else:
+                        tipo = []
+                        mensaje = 'No se encontraron tipo'
+                        return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})
         else:
             response = requests.get(url+'tipo/')
             if response.status_code == 200:

@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_citas' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Documento">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
@@ -25,6 +25,7 @@
         <thead>
           <tr class="tfheader-listar">
             <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Paciente</th>
             <th style="color:aliceblue">Fecha de Registro</th>
             <th style="color:aliceblue">Fecha Programada</th>
             <th style="color:aliceblue">Fecha Maxima</th>
@@ -36,6 +37,7 @@
           {% for cita in citas %}
           <tr>
             <td>{{ cita.id }}</td>
+            <td>{{ cita.idPaciente.nombre }} <br> {{ cita.idPaciente.documento }}</td>
             <td>{{ cita.fechaActual }}</td>
             <td>{{ cita.fechaProgramada }}</td>
             <td>{{ cita.fechaMaxima }}</td>

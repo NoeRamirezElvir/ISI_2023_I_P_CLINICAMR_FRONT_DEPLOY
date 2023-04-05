@@ -131,8 +131,12 @@ def buscar_correlativo(request):
                     correlativo = {}
                     correlativo = data['correlativo']
                     context = {'correlativo': correlativo, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'correlativo/buscar_correlativo.html', context)       
+                    return render(request, 'correlativo/buscar_correlativo.html', context)
+                else:
+                    correlativo = []
+                    mensaje = 'No se encontraron correlativos'
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+          
             else:
                 response = requests.get(url2+'cai/'+valor)
                 if response.status_code == 200:
@@ -142,6 +146,11 @@ def buscar_correlativo(request):
                     correlativo = data['correlativo']
                     context = {'correlativo': correlativo, 'mensaje':mensaje}
                     return render(request, 'correlativo/buscar_correlativo.html', context)
+                else:
+                    correlativo = []
+                    mensaje = 'No se encontraron correlativos'
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'correlativo/')
             if response.status_code == 200:

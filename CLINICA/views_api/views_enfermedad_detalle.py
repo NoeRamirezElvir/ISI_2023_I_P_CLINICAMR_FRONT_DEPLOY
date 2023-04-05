@@ -35,6 +35,10 @@ def buscar_enfermedad_detalle(request):
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -43,7 +47,12 @@ def buscar_enfermedad_detalle(request):
                     detalles = {}
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
-                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)      
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)   
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+   
         else:
             response = requests.get(url+'enfermedadDetalle/')
             if response.status_code == 200:

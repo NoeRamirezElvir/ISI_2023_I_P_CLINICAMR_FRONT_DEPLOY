@@ -35,7 +35,12 @@ def buscar_impuesto_historico(request):
                     historicos = {}
                     historicos = data['historicos']
                     context = {'historicos': historicos, 'mensaje':mensaje}
-                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)       
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
+                else:
+                    historicos = []
+                    mensaje = 'No se encontrarón citas'
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
+              
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -45,6 +50,10 @@ def buscar_impuesto_historico(request):
                     historicos = data['historicos']
                     context = {'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
+                else:
+                    historicos = []
+                    mensaje = 'No se encontrarón citas'
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'impuestoHistorico/')
             if response.status_code == 200:

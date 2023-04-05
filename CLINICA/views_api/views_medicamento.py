@@ -199,8 +199,12 @@ def buscar_medicamentos(request):
                     medicamentos = {}
                     medicamentos = data['medicamentos']
                     context = {'medicamentos': medicamentos, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'medicamentos/buscar_medicamentos.html', context)       
+                    return render(request, 'medicamentos/buscar_medicamentos.html', context)    
+                else:
+                    medicamentos = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -210,6 +214,11 @@ def buscar_medicamentos(request):
                     medicamentos = data['medicamentos']
                     context = {'medicamentos': medicamentos, 'mensaje':mensaje}
                     return render(request, 'medicamentos/buscar_medicamentos.html', context)
+                else:
+                    medicamentos = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'medicamentos/')
             if response.status_code == 200:

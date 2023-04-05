@@ -35,6 +35,10 @@ def buscar_diagnostico_detalle(request):
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
             else:
                 response = requests.get(url2 + f'descripcion/{valor}')
                 if response.status_code == 200:
@@ -43,7 +47,12 @@ def buscar_diagnostico_detalle(request):
                     detalles = {}
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
-                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)      
+                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context) 
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'diagnosticoDetalle/')
             if response.status_code == 200:

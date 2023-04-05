@@ -115,7 +115,11 @@ def buscar_especialidades(request):
                     especialidad = data['especialidad']
                     context = {'especialidad': especialidad, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'especialidad/BuscarEspecialidad.html', context)       
+                    return render(request, 'especialidad/BuscarEspecialidad.html', context)     
+                else:
+                    especialidad = []
+                    mensaje = 'No se encontraron especialidades'
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})  
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -125,6 +129,11 @@ def buscar_especialidades(request):
                     especialidad = data['especialidad']
                     context = {'especialidad': especialidad, 'mensaje':mensaje}
                     return render(request, 'especialidad/BuscarEspecialidad.html', context)
+                else:
+                    especialidad = []
+                    mensaje = 'No se encontraron especialidades'
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'especialidad/')
             if response.status_code == 200:

@@ -112,8 +112,11 @@ def buscar_cargos(request):
                     cargos = {}
                     cargos = data['cargos']
                     context = {'cargos': cargos, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'cargos/buscarCargo.html', context)       
+                    return render(request, 'cargos/buscarCargo.html', context)     
+                else:
+                    cargos = []
+                    mensaje = 'No se encontraron cargos'
+                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})  
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -123,6 +126,10 @@ def buscar_cargos(request):
                     cargos = data['cargos']
                     context = {'cargos': cargos, 'mensaje':mensaje}
                     return render(request, 'cargos/buscarCargo.html', context)
+                else:
+                    cargos = []
+                    mensaje = 'No se encontraron cargos'
+                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'cargos/')
             if response.status_code == 200:
@@ -131,7 +138,7 @@ def buscar_cargos(request):
                 mensaje = data['message']   
                 return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
             else:
-                usuarios = []
+                cargos = []
                 mensaje = 'No se encontraron cargos'
             return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje})
     

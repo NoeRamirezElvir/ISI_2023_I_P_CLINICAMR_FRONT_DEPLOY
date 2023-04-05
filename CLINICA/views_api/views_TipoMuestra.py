@@ -115,7 +115,14 @@ def buscar_TipoMuestra(request):
                     tmuestra = data['tmuestra']
                     context = {'tmuestra': tmuestra, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'TipoMuestra/BuscarTMuestra.html', context)       
+                    return render(request, 'TipoMuestra/BuscarTMuestra.html', context) 
+    
+                else:
+                    tmuestra = []
+                    mensaje = 'No se encontraron Tipos de Muestra'
+                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+    
+                      
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -125,6 +132,11 @@ def buscar_TipoMuestra(request):
                     tmuestra = data['tmuestra']
                     context = {'tmuestra': tmuestra, 'mensaje':mensaje}
                     return render(request, 'TipoMuestra/BuscarTMuestra.html', context)
+                else:
+                    tmuestra = []
+                    mensaje = 'No se encontraron Tipos de Muestra'
+                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'tmuestra/')
             if response.status_code == 200:

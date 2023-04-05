@@ -35,6 +35,10 @@ def buscar_detalle_consulta(request):
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})  
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -43,7 +47,11 @@ def buscar_detalle_consulta(request):
                     detalles = {}
                     detalles = data['detalles']
                     context = {'detalles': detalles, 'mensaje':mensaje}
-                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)      
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)   
+                else:
+                    detalles = []
+                    mensaje = 'No se encontrarón registros'
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})  
         else:
             response = requests.get(url+'consultaDetalle/')
             if response.status_code == 200:

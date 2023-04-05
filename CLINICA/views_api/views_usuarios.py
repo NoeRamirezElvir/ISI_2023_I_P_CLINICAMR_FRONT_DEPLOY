@@ -148,7 +148,12 @@ def buscar_usuarios(request):
                     usuarios = {}
                     usuarios = data['usuariosr']
                     context = {'usuariosr': usuarios, 'mensaje':mensaje}
-                    return render(request, 'usuario/listar.html', context)       
+                    return render(request, 'usuario/listar.html', context) 
+                else:
+                    usuarios = []
+                    mensaje = 'No se encontraron usuarios'
+                    return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+          
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -158,6 +163,12 @@ def buscar_usuarios(request):
                     usuarios = data['usuariosr']
                     context = {'usuariosr': usuarios, 'mensaje':mensaje}
                     return render(request, 'usuario/listar.html', context)
+                else:
+                    usuarios = []
+                    mensaje = 'No se encontraron usuarios'
+                    return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+    
+
         else:
             response = requests.get(url+'usuarios/')
             if response.status_code == 200:

@@ -105,8 +105,12 @@ def buscar_sintomas(request):
                     sintomas = {}
                     sintomas = data['sintomas']
                     context = {'sintomas': sintomas, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'sintomas/buscar_sintomas.html', context)       
+                    return render(request, 'sintomas/buscar_sintomas.html', context)
+                else:
+                    sintomas = []
+                    mensaje = 'No se encontraron sintomas'
+                    return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+           
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -116,6 +120,11 @@ def buscar_sintomas(request):
                     sintomas = data['sintomas']
                     context = {'sintomas': sintomas, 'mensaje':mensaje}
                     return render(request, 'sintomas/buscar_sintomas.html', context)
+                else:
+                    sintomas = []
+                    mensaje = 'No se encontraron sintomas'
+                    return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+           
         else:
             response = requests.get(url+'sintomas/')
             if response.status_code == 200:

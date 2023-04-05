@@ -65,8 +65,9 @@
           
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
-              <label class="campo-registro">Fecha Actual</label>
-              <input type="datetime-local" name="fechaActual" required value="{{citas.0.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+              <input type="hidden" name="fechaActual" id="fechaActual" value="citas.0.fechaActual">
+              <label class="campo-registro">Fecha de Registro</label>
+              <input type="datetime-local" name="fechaRegistro" id="fechaRegistro" disabled value="{{citas.0.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
             </div>
             <div style="display: block;width: 100%">
               <label  class="campo-registro">Fecha Programada</label>
@@ -93,4 +94,13 @@
     <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+<script>  
+  const fechaInput1 = document.getElementById('fechaProgramada');
+  const fechaInput2 = document.getElementById('fechaMaxima');
+
+  fechaInput1.addEventListener('change', (event) => {
+    const fechaSeleccionada = event.target.value;
+    fechaInput2.value = fechaSeleccionada;
+  });
+</script>
 {% endblock %}

@@ -36,8 +36,12 @@ def buscar_precio_historico_consulta(request):
                     historicos = {}
                     historicos = data['historicos']
                     context = {'historicos': historicos, 'mensaje':mensaje}
-                    print(context)
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)       
+                else:
+                    historicos = []
+                    mensaje = 'No se encontrarón historicos de examenes'
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -47,6 +51,11 @@ def buscar_precio_historico_consulta(request):
                     historicos = data['historicos']
                     context = {'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)
+                else:
+                    historicos = []
+                    mensaje = 'No se encontrarón historicos de examenes'
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+
         else:
             response = requests.get(url+'precioHistoricoConsulta/')
             if response.status_code == 200:

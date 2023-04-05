@@ -196,6 +196,10 @@ def buscar_empleados(request):
                     context = {'empleados': empleados, 'mensaje':mensaje}
                     print(context)
                     return render(request, 'empleado/buscarEmpleado.html', context)       
+                else:
+                    empleados = []
+                    mensaje = 'No se encontro empleados'
+                    return render(request, 'empleado/buscarEmpleado.html', {'empleados': empleados, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -205,6 +209,10 @@ def buscar_empleados(request):
                     empleados = data['empleados']
                     context = {'empleados': empleados, 'mensaje':mensaje}
                     return render(request, 'empleado/buscarEmpleado.html', context)
+                else:
+                    empleados = []
+                    mensaje = 'No se encontro empleados'
+                    return render(request, 'empleado/buscarEmpleado.html', {'empleados': empleados, 'mensaje': mensaje})
         else:
             response = requests.get(url+'empleados/')
             if response.status_code == 200:

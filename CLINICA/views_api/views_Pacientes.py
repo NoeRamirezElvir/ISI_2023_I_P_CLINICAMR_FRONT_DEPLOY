@@ -151,8 +151,12 @@ def buscar_pacientes(request):
                     pacientes = {}
                     pacientes = data['pacientes']
                     context = {'pacientes': pacientes, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'Pacientes/buscarPaciente.html', context)       
+                    return render(request, 'Pacientes/buscarPaciente.html', context) 
+                else:
+                    pacientes = []
+                    mensaje = 'No se encontro paciente'
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
+        
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -162,6 +166,12 @@ def buscar_pacientes(request):
                     pacientes = data['pacientes']
                     context = {'pacientes': pacientes, 'mensaje':mensaje}
                     return render(request, 'Pacientes/buscarPaciente.html', context)
+                else:
+                    pacientes = []
+                    mensaje = 'No se encontro paciente'
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje})
+    
+
         else:
             response = requests.get(url+'pacientes/')
             if response.status_code == 200:

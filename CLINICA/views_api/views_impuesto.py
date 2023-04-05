@@ -124,7 +124,12 @@ def buscar_Impuestos(request):
                     Impuestos = data['Impuestos']
                     context = {'Impuestos': Impuestos, 'mensaje':mensaje}
                     print(context)
-                    return render(request, 'Impuestos/BuscarImpuesto.html', context)       
+                    return render(request, 'Impuestos/BuscarImpuesto.html', context)   
+                else:
+                    Impuestos = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'Impuestos/BuscarImpuesto.html', {'Impuestos': Impuestos, 'mensaje': mensaje})
+            
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -134,6 +139,10 @@ def buscar_Impuestos(request):
                     Impuestos = data['Impuestos']
                     context = {'Impuestos': Impuestos, 'mensaje':mensaje}
                     return render(request, 'Impuestos/BuscarImpuesto.html', context)
+                else:
+                    Impuestos = []
+                    mensaje = 'No se encontraron registros'
+                    return render(request, 'Impuestos/BuscarImpuesto.html', {'Impuestos': Impuestos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'Impuestos/')
             if response.status_code == 200:

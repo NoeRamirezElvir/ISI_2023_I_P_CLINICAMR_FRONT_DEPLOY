@@ -121,8 +121,13 @@ def buscar_muestras(request):
                     muestras = {}
                     muestras = data['muestras']
                     context = {'muestras': muestras, 'mensaje':mensaje}
-                    print(context)
-                    return render(request, 'Muestras/BuscarMuestra.html', context)       
+
+                    return render(request, 'Muestras/BuscarMuestra.html', context) 
+                else:
+                    muestras = []
+                    mensaje = 'No se encontraron muestras'
+                    return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+          
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -132,6 +137,11 @@ def buscar_muestras(request):
                     muestras = data['muestras']
                     context = {'muestras': muestras, 'mensaje':mensaje}
                     return render(request, 'Muestras/BuscarMuestra.html', context)
+                else:
+                    muestras = []
+                    mensaje = 'No se encontraron muestras'
+                    return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+    
         else:
             response = requests.get(url+'muestras/')
             if response.status_code == 200:
