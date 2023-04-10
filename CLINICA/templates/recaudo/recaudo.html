@@ -1,0 +1,180 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Sintomas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/recaudo_modal.css' %}">
+<div class="contenedor">
+    <h1 class="logo"><span class="nombre-empresa">Recaudo</span></h1>
+    <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+        <h3>Medical Rescue</h3>
+        <ul class="servicios">
+          <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+          <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+          <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+          <button class="button"><a href ="/CLINICA/templates/citas/cita_buscar.html">Buscar</a> </button>
+        </ul>
+      </div>
+      <div class="contacto">
+        <form method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" id="medicamentosSeleccionadosInput" name="medicamentosSeleccionados">
+          <input type="hidden" id="tratamientosSeleccionadosInput" name="tratamientosSeleccionados">
+          <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
+          <div style="display: inline-grid;width: 100%">
+            <input type="hidden" name="fechaActual" id="fechaActual">
+            <label class="campo-registro">Fecha de Registro</label>
+            <input type="datetime-local" name="fechaRegistro" id="fechaRegistro" disabled value="{{registro_temp.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: inline-grid;width: 100%">
+              <label class="campo-registro">Paciente</label>
+              <select name="idPaciente" id="idPaciente">
+                  {% for pacientes in pacientes_list %}
+                      <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{ pacientes.id }} - {{ pacientes.nombre }} {{ pacientes.apellido}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div style="display: inline-grid;width: 100%">
+                <label class="campo-registro">Empleado</label>
+                <select name="idEmpleado" id="idEmpleado">
+                    {% for empleados in empleados_list %}
+                        <option value="{{ empleados.id }}"{% if empleados.id == registro_temp.idEmpleado %}selected{% endif %}>{{ empleados.id }} - {{ empleados.nombre }} {{ empleados.apellidos}}</option>
+                    {% endfor %}
+                </select>
+              </div>
+          </div>
+          <div style="display: inline-grid;width: 100%">
+            <label>Total</label>
+            <input type="text" name="precio" id="precio" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+          <p class="full">
+            <button class="boton-enviar" style="margin-top:70px">Guardar</button>
+          </p>
+        </form>
+      </div>
+    </div>
+</div>
+<div style="display: inline-flex ;width: 100%;position: fixed; left:650px; top:350px;">
+    <button class="boton-agregar" id="miBotonAbrir1">Medicamentos</button>
+    <button class="boton-agregar" id="miBotonAbrir2">Tratamientos</button>
+    <button class="boton-agregar" id="miBotonAbrir3">Examenes</button>
+</div>
+
+    <!-- Ventana modal 1 -->
+    <div id="miVentanaModal1" class="modal">
+      <input type="hidden" id="totalMedicamentos" name="totalMedicamentos">
+    <div class="modal-contenido">
+        <span class="cerrar">&times;</span>
+
+        <div>
+            <label class="campo-registro">Medicamentos</label>
+            <select name="idMedicamento" id="idMedicamento">
+                <option value="0" selected>Seleccione una opción</option>"
+                {% for item in medicamentos_list %}
+                <option value="{{ item.id }} - {{ item.nombre }} - {{ item.precioVenta }}" data-precio="{{ item.precioVenta }}">{{item.id}}&#41 {{ item.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button class="boton-agregar-modal" id="myButtonMedicamento" onclick="guardarMedicamento()">Agregar Medicamento</button>
+        </div>
+
+
+        <div style="max-height: 200px;overflow-y: scroll;height:200px">
+            <table id="myTableMedicamento" style="max-height: 300px;overflow-y: scroll;">
+                <thead>
+                  <tr>
+                    <th style="width: 50%;">Medicamentos</th>
+                    <th style="width: 50%;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se agregarán las filas de la tabla con los datos de la lista -->
+                </tbody>
+              </table>
+            </div>   
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Ventana modal 2 -->
+    <div id="miVentanaModal2" class="modal">
+      <input type="hidden" id="totalTratamientos" name="totalTratamientos">
+    <div class="modal-contenido">
+        <span class="cerrar">&times;</span>
+         
+        <div>
+            <label class="campo-registro">Tratamientos</label>
+            <select name="idTratamiento" id="idTratamiento">
+                <option value="0" selected>Seleccione una opción</option>"
+                {% for item in tratamientos_list %}
+                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41 {{ item.idTipo.nombre }}:{{ item.idPaciente.nombre }} {{ item.idPaciente.documento }}</option>
+                {% endfor %}
+            </select>
+            <button class="boton-agregar-modal" id="myButtonTratamiento" onclick="guardarTratamiento()">Agregar Tratamiento</button>
+        </div>
+
+        <div style="max-height: 200px;overflow-y: scroll;height:200px">
+            <table id="myTableTratamiento" style="max-height: 300px;overflow-y: scroll;">
+                <thead>
+                  <tr>
+                    <th style="width: 50%;">Tratamientos</th>
+                    <th style="width: 50%;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se agregarán las filas de la tabla con los datos de la lista -->
+                </tbody>
+              </table>
+            </div>   
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Ventana modal 3 -->
+    <div id="miVentanaModal3" class="modal">
+      <input type="hidden" id="totalExamenes" name="totalExamenes">
+    <div class="modal-contenido">
+        <span class="cerrar">&times;</span>
+         
+        <div>
+            <label class="campo-registro">Examenes</label>
+            <select name="idExamen" id="idExamen">
+                <option value="0" selected>Seleccione una opción</option>"
+                {% for item in examenes_list %}
+                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41{{ item.idTipo.nombre }}:{{ item.idMuestra.idPaciente.nombre }} {{ item.idMuestra.idPaciente.documento }}</option>
+                {% endfor %}
+            </select>
+            <button class="boton-agregar-modal" id="myButtonExamen" onclick="guardarExamen()">Agregar Examen</button>
+        </div>
+
+        <div style="max-height: 200px;overflow-y: scroll;height:200px">
+            <table id="myTableExamen" style="max-height: 300px;overflow-y: scroll;">
+                <thead>
+                  <tr>
+                    <th style="width: 50%;">Examenes</th>
+                    <th style="width: 50%;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se agregarán las filas de la tabla con los datos de la lista -->
+                </tbody>
+              </table>
+            </div>   
+        </div>
+
+    </div>
+    </div>
+
+    {% if mensaje %}
+    <div id="alert-alert-info">
+        <p>{{ mensaje }}</p>
+    </div>
+    {% endif %}
+    <script src="{% static 'js/recaudo_modal.js' %}"></script>
+    <script src="{% static 'js/recaudo_detalles.js' %}"></script>
+    <script src="{% static 'js/estaticos.js' %}"></script>
+{% endblock %}

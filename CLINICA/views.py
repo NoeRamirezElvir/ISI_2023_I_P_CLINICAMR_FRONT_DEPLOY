@@ -452,3 +452,7 @@ def crear_correlativo(request):#
     return render(request,'correlativo/correlativo.html')
 def eliminar_correlativo(request,id):#
     return render(request,'correlativo/correlativo.html')
+
+#Recaudo
+def crear_recaudo(request):#
+    return render(request,'recaudo/recaudo.html')

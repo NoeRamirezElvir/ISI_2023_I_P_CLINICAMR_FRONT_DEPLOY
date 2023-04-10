@@ -59,6 +59,7 @@ from CLINICA.views_api.views_expediente import *
 from CLINICA.views_api.views_autorizacion_paciente import *
 from CLINICA.views_api.views_traslado_paciente import *
 from CLINICA.views_api.views_correlativo_SAR import *
+from CLINICA.views_api.views_recaudo import *
 
 
 urlpatterns = [
@@ -363,6 +364,9 @@ urlpatterns = [
     path('CLINICA/templates/correlativo/buscar_correlativo.html',buscar_correlativo,name = 'buscar_correlativo'),
     path('CLINICA/templates/correlativo/correlativo.html',crear_correlativo, name="crear_correlativo"),
     path('CLINICA/templates/correlativo/buscar_correlativo.html',listar_correlativo, name="listar_correlativo"),
+
+    #Recaudo
+    path('CLINICA/templates/recaudo/recaudo.html',crear_recaudo, name="crear_recaudo"),
 
 
 

@@ -41,6 +41,7 @@ from views_api import views_expediente
 from views_api import views_autorizacion_paciente
 from views_api import views_traslado_paciente
 from views_api import views_correlativo_SAR
+from views_api import views_recaudo
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -338,6 +339,9 @@ urlpatterns = [
     path('',views_correlativo_SAR.listar_correlativo , name='listar_correlativo'),
     path('',views_correlativo_SAR.buscar_correlativo , name='buscar_correlativo'),
     path('',views_correlativo_SAR.crear_correlativo , name='crear_correlativo'),
+
+    #Recaudo
+    path('',views_recaudo.crear_recaudo , name='crear_recaudo'),
 
 
 ]
