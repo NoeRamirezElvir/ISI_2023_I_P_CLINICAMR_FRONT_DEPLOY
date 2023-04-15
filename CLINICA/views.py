@@ -1,10 +1,19 @@
 from django.http import HttpResponse
 import json
 from django.shortcuts import render, redirect
+import requests
 
 def presentacion(request):
     return render(request,'presentacion/presentacion.html')
+
+url = 'http://localhost:8080/api/'
 def salir_presentacion(request):
+    rsp_empleado = requests.get(url+'usuarios/busqueda/sesion/1')
+    if rsp_empleado.status_code == 200:
+        data = rsp_empleado.json()
+        usuario = data['usuariosr']
+        id = usuario[0]['id']
+        response = requests.put(url+f'login/id/{ id }')
     return render(request, 'presentacion/presentacion.html')
 def iniciar_sesion(request):
     return render(request,'presentacion/usuariologin.html')

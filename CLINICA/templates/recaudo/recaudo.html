@@ -18,46 +18,105 @@
         </ul>
       </div>
       <div class="contacto">
-        <form method="POST" action="">
+        <form method="POST" action="" id="myform">
           {% csrf_token %}
           <input type="hidden" id="medicamentosSeleccionadosInput" name="medicamentosSeleccionados">
           <input type="hidden" id="tratamientosSeleccionadosInput" name="tratamientosSeleccionados">
           <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
+          <div style="display: inline-flex ;width: 100%">
           <div style="display: inline-grid;width: 100%">
             <input type="hidden" name="fechaActual" id="fechaActual">
             <label class="campo-registro">Fecha de Registro</label>
-            <input type="datetime-local" name="fechaRegistro" id="fechaRegistro" disabled value="{{registro_temp.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+            <input type="text" name="fechaRegistro" id="fechaRegistro" readonly value="{{registro_temp.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
           </div>
+          <div style="display: inline-grid;width: 100%">
+            <label class="campo-registro">Correlativo</label>
+            <select name="idCorrelativo" id="idCorrelativo">
+                {% for sar in sar_list %}
+                    <option value="{{ sar.id }}"{% if sar.id == registro_temp.idCorrelativo %}selected{% endif %}>{{ sar.id }} - {{ sar.cai }}</option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: inline-grid;width: 100%">
-              <label class="campo-registro">Paciente</label>
+              <label class="campo-registro">Cliente</label>
               <select name="idPaciente" id="idPaciente">
+                  <option value="0" {% if registro_temp.idPaciente == '0' %}selected{% endif %}>Consumidor Final</option>"
                   {% for pacientes in pacientes_list %}
                       <option value="{{ pacientes.id }}"{% if pacientes.id == registro_temp.idPaciente %}selected{% endif %}>{{ pacientes.id }} - {{ pacientes.nombre }} {{ pacientes.apellido}}</option>
                   {% endfor %}
               </select>
             </div>
             <div style="display: inline-grid;width: 100%">
-                <label class="campo-registro">Empleado</label>
-                <select name="idEmpleado" id="idEmpleado">
-                    {% for empleados in empleados_list %}
-                        <option value="{{ empleados.id }}"{% if empleados.id == registro_temp.idEmpleado %}selected{% endif %}>{{ empleados.id }} - {{ empleados.nombre }} {{ empleados.apellidos}}</option>
-                    {% endfor %}
-                </select>
+                <label class="campo-registro">Empleado</label> 
+                <input type="hidden" name="idEmpleado" id="idEmpleado" value="{{ empleados_list.0.id }}">
+                <input type="text" readonly name="empleado" id="empleado" value="{{ empleados_list.0.id }} - {{ empleados_list.0.nombre }} {{ empleados_list.0.apellidos}}">
               </div>
           </div>
-          <div style="display: inline-grid;width: 100%">
-            <label>Total</label>
-            <input type="text" name="precio" id="precio" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+          <div style="max-height: 200px;overflow-y: scroll;margin-top:50px">
+          <div style="display: inline-grid;width: 100%;">
+            <label class="campo-registro">Consulta</label>
+            <select name="idConsulta" id="idConsulta" style="width: 95%;" onchange="guardarConsulta()">
+                <option value="0" {% if registro_temp.idConsulta == '0' %}selected{% endif %} data-precio="00.00" data-impuesto="00.00">Seleccione una opción</option>"
+                {% for consulta in consultas_list %}
+                    <option value="{{ consulta.id }}"{% if consulta.id == registro_temp.idConsulta %}selected{% endif %} data-precio="{{consulta.idTipo.precio}}" data-impuesto="{{consulta.idTipo.impuesto}}">{{ consulta.id }} - {{ consulta.idTipo.nombre }} : {{ consulta.idCita.idPaciente.documento}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: inline-grid;width: 100%;">
+              <label class="campo-registro">Metodo de Pago</label>
+              <select name="idMetodo" id="idMetodo" onchange="activarInput()">
+                  <option value="0" {% if registro_temp.idMetodo == '0' %}selected{% endif %}>Seleccione una opción</option>"
+                  {% for metodo in metodo_list %}
+                      <option value="{{ metodo.id }}"{% if metodo.id == registro_temp.idMetodo %}selected{% endif %} data-nombre="{{ metodo.nombre }}">{{ metodo.id }} - {{ metodo.nombre }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div style="display: inline-grid;width: 100%;">
+              <label>Monto Efectivo</label>
+              <input type="text" name="montoEfectivo" id="montoEfectivo" value="{{registro_temp.montoEfectivo}}" placeholder="00.00" min="0"  step="10">                  
+             </div>
+          </div>
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: inline-grid;width: 100%;">
+              <label>Numero Tarjeta</label>
+              <input type="text" name="numeroTarjeta" id="numeroTarjeta" value="{{registro_temp.numeroTarjeta}}">                  
+             </div>
+            <div style="display: inline-grid;width: 100%;">
+              <label>Monto Tarjeta</label>
+              <input type="text" name="montoTarjeta" id="montoTarjeta" value="{{registro_temp.montoTarjeta}}" placeholder="00.00" min="0"  step="10"  oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+             </div>
+          </div>
+          <div style="display: inline-grid;width: 100%;">
+            <label>Subtotal</label>
+            <input type="text" name="subtotal" id="subtotal" style="width: 95%;" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
            </div>
+           <div style="display: inline-grid;width: 100%;">
+            <label>Impuesto</label>
+            <input type="text" name="imp" id="imp" value="{{registro_temp.imp}}" style="width: 95%;" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+           <div style="display: inline-flex ;width: 100%">
+           <div style="display: inline-grid;width: 100%;">
+            <label>Total</label>
+            <input type="text" name="total" id="total" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+           <div style="display: inline-grid;width: 100%;">
+            <label>Cambio</label>
+            <input type="text" name="cambio" id="cambio" value="{{registro_temp.cambio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+           </div>
+          </div>
+          </div>
           <p class="full">
-            <button class="boton-enviar" style="margin-top:70px">Guardar</button>
+            <button class="boton-enviar" style="margin-top:10px">Guardar</button>
           </p>
+
         </form>
       </div>
     </div>
 </div>
-<div style="display: inline-flex ;width: 100%;position: fixed; left:650px; top:350px;">
+<div style="display: inline-flex ;width: 100%;position: fixed; left:650px; top:290px;">
     <button class="boton-agregar" id="miBotonAbrir1">Medicamentos</button>
     <button class="boton-agregar" id="miBotonAbrir2">Tratamientos</button>
     <button class="boton-agregar" id="miBotonAbrir3">Examenes</button>
@@ -74,7 +133,7 @@
             <select name="idMedicamento" id="idMedicamento">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in medicamentos_list %}
-                <option value="{{ item.id }} - {{ item.nombre }} - {{ item.precioVenta }}" data-precio="{{ item.precioVenta }}">{{item.id}}&#41 {{ item.nombre }}</option>
+                <option value="{{ item.id }} - {{ item.nombre }} - {{ item.precioVenta }} - {{ item.idImpuesto.nombre }} - 1" data-precio="{{ item.precioVenta }}">{{item.id}}&#41 {{ item.nombre }}</option>
                 {% endfor %}
             </select>
             <button class="boton-agregar-modal" id="myButtonMedicamento" onclick="guardarMedicamento()">Agregar Medicamento</button>
@@ -85,7 +144,7 @@
             <table id="myTableMedicamento" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 50%;">Medicamentos</th>
+                    <th style="width: 50%;">Medicamentos <br> ID - Nombre - Precio - Impuesto</th>
                     <th style="width: 50%;">Acciones</th>
                   </tr>
                 </thead>
@@ -110,7 +169,7 @@
             <select name="idTratamiento" id="idTratamiento">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in tratamientos_list %}
-                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41 {{ item.idTipo.nombre }}:{{ item.idPaciente.nombre }} {{ item.idPaciente.documento }}</option>
+                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }} - {{ item.idTipo.impuesto }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41 {{ item.idTipo.nombre }}:{{ item.idPaciente.nombre }} {{ item.idPaciente.documento }}</option>
                 {% endfor %}
             </select>
             <button class="boton-agregar-modal" id="myButtonTratamiento" onclick="guardarTratamiento()">Agregar Tratamiento</button>
@@ -120,7 +179,7 @@
             <table id="myTableTratamiento" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 50%;">Tratamientos</th>
+                    <th style="width: 50%;">Tratamientos <br> ID - Nombre - Precio - Impuesto</th>
                     <th style="width: 50%;">Acciones</th>
                   </tr>
                 </thead>
@@ -145,7 +204,7 @@
             <select name="idExamen" id="idExamen">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in examenes_list %}
-                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41{{ item.idTipo.nombre }}:{{ item.idMuestra.idPaciente.nombre }} {{ item.idMuestra.idPaciente.documento }}</option>
+                <option value="{{ item.id }} - {{ item.idTipo.nombre }} - {{ item.idTipo.precio }} - {{ item.idTipo.impuesto }}" data-precio="{{ item.idTipo.precio }}">{{item.id}}&#41{{ item.idTipo.nombre }}:{{ item.idMuestra.idPaciente.nombre }} {{ item.idMuestra.idPaciente.documento }}</option>
                 {% endfor %}
             </select>
             <button class="boton-agregar-modal" id="myButtonExamen" onclick="guardarExamen()">Agregar Examen</button>
@@ -155,7 +214,7 @@
             <table id="myTableExamen" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 50%;">Examenes</th>
+                    <th style="width: 50%;">Examenes <br> ID - Nombre - Precio - Impuesto</th>
                     <th style="width: 50%;">Acciones</th>
                   </tr>
                 </thead>

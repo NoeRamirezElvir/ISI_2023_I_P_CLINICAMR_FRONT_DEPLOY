@@ -16,14 +16,11 @@ def listar_tipo(request):
     return render(request, 'Tipos/buscartipo.html', context)
 
 def crear_tipo(request):
-    rsp_Subtipo = requests.get(url+'subtipo/')
-    if rsp_Subtipo.status_code == 200:
-            data = rsp_Subtipo.json()
-            Subtipo = data['subtipo']
-    else:
-            Subtipo= []
+    Subtipo = list_subtipos()
+    impuestos = list_impuesto()
     if request.method == 'POST':
         idsubtipo = int(request.POST['idsubtipo'])
+        idImpuesto = int(request.POST.get('idImpuesto', 0))
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
         if 'precio' in request.POST: #Validar que precio este en la consulta, si no esta es que viene como 0 o vacio
@@ -31,28 +28,23 @@ def crear_tipo(request):
         else:
             precio = '0.00'
 
-        registro_temp = {'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo, 'precio': precio}
-        response = requests.post(url+'tipo/', json={'nombre': nombre, 'descripcion': descripcion,'idsubtipo':idsubtipo, 'precio':precio})
+        registro_temp = {'nombre': nombre, 'descripcion': descripcion,'idImpuesto': idImpuesto,'idsubtipo':idsubtipo, 'precio': precio}
+        response = requests.post(url+'tipo/', json={'nombre': nombre, 'descripcion': descripcion,'idImpuesto': idImpuesto,'idsubtipo':idsubtipo, 'precio':precio})
         data={}
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
 
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo, 'registro_temp':registro_temp})
+            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo, 'registro_temp':registro_temp})
+            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
     else:
-        return render(request, 'Tipos/tipo.html',{'subtipo': Subtipo})
+        return render(request, 'Tipos/tipo.html',{'subtipo': Subtipo,'impuestos': impuestos})
     
 def abrir_actualizar_tipo(request):
-    rsp_subtipo = requests.get(url+'subtipo/')
-    if rsp_subtipo.status_code == 200:
-            data = rsp_subtipo.json()
-            subtipo = data['subtipo']
-    else:
-            subtipo= []
-
+    subtipos = list_subtipos()
+    impuestos = list_impuesto()
     if request.method == 'POST':
          resp = requests.get(url+'tipo/busqueda/id/'+str(request.POST['id_tipos']))
          data = resp.json()
@@ -63,20 +55,17 @@ def abrir_actualizar_tipo(request):
             mensaje = data['message']
          else:
             tipo = []
-         context = {'tipo': tipo,'subtipo': subtipo, 'mensaje':mensaje}
+         context = {'tipo': tipo,'subtipo': subtipos,'impuestos': impuestos, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Tipos/tipoactualizar.html', context)
     
 def actualizar_tipo(request, id):
-    rsp_subtipo = requests.get(url+'subtipo/')
-    if rsp_subtipo.status_code == 200:
-            data = rsp_subtipo.json()
-            subtipo = data['subtipo']
-    else:
-            subtipo= []
+    subtipo = list_subtipos()
+    impuestos = list_impuesto()
     if request.method == 'POST':
         idTemporal = id
         idsubtipo = int(request.POST['idsubtipo'])
+        idImpuesto = int(request.POST.get('idImpuesto', 0))
         nombre = request.POST['nombre']
         descripcion = request.POST['descripcion']
         if 'precio' in request.POST: #Validar que precio este en la consulta, si no esta es que viene como 0 o vacio
@@ -86,7 +75,7 @@ def actualizar_tipo(request, id):
         
         
         #LLamar la consulta put, con la url especifica
-        response = requests.put(url+f'tipo/id/{idTemporal}', json={'idsubtipo': idsubtipo,'nombre': nombre, 'descripcion': descripcion, 'precio':precio})
+        response = requests.put(url+f'tipo/id/{idTemporal}', json={'idsubtipo': idsubtipo,'idImpuesto': idImpuesto,'nombre': nombre, 'descripcion': descripcion, 'precio':precio})
         #obtener la respuesta en la variable rsp
         rsp =  response.json()
         #Ya que se necesita llenar de nuevo el formulario se busca el tipo relacionado con el id
@@ -96,10 +85,10 @@ def actualizar_tipo(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo })
+            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo})
+            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tipo/busqueda/id/{idTemporal}')
@@ -107,10 +96,10 @@ def actualizar_tipo(request, id):
             data = response.json()
             tipo = data['tipos']
             mensaje = data['message']
-            return render(request, 'Tipos/tipoactualizar.html', {'tipo': tipo,'subtipo':subtipo})
+            return render(request, 'Tipos/tipoactualizar.html', {'tipo': tipo,'subtipo':subtipo,'idImpuesto': idImpuesto, 'impuestos': impuestos})
         else:
             mensaje = data['message']
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo})
+            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'idImpuesto': idImpuesto,'subtipo':subtipo, 'impuestos': impuestos})
 
 def eliminar_tipo(request, id):
     if request.method == 'POST':
@@ -180,4 +169,24 @@ def buscar_tipo(request):
                 tipo = []
                 mensaje = 'No se encontraron tipo'
             return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})
+
+
+def list_subtipos():
+    rsp_subtipo = requests.get(url+'subtipo/')
+    if rsp_subtipo.status_code == 200:
+        data = rsp_subtipo.json()
+        subtipo = data['subtipo']
+        return subtipo
+    else:
+        subtipo= []
+        return subtipo
     
+def list_impuesto():
+    rsp_impuesto = requests.get(url+'Impuestos/')
+    if rsp_impuesto.status_code == 200:
+        data = rsp_impuesto.json()
+        impuesto = data['Impuestos']
+        return impuesto
+    else:
+        impuesto= []
+        return impuesto

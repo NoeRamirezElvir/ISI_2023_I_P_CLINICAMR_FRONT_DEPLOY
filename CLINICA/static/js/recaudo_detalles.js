@@ -3,27 +3,41 @@ var tratamientosSeleccionados = [];
 var examenesSeleccionados = [];
 
 var total = 0;
-
+var subtotal = 0;
+var imp = 0;
+var precioTemp = 0;
+var impuestoTemp = 0;
+var cambio = document.getElementById("cambio");
+var inputEfectivo = document.getElementById("montoEfectivo");
 
 function guardarMedicamento() {
   var medicamentosSeleccionado = document.getElementById("idMedicamento").value;
-  var medicamentoPrecio = parseFloat(medicamentosSeleccionado.match(/(\d+\.\d{2})$/)[1]);
+  var valores = medicamentosSeleccionado.split(" - ");
+  var precio = parseFloat(valores[2]);
+  var impuesto = parseFloat(valores[3]);
 
-  if (!medicamentosSeleccionados.includes(medicamentosSeleccionado) && medicamentosSeleccionado != 0) {
+  if (medicamentosSeleccionado != 0 && !medicamentosSeleccionados.some(m => m.startsWith(valores[0]))) {
     medicamentosSeleccionados.push(medicamentosSeleccionado);
-    total += medicamentoPrecio;
+    subtotal += precio;
+    imp += (precio * impuesto);
+    total += precio + (precio * impuesto);
     cargarTablaMedicamento();
     actualizarTotal();
   }
 }
 
+
 function guardarTratamiento() {
     var tratamientoSeleccionado = document.getElementById("idTratamiento").value;
-    var tratamientoPrecio = parseFloat(tratamientoSeleccionado.match(/(\d+\.\d{2})$/)[1]);
-  
+    var valores = tratamientoSeleccionado.split(" - ");
+    var precio = parseFloat(valores[2]);
+    var impuesto = parseFloat(valores[3]);
+
     if (!tratamientosSeleccionados.includes(tratamientoSeleccionado) && tratamientoSeleccionado != 0) {
       tratamientosSeleccionados.push(tratamientoSeleccionado);
-      total += tratamientoPrecio;
+      subtotal += precio;
+      imp += (precio * impuesto);
+      total += precio + ( precio * impuesto);
       cargarTablaTratamiento();
       actualizarTotal();
     }
@@ -31,11 +45,15 @@ function guardarTratamiento() {
 
   function guardarExamen() {
     var examenesSeleccionado = document.getElementById("idExamen").value;
-    var examenPrecio = parseFloat(examenesSeleccionado.match(/(\d+\.\d{2})$/)[1]);
+    var valores = examenesSeleccionado.split(" - ");
+    var precio = parseFloat(valores[2]);
+    var impuesto = parseFloat(valores[3]);
 
     if (!examenesSeleccionados.includes(examenesSeleccionado) && examenesSeleccionado != 0) {
         examenesSeleccionados.push(examenesSeleccionado);
-        total += examenPrecio;
+        subtotal += precio;
+        imp += (precio * impuesto);
+        total += precio + ( precio * impuesto);
         cargarTablaExamen();
         actualizarTotal();
     }
@@ -48,9 +66,35 @@ function cargarTablaMedicamento() {
 
   for (var i = 0; i < medicamentosSeleccionados.length; i++) {
     var fila = document.createElement("tr");
+    var can = 0;
+    // Columna para el nombre del medicamento
     var valor = document.createElement("td");
     valor.innerText = medicamentosSeleccionados[i];
     fila.classList.add("td-fila-valor");
+
+    // Columna para la cantidad
+    var cantidad = document.createElement("td");
+    var cantidadInput = document.createElement("input");
+    cantidadInput.type = "number";
+    cantidadInput.min = "1";
+    cantidadInput.value = medicamentosSeleccionados[i].split(" - ")[4]; // Valor predeterminado es 1
+    cantidadInput.classList.add("cantidad-input");
+
+    //cantidadInput.onchange = function(){
+     // var can = cantidadInput.value;
+    //}
+    cantidadInput.onchange = function() {
+      var filaAModificar = this.parentNode.parentNode;
+      var nombreMedicamento = filaAModificar.getElementsByTagName("td")[0].innerText;
+      var indice = medicamentosSeleccionados.findIndex(medicamento => medicamento.includes(nombreMedicamento));
+      medicamentosSeleccionados[indice] = medicamentosSeleccionados[indice].split(" - ")[0] + " - " + medicamentosSeleccionados[indice].split(" - ")[1] + " - " + medicamentosSeleccionados[indice].split(" - ")[2] + " - " + medicamentosSeleccionados[indice].split(" - ")[3] + " - " + this.value; // Actualiza la cantidad en el array
+      cargarTablaMedicamento();
+      actualizarTotal();
+    }
+
+    cantidad.appendChild(cantidadInput);
+
+    // Columna para el botón de eliminar
     var botonEliminar = document.createElement("button");
     botonEliminar.innerText = "Eliminar";
     botonEliminar.classList.add("eliminar-btn");
@@ -61,18 +105,29 @@ function cargarTablaMedicamento() {
         var indice = medicamentosSeleccionados.indexOf(valorAEliminar);
         var medicamentoEliminar = medicamentosSeleccionados.splice(indice, 1)[0];
         var precioEliminado = parseFloat(medicamentoEliminar.split(" - ")[2]);
-        total -= precioEliminado;
+        var impuestoEliminado = parseFloat(medicamentoEliminar.split(" - ")[3]);
+        var cantidadEliminada = parseInt(filaAEliminar.getElementsByClassName("cantidad-input")[0].value);
+        total -= precioEliminado  + (precioEliminado * impuestoEliminado);
+        imp -= (precioEliminado * impuestoEliminado);
+        subtotal -= precioEliminado;
         cargarTablaMedicamento();
         actualizarTotal();
-      }   
+      }
 
+    // Columna para las acciones
     var acciones = document.createElement("td");
     acciones.appendChild(botonEliminar);
+
+    // Agregar todas las columnas a la fila
     fila.appendChild(valor);
+    fila.appendChild(cantidad);
     fila.appendChild(acciones);
+
+    // Agregar la fila a la tabla
     tbody.appendChild(fila);
   }
 }
+
 //Tabla Tratamiento
 function cargarTablaTratamiento() {
     var tbody = document.querySelector("#myTableTratamiento tbody");
@@ -93,7 +148,10 @@ function cargarTablaTratamiento() {
         var indice = tratamientosSeleccionados.indexOf(valorAEliminar);
         var tratamientoEliminado = tratamientosSeleccionados.splice(indice, 1)[0];
         var precioEliminado = parseFloat(tratamientoEliminado.split(" - ")[2]);
-        total -= precioEliminado;
+        var impuestoEliminado = parseFloat(tratamientoEliminado.split(" - ")[3]);
+        total -= precioEliminado + (precioEliminado * impuestoEliminado);
+        imp -= (precioEliminado * impuestoEliminado);
+        subtotal -= precioEliminado
         cargarTablaTratamiento();
         actualizarTotal();
       }
@@ -131,9 +189,12 @@ function cargarTablaExamen() {
         var filaAEliminar = this.parentNode.parentNode;
         var valorAEliminar = filaAEliminar.getElementsByTagName("td")[0].innerText;
         var indice = examenesSeleccionados.indexOf(valorAEliminar);
-        var medicamentoEliminado = examenesSeleccionados.splice(indice, 1)[0];
-        var precioEliminado = parseFloat(medicamentoEliminado.split(" - ")[2]);
-        total -= precioEliminado;
+        var examenEliminado = examenesSeleccionados.splice(indice, 1)[0];
+        var precioEliminado = parseFloat(examenEliminado.split(" - ")[2]);
+        var impuestoEliminado = parseFloat(examenEliminado.split(" - ")[3]);
+        total -= precioEliminado + (precioEliminado * impuestoEliminado);
+        imp -= (precioEliminado * impuestoEliminado);
+        subtotal -= precioEliminado
         cargarTablaExamen();
         actualizarTotal();
       }
@@ -146,11 +207,46 @@ function cargarTablaExamen() {
     }
   }
 
+  function guardarConsulta(){
+    var select = document.getElementById("idConsulta");
+    var opcionSeleccionada = select.options[select.selectedIndex];
+    var precio = parseFloat(opcionSeleccionada.getAttribute("data-precio"));
+    var impuesto = parseFloat(opcionSeleccionada.getAttribute("data-impuesto"));
+    subtotal -= precioTemp;
+    imp -= (precioTemp * impuestoTemp);
+    total -= precioTemp + (precioTemp * impuestoTemp);
+
+    precioTemp = precio;
+    impuestoTemp = impuesto;
+
+    subtotal += precio;
+    imp += (precio * impuesto);
+    total += precio + ( precio * impuesto);
+
+    actualizarTotal();
+
+  }
 
 
   function actualizarTotal() {
-    var precioTotalInput = document.getElementById("precio");
+    var precioSubTotalInput = document.getElementById("subtotal");
+    var precioTotalInput = document.getElementById("total");
+    var impuestoTotalInput = document.getElementById("imp");
     precioTotalInput.value = isNaN(total) ? "00.00" : total.toFixed(2);
+    precioSubTotalInput.value = isNaN(subtotal) ? "00.00" : subtotal.toFixed(2);
+    impuestoTotalInput.value = isNaN(imp) ? "00.00" : imp.toFixed(2);
+    
+    var to = parseFloat(precioTotalInput.value);
+    var et = parseFloat(inputEfectivo.value);
+
+    var t = isNaN(to) ? "00.00" : to.toFixed(2);
+    var e = isNaN(et) ? "00.00" : et.toFixed(2);
+    var valor = e-t;
+    if (valor <= 0) {
+      cambio.value = "00.00";
+    }else{
+      cambio.value = valor;
+    }
   }
   
   

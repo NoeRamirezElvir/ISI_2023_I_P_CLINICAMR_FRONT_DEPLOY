@@ -78,6 +78,21 @@
                 <input type="text" name="precio" id="precio" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" style="width: 70%;margin-left: 45px;">                  
               </div>
             </div>
+            <div style="display: flex ;width: 100%;height: 50px;">
+              <div style="display: flex;width: 50%;">
+                <label class="campo-registro" for="idImpuesto">Impuesto</label>
+                <select name="idImpuesto" id="idImpuesto" required onchange="activarInputImpuesto()">
+                    <option value="0" {% if registro_temp.idImpuesto == '0' %}selected{% endif %}>Seleccione una opción</option>"
+                    {% for impuesto in impuestos %}
+                        <option value="{{ impuesto.id }}"{% if impuesto.id == registro_temp.idImpuesto %}selected{% endif %} data-dato="{{impuesto.valor}}">{{ impuesto.nombre }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div style="display: flex;width: 50%;">
+                <label>Valor</label>
+                <input type="text" name="valorImpuesto" id="valorImpuesto" disabled value="{{registro_temp.valorImpuesto}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" style="width: 70%;margin-left: 45px;">                  
+              </div>
+            </div>
 
             <button class="boton-enviar">Guardar</button>
 
@@ -92,18 +107,38 @@
   {% endif %}
 
 <script>
-  window.addEventListener("load", activarInput);
+  window.addEventListener("load", function() {
+    activarInput();
+    activarInputImpuesto();
+  });
   function activarInput() {
   var select = document.getElementById("idsubtipo");
   var input = document.getElementById("precio");
+  var sel = document.getElementById("idImpuesto");
+  var inputImpuesto = document.getElementById("valorImpuesto");
   var opcionSeleccionada = select.options[select.selectedIndex];
   var dato = opcionSeleccionada.getAttribute("data-dato");
   
-  if (dato === "examen" || dato === "tratamiento" || dato === "consulta") {
+    if (dato === "examen" || dato === "tratamiento" || dato === "consulta") {
+      input.removeAttribute("disabled");
+      sel.removeAttribute("disabled");
+    } else {
+      input.setAttribute("disabled", "disabled");
+      sel.setAttribute("disabled", "disabled");
+      input.value = "00.00"
+    }
+  }
+  function activarInputImpuesto() {
+  var select = document.getElementById("idImpuesto");
+  var input = document.getElementById("valorImpuesto");
+  var opcionSeleccionada = select.options[select.selectedIndex];
+  var dato = opcionSeleccionada.getAttribute("data-dato");
+  
+  if (dato === "0") {
     input.removeAttribute("disabled");
   } else {
     input.setAttribute("disabled", "disabled");
-    input.value = "00.00"
+    input.value = dato;
   }
 }
 </script>

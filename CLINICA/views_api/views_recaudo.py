@@ -13,62 +13,53 @@ def crear_recaudo(request):
     medicamentos_list = list_medicamentos()
     tratamientos_list = list_tratamientos()
     examenes_list = list_examenes()
+    sar_list = list_sar()
+    metodo_list = list_metodo_pago()
     context = {'pacientes_list':pacientes_list,
-                   'empleados_list':empleados_list,
-                   'consultas_list':consultas_list,
-                   'medicamentos_list':medicamentos_list,
-                   'tratamientos_list':tratamientos_list,
-                   'examenes_list':examenes_list,}
+                'empleados_list':empleados_list,
+                'consultas_list':consultas_list,
+                'medicamentos_list':medicamentos_list,
+                'tratamientos_list':tratamientos_list,
+                'examenes_list':examenes_list,
+                'sar_list':sar_list,
+                'metodo_list':metodo_list,}
     if request.method == 'POST':
         pass
     else:
         return render(request, 'recaudo/recaudo.html', context)
     
-def abrir_actualizar_sintomas(request):
-    if request.method == 'POST':
-         resp = requests.get(url+'sintomas/busqueda/id/'+str(request.POST['id_sintoma']))
-         data = resp.json()
-         mensaje = data['message']
-         if resp.status_code == 200:
-            data = resp.json()
-            sintomas = data['sintomas']
-            mensaje = data['message']
-         else:
-            sintomas = []
-         context = {'sintomas': sintomas, 'mensaje':mensaje}
-         mensaje = data['message']
-         return render(request, 'sintomas/actualizar_sintomas.html', context)
-    
-def actualizar_sintomas(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        nombre = request.POST['nombre']
-        descripcion = request.POST['descripcion']
 
-        response = requests.put(url+f'sintomas/id/{idTemporal}', json={'nombre': nombre, 'descripcion': descripcion})
-        rsp =  response.json()
 
-        res = requests.get(url+f'sintomas/busqueda/id/{idTemporal}')
-        data = res.json()
-        sintomas = data['sintomas']
-        if rsp['message'] == "La actualización fue exitosa.":
-            mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas })
-        else:
-            mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas})
+def list_parametros():
+    rsp_parametros = requests.get(url+'parametrosgenerales/')
+    if rsp_parametros.status_code == 200:
+        data = rsp_parametros.json()
+        list_parametros = data['parametrosgenerales']
+        return list_parametros
     else:
-        #Y aqui no se que hice la verdad
-        response = requests.get(url+f'sintomas/busqueda/id/{idTemporal}')
-        if response.status_code == 200:
-            data = response.json()
-            sintomas = data['sintomas']
-            mensaje = data['message']
-            return render(request, 'sintomas/actualizar_sintomas.html', {'sintomas': sintomas})
-        else:
-            mensaje = data['message']
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas})
-        
+        list_parametros = []
+        return list_parametros
+     
+def list_sar():
+    rsp_correlativo = requests.get(url+'correlativo/')
+    if rsp_correlativo.status_code == 200:
+        data = rsp_correlativo.json()
+        list_correlativo = data['correlativo']
+        return list_correlativo
+    else:
+        list_correlativo = []
+        return list_correlativo
+
+def list_metodo_pago():
+    rsp_metodo = requests.get(url+'metodop/')
+    if rsp_metodo.status_code == 200:
+        data = rsp_metodo.json()
+        list_metodo = data['metodop']
+        return list_metodo
+    else:
+        list_metodo = []
+        return list_metodo
+
 def list_consultas():
     rsp_consultas = requests.get(url+'consultas/')
     if rsp_consultas.status_code == 200:
@@ -120,7 +111,11 @@ def list_pacientes():
         return list_pacientes
     
 def list_empleados():
-    rsp_empleados = requests.get(url+'empleados/')
+    usuario = requests.get(url+'usuarios/busqueda/sesion/1')
+    data_user = usuario.json()['usuariosr']
+    id=data_user[0]['idEmpleado_id']
+    rsp_empleados = requests.get(url+f'empleados/busqueda/id/{id}')
+    #rsp_empleados = requests.get(url+'empleados/')
     if rsp_empleados.status_code == 200:
         data = rsp_empleados.json()
         list_empleados = data['empleados']
