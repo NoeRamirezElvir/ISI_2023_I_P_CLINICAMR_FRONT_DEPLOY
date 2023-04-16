@@ -24,8 +24,8 @@
           <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
           <div style="display: inline-flex ;width: 100%">
           <div style="display: inline-grid;width: 100%;">
-            <label>Numero de Factura</label>
-            <input type="text" name="numeroFactura" id="numeroFactura" readonly value="{{registro_temp.numeroFactura}}" style="width: 90%;">                  
+            <label>Numero de serie</label>
+            <input type="text" name="serie" id="serie" readonly value="{{registro_temp.serie}}" style="width: 90%;">                  
           </div>
           <div style="display: inline-grid;width: 100%">
             <label class="campo-registro">Estado</label>
@@ -47,7 +47,7 @@
           </div>
           <div style="display: inline-grid;width: 100%">
             <label class="campo-registro">Correlativo</label>
-            <select name="idCorrelativo" id="idCorrelativo">
+            <select name="idCorrelativo" id="idCorrelativo" onchange="activarNumeroFactura()">
               <option value="0" {% if registro_temp.idCorrelativo == '0' %}selected{% endif %}>Seleccione una opción</option>"
                 {% for sar in sar_list %}
                     <option value="{{ sar.id }}"{% if sar.id == registro_temp.idCorrelativo %}selected{% endif %} data-fecha="{{ sar.fechaInicio }}" data-limite="{{ sar.fechaLimiteEmision }}" data-inicio="{{ sar.rangoInicial }}" data-final="{{ sar.rangoFinal }}" data-consecutivo="{{ sar.consecutivo }}">{{ sar.id }} - {{ sar.cai }}</option>

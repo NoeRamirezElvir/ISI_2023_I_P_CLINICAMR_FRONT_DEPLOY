@@ -1,71 +1,82 @@
-{% extends 'base_pdf.html' %}
+
 {% load static %}
 {% block content %}
-    <p style="text-align: center;"><img style="float: left;" src="/CLINICA/static/img/logo/logo2.png" alt="" width="170" height="100" /></p>
-    <p style="text-align: right;">{{ nombreEmpresa }}</p>
-    <p style="text-align: right;">{{ direccionEmpresa }}</p>
-    <p style="text-align: right;">{{ telefonoEmpresa }}, {{ correoEmpresa}}</p>
-    <p style="text-align: right;">{{ caiEmpresa }}</p>
-    <h2 style="text-align: left;"><strong>Factura </strong></h2>
-    <p style="text-align: right;">#{{ numeroFactura }} Fecha:{{ fechaFactura }} </p>
-    <p style="text-align: right;">Vencimiento:{{ fechaLimite }}</p>
-    <p style="text-align: right;">Remitente: {{ nombreEmpleado }}</p>
+    <h1 style="text-align: left;"><strong>{{ datos_pdf.nombreEmpresa }}</strong></h1>
+    <p style="text-align: left;">{{ datos_pdf.direccionEmpresa }}</p>
+    <p style="text-align: left;">Contacto: {{ datos_pdf.telefonoEmpresa }} &#47; {{ datos_pdf.correoEmpresa}}</p>
+    <p style="text-align: left;">CAI: {{ datos_pdf.caiEmpresa }}</p>
+    <h3 style="text-align: right;"><strong>Factura </strong></h3>
+    <p style="text-align: right;">&#35;{{ datos_pdf.numeroFactura }} </p>
+    <p style="text-align: right;">Fecha:{{ datos_pdf.fechaFactura }} </p>
+    <p style="text-align: right;">Vencimiento:{{ datos_pdf.fechaLimite }}</p>
+    <p style="text-align: right;">Remitente: {{ datos_pdf.nombreEmpleado }}</p>
     <hr />
     <p style="text-align: left;">Cliente</p>
-    <p style="text-align: left;">{{ nombreCliente }} Documento {{ documentoCliente }}</p>
-    <p style="text-align: left;">{{ telefonoCliente }} {{ correoCliente}}</p>
-    <p style="text-align: left;">{{ direccionCliente }}</p>
+    <p style="text-align: left;">Nombre: {{ datos_pdf.nombreCliente }} Documento: {{ datos_pdf.documentoCliente }}</p>
+    <p style="text-align: left;">Teléfono: {{ datos_pdf.telefonoCliente }} email: {{ datos_pdf.correoCliente}}</p>
+    <p style="text-align: left;">Dirección: {{ datos_pdf.direccionCliente }}</p>
     <hr />
-    <p style="text-align: left;">M&eacute;todo de Pago: {{ metodoPago }} N&uacute;mero de tarjeta: {{ numeroTarjeta }}</p>
-    <p style="text-align: left;">Monto de la tarjeta: {{ montoTarjeta }} Monto en efectivo:{{ montoEfectivo }}</p>
+    <p style="text-align: left;">M&eacute;todo de Pago: {{ datos_pdf.metodoPago }}  &#47;  N&uacute;mero de tarjeta: {{ datos_pdf.numeroTarjeta.0 }}</p>
+    <p style="text-align: left;">Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}  &#47;  Monto en efectivo:{{ datos_pdf.montoEfectivo }}</p>
+    <p style="text-align: left;">Cambio: {{ datos_pdf.cambio }}</p>
     <p style="text-align: left;">&nbsp;</p>
-    <table style="border-collapse: collapse; width: 100%;" border="1">
+    <table style="padding-left: 25px; padding-top: 5px;">
     <tbody>
     <tr>
     <td style="width: 18.0636%;">Descripci&oacute;n</td>
     <td style="width: 16.7148%;">Precio</td>
     <td style="width: 18.0636%;">Unidades</td>
-    <td style="width: 19.4363%;">Subtotal</td>
     <td style="width: 12.0305%;">IVA</td>
-    <td style="width: 15.6912%;">&nbsp;Total</td>
     </tr>
-    
+    {% if datos_pdf.medicamentos %}
+    {% for medicamento in datos_pdf.medicamentos %}
     <tr>
-    <td style="width: 18.0636%;">{{ nombreMed }}</td>
-    <td style="width: 16.7148%;">{{ precioMed }}</td>
-    <td style="width: 18.0636%;">{{ unidadesMed }}</td>
-    <td style="width: 19.4363%;">{{ subtotalMed }}</td>
-    <td style="width: 12.0305%;">
-    <p>{{</p>
-    <p>impuestoMed&nbsp; }}</p>
-    </td>
-    <td style="width: 15.6912%;">
-    <p>{{</p>
-    <p>totalMed</p>
-    <p>}}</p>
-    </td>
+    <td style="width: 18.0636%;">{{ medicamento.nombre }}</td>
+    <td style="width: 16.7148%;">{{ medicamento.precio }}</td>
+    <td style="width: 18.0636%;">{{ medicamento.cantidad }}</td>
+    <td style="width: 12.0305%;">{{ medicamento.impuesto}}</td>
     </tr>
-    
+    {% endfor %}
+    {% endif %}
+
+    {% if datos_pdf.consulta %}
+    {% for consulta in datos_pdf.consulta %}
     <tr>
-    <td style="width: 18.0636%;">{{ nombreServ }}</td>
-    <td style="width: 16.7148%;">{{ precioServ }}</td>
+    <td style="width: 18.0636%;">{{ consulta.idTipo.nombre }}</td>
+    <td style="width: 16.7148%;">{{ consulta.idTipo.precio }}</td>
     <td style="width: 18.0636%;">N/A</td>
-    <td style="width: 19.4363%;">{{ subtotalServ }}</td>
-    <td style="width: 12.0305%;">
-    <p>{{</p>
-    <p>impuestoServ&nbsp;</p>
-    <p>}}</p>
-    </td>
-    <td style="width: 15.6912%;">
-    <p>{{</p>
-    <p>totalServ</p>
-    <p>}}</p>
-    </td>
+    <td style="width: 12.0305%;">{{ consulta.idTipo.impuesto}}</td>
     </tr>
+    {% endfor %}
+    {% endif %}
+
+    {% if datos_pdf.tratamientos %}
+    {% for tratamiento in datos_pdf.tratamientos %}
+    <tr>
+    <td style="width: 18.0636%;">{{ tratamiento.nombre }}</td>
+    <td style="width: 16.7148%;">{{ tratamiento.precio }}</td>
+    <td style="width: 18.0636%;">N/A</td>
+    <td style="width: 12.0305%;">{{ tratamiento.impuesto}}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+
+    {% if datos_pdf.examenes %}
+    {% for examen in datos_pdf.examenes %}
+    <tr>
+    <td style="width: 18.0636%;">{{ examen.nombre }}</td>
+    <td style="width: 16.7148%;">{{ examen.precio }}</td>
+    <td style="width: 18.0636%;">N/A</td>
+    <td style="width: 12.0305%;">{{ examen.impuesto}}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+
+
     </tbody>
     </table>
     <p style="text-align: left;">&nbsp;</p>
-    <p style="text-align: right;">Base Importe:{{ subtotalFactura }}</p>
-    <p style="text-align: right;">Impuestos: {{ impuestosFactura}}</p>
-    <p style="text-align: right;">Total: {{ totalFactura }}</p>
+    <p style="text-align: right;">Base Importe:{{ datos_pdf.subtotalFactura.0 }}</p>
+    <p style="text-align: right;">Impuestos: {{ datos_pdf.impuestosFactura.0}}</p>
+    <p style="text-align: right;">Total: {{ datos_pdf.totalFactura.0 }}</p>
 {% endblock %}

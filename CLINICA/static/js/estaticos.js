@@ -14,6 +14,22 @@
   fechaInput.value = fechaFormateada;
   fechaHidden.value = fechaFormateada;
   
+  function activarNumeroFactura(){
+    var input = document.getElementById("serie");
+    var select = document.getElementById("idCorrelativo");
+    var opcionSeleccionada = select.options[select.selectedIndex];
+    var fechaFinal = opcionSeleccionada.getAttribute("data-limite");
+    var rangoFinal = opcionSeleccionada.getAttribute("data-final");
+
+    var finalParts = fechaFinal.split('-');
+
+    var finalYear = (finalParts[0]);
+    var finalMonth = (finalParts[1]);
+    var finalDay = (finalParts[2]);
+
+    input.value = rangoFinal +" " +finalDay +"-"+ finalMonth +"-"+ finalYear + " ";
+  }
+
 
   function activarInput() {
   var select = document.getElementById("idMetodo");

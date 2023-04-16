@@ -89,9 +89,14 @@ function cargarTablaMedicamento() {
     cantidadInput.value = medicamentosSeleccionados[i].split(" - ")[4]; // Valor predeterminado es 1
     cantidadInput.classList.add("cantidad-input");
 
-    cantidadInput.oninput = function(){
-      cantidadInput.value = cantidadInput.value.replace(/[^\d.]|\.(?=.*\.)/g);
+    cantidadInput.oninput = function(event) {
+      event.target.value = event.target.value.replace(/[^\d]/g, '');
+      if (event.target.value === '') {
+        event.target.value = 1;
+      }
     }
+    
+
     cantidadInput.onchange = function() {
       var filaAModificar = this.parentNode.parentNode;
       var nombreMedicamento = filaAModificar.getElementsByTagName("td")[0].innerText;
@@ -105,6 +110,7 @@ function cargarTablaMedicamento() {
       var canTemp = parseInt(valores[4],10);
       var can = parseInt(this.value, 10);
 
+
       if (!isNaN(can)) {
         canTemp = canTemp - 1;
         subtotal -= ((precio))* canTemp;
@@ -117,6 +123,8 @@ function cargarTablaMedicamento() {
         imp += ((precio * impuesto))* can;
         total += ((precio + ( precio * impuesto)))* can;
         can = parseInt(this.value, 10);
+      }else{
+        can = canTemp;
       }
       cargarTablaMedicamento();
       actualizarTotal();

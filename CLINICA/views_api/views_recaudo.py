@@ -4,6 +4,11 @@ import json
 from django.shortcuts import render
 import requests
 
+from django.template.loader import get_template
+from io import BytesIO 
+from xhtml2pdf import pisa
+
+
 
 url = 'http://localhost:8080/api/'
 
@@ -25,7 +30,6 @@ def crear_recaudo(request):
                 'sar_list':sar_list,
                 'metodo_list':metodo_list,}
     if request.method == 'POST':
-        numeroFactura = request.POST.get('numeroFactura')
         fechaActual = request.POST['fechaActual']
         idCorrelativo = int(request.POST['idCorrelativo'])
         idPaciente = int(request.POST['idPaciente'])
@@ -36,8 +40,9 @@ def crear_recaudo(request):
 
         montoEfectivo = request.POST.get('montoEfectivo')
         numeroTarjeta = request.POST.get('numeroTarjeta')
-
+        serie = request.POST['serie']
         montoTarjeta = request.POST.get('montoTarjeta')
+
         subtotal = request.POST.get('subtotal')
         imp = request.POST.get('imp')
         total = request.POST.get('total')
@@ -95,7 +100,12 @@ def crear_recaudo(request):
         resultado['medicamentos'] = medicamentos_lista
         resultado['tratamientos'] = tratamientos_lista
         resultado['examenes'] = examenes_lista
-        #print(resultado)
+        resultado['total'] = total
+        resultado['subtotal'] = subtotal
+        resultado['imp'] = imp
+        resultado['montoTarjeta'] = montoTarjeta
+        
+        
         resultado_json = json.dumps(resultado)
 
         registro_temp = {
@@ -110,6 +120,7 @@ def crear_recaudo(request):
             'numeroTarjeta':numeroTarjeta,
             'montoTarjeta':montoTarjeta,
             'subtotal':subtotal,
+            'serie':serie,
             'imp':imp,
             'total':total,
             'cambio':cambio,
@@ -119,11 +130,36 @@ def crear_recaudo(request):
         }
         context = {}
         response = requests.post(url+'recaudo/', resultado_json)
+
+        if not idConsulta == 0:
+            rsp_consulta = requests.get(url+f'consultas/busqueda/id/{idConsulta}')
+            data = rsp_consulta.json()
+            consulta = data['consultas']
+        else:
+            consulta = None
         data={}
-        if response.status_code == 200:
+        data = response.json()
+        mensaje = data['message']
+        
+        if mensaje == "Registro Exitoso.":
             data = response.json()
             mensaje = data['message']
             registro_temp['numeroFactura'] = data['numeroFactura']
+            datos_pdf = data['datos_pdf']
+            datos_pdf['medicamentos'] = medicamentos_lista
+            datos_pdf['tratamientos'] = tratamientos_lista
+            datos_pdf['examenes'] = examenes_lista
+            datos_pdf['consulta'] = consulta
+            datos_pdf['subtotalFactura'] = subtotal,
+            datos_pdf['totalFactura'] = total,
+            datos_pdf['impuestosFactura'] = imp,
+            datos_pdf['numeroTarjeta'] = numeroTarjeta,
+            datos_pdf['montoTarjeta'] = montoTarjeta,
+            datos_pdf['montoEfectivo'] = montoEfectivo
+            datos_pdf['cambio'] = cambio
+                      
+
+            #print(datos_pdf)
             context = {'pacientes_list':pacientes_list,
                         'empleados_list':empleados_list,
                         'consultas_list':consultas_list,
@@ -133,13 +169,16 @@ def crear_recaudo(request):
                         'sar_list':sar_list,
                         'metodo_list':metodo_list,
                         'registro_temp':registro_temp,
-                        'mensaje': mensaje
+                        'mensaje': mensaje,
+                        'datos_pdf':datos_pdf
                         }
             
-            datos_pdf = {
-                
-            }
-            return render(request, 'recaudo/recaudo.html', context)
+
+
+            pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
+            return response
         else:
             data = response.json()
             mensaje = data['message']
@@ -214,15 +253,6 @@ def eliminar_recaudo(request,id):
     return render(request, 'recaudo/buscar_recaudo.html')
 
 
-def list_parametros():
-    rsp_parametros = requests.get(url+'parametrosgenerales/')
-    if rsp_parametros.status_code == 200:
-        data = rsp_parametros.json()
-        list_parametros = data['parametrosgenerales']
-        return list_parametros
-    else:
-        list_parametros = []
-        return list_parametros
      
 def list_sar():
     rsp_correlativo = requests.get(url+'correlativo/')
@@ -307,3 +337,13 @@ def list_empleados():
     else:
         list_empleados = []
         return list_empleados
+
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
