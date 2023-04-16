@@ -2,6 +2,7 @@ var medicamentosSeleccionados = [];
 var tratamientosSeleccionados = [];
 var examenesSeleccionados = [];
 
+
 var total = 0;
 var subtotal = 0;
 var imp = 0;
@@ -10,17 +11,26 @@ var impuestoTemp = 0;
 var cambio = document.getElementById("cambio");
 var inputEfectivo = document.getElementById("montoEfectivo");
 
+function actualizarVariables(total, subtotal, imp) {
+  // Actualizar las variables globales del archivo JavaScript
+  this.total = total;
+  this.subtotal = subtotal;
+  this.imp = imp;
+}
+
 function guardarMedicamento() {
   var medicamentosSeleccionado = document.getElementById("idMedicamento").value;
   var valores = medicamentosSeleccionado.split(" - ");
+  var valores = medicamentosSeleccionado.split(" - ");
   var precio = parseFloat(valores[2]);
   var impuesto = parseFloat(valores[3]);
+  var can = parseInt(valores[4], 10);
 
   if (medicamentosSeleccionado != 0 && !medicamentosSeleccionados.some(m => m.startsWith(valores[0]))) {
     medicamentosSeleccionados.push(medicamentosSeleccionado);
-    subtotal += precio;
-    imp += (precio * impuesto);
-    total += precio + (precio * impuesto);
+    subtotal += (precio) * can;
+    imp += (precio * impuesto) * can;
+    total += (precio + ( precio * impuesto)) * can;
     cargarTablaMedicamento();
     actualizarTotal();
   }
@@ -66,7 +76,6 @@ function cargarTablaMedicamento() {
 
   for (var i = 0; i < medicamentosSeleccionados.length; i++) {
     var fila = document.createElement("tr");
-    var can = 0;
     // Columna para el nombre del medicamento
     var valor = document.createElement("td");
     valor.innerText = medicamentosSeleccionados[i];
@@ -80,14 +89,35 @@ function cargarTablaMedicamento() {
     cantidadInput.value = medicamentosSeleccionados[i].split(" - ")[4]; // Valor predeterminado es 1
     cantidadInput.classList.add("cantidad-input");
 
-    //cantidadInput.onchange = function(){
-     // var can = cantidadInput.value;
-    //}
+    cantidadInput.oninput = function(){
+      cantidadInput.value = cantidadInput.value.replace(/[^\d.]|\.(?=.*\.)/g);
+    }
     cantidadInput.onchange = function() {
       var filaAModificar = this.parentNode.parentNode;
       var nombreMedicamento = filaAModificar.getElementsByTagName("td")[0].innerText;
       var indice = medicamentosSeleccionados.findIndex(medicamento => medicamento.includes(nombreMedicamento));
       medicamentosSeleccionados[indice] = medicamentosSeleccionados[indice].split(" - ")[0] + " - " + medicamentosSeleccionados[indice].split(" - ")[1] + " - " + medicamentosSeleccionados[indice].split(" - ")[2] + " - " + medicamentosSeleccionados[indice].split(" - ")[3] + " - " + this.value; // Actualiza la cantidad en el array
+      
+      var valores = nombreMedicamento.split(" - ");
+      var precio = parseFloat(valores[2]);
+      var impuesto = parseFloat(valores[3]);
+
+      var canTemp = parseInt(valores[4],10);
+      var can = parseInt(this.value, 10);
+
+      if (!isNaN(can)) {
+        canTemp = canTemp - 1;
+        subtotal -= ((precio))* canTemp;
+        imp -= ((precio * impuesto))* canTemp;
+        total -= ((precio + ( precio * impuesto)))* canTemp;
+        canTemp = parseInt(valores[4],10);
+  
+        can = can -  1;
+        subtotal += ((precio))* can;
+        imp += ((precio * impuesto))* can;
+        total += ((precio + ( precio * impuesto)))* can;
+        can = parseInt(this.value, 10);
+      }
       cargarTablaMedicamento();
       actualizarTotal();
     }
@@ -107,9 +137,9 @@ function cargarTablaMedicamento() {
         var precioEliminado = parseFloat(medicamentoEliminar.split(" - ")[2]);
         var impuestoEliminado = parseFloat(medicamentoEliminar.split(" - ")[3]);
         var cantidadEliminada = parseInt(filaAEliminar.getElementsByClassName("cantidad-input")[0].value);
-        total -= precioEliminado  + (precioEliminado * impuestoEliminado);
-        imp -= (precioEliminado * impuestoEliminado);
-        subtotal -= precioEliminado;
+        total -= (precioEliminado  + (precioEliminado * impuestoEliminado))*cantidadEliminada;
+        imp -= ((precioEliminado * impuestoEliminado))*cantidadEliminada;
+        subtotal -= (precioEliminado)*cantidadEliminada;
         cargarTablaMedicamento();
         actualizarTotal();
       }
@@ -251,7 +281,7 @@ function cargarTablaExamen() {
   
   
 
-//Este metodo es para poder acceder a la lista de sintomas (detalles de la enfermedad)
+//Este metodo es para poder acceder a la lista de items (detalles de la enfermedad)
 document.getElementById("myForm").addEventListener("submit", function(event) {
   event.preventDefault(); // Previene que el formulario se envíe automáticamente
   

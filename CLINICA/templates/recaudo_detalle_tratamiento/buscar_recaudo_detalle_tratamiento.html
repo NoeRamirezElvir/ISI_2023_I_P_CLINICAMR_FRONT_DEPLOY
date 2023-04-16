@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_recaudo_detalle_tratamiento' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Numero Factura(Recaudo)">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
@@ -22,7 +22,7 @@
       <table class="tftable-listar">
         <thead>
             <th style="color:aliceblue">ID</th>
-            <th style="color:aliceblue">Paciente</th>
+            <th style="color:aliceblue">Recaudo</th>
             <th style="color:aliceblue">Tratamiento</th>
             <th style="color:aliceblue">Accion Eliminar</th>
           </tr>
@@ -32,7 +32,7 @@
           {% for detalle in detalles %}
           <tr>
             <td>{{ detalle.id }}</td>
-            <td>{{ detalle.idRecaudo.cliente }}</td>
+            <td>{{ detalle.idRecaudo.noFactura }} <br> {{ detalle.idRecaudo.estado }}</td>
             <td>{{ detalle.idTratamiento.tipo.nombre }}</td>
             <td>
               <form action="{% url 'eliminar_recaudo_detalle_tratamiento' id=detalle.id  %}" method="post">

@@ -6,7 +6,6 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/recaudo_modal.css' %}">
 <div class="contenedor">
-    <h1 class="logo"><span class="nombre-empresa">Recaudo</span></h1>
     <div class="wrapper animated bounceInLeft">
       <div class="info-empresa">
         <h3>Medical Rescue</h3>
@@ -18,11 +17,28 @@
         </ul>
       </div>
       <div class="contacto">
-        <form method="POST" action="" id="myform">
+        <form method="POST" action="" id="myForm">
           {% csrf_token %}
           <input type="hidden" id="medicamentosSeleccionadosInput" name="medicamentosSeleccionados">
           <input type="hidden" id="tratamientosSeleccionadosInput" name="tratamientosSeleccionados">
           <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
+          <div style="display: inline-flex ;width: 100%">
+          <div style="display: inline-grid;width: 100%;">
+            <label>Numero de Factura</label>
+            <input type="text" name="numeroFactura" id="numeroFactura" readonly value="{{registro_temp.numeroFactura}}" style="width: 90%;">                  
+          </div>
+          <div style="display: inline-grid;width: 100%">
+            <label class="campo-registro">Estado</label>
+            <select name="estado" id="estado">
+              <option value="0" {% if registro_temp.estado == '0' %}selected{% endif %}>Seleccione una opción</option>"
+              <option value="Pendiente"{% if registro_temp.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+              <option value="Enviada"{% if registro_temp.estado == 'Enviada' %}selected{% endif %}>Enviada</option>
+              <option value="Pagada"{% if registro_temp.estado == 'Pagada' %}selected{% endif %}>Pagada</option>
+              <option value="Vencida"{% if registro_temp.estado == 'Vencida' %}selected{% endif %}>Vencida</option>
+              <option value="Anulada"{% if registro_temp.estado == 'Anulada' %}selected{% endif %}>Anulada</option>
+            </select>
+          </div>
+        </div>
           <div style="display: inline-flex ;width: 100%">
           <div style="display: inline-grid;width: 100%">
             <input type="hidden" name="fechaActual" id="fechaActual">
@@ -32,8 +48,9 @@
           <div style="display: inline-grid;width: 100%">
             <label class="campo-registro">Correlativo</label>
             <select name="idCorrelativo" id="idCorrelativo">
+              <option value="0" {% if registro_temp.idCorrelativo == '0' %}selected{% endif %}>Seleccione una opción</option>"
                 {% for sar in sar_list %}
-                    <option value="{{ sar.id }}"{% if sar.id == registro_temp.idCorrelativo %}selected{% endif %}>{{ sar.id }} - {{ sar.cai }}</option>
+                    <option value="{{ sar.id }}"{% if sar.id == registro_temp.idCorrelativo %}selected{% endif %} data-fecha="{{ sar.fechaInicio }}" data-limite="{{ sar.fechaLimiteEmision }}" data-inicio="{{ sar.rangoInicial }}" data-final="{{ sar.rangoFinal }}" data-consecutivo="{{ sar.consecutivo }}">{{ sar.id }} - {{ sar.cai }}</option>
                 {% endfor %}
             </select>
           </div>
@@ -91,20 +108,20 @@
           </div>
           <div style="display: inline-grid;width: 100%;">
             <label>Subtotal</label>
-            <input type="text" name="subtotal" id="subtotal" style="width: 95%;" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+            <input type="text" name="subtotal" id="subtotal" style="width: 95%;"  placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
            </div>
            <div style="display: inline-grid;width: 100%;">
             <label>Impuesto</label>
-            <input type="text" name="imp" id="imp" value="{{registro_temp.imp}}" style="width: 95%;" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+            <input type="text" name="imp" id="imp"  style="width: 95%;" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
            </div>
            <div style="display: inline-flex ;width: 100%">
            <div style="display: inline-grid;width: 100%;">
             <label>Total</label>
-            <input type="text" name="total" id="total" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+            <input type="text" name="total" id="total"  placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
            </div>
            <div style="display: inline-grid;width: 100%;">
             <label>Cambio</label>
-            <input type="text" name="cambio" id="cambio" value="{{registro_temp.cambio}}" placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
+            <input type="text" name="cambio" id="cambio"  placeholder="00.00" min="0"  step="10" readonly oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >                  
            </div>
           </div>
           </div>
@@ -200,7 +217,7 @@
         <span class="cerrar">&times;</span>
          
         <div>
-            <label class="campo-registro">Examenes</label>
+            <label class="campo-registro">Exámenes</label>
             <select name="idExamen" id="idExamen">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in examenes_list %}
@@ -236,4 +253,77 @@
     <script src="{% static 'js/recaudo_modal.js' %}"></script>
     <script src="{% static 'js/recaudo_detalles.js' %}"></script>
     <script src="{% static 'js/estaticos.js' %}"></script>
+    <script>
+        window.addEventListener("load", function() {
+            activarInput();
+            guardarConsulta();
+        });
+        var total = 0;
+        var subtotal = 0;
+        var imp = 0;
+
+        {% if registro_temp.medicamentos_lista %}
+        {% for item in registro_temp.medicamentos_lista %}
+          var obj = "{{ item.id }} - {{ item.nombre }} - {{ item.precio }} - {{ item.impuesto }} - {{ item.cantidad }}";
+          var precio = {{ item.precio }};
+          var impuesto = {{ item.impuesto }};
+          var can = {{ item.cantidad }};
+
+          console.log(precio, imp, can);
+
+          if (!medicamentosSeleccionados.includes(obj) && obj != 0) {
+            medicamentosSeleccionados.push(obj);
+
+            subtotal += (precio) * can;
+            imp += (precio * impuesto) * can;
+            total += (precio + ( precio * impuesto)) * can;
+
+            actualizarVariables(total, subtotal, imp)
+            cargarTablaMedicamento();
+            actualizarTotal();
+
+          }
+        {% endfor %}
+        {% endif %}
+
+        {% if registro_temp.tratamientos_lista %}
+        {% for item in registro_temp.tratamientos_lista %}
+          var obj = "{{ item.id }} - {{ item.nombre }} - {{ item.precio }} - {{ item.impuesto }}";
+          var precio = {{ item.precio }};
+          var impuesto = {{ item.impuesto }};
+          if (!tratamientosSeleccionados.includes(obj) && obj != 0) {
+            tratamientosSeleccionados.push(obj);
+
+            subtotal += precio;
+            imp += (precio * impuesto);
+            total += precio + ( precio * impuesto);
+
+            actualizarVariables(total, subtotal, imp)
+            cargarTablaTratamiento();
+            actualizarTotal();
+          }
+        {% endfor %}
+        {% endif %}
+
+        {% if registro_temp.examenes_lista %}
+        {% for item in registro_temp.examenes_lista %}
+          var obj = "{{ item.id }} - {{ item.nombre }} - {{ item.precio }} - {{ item.impuesto }}";
+          var precio = {{ item.precio }};
+          var impuesto = {{ item.impuesto }};
+          if (!examenesSeleccionados.includes(obj) && obj != 0) {
+            examenesSeleccionados.push(obj);
+
+            subtotal += precio;
+            imp += (precio * impuesto);
+            total += precio + ( precio * impuesto);
+
+            actualizarVariables(total, subtotal, imp)
+            cargarTablaExamen();
+            actualizarTotal();
+   
+          }
+        {% endfor %}
+        {% endif %}
+
+    </script>
 {% endblock %}

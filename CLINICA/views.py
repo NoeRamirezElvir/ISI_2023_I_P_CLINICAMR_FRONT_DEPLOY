@@ -463,5 +463,16 @@ def eliminar_correlativo(request,id):#
     return render(request,'correlativo/correlativo.html')
 
 #Recaudo
+#def crear_recaudo(request):#
+    #return render(request,'recaudo/recaudo.html')
+
+def abrir_actualizar_recaudo(request):#
+    return render(request,'recaudo/actualizar_recaudo.html')
+def actualizar_recaudo(request,id):#
+    return render(request,'recaudo/actualizar_recaudo.html')
+def buscar_recaudo(request):#
+    return render(request,'recaudo/buscar_recaudo.html')
 def crear_recaudo(request):#
+    return render(request,'recaudo/recaudo.html')
+def eliminar_recaudo(request,id):#
     return render(request,'recaudo/recaudo.html')

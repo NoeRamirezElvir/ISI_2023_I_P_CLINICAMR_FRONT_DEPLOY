@@ -1,0 +1,77 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}ENFERMEDADES{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Enfermedades</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_recaudo' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Numero de Factura">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+    <a class="btn-agregar" href="/CLINICA/templates/recaudo/recaudo.html" class="btn-agregar-link">Agregar</a>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Nombre</th>
+            <th style="color:aliceblue; max-width: 20vh;">Sintomas(id,nombre)</th>
+            <th style="color:aliceblue">Accion Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if enfermedades %}
+          {% for enfermedad in enfermedades %}
+          <tr>
+            <td>{{ enfermedad.id }}</td>
+            <td>{{ enfermedad.nombre }}</td>
+            <td style="max-width: 20vh; word-wrap: break-word;">{% for sintoma in enfermedad.idSintomas.values %}
+                {{ sintoma.id }}&#41 {{ sintoma.nombre }} <br/>
+                {% endfor %}
+            </td>
+            <td>
+              <form action="{% url 'abrir_actualizar_enfermedad' %}" method="post" class="form-botones">
+                {% csrf_token %}
+                <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
+                <button class="btnEditar" name="editar" id="editar">
+                    <img src="{% static 'img/icons/icedit.png' %}">
+                </button>
+              </form>
+              <form action="{% url 'eliminar_enfermedad' id=enfermedad.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="6">No se encontraron precios historicos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if error %}
+<div id="alert-alert-info" style="top:100px">
+  <p>{{ error }}</p>
+</div>
+</div>
+{% endif %}
+
+{% endblock %}

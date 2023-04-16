@@ -341,6 +341,12 @@ urlpatterns = [
     path('',views_correlativo_SAR.crear_correlativo , name='crear_correlativo'),
 
     #Recaudo
+    #path('',views_recaudo.crear_recaudo , name='crear_recaudo'),
+
+    path('',views_recaudo.abrir_actualizar_recaudo , name='abrir_actualizar_recaudo'),
+    path('',views_recaudo.actualizar_recaudo , name='actualizar_recaudo'),
+    path('',views_recaudo.eliminar_recaudo , name='eliminar_recaudo'),
+    path('',views_recaudo.buscar_recaudo , name='buscar_recaudo'),
     path('',views_recaudo.crear_recaudo , name='crear_recaudo'),
 
 

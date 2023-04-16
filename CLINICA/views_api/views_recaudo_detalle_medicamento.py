@@ -41,7 +41,7 @@ def buscar_recaudo_detalle_medicamento(request):
                     return render(request, 'recaudo_detalle_medicamento/buscar_recaudo_detalle_medicamento.html', {'detalles': detalles, 'mensaje': mensaje})
 
             else:
-                response = requests.get(url2 + f'nombre/{valor}')
+                response = requests.get(url2 + f'numeroFactura/{valor}')
                 if response.status_code == 200:
                     data = response.json()
                     mensaje = data['message']

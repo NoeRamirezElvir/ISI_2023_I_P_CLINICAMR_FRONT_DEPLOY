@@ -1,0 +1,71 @@
+{% extends 'base_pdf.html' %}
+{% load static %}
+{% block content %}
+    <p style="text-align: center;"><img style="float: left;" src="/CLINICA/static/img/logo/logo2.png" alt="" width="170" height="100" /></p>
+    <p style="text-align: right;">{{ nombreEmpresa }}</p>
+    <p style="text-align: right;">{{ direccionEmpresa }}</p>
+    <p style="text-align: right;">{{ telefonoEmpresa }}, {{ correoEmpresa}}</p>
+    <p style="text-align: right;">{{ caiEmpresa }}</p>
+    <h2 style="text-align: left;"><strong>Factura </strong></h2>
+    <p style="text-align: right;">#{{ numeroFactura }} Fecha:{{ fechaFactura }} </p>
+    <p style="text-align: right;">Vencimiento:{{ fechaLimite }}</p>
+    <p style="text-align: right;">Remitente: {{ nombreEmpleado }}</p>
+    <hr />
+    <p style="text-align: left;">Cliente</p>
+    <p style="text-align: left;">{{ nombreCliente }} Documento {{ documentoCliente }}</p>
+    <p style="text-align: left;">{{ telefonoCliente }} {{ correoCliente}}</p>
+    <p style="text-align: left;">{{ direccionCliente }}</p>
+    <hr />
+    <p style="text-align: left;">M&eacute;todo de Pago: {{ metodoPago }} N&uacute;mero de tarjeta: {{ numeroTarjeta }}</p>
+    <p style="text-align: left;">Monto de la tarjeta: {{ montoTarjeta }} Monto en efectivo:{{ montoEfectivo }}</p>
+    <p style="text-align: left;">&nbsp;</p>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+    <tr>
+    <td style="width: 18.0636%;">Descripci&oacute;n</td>
+    <td style="width: 16.7148%;">Precio</td>
+    <td style="width: 18.0636%;">Unidades</td>
+    <td style="width: 19.4363%;">Subtotal</td>
+    <td style="width: 12.0305%;">IVA</td>
+    <td style="width: 15.6912%;">&nbsp;Total</td>
+    </tr>
+    
+    <tr>
+    <td style="width: 18.0636%;">{{ nombreMed }}</td>
+    <td style="width: 16.7148%;">{{ precioMed }}</td>
+    <td style="width: 18.0636%;">{{ unidadesMed }}</td>
+    <td style="width: 19.4363%;">{{ subtotalMed }}</td>
+    <td style="width: 12.0305%;">
+    <p>{{</p>
+    <p>impuestoMed&nbsp; }}</p>
+    </td>
+    <td style="width: 15.6912%;">
+    <p>{{</p>
+    <p>totalMed</p>
+    <p>}}</p>
+    </td>
+    </tr>
+    
+    <tr>
+    <td style="width: 18.0636%;">{{ nombreServ }}</td>
+    <td style="width: 16.7148%;">{{ precioServ }}</td>
+    <td style="width: 18.0636%;">N/A</td>
+    <td style="width: 19.4363%;">{{ subtotalServ }}</td>
+    <td style="width: 12.0305%;">
+    <p>{{</p>
+    <p>impuestoServ&nbsp;</p>
+    <p>}}</p>
+    </td>
+    <td style="width: 15.6912%;">
+    <p>{{</p>
+    <p>totalServ</p>
+    <p>}}</p>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="text-align: left;">&nbsp;</p>
+    <p style="text-align: right;">Base Importe:{{ subtotalFactura }}</p>
+    <p style="text-align: right;">Impuestos: {{ impuestosFactura}}</p>
+    <p style="text-align: right;">Total: {{ totalFactura }}</p>
+{% endblock %}
