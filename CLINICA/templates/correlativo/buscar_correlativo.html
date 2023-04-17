@@ -26,10 +26,11 @@
             <th style="color:aliceblue">ID</th>
             <th style="color:aliceblue">CAI</th>
             <th style="color:aliceblue">Rango Inicial</th>
-            <th style="color:aliceblue">Rango Final</th>
             <th style="color:aliceblue">Consecutivo</th>
-            <th style="color:aliceblue">Fecha limite de emisión</th>
+            <th style="color:aliceblue">Rango Final</th>
             <th style="color:aliceblue">Fecha Inicial</th>
+            <th style="color:aliceblue">Fecha limite de emisión</th>
+            <th style="color:aliceblue">Activo</th>
             <th style="color:aliceblue">Acciones</th>
           </tr>
         </thead>
@@ -40,10 +41,11 @@
             <td>{{ correlativos.id }}</td>
             <td>{{ correlativos.cai }}</td>
             <td>{{ correlativos.rangoInicial }}</td>
-            <td>{{ correlativos.rangoFinal }}</td>
             <td>{{ correlativos.consecutivo }}</td>
-            <td>{{ correlativos.fechaLimiteEmision }}</td>
+            <td>{{ correlativos.rangoFinal }}</td>
             <td>{{ correlativos.fechaInicio }}</td>
+            <td>{{ correlativos.fechaLimiteEmision }}</td>
+            <td>{{ correlativos.activo }}</td>
             <td>
               <form action="{% url 'abrir_actualizar_correlativo' %}" method="post" class="form-botones">
                 {% csrf_token %}

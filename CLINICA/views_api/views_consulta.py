@@ -256,7 +256,7 @@ def eliminar_consulta(request, id):
             context = {'consultas': consultas}
         else:
             consultas = []
-            mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         context = {'consultas': consultas, 'error': mensaje}
         return render(request, 'consulta/buscar_consulta.html', context)
 

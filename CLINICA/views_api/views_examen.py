@@ -44,7 +44,6 @@ def abrir_actualizar_examenes(request):
     tipo_list = list_tipos()
     laboratorios_list = list_laboratorios()
     if request.method == 'POST':
-         print(request.POST['id_examenes'])
          resp = requests.get(url+'examen/busqueda/id/'+str(request.POST['id_examenes']))
          data = resp.json()
          mensaje = data['message']
@@ -96,19 +95,31 @@ def actualizar_examenes(request, id):
             return render(request, 'examen/actualizar_examen.html', {'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
 
 def eliminar_examenes(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'examen/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'examen/id/{idTemporal}')
+            res = response.json()
+            rsp_examenes = requests.get(url + 'examen/') 
+            if rsp_examenes.status_code == 200:
+                data = rsp_examenes.json()
+                examenes = data['examenes']
+            else:
+                examenes = []
+            mensaje = res['message']
+            context = {'examenes': examenes, 'mensaje': mensaje}
+            return render(request, 'examen/buscar_examen.html', context) 
+    except:
         rsp_examenes = requests.get(url + 'examen/') 
         if rsp_examenes.status_code == 200:
             data = rsp_examenes.json()
             examenes = data['examenes']
         else:
             examenes = []
-        mensaje = res['message']
-        context = {'examenes': examenes, 'mensaje': mensaje}
-        return render(request, 'examen/buscar_examen.html', context)     
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'examenes': examenes, 'error': mensaje}
+        return render(request, 'examen/buscar_examen.html', context) 
+
     
 def buscar_examenes(request):
         valor = request.GET.get('buscador', None)

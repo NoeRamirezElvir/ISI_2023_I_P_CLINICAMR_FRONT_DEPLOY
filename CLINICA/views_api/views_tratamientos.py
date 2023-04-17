@@ -93,19 +93,31 @@ def actualizar_tratamientos(request, id):
             return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
 
 def eliminar_tratamientos(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'tratamientos/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'tratamientos/id/{idTemporal}')
+            res = response.json()
+            rsp_tratamientos = requests.get(url + 'tratamientos/') 
+            if rsp_tratamientos.status_code == 200:
+                data = rsp_tratamientos.json()
+                tratamientos = data['tratamientos']
+            else:
+                tratamientos = []
+            mensaje = res['message']
+            context = {'tratamientos': tratamientos, 'mensaje': mensaje}
+            return render(request, 'tratamiento/Buscar_tratamiento.html', context)
+    except:
         rsp_tratamientos = requests.get(url + 'tratamientos/') 
         if rsp_tratamientos.status_code == 200:
             data = rsp_tratamientos.json()
             tratamientos = data['tratamientos']
         else:
             tratamientos = []
-        mensaje = res['message']
-        context = {'tratamientos': tratamientos, 'mensaje': mensaje}
-        return render(request, 'tratamiento/Buscar_tratamiento.html', context)     
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'tratamientos': tratamientos, 'error': mensaje}
+        return render(request, 'tratamiento/Buscar_tratamiento.html', context)
+
     
 def buscar_tratamientos(request):
         valor = request.GET.get('buscador', None)

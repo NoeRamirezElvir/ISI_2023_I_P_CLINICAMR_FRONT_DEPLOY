@@ -68,13 +68,15 @@ def actualizar_correlativo(request, id):
         rangoInicial = int(request.POST['rangoInicial'])
         rangoFinal = int(request.POST['rangoFinal'])  
         fechaLimiteEmision = request.POST['fechaLimiteEmision']
+        consecutivo = request.POST['consecutivo']
         
         
         #LLamar la consulta put, con la url especifica
         response = requests.put(url+f'correlativo/id/{idTemporal}', json={'cai': cai, 
                                                                             'rangoInicial': rangoInicial,
                                                                             'rangoFinal': rangoFinal,
-                                                                            'fechaLimiteEmision': fechaLimiteEmision
+                                                                            'fechaLimiteEmision': fechaLimiteEmision,
+                                                                            'consecutivo':consecutivo
                                                                             })
         #obtener la respuesta en la variable rsp
         rsp =  response.json()

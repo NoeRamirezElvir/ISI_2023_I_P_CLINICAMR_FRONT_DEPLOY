@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_tratamientos' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre(Paciente)">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
@@ -66,6 +66,12 @@
           {% endif %}
         </tbody>
       </table>
+      {% if error %}
+      <div id="alert-alert-info" style="top:100px">
+      <p>{{ error }}</p>
+      </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -255,7 +255,7 @@ def eliminar_recaudo(request,id):
 
      
 def list_sar():
-    rsp_correlativo = requests.get(url+'correlativo/')
+    rsp_correlativo = requests.get(url+'correlativo/busqueda/activo/1')
     if rsp_correlativo.status_code == 200:
         data = rsp_correlativo.json()
         list_correlativo = data['correlativo']

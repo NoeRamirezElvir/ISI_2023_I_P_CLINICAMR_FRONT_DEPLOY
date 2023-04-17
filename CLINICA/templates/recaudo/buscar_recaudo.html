@@ -1,11 +1,11 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}ENFERMEDADES{% endblock %}
+{% block tittle %}RECAUDOS{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
-  <h1 class="h1-listar">Registros de Enfermedades</h1>
+  <h1 class="h1-listar">Registros de Recaudos</h1>
   <div class="busqueda-listar">
     <form method="GET" action="{% url 'buscar_recaudo' %}">
       {% csrf_token %}
@@ -30,26 +30,26 @@
           </tr>
         </thead>
         <tbody>
-          {% if enfermedades %}
-          {% for enfermedad in enfermedades %}
+          {% if recaudo %}
+          {% for item in recaudo %}
           <tr>
-            <td>{{ enfermedad.id }}</td>
+            <td>{{ item.id }}</td>
             <td>{{ enfermedad.nombre }}</td>
             <td style="max-width: 20vh; word-wrap: break-word;">{% for sintoma in enfermedad.idSintomas.values %}
                 {{ sintoma.id }}&#41 {{ sintoma.nombre }} <br/>
                 {% endfor %}
             </td>
             <td>
-              <form action="{% url 'abrir_actualizar_enfermedad' %}" method="post" class="form-botones">
+              <form action="{% url 'abrir_actualizar_recaudo' %}" method="post" class="form-botones">
                 {% csrf_token %}
-                <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
+                <input type="hidden" name="id_recaudo" value="{{ item.id }}">
                 <button class="btnEditar" name="editar" id="editar">
                     <img src="{% static 'img/icons/icedit.png' %}">
                 </button>
               </form>
-              <form action="{% url 'eliminar_enfermedad' id=enfermedad.id  %}" method="post">
+              <form action="{% url 'eliminar_recaudo' id=item.id  %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
+                <input type="hidden" name="id_recaudo" value="{{ item.id }}">
                 <button class="btnEliminar" name="eliminar" id="eliminar">
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
