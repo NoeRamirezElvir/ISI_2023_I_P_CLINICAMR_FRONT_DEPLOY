@@ -7,20 +7,32 @@ import requests
 
 url = 'http://localhost:8080/api/'
 def eliminar_recaudo_detalle_examen(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'recaudoDetalleExamen/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'recaudoDetalleExamen/id/{idTemporal}')
+            res = response.json()
+            rsp_detalles = requests.get(url + 'recaudoDetalleExamen/') 
+            if rsp_detalles.status_code == 200:
+                data = rsp_detalles.json()
+                detalles = data['detalles']
+            else:
+                detalles = []
+            mensaje = res['message']
+            context = {'detalles': detalles, 'mensaje': mensaje}
+            return render(request, 'recaudo_detalle_examen/buscar_recaudo_detalle_examen.html', context)     
+    except:
         rsp_detalles = requests.get(url + 'recaudoDetalleExamen/') 
         if rsp_detalles.status_code == 200:
             data = rsp_detalles.json()
             detalles = data['detalles']
         else:
             detalles = []
-        mensaje = res['message']
-        context = {'detalles': detalles, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'detalles': detalles, 'error': mensaje}
         return render(request, 'recaudo_detalle_examen/buscar_recaudo_detalle_examen.html', context)     
     
+
 def buscar_recaudo_detalle_examen(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'recaudoDetalleExamen/busqueda/'

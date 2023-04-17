@@ -85,20 +85,32 @@ def actualizar_metodos_De_pago(request, id):
             return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'mensaje': mensaje,'metodop':metodop})
 
 def eliminar_metodos_De_pago(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'metodop/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'metodop/id/{idTemporal}')
+            res = response.json()
+            rsp_metodop = requests.get(url + 'metodop/') 
+            if rsp_metodop.status_code == 200:
+                data = rsp_metodop.json()
+                metodop = data['metodop']
+            else:
+                metodop = []
+            mensaje = res['message']
+            context = {'metodop': metodop, 'mensaje': mensaje}
+            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
+    except:
         rsp_metodop = requests.get(url + 'metodop/') 
         if rsp_metodop.status_code == 200:
             data = rsp_metodop.json()
             metodop = data['metodop']
         else:
             metodop = []
-        mensaje = res['message']
-        context = {'metodop': metodop, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'metodop': metodop, 'error': mensaje}
         return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
-    
+
+
 def buscar_metodos_De_pago(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'metodop/busqueda/'

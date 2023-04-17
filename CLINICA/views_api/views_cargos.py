@@ -83,19 +83,30 @@ def actualizar_cargo(request, id):
             return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos})
 
 def eliminar_cargo(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'cargos/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'cargos/id/{idTemporal}')
+            res = response.json()
+            rsp_cargos = requests.get(url + 'cargos/') 
+            if rsp_cargos.status_code == 200:
+                data = rsp_cargos.json()
+                cargos = data['cargos']
+            else:
+                cargos = []
+            mensaje = res['message']
+            context = {'cargos': cargos, 'mensaje': mensaje}
+            return render(request, 'cargos/buscarCargo.html', context)
+    except:
         rsp_cargos = requests.get(url + 'cargos/') 
         if rsp_cargos.status_code == 200:
             data = rsp_cargos.json()
             cargos = data['cargos']
         else:
             cargos = []
-        mensaje = res['message']
-        context = {'cargos': cargos, 'mensaje': mensaje}
-        return render(request, 'cargos/buscarCargo.html', context)     
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'cargos': cargos, 'error': mensaje}
+        return render(request, 'cargos/buscarCargo.html', context)      
     
 def buscar_cargos(request):
         valor = request.GET.get('buscador', None)

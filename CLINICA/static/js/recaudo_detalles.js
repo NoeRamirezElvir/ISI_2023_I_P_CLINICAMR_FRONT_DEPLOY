@@ -21,7 +21,6 @@ function actualizarVariables(total, subtotal, imp) {
 function guardarMedicamento() {
   var medicamentosSeleccionado = document.getElementById("idMedicamento").value;
   var valores = medicamentosSeleccionado.split(" - ");
-  var valores = medicamentosSeleccionado.split(" - ");
   var precio = parseFloat(valores[2]);
   var impuesto = parseFloat(valores[3]);
   var can = parseInt(valores[4], 10);
@@ -102,15 +101,13 @@ function cargarTablaMedicamento() {
       var nombreMedicamento = filaAModificar.getElementsByTagName("td")[0].innerText;
       var indice = medicamentosSeleccionados.findIndex(medicamento => medicamento.includes(nombreMedicamento));
       medicamentosSeleccionados[indice] = medicamentosSeleccionados[indice].split(" - ")[0] + " - " + medicamentosSeleccionados[indice].split(" - ")[1] + " - " + medicamentosSeleccionados[indice].split(" - ")[2] + " - " + medicamentosSeleccionados[indice].split(" - ")[3] + " - " + this.value; // Actualiza la cantidad en el array
-      
+
       var valores = nombreMedicamento.split(" - ");
       var precio = parseFloat(valores[2]);
       var impuesto = parseFloat(valores[3]);
 
       var canTemp = parseInt(valores[4],10);
       var can = parseInt(this.value, 10);
-
-
       if (!isNaN(can)) {
         canTemp = canTemp - 1;
         subtotal -= ((precio))* canTemp;
@@ -128,7 +125,7 @@ function cargarTablaMedicamento() {
       }
       cargarTablaMedicamento();
       actualizarTotal();
-    }
+      }
 
     cantidad.appendChild(cantidadInput);
 

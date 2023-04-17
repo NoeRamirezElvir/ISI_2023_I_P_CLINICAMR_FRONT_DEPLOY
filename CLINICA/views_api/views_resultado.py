@@ -89,20 +89,31 @@ def actualizar_resultados(request, id):
             return render(request, 'Resultados/ActualizarResultados.html', {'mensaje': mensaje,'resultados':resultados, 'tratamiento_list':tratamiento_list})
 
 def eliminar_resultados(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'resultados/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'resultados/id/{idTemporal}')
+            res = response.json()
+            rsp_resultados = requests.get(url + 'resultados/') 
+            if rsp_resultados.status_code == 200:
+                data = rsp_resultados.json()
+                resultados = data['resultados']
+            else:
+                resultados = []
+            mensaje = res['message']
+            context = {'resultados': resultados, 'mensaje': mensaje}
+            return render(request, 'Resultados/BuscarResultados.html', context)     
+    except:
         rsp_resultados = requests.get(url + 'resultados/') 
         if rsp_resultados.status_code == 200:
             data = rsp_resultados.json()
             resultados = data['resultados']
         else:
             resultados = []
-        mensaje = res['message']
-        context = {'resultados': resultados, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'resultados': resultados, 'error': mensaje}
         return render(request, 'Resultados/BuscarResultados.html', context)     
-    
+   
 def buscar_resultados(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'resultados/busqueda/'

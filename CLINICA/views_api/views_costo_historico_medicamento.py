@@ -8,20 +8,32 @@ import requests
 url = 'http://localhost:8080/api/'
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
 def eliminar_costo_historico_medicamento(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'costoHistoricoMedicamento/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'costoHistoricoMedicamento/id/{idTemporal}')
+            res = response.json()
+            rsp_historicos = requests.get(url + 'costoHistoricoMedicamento/') 
+            if rsp_historicos.status_code == 200:
+                data = rsp_historicos.json()
+                historicos = data['historicos']
+            else:
+                historicos = []
+            mensaje = res['message']
+            context = {'historicos': historicos, 'mensaje': mensaje}
+            return render(request, 'costo_historico_medicamento/buscar_costo_historico_medicamento.html', context)     
+    except:
         rsp_historicos = requests.get(url + 'costoHistoricoMedicamento/') 
         if rsp_historicos.status_code == 200:
             data = rsp_historicos.json()
             historicos = data['historicos']
         else:
             historicos = []
-        mensaje = res['message']
-        context = {'historicos': historicos, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'historicos': historicos, 'error': mensaje}
         return render(request, 'costo_historico_medicamento/buscar_costo_historico_medicamento.html', context)     
     
+
 def buscar_costo_historico_medicamento(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'costoHistoricoMedicamento/busqueda/'

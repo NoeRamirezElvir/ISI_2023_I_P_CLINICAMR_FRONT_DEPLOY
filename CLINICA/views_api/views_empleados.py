@@ -165,18 +165,29 @@ def actualizar_empleados(request, id):
             return render(request, 'empleado/EmpleadoActualizar.html', {'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
 
 def eliminar_empleados(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'empleados/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'empleados/id/{idTemporal}')
+            res = response.json()
+            rsp_empleados = requests.get(url + 'empleados/') 
+            if rsp_empleados.status_code == 200:
+                data = rsp_empleados.json()
+                empleados = data['empleados']
+            else:
+                empleados = []
+            mensaje = res['message']
+            context = {'empleados': empleados, 'mensaje': mensaje}
+            return render(request, 'empleado/buscarEmpleado.html', context)     
+    except:
         rsp_empleados = requests.get(url + 'empleados/') 
         if rsp_empleados.status_code == 200:
             data = rsp_empleados.json()
             empleados = data['empleados']
         else:
             empleados = []
-        mensaje = res['message']
-        context = {'empleados': empleados, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'empleados': empleados, 'error': mensaje}
         return render(request, 'empleado/buscarEmpleado.html', context)     
     
 def buscar_empleados(request):

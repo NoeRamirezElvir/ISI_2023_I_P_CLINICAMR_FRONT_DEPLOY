@@ -119,18 +119,29 @@ def actualizar_usuario(request, id):
         
 
 def eliminar_usuario(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'usuarios/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'usuarios/id/{idTemporal}')
+            res = response.json()
+            rsp_usuario = requests.get(url + 'usuarios/') 
+            if rsp_usuario.status_code == 200:
+                data = rsp_usuario.json()
+                usuarios = data['usuariosr']
+            else:
+                usuarios = []
+            mensaje = res['message']
+            context = {'usuariosr': usuarios, 'mensaje': mensaje}
+            return render(request, 'usuario/listar.html', context)     
+    except:
         rsp_usuario = requests.get(url + 'usuarios/') 
         if rsp_usuario.status_code == 200:
             data = rsp_usuario.json()
             usuarios = data['usuariosr']
         else:
             usuarios = []
-        mensaje = res['message']
-        context = {'usuariosr': usuarios, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'usuariosr': usuarios, 'error': mensaje}
         return render(request, 'usuario/listar.html', context)     
     
 def buscar_usuarios(request):

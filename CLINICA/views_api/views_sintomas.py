@@ -78,20 +78,31 @@ def actualizar_sintomas(request, id):
             return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas})
 
 def eliminar_sintomas(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'sintomas/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'sintomas/id/{idTemporal}')
+            res = response.json()
+            rsp_cargos = requests.get(url + 'sintomas/') 
+            if rsp_cargos.status_code == 200:
+                data = rsp_cargos.json()
+                sintomas = data['sintomas']
+            else:
+                sintomas = []
+            mensaje = res['message']
+            context = {'sintomas': sintomas, 'mensaje': mensaje}
+            return render(request, 'sintomas/buscar_sintomas.html', context)     
+    except:
         rsp_cargos = requests.get(url + 'sintomas/') 
         if rsp_cargos.status_code == 200:
             data = rsp_cargos.json()
             sintomas = data['sintomas']
         else:
             sintomas = []
-        mensaje = res['message']
-        context = {'sintomas': sintomas, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'sintomas': sintomas, 'error': mensaje}
         return render(request, 'sintomas/buscar_sintomas.html', context)     
-    
+        
 def buscar_sintomas(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'sintomas/busqueda/'

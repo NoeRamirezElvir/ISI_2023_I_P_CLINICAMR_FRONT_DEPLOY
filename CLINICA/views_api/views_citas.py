@@ -109,20 +109,31 @@ def actualizar_citas(request, id):
             return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list})
 
 def eliminar_citas(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'citas/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'citas/id/{idTemporal}')
+            res = response.json()
+            rsp_pacientes = requests.get(url + 'citas/') 
+            if rsp_pacientes.status_code == 200:
+                data = rsp_pacientes.json()
+                citas = data['citas']
+            else:
+                citas = []
+            mensaje = res['message']
+            context = {'citas': citas, 'mensaje': mensaje}
+            return render(request, 'citas/cita_buscar.html', context)     
+    except:
         rsp_pacientes = requests.get(url + 'citas/') 
         if rsp_pacientes.status_code == 200:
             data = rsp_pacientes.json()
             citas = data['citas']
         else:
             citas = []
-        mensaje = res['message']
-        context = {'citas': citas, 'mensaje': mensaje}
-        return render(request, 'citas/cita_buscar.html', context)     
-    
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'citas': citas, 'error': mensaje}
+        return render(request, 'citas/cita_buscar.html', context) 
+
 def buscar_citas(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'citas/busqueda/'

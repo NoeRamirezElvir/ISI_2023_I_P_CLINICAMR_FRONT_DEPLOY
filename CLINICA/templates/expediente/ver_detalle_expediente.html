@@ -56,7 +56,7 @@
     <div class="contacto" style="background-color: #BEC3C7; color:#263645bb ;">
         <h2>Paciente</h2>
         <div style="display:inline-flex"><h4>Documento de identificación: {{ expediente.0.idPaciente.documento }}</h4> <h4 style="position: relative;left:400px;">Identificador: {{expediente.0.id}}</h4></div><br>    
-        <div style="display:inline-flex"><h4>Nombre:{{ expediente.0.idPaciente.nombre }} {{ expediente.0.idPaciente.apellido  }}</h4><h4 style="position: relative;left: 560px;">Fecha de registro: <span id="fecha-registro"></span></h4></div>
+        <div style="display:inline-flex"><h4>Nombre:{{ expediente.0.idPaciente.nombre }} {{ expediente.0.idPaciente.apellido  }}</h4><h4 style="position: relative;left: 560px;">Fecha de registro: {{expediente.0.fecha}}</h4></div>
         <h4>No. de teléfono: {{ expediente.0.idPaciente.telefono }}</h4>
         <br>
         <p>{{ expediente.0.observacion }}</p>
@@ -138,25 +138,4 @@
     <div class="contacto">
     </div>
 </div>
-<script>
-    // obtener la fecha de registro en formato yyyy-mm-dd
-    const fechaRegistro = '{{ expediente.0.fecha }}';
-  
-    // crear un objeto Date con la fecha de registro
-    const fecha = new Date(fechaRegistro);
-  
-    // obtener los componentes de la fecha
-    const dia = fecha.getDate();
-    const mes = fecha.getMonth() + 1;
-    const anio = fecha.getFullYear().toString().substring(2);
-  
-    // construir la fecha en formato dd-mm-yy
-    const fechaFormateada = `${dia.toString().padStart(2, '0')}-${mes.toString().padStart(2, '0')}-${anio}`;
-  
-    // actualizar el contenido del span con la fecha formateada
-    document.getElementById('fecha-registro').textContent = fechaFormateada;
-  </script>
-
-
-
 {% endblock %}

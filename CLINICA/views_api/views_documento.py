@@ -80,18 +80,29 @@ def actualizar_documento(request, id):
             return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
 
 def eliminar_documento(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'documentos/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'documentos/id/{idTemporal}')
+            res = response.json()
+            rsp_documentos = requests.get(url + 'documentos/') 
+            if rsp_documentos.status_code == 200:
+                data = rsp_documentos.json()
+                documentos = data['documentos']
+            else:
+                documentos = []
+            mensaje = res['message']
+            context = {'documentos': documentos, 'mensaje': mensaje}
+            return render(request, 'documentos/buscarDocumento.html', context)     
+    except:   
         rsp_documentos = requests.get(url + 'documentos/') 
         if rsp_documentos.status_code == 200:
             data = rsp_documentos.json()
             documentos = data['documentos']
         else:
             documentos = []
-        mensaje = res['message']
-        context = {'documentos': documentos, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'documentos': documentos, 'error': mensaje}
         return render(request, 'documentos/buscarDocumento.html', context)     
     
 def buscar_documentos(request):

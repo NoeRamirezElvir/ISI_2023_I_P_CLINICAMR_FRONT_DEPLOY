@@ -85,20 +85,31 @@ def actualizar_especialidades(request, id):
             return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
 
 def eliminar_especialidades(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'especialidad/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'especialidad/id/{idTemporal}')
+            res = response.json()
+            rsp_especialidad = requests.get(url + 'especialidad/') 
+            if rsp_especialidad.status_code == 200:
+                data = rsp_especialidad.json()
+                especialidad = data['especialidad']
+            else:
+                especialidad = []
+            mensaje = res['message']
+            context = {'especialidad': especialidad, 'mensaje': mensaje}
+            return render(request, 'especialidad/BuscarEspecialidad.html', context)     
+    except:
         rsp_especialidad = requests.get(url + 'especialidad/') 
         if rsp_especialidad.status_code == 200:
             data = rsp_especialidad.json()
             especialidad = data['especialidad']
         else:
             especialidad = []
-        mensaje = res['message']
-        context = {'especialidad': especialidad, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'especialidad': especialidad, 'error': mensaje}
         return render(request, 'especialidad/BuscarEspecialidad.html', context)     
-    
+
 def buscar_especialidades(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'especialidad/busqueda/'

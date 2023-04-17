@@ -85,20 +85,31 @@ def actualizar_laboratorios(request, id):
             return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'mensaje': mensaje,'laboratorios':laboratorios})
 
 def eliminar_laboratorios(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'laboratorios/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'laboratorios/id/{idTemporal}')
+            res = response.json()
+            rsp_laboratorios = requests.get(url + 'laboratorios/') 
+            if rsp_laboratorios.status_code == 200:
+                data = rsp_laboratorios.json()
+                laboratorios = data['laboratorios']
+            else:
+                laboratorios = []
+            mensaje = res['message']
+            context = {'laboratorios': laboratorios, 'mensaje': mensaje}
+            return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
+    except:
         rsp_laboratorios = requests.get(url + 'laboratorios/') 
         if rsp_laboratorios.status_code == 200:
             data = rsp_laboratorios.json()
             laboratorios = data['laboratorios']
         else:
             laboratorios = []
-        mensaje = res['message']
-        context = {'laboratorios': laboratorios, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'laboratorios': laboratorios, 'error': mensaje}
         return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
-    
+   
 def buscar_laboratorios(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'laboratorios/busqueda/'

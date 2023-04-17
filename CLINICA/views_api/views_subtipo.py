@@ -82,20 +82,31 @@ def actualizar_subtipo(request, id):
             return render(request, 'SubTipo/subtipoActualizar.html', {'mensaje': mensaje,'subtipo':subtipo})
 
 def eliminar_subtipo(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'subtipo/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'subtipo/id/{idTemporal}')
+            res = response.json()
+            rsp_subtipo = requests.get(url + 'subtipo/') 
+            if rsp_subtipo.status_code == 200:
+                data = rsp_subtipo.json()
+                subtipo = data['subtipo']
+            else:
+                subtipo = []
+            mensaje = res['message']
+            context = {'subtipo': subtipo, 'mensaje': mensaje}
+            return render(request, 'SubTipo/buscarsubtipo.html', context)     
+    except:
         rsp_subtipo = requests.get(url + 'subtipo/') 
         if rsp_subtipo.status_code == 200:
             data = rsp_subtipo.json()
             subtipo = data['subtipo']
         else:
             subtipo = []
-        mensaje = res['message']
-        context = {'subtipo': subtipo, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'subtipo': subtipo, 'error': mensaje}
         return render(request, 'SubTipo/buscarsubtipo.html', context)     
-    
+       
 def buscar_subtipo(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'subtipo/busqueda/'

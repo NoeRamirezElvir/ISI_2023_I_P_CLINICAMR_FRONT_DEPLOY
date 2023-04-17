@@ -7,20 +7,31 @@ import requests
 
 url = 'http://localhost:8080/api/'
 def eliminar_impuesto_historico(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'impuestoHistorico/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'impuestoHistorico/id/{idTemporal}')
+            res = response.json()
+            rsp_pacientes = requests.get(url + 'impuestoHistorico/') 
+            if rsp_pacientes.status_code == 200:
+                data = rsp_pacientes.json()
+                historicos = data['historicos']
+            else:
+                historicos = []
+            mensaje = res['message']
+            context = {'historicos': historicos, 'mensaje': mensaje}
+            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
+    except:
         rsp_pacientes = requests.get(url + 'impuestoHistorico/') 
         if rsp_pacientes.status_code == 200:
             data = rsp_pacientes.json()
             historicos = data['historicos']
         else:
             historicos = []
-        mensaje = res['message']
-        context = {'historicos': historicos, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'historicos': historicos, 'error': mensaje}
         return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
-    
+   
 def buscar_impuesto_historico(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'impuestoHistorico/busqueda/'

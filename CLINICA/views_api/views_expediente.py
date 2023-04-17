@@ -100,20 +100,31 @@ def actualizar_expediente(request, id):
             return render(request, 'expediente/actualizar_expediente.html', {'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
 
 def eliminar_expediente(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'expediente/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'expediente/id/{idTemporal}')
+            res = response.json()
+            rsp_expediente = requests.get(url + 'expediente/') 
+            if rsp_expediente.status_code == 200:
+                data = rsp_expediente.json()
+                expediente = data['expedientes']
+            else:
+                expediente = []
+            mensaje = res['message']
+            context = {'expediente': expediente, 'mensaje': mensaje}
+            return render(request, 'expediente/buscar_expediente.html', context)     
+    except:
         rsp_expediente = requests.get(url + 'expediente/') 
         if rsp_expediente.status_code == 200:
             data = rsp_expediente.json()
             expediente = data['expedientes']
         else:
             expediente = []
-        mensaje = res['message']
-        context = {'expediente': expediente, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'expediente': expediente, 'error': mensaje}
         return render(request, 'expediente/buscar_expediente.html', context)     
-    
+ 
 def buscar_expediente(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'expediente/busqueda/'

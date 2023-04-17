@@ -40,7 +40,7 @@
   var cambio = document.getElementById("cambio");
   var opcionSeleccionada = select.options[select.selectedIndex];
   var dato = opcionSeleccionada.getAttribute("data-nombre");
-  
+
     if (dato === "efectivo") {
       inputEfectivo.removeAttribute("disabled");
       inputEfectivo.setAttribute("required","required");
@@ -84,12 +84,12 @@
     } else if (dato === "tarjeta"){
       inputTarjeta.removeAttribute("disabled");
       inputTarjeta.setAttribute("required","required");
-      inputTarjeta.value = total.value
       inputTarjeta.setAttribute("readonly", "readonly");
       numeroTarjeta.removeAttribute("disabled");
       numeroTarjeta.setAttribute("required", "required");
       inputEfectivo.setAttribute("disabled", "disabled");
       inputEfectivo.removeAttribute("required");
+      inputTarjeta.value = total.value
       inputEfectivo.value = '';
       cambio.value = '';
     } else if (dato === "mixto"){
@@ -99,7 +99,7 @@
       inputTarjeta.setAttribute("required","required");
       cambio.value = '';
       efectivoTemp = inputEfectivo.value;
-      numTargetaTemp = numeroTarjeta.value;
+      numTarjetaTemp = numeroTarjeta.value;
       tarjetaTemp = inputTarjeta.value;
 
       inputEfectivo.value = '';

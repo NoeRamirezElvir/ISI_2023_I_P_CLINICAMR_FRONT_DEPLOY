@@ -67,4 +67,10 @@
         </div>
     </div>
 </div>
+{% if error %}
+<div id="alert-alert-info" style="top:100px">
+  <p>{{ error }}</p>
+</div>
+</div>
+{% endif %}
 {% endblock %}

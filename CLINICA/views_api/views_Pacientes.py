@@ -122,20 +122,31 @@ def actualizar_pacientes(request, id):
             return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento})
 
 def eliminar_pacientes(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'pacientes/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'pacientes/id/{idTemporal}')
+            res = response.json()
+            rsp_pacientes = requests.get(url + 'pacientes/') 
+            if rsp_pacientes.status_code == 200:
+                data = rsp_pacientes.json()
+                pacientes = data['pacientes']
+            else:
+                pacientes = []
+            mensaje = res['message']
+            context = {'pacientes': pacientes, 'mensaje': mensaje}
+            return render(request, 'Pacientes/buscarPaciente.html', context)     
+    except:
         rsp_pacientes = requests.get(url + 'pacientes/') 
         if rsp_pacientes.status_code == 200:
             data = rsp_pacientes.json()
             pacientes = data['pacientes']
         else:
             pacientes = []
-        mensaje = res['message']
-        context = {'pacientes': pacientes, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'pacientes': pacientes, 'error': mensaje}
         return render(request, 'Pacientes/buscarPaciente.html', context)     
-    
+            
 def buscar_pacientes(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'pacientes/busqueda/'

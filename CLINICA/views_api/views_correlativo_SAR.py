@@ -104,20 +104,31 @@ def actualizar_correlativo(request, id):
             return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo})
 
 def eliminar_correlativo(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'correlativo/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'correlativo/id/{idTemporal}')
+            res = response.json()
+            rsp_correlativo = requests.get(url + 'correlativo/') 
+            if rsp_correlativo.status_code == 200:
+                data = rsp_correlativo.json()
+                correlativo = data['correlativo']
+            else:
+                correlativo = []
+            mensaje = res['message']
+            context = {'correlativo': correlativo, 'mensaje': mensaje}
+            return render(request, 'correlativo/buscar_correlativo.html', context)     
+    except:
         rsp_correlativo = requests.get(url + 'correlativo/') 
         if rsp_correlativo.status_code == 200:
             data = rsp_correlativo.json()
             correlativo = data['correlativo']
         else:
             correlativo = []
-        mensaje = res['message']
-        context = {'correlativo': correlativo, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'correlativo': correlativo, 'error': mensaje}
         return render(request, 'correlativo/buscar_correlativo.html', context)     
-    
+         
 def buscar_correlativo(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'correlativo/busqueda/'

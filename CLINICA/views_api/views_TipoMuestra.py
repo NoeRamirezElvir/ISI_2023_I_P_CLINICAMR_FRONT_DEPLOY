@@ -85,18 +85,29 @@ def actualizar_TipoMuestra(request, id):
             return render(request, 'TipoMuestra/TMuestraActualizar.html', {'mensaje': mensaje,'tmuestra':tmuestra})
 
 def eliminar_TipoMuestra(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'tmuestra/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'tmuestra/id/{idTemporal}')
+            res = response.json()
+            rsp_tmuestra = requests.get(url + 'tmuestra/') 
+            if rsp_tmuestra.status_code == 200:
+                data = rsp_tmuestra.json()
+                tmuestra = data['tmuestra']
+            else:
+                tmuestra = []
+            mensaje = res['message']
+            context = {'tmuestra': tmuestra, 'mensaje': mensaje}
+            return render(request, 'TipoMuestra/BuscarTMuestra.html', context)     
+    except:
         rsp_tmuestra = requests.get(url + 'tmuestra/') 
         if rsp_tmuestra.status_code == 200:
             data = rsp_tmuestra.json()
             tmuestra = data['tmuestra']
         else:
             tmuestra = []
-        mensaje = res['message']
-        context = {'tmuestra': tmuestra, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'tmuestra': tmuestra, 'error': mensaje}
         return render(request, 'TipoMuestra/BuscarTMuestra.html', context)     
     
 def buscar_TipoMuestra(request):

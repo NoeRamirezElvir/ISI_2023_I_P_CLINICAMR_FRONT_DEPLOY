@@ -94,20 +94,31 @@ def actualizar_muestras(request, id):
             return render(request, 'Muestras/MuestraActualizar.html', {'mensaje': mensaje,'muestras':muestras})
 
 def eliminar_muestras(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'muestras/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'muestras/id/{idTemporal}')
+            res = response.json()
+            rsp_muestras = requests.get(url + 'muestras/') 
+            if rsp_muestras.status_code == 200:
+                data = rsp_muestras.json()
+                muestras = data['muestras']
+            else:
+                muestras = []
+            mensaje = res['message']
+            context = {'muestras': muestras, 'mensaje': mensaje}
+            return render(request, 'Muestras/BuscarMuestra.html', context)     
+    except:
         rsp_muestras = requests.get(url + 'muestras/') 
         if rsp_muestras.status_code == 200:
             data = rsp_muestras.json()
             muestras = data['muestras']
         else:
             muestras = []
-        mensaje = res['message']
-        context = {'muestras': muestras, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'muestras': muestras, 'error': mensaje}
         return render(request, 'Muestras/BuscarMuestra.html', context)     
-    
+           
 def buscar_muestras(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'muestras/busqueda/'

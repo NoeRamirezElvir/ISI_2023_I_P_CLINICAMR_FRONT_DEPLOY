@@ -85,20 +85,31 @@ def actualizar_proveedor(request, id):
             return render(request, 'Proveedor/ProveedorActualizar.html', {'mensaje': mensaje,'proveedores':proveedores})
 
 def eliminar_proveedor(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'proveedores/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'proveedores/id/{idTemporal}')
+            res = response.json()
+            rsp_proveedores = requests.get(url + 'proveedores/') 
+            if rsp_proveedores.status_code == 200:
+                data = rsp_proveedores.json()
+                proveedores = data['proveedores']
+            else:
+                proveedores = []
+            mensaje = res['message']
+            context = {'proveedores': proveedores, 'mensaje': mensaje}
+            return render(request, 'Proveedor/BuscarProveedor.html', context)     
+    except:
         rsp_proveedores = requests.get(url + 'proveedores/') 
         if rsp_proveedores.status_code == 200:
             data = rsp_proveedores.json()
             proveedores = data['proveedores']
         else:
             proveedores = []
-        mensaje = res['message']
-        context = {'proveedores': proveedores, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'proveedores': proveedores, 'error': mensaje}
         return render(request, 'Proveedor/BuscarProveedor.html', context)     
-    
+
 def buscar_proveedor(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'proveedores/busqueda/'

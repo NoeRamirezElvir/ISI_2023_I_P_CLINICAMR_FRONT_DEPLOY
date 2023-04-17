@@ -3,6 +3,23 @@
 
 {% block tittle %}RECAUDOS{% endblock %}
 {% block content %}
+<style>
+  #mi-select{
+    margin-bottom: 1em;
+    padding: .10em;
+    border: 0;
+    border-bottom: 2px solid currentcolor; 
+    font-weight: bold;
+    letter-spacing: .10em;
+    border-radius: 0;
+    width: 100px;
+    background-color: #B3CECF;
+  }
+  .fecha-entrega.none {
+    color: rgb(146, 20, 20);
+  }
+
+</style>
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
   <h1 class="h1-listar">Registros de Recaudos</h1>
@@ -24,9 +41,16 @@
         <thead>
           <tr class="tfheader-listar">
             <th style="color:aliceblue">ID</th>
-            <th style="color:aliceblue">Nombre</th>
-            <th style="color:aliceblue; max-width: 20vh;">Sintomas(id,nombre)</th>
-            <th style="color:aliceblue">Accion Eliminar</th>
+            <th style="color:aliceblue">Numero Factura</th>
+            <th style="color:aliceblue">Fecha Facturación</th>
+            <th style="color:aliceblue">Estado</th>
+            <th style="color:aliceblue">CAI</th>
+            <th style="color:aliceblue">Cliente</th>
+            <th style="color:aliceblue">Empleado</th>
+            <th style="color:aliceblue">Metodo Pago</th>
+            <th style="color:aliceblue">Fecha Entrega</th>
+            <th style="color:aliceblue">Activa</th>
+            <th style="color:aliceblue">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -34,18 +58,33 @@
           {% for item in recaudo %}
           <tr>
             <td>{{ item.id }}</td>
-            <td>{{ enfermedad.nombre }}</td>
-            <td style="max-width: 20vh; word-wrap: break-word;">{% for sintoma in enfermedad.idSintomas.values %}
-                {{ sintoma.id }}&#41 {{ sintoma.nombre }} <br/>
-                {% endfor %}
-            </td>
+            <td>{{ item.noFactura }}</td>
+            <td>{{ item.fechaFacturacion }}</td>
             <td>
-              <form action="{% url 'abrir_actualizar_recaudo' %}" method="post" class="form-botones">
+              <select id="mi-select">
+                <option value="Pendiente"{% if item.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="Enviada"{% if item.estado == 'Enviada' %}selected{% endif %}>Enviada</option>
+                <option value="Pagada"{% if item.estado == 'Pagada' %}selected{% endif %}>Pagada</option>
+                <option value="Vencida"{% if item.estado == 'Vencida' %}selected{% endif %}>Vencida</option>
+                <option value="Anulada"{% if item.estado == 'Anulada' %}selected{% endif %}>Anulada</option>
+              </select>
+            </td>
+            <td>{{ item.idCorrelativo.cai }}</td>
+            <td>{{ item.idPaciente.nombre }}</td>
+            <td>{{ item.idEmpleado.nombre }} <br> {{ item.idEmpleado.documento }}</td>
+            <td>{{ item.idMetodoPago.nombre }}</td>
+            <td class="fecha-entrega{% if item.fechaEntrega is None %} none {% endif %}">
+              {{ item.fechaEntrega|default:'Sin entregar' }}
+            </td>            
+            <td>{{ item.activa }}</td>
+            <td>
+              <form action="{% url 'actualizar_recaudo' id=item.id %}" method="post" class="form-botones">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
+                <input type="hidden" id="mi-input" name="mi-input" value="{{item.estado}}">
                 <button class="btnEditar" name="editar" id="editar">
-                    <img src="{% static 'img/icons/icedit.png' %}">
-                </button>
+                  <img src="{% static 'img/icons/icedit.png' %}">
+              </button>
               </form>
               <form action="{% url 'eliminar_recaudo' id=item.id  %}" method="post">
                 {% csrf_token %}
@@ -73,5 +112,13 @@
 </div>
 </div>
 {% endif %}
+<script>
+  var miSelect = document.getElementById("mi-select");
+  var miInput = document.getElementById("mi-input");
+
+  miSelect.addEventListener("change", function() {
+    miInput.value = miSelect.value;
+  });
+</script>
 
 {% endblock %}

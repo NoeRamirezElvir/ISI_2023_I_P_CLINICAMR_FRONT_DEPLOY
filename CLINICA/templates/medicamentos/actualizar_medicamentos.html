@@ -56,9 +56,9 @@
             <div style="display: block;width: 100%">
                 <label class="campo-registro" for="idTipoDocument1">Tipo</label>
                 <select name="idTipo" id="idTipoDocument1">
-                  <option value="0" {% if medicamentos.0.idTipo_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                  <option value="0" {% if medicamentos.0.idTipo.id == 0 %}selected{% endif %}>Seleccione una opción</option>"
                     {% for tipo in tipos %}
-                        <option value="{{ tipo.id }}"{% if tipo.id == medicamentos.0.idTipo_id %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
+                        <option value="{{ tipo.id }}"{% if tipo.id == medicamentos.0.idTipo.id %}selected{% endif %}>{{tipo.id}}&#41 {{ tipo.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -96,18 +96,18 @@
             <div style="display: block;width: 100%">
                 <label class="campo-registro" for="idTipoDocument1">Proveedor</label>
                 <select name="idProveedor" id="idTipoDocument1">
-                  <option value="0" {% if medicamentos.0.idProveedor_id == 0 %}selected{% endif %}>Seleccione una opción</option>"
+                  <option value="0" {% if medicamentos.0.idProveedor.id == 0 %}selected{% endif %}>Seleccione una opción</option>"
                     {% for proveedor in proveedores %}
-                        <option value="{{ proveedor.id }}"{% if proveedor.id == medicamentos.0.idProveedor_id %}selected{% endif %}>{{proveedor.id}}&#41 {{ proveedor.nombre }}</option>
+                        <option value="{{ proveedor.id }}"{% if proveedor.id == medicamentos.0.idProveedor.id %}selected{% endif %}>{{proveedor.id}}&#41 {{ proveedor.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div style="display: block;width: 100%">
                 <label class="campo-registro" for="idTipoDocument1">Impuesto</label>
                 <select name="idImpuesto" id="idTipoDocument1">
-                  <option value="0" {% if medicamentos.0.idImpuesto_id == 0 %} selected {% endif %}>Seleccione una opción</option>"
+                  <option value="0" {% if medicamentos.0.idImpuesto.id == 0 %} selected {% endif %}>Seleccione una opción</option>"
                     {% for impuesto in impuestos %}
-                        <option value="{{ impuesto.id }}"{% if impuesto.id == medicamentos.0.idImpuesto_id %} selected {% endif %}>{{impuesto.id}}&#41 {{ impuesto.nombre }}</option>
+                        <option value="{{ impuesto.id }}"{% if impuesto.id == medicamentos.0.idImpuesto.id %} selected {% endif %}>{{impuesto.id}}&#41 {{ impuesto.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>

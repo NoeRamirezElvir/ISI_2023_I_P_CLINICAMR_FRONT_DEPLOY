@@ -1,7 +1,8 @@
 from decimal import Decimal
 from django.http import HttpResponse
 import json
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 import requests
 
 from django.template.loader import get_template
@@ -60,6 +61,7 @@ def crear_recaudo(request):
 
         medicamentos_lista = []
         for item in medicamentos_seleccionados:
+
             medicamento = {}
             medicamento['id'] = int(item.split(" - ")[0])
             medicamento['nombre'] = str(item.split(" - ")[1])
@@ -173,12 +175,10 @@ def crear_recaudo(request):
                         'datos_pdf':datos_pdf
                         }
             
-
-
             pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
-            response = HttpResponse(pdf, content_type='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
-            return response
+            response_pdf = HttpResponse(pdf, content_type='application/pdf')
+            response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
+            return response_pdf
         else:
             data = response.json()
             mensaje = data['message']
@@ -197,12 +197,26 @@ def crear_recaudo(request):
     else:
         return render(request, 'recaudo/recaudo.html', context)
 
-
-def abrir_actualizar_recaudo(request):
-    return render(request, 'recaudo/actualizar_recaudo.html')
-
 def actualizar_recaudo(request,id):
-    return render(request, 'recaudo/actualizar_recaudo.html')
+    if request.method == 'POST':
+        idTemporal = id
+        estado = request.POST['mi-input']
+        response = requests.put(url+f'recaudo/id/{idTemporal}', json={'estado': estado})
+        rsp =  response.json()
+
+        rsp_recaudos = requests.get(url+'recaudo/')
+        if rsp_recaudos.status_code == 200:
+            data = rsp_recaudos.json()
+            recaudo = data['recaudo'] 
+        else:
+            recaudo = []
+
+        if rsp['message'] == "La actualización fue exitosa.":
+            mensaje = rsp['message']+'- Actualizado Correctamente'
+            return render(request, 'recaudo/buscar_recaudo.html', {'mensaje': mensaje, 'recaudo': recaudo})
+        else:
+            mensaje = rsp['message']                            
+            return render(request, 'recaudo/buscar_recaudo.html', {'mensaje': mensaje,'recaudo': recaudo})
 
 def buscar_recaudo(request):
     valor = request.GET.get('buscador', None)
@@ -250,7 +264,30 @@ def buscar_recaudo(request):
 
 
 def eliminar_recaudo(request,id):
-    return render(request, 'recaudo/buscar_recaudo.html')
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'recaudo/id/{idTemporal}')
+            res = response.json()
+            rsp_recaudo = requests.get(url + 'recaudo/') 
+            if rsp_recaudo.status_code == 200:
+                data = rsp_recaudo.json()
+                recaudo = data['recaudo']
+            else:
+                recaudo = []
+            mensaje = res['message']
+            context = {'recaudo': recaudo, 'mensaje': mensaje}
+            return render(request, 'recaudo/buscar_recaudo.html', context)   
+    except:
+        rsp_recaudo = requests.get(url + 'recaudo/') 
+        if rsp_recaudo.status_code == 200:
+            data = rsp_recaudo.json()
+            recaudo = data['recaudo']
+        else:
+            recaudo = []
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'recaudo': recaudo, 'error': mensaje}
+        return render(request, 'recaudo/buscar_recaudo.html', context)   
 
 
      
@@ -347,3 +384,4 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+

@@ -81,20 +81,31 @@ def actualizar_parametros_generales(request, id):
             return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
 
 def eliminar_parametros_generales(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'parametrosgenerales/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'parametrosgenerales/id/{idTemporal}')
+            res = response.json()
+            rsp_parametrosgenerales = requests.get(url + 'parametrosgenerales/') 
+            if rsp_parametrosgenerales.status_code == 200:
+                data = rsp_parametrosgenerales.json()
+                parametrosgenerales = data['parametrosgenerales']
+            else:
+                parametrosgenerales = []
+            mensaje = res['message']
+            context = {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
+            return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
+    except:
         rsp_parametrosgenerales = requests.get(url + 'parametrosgenerales/') 
         if rsp_parametrosgenerales.status_code == 200:
             data = rsp_parametrosgenerales.json()
             parametrosgenerales = data['parametrosgenerales']
         else:
             parametrosgenerales = []
-        mensaje = res['message']
-        context = {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'parametrosgenerales': parametrosgenerales, 'error': mensaje}
         return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
-    
+        
 def buscar_parametros_generales(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'parametrosgenerales/busqueda/'

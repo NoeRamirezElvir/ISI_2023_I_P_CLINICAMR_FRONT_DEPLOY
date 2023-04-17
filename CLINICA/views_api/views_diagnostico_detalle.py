@@ -7,20 +7,32 @@ import requests
 
 url = 'http://localhost:8080/api/'
 def eliminar_diagnostico_detalle(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'diagnosticoDetalle/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'diagnosticoDetalle/id/{idTemporal}')
+            res = response.json()
+            rsp_detalles = requests.get(url + 'diagnosticoDetalle/') 
+            if rsp_detalles.status_code == 200:
+                data = rsp_detalles.json()
+                detalles = data['detalles']
+            else:
+                detalles = []
+            mensaje = res['message']
+            context = {'detalles': detalles, 'mensaje': mensaje}
+            return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)     
+    except:
         rsp_detalles = requests.get(url + 'diagnosticoDetalle/') 
         if rsp_detalles.status_code == 200:
             data = rsp_detalles.json()
             detalles = data['detalles']
         else:
             detalles = []
-        mensaje = res['message']
-        context = {'detalles': detalles, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'detalles': detalles, 'error': mensaje}
         return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)     
     
+
 def buscar_diagnostico_detalle(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'diagnosticoDetalle/busqueda/'

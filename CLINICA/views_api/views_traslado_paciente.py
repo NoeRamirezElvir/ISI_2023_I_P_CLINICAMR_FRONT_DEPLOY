@@ -141,20 +141,31 @@ def actualizar_traslados(request, id):
                                                                                              'empleado_list':empleado_list })
 
 def eliminar_traslados(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'traslados/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'traslados/id/{idTemporal}')
+            res = response.json()
+            rsp_traslados = requests.get(url + 'traslados/') 
+            if rsp_traslados.status_code == 200:
+                data = rsp_traslados.json()
+                traslados = data['traslados']
+            else:
+                traslados = []
+            mensaje = res['message']
+            context = {'traslados': traslados, 'mensaje': mensaje}
+            return render(request, 'Traslados/buscar_traslado.html', context)     
+    except:
         rsp_traslados = requests.get(url + 'traslados/') 
         if rsp_traslados.status_code == 200:
             data = rsp_traslados.json()
             traslados = data['traslados']
         else:
             traslados = []
-        mensaje = res['message']
-        context = {'traslados': traslados, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'traslados': traslados, 'error': mensaje}
         return render(request, 'Traslados/buscar_traslado.html', context)     
-    
+     
 def buscar_traslados(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'traslados/busqueda/'

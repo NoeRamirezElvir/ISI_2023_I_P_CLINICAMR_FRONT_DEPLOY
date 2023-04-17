@@ -82,17 +82,28 @@ def actualizar_autorizacion(request, id):
             return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar})
 
 def eliminar_autorizacion(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'autorizar/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'autorizar/id/{idTemporal}')
+            res = response.json()
+            rsp_autorizar = requests.get(url + 'autorizar/') 
+            if rsp_autorizar.status_code == 200:
+                data = rsp_autorizar.json()
+                autorizar = data['autorizar']
+            else:
+                autorizar = []
+            mensaje = res['message']
+            context = {'autorizar': autorizar, 'error': mensaje}
+            return render(request, 'Autorizacion/buscarAutorizar.html', context)
+    except:
         rsp_autorizar = requests.get(url + 'autorizar/') 
         if rsp_autorizar.status_code == 200:
             data = rsp_autorizar.json()
             autorizar = data['autorizar']
         else:
             autorizar = []
-        mensaje = res['message']
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         context = {'autorizar': autorizar, 'mensaje': mensaje}
         return render(request, 'Autorizacion/buscarAutorizar.html', context)     
     

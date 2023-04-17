@@ -102,18 +102,29 @@ def actualizar_tipo(request, id):
             return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'idImpuesto': idImpuesto,'subtipo':subtipo, 'impuestos': impuestos})
 
 def eliminar_tipo(request, id):
-    if request.method == 'POST':
-        idTemporal = id
-        response = requests.delete(url + f'tipo/id/{idTemporal}')
-        res = response.json()
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            response = requests.delete(url + f'tipo/id/{idTemporal}')
+            res = response.json()
+            rsp_tipo = requests.get(url + 'tipo/') 
+            if rsp_tipo.status_code == 200:
+                data = rsp_tipo.json()
+                tipo = data['tipos']
+            else:
+                tipo = []
+            mensaje = res['message']
+            context = {'tipo': tipo, 'mensaje': mensaje}
+            return render(request, 'Tipos/buscartipo.html', context)     
+    except:
         rsp_tipo = requests.get(url + 'tipo/') 
         if rsp_tipo.status_code == 200:
             data = rsp_tipo.json()
             tipo = data['tipos']
         else:
             tipo = []
-        mensaje = res['message']
-        context = {'tipo': tipo, 'mensaje': mensaje}
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'tipo': tipo, 'error': mensaje}
         return render(request, 'Tipos/buscartipo.html', context)     
     
 def buscar_tipo(request):
