@@ -27,7 +27,8 @@
     var finalMonth = (finalParts[1]);
     var finalDay = (finalParts[2]);
 
-    input.value = rangoFinal +" " +finalDay +"-"+ finalMonth +"-"+ finalYear + " ";
+    input.value = rangoFinal+finalDay +"-"+ finalMonth +"-"+ finalYear + " ";
+
   }
 
 

@@ -31,7 +31,6 @@
           <div style="display: inline-grid;width: 100%">
             <label class="campo-registro">Estado</label>
             <select name="estado" id="estado">
-              <option value="0" {% if registro_temp.estado == '0' %}selected{% endif %}>Seleccione una opción</option>"
               <option value="Pendiente"{% if registro_temp.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
               <option value="Enviada"{% if registro_temp.estado == 'Enviada' %}selected{% endif %}>Enviada</option>
               <option value="Pagada"{% if registro_temp.estado == 'Pagada' %}selected{% endif %}>Pagada</option>
@@ -162,8 +161,8 @@
             <table id="myTableMedicamento" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 40%;">Medicamentos <br> ID - Nombre - Precio - Impuesto</th>
-                    <th style="width: 50%;">Acciones</th>
+                    <th style="width: 60%;">Medicamentos <br> ID - Nombre - Precio - Impuesto - Cantidad</th>
+                    <th style="width: 40%;">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
