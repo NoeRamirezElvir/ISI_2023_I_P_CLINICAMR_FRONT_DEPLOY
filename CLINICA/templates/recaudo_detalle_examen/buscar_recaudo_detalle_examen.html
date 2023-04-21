@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
-  <h1 class="h1-listar">Recaudo Detalle Examen</h1>
+  <h1 class="h1-listar">Recaudo Detalle Exámen</h1>
   <div class="busqueda-listar">
     <form method="GET" action="{% url 'buscar_recaudo_detalle_examen' %}">
       {% csrf_token %}
@@ -24,7 +24,7 @@
             <th style="color:aliceblue">ID</th>
             <th style="color:aliceblue">Recaudo</th>
             <th style="color:aliceblue">Tratamiento</th>
-            <th style="color:aliceblue">Accion Eliminar</th>
+            <th style="color:aliceblue">Acción Eliminar</th>
           </tr>
         </thead>
         <tbody>

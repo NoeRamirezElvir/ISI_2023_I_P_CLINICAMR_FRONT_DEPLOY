@@ -45,7 +45,7 @@
 
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-          <label class="campo-registro" for="idTipoDocument1">Informacion de Paciente</label>
+          <label class="campo-registro" for="idTipoDocument1">Información de  Paciente</label>
           <select name="idPaciente" id="idPaciente">
           <option value="0" {% if registro_temp.idPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
           {% for pacientes in pacientes_list %}
@@ -59,7 +59,7 @@
 
         <div style="display: inline-flex ;width: 100%">
         <div style="display: block;width: 100%">
-        <label class="campo-registro" for="idTipoDocument1">Autorizacion</label>
+        <label class="campo-registro" for="idTipoDocument1">Autorización</label>
         <select name="idAutorizacionPaciente" id="idAutorizacionPaciente">
         <option value="0" {% if registro_temp.idAutorizacionPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
         {% for autorizacion in autorizacion_list %}

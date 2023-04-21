@@ -87,6 +87,7 @@
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idTipoDocument1">Tipo Documento</label>
               <select name="idTipoDocument1" id="idTipoDocument1">
+                <option value="0" {% if registro_temp.idTipoDocumentos == '0' %}selected{% endif %}>Seleccione una opción</option>"
                   {% for TipoDocumentos in TipoDocumento %}
                       <option value="{{ TipoDocumentos.id }}"{% if TipoDocumentos.id == registro_temp.idTipoDocumento %}selected{% endif %}>{{ TipoDocumentos.nombre }}</option>
                   {% endfor %}
@@ -95,6 +96,8 @@
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idEspecialidadMedic1"> Especialidad </label>
               <select name="idEspecialidadMedic1" id="idEspecialidadMedic1">
+                <option value="0" {% if registro_temp.idEspecialidadMedicos == '0' %}selected{% endif %}>Seleccione una opción</option>"
+                
                   {% for EspecialidadMedicos in EspecialidadMedico %}
                       <option value="{{ EspecialidadMedicos.id }}"{% if EspecialidadMedicos.id == registro_temp.idEspecialidadMedico %}selected{% endif %}>{{ EspecialidadMedicos.nombre }}</option>
                   {% endfor %}
@@ -104,6 +107,7 @@
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idCargoEmplead1">Cargos</label>
               <select name="idCargoEmplead1" id="idCargoEmplead1">
+                <option value="0" {% if registro_temp.idCargoEmpleados == '0' %}selected{% endif %}>Seleccione una opción</option>"
                   {% for CargoEmpleados in CargoEmpleado %}
                       <option value="{{ CargoEmpleados.id }}"{% if CargoEmpleados.id == registro_temp.idCargoEmpleado %}selected{% endif %}>{{ CargoEmpleados.nombre }}</option>
                   {% endfor %}

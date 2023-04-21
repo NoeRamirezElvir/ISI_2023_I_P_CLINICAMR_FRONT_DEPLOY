@@ -47,7 +47,7 @@
 
 </style>
 <div class="contenedor">
-    <h1 class="logo"> <span class="nombre-empresa">Enfermedades</h1>
+    <h1 class="logo"> <span class="nombre-empresa">Actualizar Enfermedades</h1>
     <div class="wrapper animated bounceInLeft">
         <div class="info-empresa">
             <h3 style="color: beige;">Medical Rescue</h3>
@@ -79,7 +79,7 @@
                     </p>
                 </form>
                     <div style="display: block;width: 100%;margin-left: 100px;">
-                        <label class="campo-registro" for="idTipoDocument1">Sintomas</label>
+                        <label class="campo-registro" for="idTipoDocument1">Síntomas</label>
                         <select name="idSintoma" id="idTipoDocument1">
                             <option value="0" selected>Seleccione una opción</option>"
                             {% for sintoma in sintomas %}
@@ -90,13 +90,13 @@
                     <button class="boton-enviar" id="myButton" onclick="guardarValor()" style="left: calc(-35%);
                     top: 14vh;
                     max-height: 40px;
-                    height: 40px;">Agregar Sintoma</button>
+                    height: 40px;">Agregar Síntoma</button>
             </div>
             <div style="max-height: 200px;overflow-y: scroll;height:200px">
             <table id="myTable" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 200px;">Sintomas</th>
+                    <th style="width: 200px;">Síntomas</th>
                     <th style="width: 200px">Acciones</th>
                   </tr>
                 </thead>

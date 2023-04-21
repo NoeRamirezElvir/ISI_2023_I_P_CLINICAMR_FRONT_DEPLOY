@@ -25,7 +25,7 @@
           <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
           <div style="display: inline-flex ;width: 100%">
           <div style="display: inline-grid;width: 100%;">
-            <label>Numero de serie</label>
+            <label>Número de serie</label>
             <input type="text" name="serie" id="serie" readonly value="{{registro_temp.serie}}" style="width: 90%;">                  
           </div>
           <div style="display: inline-grid;width: 100%">
@@ -83,7 +83,7 @@
           </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: inline-grid;width: 100%;">
-              <label class="campo-registro">Metodo de Pago</label>
+              <label class="campo-registro">Método de Pago</label>
               <select name="idMetodo" id="idMetodo" onchange="activarInput()">
                   <option value="0" {% if registro_temp.idMetodo == '0' %}selected{% endif %}>Seleccione una opción</option>"
                   {% for metodo in metodo_list %}
@@ -98,7 +98,7 @@
           </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: inline-grid;width: 100%;">
-              <label>Numero Tarjeta</label>
+              <label>Número Tarjeta</label>
               <input type="text" name="numeroTarjeta" id="numeroTarjeta" value="{{registro_temp.numeroTarjeta}}"oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">                  
              </div>
             <div style="display: inline-grid;width: 100%;">
@@ -136,7 +136,7 @@
 <div style="display: inline-flex ;width: 100%;position: fixed; left:650px; top:290px;">
     <button class="boton-agregar" id="miBotonAbrir1">Medicamentos</button>
     <button class="boton-agregar" id="miBotonAbrir2">Tratamientos</button>
-    <button class="boton-agregar" id="miBotonAbrir3">Examenes</button>
+    <button class="boton-agregar" id="miBotonAbrir3">Exámenes</button>
 </div>
 
     <!-- Ventana modal 1 -->
@@ -231,7 +231,7 @@
             <table id="myTableExamen" style="max-height: 300px;overflow-y: scroll;">
                 <thead>
                   <tr>
-                    <th style="width: 40%;">Examenes <br> ID - Nombre - Precio - Impuesto</th>
+                    <th style="width: 40%;">Exámenes <br> ID - Nombre - Precio - Impuesto</th>
                     <th style="width: 50%;">Acciones</th>
                   </tr>
                 </thead>

@@ -1,7 +1,7 @@
 {% extends 'base_principal.html' %}
 {% load static %}
 
-{% block tittle %}Registro de Especialidad{% endblock %}
+{% block tittle %}Registro de Descuentos{% endblock %}
 {% block content %}
 <style type="text/css">
   input[type="text"] {
@@ -14,6 +14,11 @@
     height: 40px;
   }
 
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
   select {
     width: 90%;
     height: 40px;
@@ -22,53 +27,46 @@
   fieldset {
     width: 95%;
   }
-  #alert-alert-info{
-    top:70vh;
+
+  #alert-alert-info {
+    top: 70vh;
   }
 </style>
 <div class="contenedor">
-  <h1 class="logo"><span class="nombre-empresa">Métodos de pago Medical Rescue</span></h1>
+  <h1 class="logo"> <span class="nombre-empresa">Descu</span>entos</h1>
   <div class="wrapper animated bounceInLeft">
     <div class="info-empresa">
-      <h3>Medical Rescue</h3>
+      <h3 style="color: beige;">Medical Rescue</h3>
       <ul class="servicios">
         <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
         <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
         <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
-        <button class="button"><a href="/CLINICA/templates/MetodoDePago/BuscarMetodoDePago.html ">Buscar</a> </button>
-
-
+        <button class="button"><a href="/CLINICA/templates/Descuentos/BuscarDescuento.html">Buscar</a> </button>
       </ul>
     </div>
     <div class="contacto">
-      <h3></h3>
-      <form method="POST" action="{% url 'crear_metodos_De_pago' %}">
+      <form class="formulario" method="POST" action="{% url 'crear_Descuentos' %}">
         {% csrf_token %}
         <p>
           <label>Nombre</label>
-          
-          <input type="text" id="nombre" name="nombre"
-            oninput="this.value = this.value.replace(/[^a-zA-Z\s.]/g, '').replace(/(\..*)\./g, '$1');" value="{{ registro_temp.nombre}}"/>
+          <input type="text" name="nombre" required value="{{ descuentos.nombre}}">
         </p>
-
-        <p class="full">
-          <label>Descripción</label>
-          <textarea name="descripcion">{{registro_temp.descripcion}}</textarea>
-          
-        </p>
-
         <p>
-
+          <label>Valor</label>
+          <input type="text" placeholder="0.00" required name="valor" min="0"  step="0.01" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{ descuentos.valor}}">
+          
+          
+        </p>
         <p class="full">
           <button class="boton-enviar">Guardar</button>
         </p>
       </form>
     </div>
   </div>
-</div>
-{% if mensaje %}
-<div id="alert-alert-info">
-  <p>{{ mensaje }}</p>
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
 </div>
 {% endif %}
 {% endblock %}

@@ -476,3 +476,15 @@ def crear_recaudo(request):#
     return render(request,'recaudo/recaudo.html')
 def eliminar_recaudo(request,id):#
     return render(request,'recaudo/recaudo.html')
+
+#Descuentos
+def abrir_actualizar_Descuentos(request):#
+    return render(request,'Descuentos/DescuentoActualizar.html')
+def actualizar_Descuentos(request,id):#
+    return render(request,'Descuentos/DescuentoActualizar.html')
+def buscar_Descuentos(request):#
+    return render(request,'Descuentos/BuscarDescuento.html')
+def crear_Descuentos(request):#
+    return render(request,'Descuentos/Descuento.html')
+def eliminar_Descuentos(request,id):#
+    return render(request,'Descuentos/Descuento.html')
