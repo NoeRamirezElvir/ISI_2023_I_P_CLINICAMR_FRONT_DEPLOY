@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
-  <h1 class="h1-listar">Registros de Parametros Generales</h1>
+  <h1 class="h1-listar">Registros de Parámetros Generales</h1>
   <div class="busqueda-listar">
     <form method="GET" action="{% url 'buscar_parametros_generales' %}">
       {% csrf_token %}
@@ -25,7 +25,7 @@
           <tr class="tfheader-listar">
             <th style="color:aliceblue">ID</th>
             <th style="color:aliceblue">Nombre</th>
-            <th style="color:aliceblue">Descripcion</th>
+            <th style="color:aliceblue">Descripción</th>
             <th style="color:aliceblue">Valor</th>
             <th style="color:aliceblue">Acciones</th>
           </tr>
@@ -59,7 +59,7 @@
           {% endfor %}
           {% else %}
           <tr>
-            <td colspan="4">No se encontraron Parametros.</td>
+            <td colspan="4">No se encontraron Parámetros.</td>
           </tr>
           {% endif %}
         </tbody>

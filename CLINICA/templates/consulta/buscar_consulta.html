@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_consulta' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Documento ">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">

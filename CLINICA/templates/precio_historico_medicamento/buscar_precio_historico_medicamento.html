@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
-  <h1 class="h1-listar">Precio Historico Medicamento</h1>
+  <h1 class="h1-listar">Precio Histórico Medicamento</h1>
   <div class="busqueda-listar">
     <form method="GET" action="{% url 'buscar_precio_historico_medicamento' %}">
       {% csrf_token %}
@@ -27,7 +27,7 @@
             <th style="color:aliceblue">Precio</th>
             <th style="color:aliceblue">fecha Inicio</th>
             <th style="color:aliceblue">fecha Final</th>
-            <th style="color:aliceblue">Accion Eliminar</th>
+            <th style="color:aliceblue">Acción Eliminar</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
           {% endfor %}
           {% else %}
           <tr>
-            <td colspan="6">No se encontraron precios historicos.</td>
+            <td colspan="6">No se encontraron precios históricos.</td>
           </tr>
           {% endif %}
         </tbody>

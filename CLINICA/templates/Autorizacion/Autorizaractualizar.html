@@ -4,7 +4,7 @@
 {% block tittle %}Actualizar Cargo{% endblock %}
 {% block content %}
 <div class="contenedor">
-  <h1 class="logo"><span class="motivos-empresa">Actualizar Cargo</span></h1>
+  <h1 class="logo"><span class="motivos-empresa">Actualizar Autorización</span></h1>
   <div class="wrapper animated bounceInLeft">
       <div class="info-empresa">
           <h3>Medical Rescue</h3>
@@ -25,7 +25,7 @@
             <input type="text" name="motivos" value="{{ autorizar.0.motivos }}">
           </p>
           <fieldset id="payment_method" style="height: 70px;">
-          <legend>Activo/Inactivo</legend>
+          <legend>Confirmación</legend>
           <div class="fieldgroup">
           <input type="radio" name="payment_method" id="activo" value=1 {% if autorizar.0.confirmacion == 1 %}checked {% endif %}><label for= "payment1">Si
           </label>

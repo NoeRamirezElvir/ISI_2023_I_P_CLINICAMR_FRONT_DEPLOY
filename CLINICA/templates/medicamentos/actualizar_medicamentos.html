@@ -33,7 +33,7 @@
   }
 </style>
 <div class="contenedor">
-  <h1 class="logo"> <span class="nombre-empresa">Medicamentos</h1>
+  <h1 class="logo"> <span class="nombre-empresa"> Actualizar Medicamentos</h1>
   <div class="wrapper animated bounceInLeft">
     <div class="info-empresa">
       <h3 style="color: beige;">Medical Rescue</h3>
@@ -84,11 +84,11 @@
         </div>
         <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
-              <label class="campo-registro" >Stock Minimo</label>
+              <label class="campo-registro" >Stock Mínimo</label>
               <input type="text" name="stockMinimo" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.stockMinimo}}">
             </div>
             <div style="display: block;width: 100%">
-                <label class="campo-registro" >Stock Maximo</label>
+                <label class="campo-registro" >Stock Máximo</label>
                 <input type="text" name="stockMaximo" required placeholder="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{medicamentos.0.stockMaximo}}">
             </div>
         </div>
@@ -114,11 +114,11 @@
         </div>
         <div style="display: inline-flex ;width: 100%">
           <div style="display: block;width: 100%">
-            <label class="campo-registro" >Costo Compra</label>
+            <label class="campo-registro" >Costo de Compra</label>
             <input type="text" name="costoCompra"  placeholder="00.00" required min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{medicamentos.0.costoCompra}}">
           </div>
           <div style="display: block;width: 100%">
-              <label class="campo-registro" >Precio Venta</label>
+              <label class="campo-registro" >Precio de Venta</label>
               <input type="text" name="precioVenta" placeholder="00.00" required min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{medicamentos.0.precioVenta}}">
           </div>
       </div>

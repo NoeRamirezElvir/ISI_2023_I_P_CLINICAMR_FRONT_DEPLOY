@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div class="contenedor-listar-campos">
-    <h1 class="h1-listar">Registros de Documentos</h1>
+    <h1 class="h1-listar">Registros de Tipos de muestra</h1>
     <div class="busqueda-listar">
         <form method="GET" action="{% url 'buscar_TipoMuestra' %}">
             {% csrf_token %}
@@ -22,9 +22,9 @@
         <div class="tabla-listar">
             <table class="tftable-listar" ,border="1">
                 <tr class="tfheader-listar">
-                    <th style="color:aliceblue">ID Tipo Muestra</th>
+                    <th style="color:aliceblue">ID Tipo de Muestra</th>
                     <th style="color:aliceblue">Nombre</th>
-                    <th style="color:aliceblue">Metodo de Conservacion</th>
+                    <th style="color:aliceblue">Método de Conservación</th>
 
                     <th style="color:aliceblue">Acciones</th>
                 </tr>

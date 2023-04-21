@@ -42,6 +42,7 @@ from views_api import views_autorizacion_paciente
 from views_api import views_traslado_paciente
 from views_api import views_correlativo_SAR
 from views_api import views_recaudo
+from views_api import views_descuento
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -348,6 +349,15 @@ urlpatterns = [
     path('',views_recaudo.eliminar_recaudo , name='eliminar_recaudo'),
     path('',views_recaudo.buscar_recaudo , name='buscar_recaudo'),
     path('',views_recaudo.crear_recaudo , name='crear_recaudo'),
+
+    #Descuentos
+    path('',views_descuento.abrir_actualizar_Descuentos , name='abrir_actualizar_Descuentos'),
+    path('',views_descuento.actualizar_Descuentos , name='actualizar_Descuentos'),
+    path('',views_descuento.eliminar_Descuentos , name='eliminar_Descuentos'),
+    path('',views_descuento.listar_Descuentos, name='buscar_Descuentos'),
+    path('',views_descuento.buscar_Descuentos, name='buscar_Descuentos'),
+    path('',views_descuento.crear_Descuentos, name='crear_Descuentos'),
+
 
 
 ]

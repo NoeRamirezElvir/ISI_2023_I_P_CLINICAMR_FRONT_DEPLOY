@@ -60,6 +60,7 @@ from CLINICA.views_api.views_autorizacion_paciente import *
 from CLINICA.views_api.views_traslado_paciente import *
 from CLINICA.views_api.views_correlativo_SAR import *
 from CLINICA.views_api.views_recaudo import *
+from CLINICA.views_api.views_descuento import *
 
 
 urlpatterns = [
@@ -374,6 +375,14 @@ urlpatterns = [
     path('CLINICA/templates/recaudo/buscar_recaudo.html',buscar_recaudo,name = 'buscar_recaudo'),
     path('CLINICA/templates/recaudo/recaudo.html',crear_recaudo, name="crear_recaudo"),
 
+
+    #Descuentos
+    path('CLINICA/templates/Descuentos/DescuentoActualizar.html',abrir_actualizar_Descuentos,name="abrir_actualizar_Descuentos"),
+    path('CLINICA/templates/Descuentos/DescuentoActualizar.html/<int:id>',actualizar_Descuentos,name="actualizar_Descuentos"),
+    path('CLINICA/templates/Descuentos/BuscarDescuento.html/<int:id>',eliminar_Descuentos,name = 'eliminar_Descuentos'),
+    path('CLINICA/templates/Descuentos/BuscarDescuento.html',buscar_Descuentos,name = 'buscar_Descuentos'),
+    path('CLINICA/templates/Descuentos/Descuento.html',crear_Descuentos, name="crear_Descuentos"),
+    path('CLINICA/templates/Descuentos/BuscarDescuento.html',listar_Descuentos, name="listar_Descuentos"),
 
 
 

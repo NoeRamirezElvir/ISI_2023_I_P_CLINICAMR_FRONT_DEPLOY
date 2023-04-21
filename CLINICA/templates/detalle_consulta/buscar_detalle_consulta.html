@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_detalle_consulta' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Documento">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
@@ -23,8 +23,8 @@
         <thead>
             <th style="color:aliceblue">ID</th>
             <th style="color:aliceblue">Paciente</th>
-            <th style="color:aliceblue">Diagnosticos(ID,Enfermedad)</th>
-            <th style="color:aliceblue">Accion Eliminar</th>
+            <th style="color:aliceblue">Diagnósticos(ID,Enfermedad)</th>
+            <th style="color:aliceblue">Acción Eliminar</th>
           </tr>
         </thead>
         <tbody>

@@ -10,7 +10,7 @@
     <form method="GET" action="{% url 'buscar_correlativo' %}">
       {% csrf_token %}
       <div class="buscador-listar">
-        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o CAI">
       </div>
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
@@ -29,7 +29,7 @@
             <th style="color:aliceblue">Consecutivo</th>
             <th style="color:aliceblue">Rango Final</th>
             <th style="color:aliceblue">Fecha Inicial</th>
-            <th style="color:aliceblue">Fecha limite de emisión</th>
+            <th style="color:aliceblue">Fecha límite de emisión</th>
             <th style="color:aliceblue">Activo</th>
             <th style="color:aliceblue">Acciones</th>
           </tr>

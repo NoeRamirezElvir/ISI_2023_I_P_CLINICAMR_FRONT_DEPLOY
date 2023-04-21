@@ -1,0 +1,77 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar Descuentos{% endblock %}
+{% block content %}
+
+<style type="text/css">
+  input[type="text"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="password"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    height: 40px;
+  }
+
+  select {
+    width: 90%;
+    height: 40px;
+  }
+
+  fieldset {
+    width: 95%;
+  }
+
+  #alert-alert-info {
+    top: 70vh;
+  }
+</style>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Descuentos</span></h1>
+  <div class="wrapper animated bounceInLeft">
+    <div class="info-empresa">
+      <h3>Medical Rescue</h3>
+      <ul class="servicios">
+        <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+        </li>
+        <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+        <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+        <button class="button"><a href="/CLINICA/templates/Descuentos/BuscarDescuento.html">BUSCAR</a></button>
+      </ul>
+    </div>
+    <div class="contacto">
+      <h3></h3>
+      <form class="formulario" method="POST" action="{% url 'actualizar_Descuentos' id=Descuentos.0.id %}">
+        {% csrf_token %}
+        <p>
+          <label>Nombre</label>
+          <input type="text" name="nombre" required value="{{ Descuentos.0.nombre }}">
+        </p>
+        <p>
+          <label>Valor</label>
+          <input input type="text" placeholder="0.00" required name="valor" min="0"  step="0.01" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" value="{{ Descuentos.0.valor }}">
+        </p>
+        <p>
+        </p>
+        <p>
+
+        <p class="full">
+          <button class="boton-enviar">Actualizar</button>
+        </p>
+      </form>
+    </div>
+  </div>
+  {% if mensaje %}
+  <div id="alert-alert-info">
+    <p>{{ mensaje }}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
