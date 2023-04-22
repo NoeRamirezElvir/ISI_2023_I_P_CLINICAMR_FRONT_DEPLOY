@@ -3,14 +3,14 @@
   const fechaInput = document.getElementById('fechaRegistro');
   const fechaHidden = document.getElementById('fechaActual');
   const fechaActualUTC = new Date();
-  const fechaActualLocal = new Date(fechaActualUTC.getTime() - fechaActualUTC.getTimezoneOffset() * 60000); // Convertir UTC a local
+  const fechaActualLocal = new Date(fechaActualUTC.toLocaleString('en-US', { timeZone: 'America/Tegucigalpa' })); // Convertir UTC a local
   const year = fechaActualLocal.getFullYear().toString(); // Get year
   const month = (fechaActualLocal.getMonth() + 1).toString().padStart(2, '0'); // Month needs to be zero-padded
   const day = fechaActualLocal.getDate().toString().padStart(2, '0'); // Day needs to be zero-padded
   const hours = fechaActualLocal.getHours().toString().padStart(2, '0'); // Hours needs to be zero-padded
   const minutes = fechaActualLocal.getMinutes().toString().padStart(2, '0'); // Minutes needs to be zero-padded
   const seconds = fechaActualLocal.getSeconds().toString().padStart(2, '0'); // Seconds needs to be zero-padded
-  const fechaFormateada = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+  const fechaFormateada = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   fechaInput.value = fechaFormateada;
   fechaHidden.value = fechaFormateada;
   
@@ -30,6 +30,7 @@
     input.value = rangoFinal+finalDay +"-"+ finalMonth +"-"+ finalYear + " ";
 
   }
+
 
 
   function activarInput() {

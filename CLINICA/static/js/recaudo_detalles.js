@@ -18,6 +18,7 @@ function actualizarVariables(total, subtotal, imp) {
   this.imp = imp;
 }
 
+
 function guardarMedicamento() {
   var medicamentosSeleccionado = document.getElementById("idMedicamento").value;
   var valores = medicamentosSeleccionado.split(" - ");
@@ -95,7 +96,6 @@ function cargarTablaMedicamento() {
       }
     }
     
-
     cantidadInput.onchange = function() {
       var filaAModificar = this.parentNode.parentNode;
       var nombreMedicamento = filaAModificar.getElementsByTagName("td")[0].innerText;
@@ -267,10 +267,20 @@ function cargarTablaExamen() {
     var precioSubTotalInput = document.getElementById("subtotal");
     var precioTotalInput = document.getElementById("total");
     var impuestoTotalInput = document.getElementById("imp");
-    precioTotalInput.value = isNaN(total) ? "00.00" : total.toFixed(2);
-    precioSubTotalInput.value = isNaN(subtotal) ? "00.00" : subtotal.toFixed(2);
-    impuestoTotalInput.value = isNaN(imp) ? "00.00" : imp.toFixed(2);
+    var descuentoInput = document.getElementById("des");
+    const descuentoOption = selectDescuento.options[selectDescuento.selectedIndex];
+    const descuento = parseFloat(descuentoOption.dataset.valor);
     
+    const td = subtotal + imp;
+    total = td - (td*descuento);
+    var val =  td-total;
+    descuentoInput.value = val.toFixed(2);
+
+    precioTotalInput.value = Math.max(isNaN(total) ? "00.00" : total.toFixed(2), 0).toFixed(2);
+    precioSubTotalInput.value = Math.max(isNaN(subtotal) ? "00.00" : subtotal.toFixed(2), 0).toFixed(2);
+    impuestoTotalInput.value = Math.max(isNaN(imp) ? "00.00" : imp.toFixed(2), 0).toFixed(2);
+   
+
     var to = parseFloat(precioTotalInput.value);
     var et = parseFloat(inputEfectivo.value);
 
@@ -283,6 +293,14 @@ function cargarTablaExamen() {
       cambio.value = valor;
     }
   }
+  
+  const selectDescuento = document.getElementById('idDescuento');
+  const inputDescuentoTotal = document.getElementById('des');
+  let ultimoDescuento = 0;
+  
+  selectDescuento.addEventListener('change', () => {
+    actualizarTotal();
+  });
   
   
 

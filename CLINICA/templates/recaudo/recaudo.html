@@ -23,6 +23,14 @@
           <input type="hidden" id="medicamentosSeleccionadosInput" name="medicamentosSeleccionados">
           <input type="hidden" id="tratamientosSeleccionadosInput" name="tratamientosSeleccionados">
           <input type="hidden" id="examenesSeleccionadosInput" name="examenesSeleccionados">
+
+          <input type="hidden" name="pacientesb" id="pacientesn" value="{{pacientes_list}}">
+          <input type="hidden" name="consultasb" id="consultasb" value="{{consultas_list}}">
+          <input type="hidden" name="examenesb" id="examenesb" value="{{examenes_list}}">
+          <input type="hidden" name="tratamientosb" id="tratamientosb" value="{{tratamientos_list}}">
+          <input type="hidden" name="medicamentosb" id="medicamentosb" value="{{ medicamentos_list }}">
+
+
           <div style="display: inline-flex ;width: 100%">
           <div style="display: inline-grid;width: 100%;">
             <label>Número de serie</label>
@@ -34,8 +42,6 @@
               <option value="Pendiente"{% if registro_temp.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
               <option value="Enviada"{% if registro_temp.estado == 'Enviada' %}selected{% endif %}>Enviada</option>
               <option value="Pagada"{% if registro_temp.estado == 'Pagada' %}selected{% endif %}>Pagada</option>
-              <option value="Vencida"{% if registro_temp.estado == 'Vencida' %}selected{% endif %}>Vencida</option>
-              <option value="Anulada"{% if registro_temp.estado == 'Anulada' %}selected{% endif %}>Anulada</option>
             </select>
           </div>
         </div>
@@ -81,6 +87,14 @@
                 {% endfor %}
             </select>
           </div>
+          <div style="display: inline-grid;width: 100%">
+            <label class="campo-registro">Descuento</label>
+            <select name="idDescuento" id="idDescuento" style="width: 95%;">
+                {% for des in descuento_list %}
+                    <option value="{{ des.id }}"{% if des.id == registro_temp.idDescuento %}selected{% endif %} data-valor="{{ des.valor }}">Descuento de {{ des.nombre }}</option>
+                {% endfor %}
+            </select>
+          </div>
           <div style="display: inline-flex ;width: 100%">
             <div style="display: inline-grid;width: 100%;">
               <label class="campo-registro">Método de Pago</label>
@@ -110,10 +124,16 @@
             <label>Subtotal</label>
             <input type="text" name="subtotal" id="subtotal" style="width: 95%;"  placeholder="00.00" min="0"  step="10" readonly>                  
            </div>
+           <div style="display: inline-flex ;width: 100%">
            <div style="display: inline-grid;width: 100%;">
             <label>Impuesto</label>
-            <input type="text" name="imp" id="imp"  style="width: 95%;" placeholder="00.00" min="0"  step="10" readonly>                  
+            <input type="text" name="imp" id="imp"  style="width: 90%;" placeholder="00.00" min="0"  step="10" readonly>                  
            </div>
+           <div style="display: inline-grid;width: 100%;">
+            <label>Descuento</label>
+            <input type="text" name="des" id="des"  style="width: 90%;" placeholder="00.00" min="0"  step="10" readonly value="{{registro_temp.descuento}}">                  
+           </div>
+          </div>
            <div style="display: inline-flex ;width: 100%">
            <div style="display: inline-grid;width: 100%;">
             <label>Total</label>
@@ -147,6 +167,7 @@
 
         <div>
             <label class="campo-registro">Medicamentos</label>
+            <input type="text" id="buscarMedicamento" oninput="filtrarMedicamentos()">
             <select name="idMedicamento" id="idMedicamento">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in medicamentos_list %}
@@ -183,6 +204,7 @@
          
         <div>
             <label class="campo-registro">Tratamientos</label>
+            <input type="text" id="buscarTratamiento" oninput="filtrarTratamientos()">
             <select name="idTratamiento" id="idTratamiento">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in tratamientos_list %}
@@ -218,6 +240,7 @@
          
         <div>
             <label class="campo-registro">Exámenes</label>
+            <input type="text" id="buscarExamen" oninput="filtrarExamenes()">
             <select name="idExamen" id="idExamen">
                 <option value="0" selected>Seleccione una opción</option>"
                 {% for item in examenes_list %}
@@ -245,6 +268,8 @@
     </div>
     </div>
 
+        
+
     {% if mensaje %}
     <div id="alert-alert-info">
         <p>{{ mensaje }}</p>
@@ -253,6 +278,7 @@
     <script src="{% static 'js/recaudo_modal.js' %}"></script>
     <script src="{% static 'js/recaudo_detalles.js' %}"></script>
     <script src="{% static 'js/estaticos.js' %}"></script>
+    <script src="{% static 'js/busquedas.js' %}"></script>
     <script>
         window.addEventListener("load", function() {
             activarInput();

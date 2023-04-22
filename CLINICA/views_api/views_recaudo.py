@@ -6,30 +6,20 @@ from django.urls import reverse
 import requests
 
 from django.template.loader import get_template
-from io import BytesIO 
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 
 
 url = 'http://localhost:8080/api/'
 
-def crear_recaudo(request):
-    pacientes_list = list_pacientes()
-    empleados_list = list_empleados()
-    consultas_list = list_consultas()
-    medicamentos_list = list_medicamentos()
-    tratamientos_list = list_tratamientos()
-    examenes_list = list_examenes()
-    sar_list = list_sar()
-    metodo_list = list_metodo_pago()
-    context = {'pacientes_list':pacientes_list,
-                'empleados_list':empleados_list,
-                'consultas_list':consultas_list,
-                'medicamentos_list':medicamentos_list,
-                'tratamientos_list':tratamientos_list,
-                'examenes_list':examenes_list,
-                'sar_list':sar_list,
-                'metodo_list':metodo_list,}
+def crear_recaudo(request):  
+    rsp = requests.get(url+f'listasRecaudo/')
+    data = rsp.json()
+    context = data
+
     if request.method == 'POST':
         fechaActual = request.POST['fechaActual']
         idCorrelativo = int(request.POST['idCorrelativo'])
@@ -37,20 +27,19 @@ def crear_recaudo(request):
         idEmpleado = int(request.POST['idEmpleado'])
         idConsulta = int(request.POST['idConsulta'])
         idMetodo = int(request.POST['idMetodo'])
+        idDescuento = int(request.POST['idDescuento'])
         estado = request.POST['estado']
 
-        montoEfectivo = request.POST.get('montoEfectivo')
-        numeroTarjeta = request.POST.get('numeroTarjeta')
+        montoEfectivo = request.POST.get('montoEfectivo') if request.POST.get('montoEfectivo') else '00.00'
+        numeroTarjeta = request.POST.get('numeroTarjeta') if request.POST.get('numeroTarjeta') else 'N/A'
         serie = request.POST['serie']
-        montoTarjeta = request.POST.get('montoTarjeta')
+        montoTarjeta = request.POST.get('montoTarjeta') if request.POST.get('montoTarjeta') else '00.00'
 
         subtotal = request.POST.get('subtotal')
         imp = request.POST.get('imp')
         total = request.POST.get('total')
-        cambio = request.POST.get('cambio')
-
-        #print(numeroFactura,fechaActual,idCorrelativo,idPaciente,idEmpleado,idConsulta,idMetodo,montoEfectivo,numeroTarjeta, montoTarjeta,subtotal,imp,total,cambio)
-
+        cambio = request.POST.get('cambio') if request.POST.get('cambio') else '00.00'
+        descuento = request.POST.get('des') if request.POST.get('des') else '00.00'
 
         medicamentos = request.POST['medicamentosSeleccionados']
         tratamientos = request.POST['tratamientosSeleccionados']
@@ -96,6 +85,7 @@ def crear_recaudo(request):
         resultado['idEmpleado'] = idEmpleado
         resultado['idMetodo'] = idMetodo
         resultado['idConsulta'] = idConsulta
+        resultado['idDescuento'] = idDescuento
         resultado['montoEfectivo'] = montoEfectivo
         resultado['numeroTarjeta'] = numeroTarjeta
         resultado['estado'] = estado
@@ -104,6 +94,8 @@ def crear_recaudo(request):
         resultado['examenes'] = examenes_lista
         resultado['total'] = total
         resultado['subtotal'] = subtotal
+        resultado['cambio'] = cambio
+        resultado['descuento'] = descuento
         resultado['imp'] = imp
         resultado['montoTarjeta'] = montoTarjeta
         
@@ -117,6 +109,7 @@ def crear_recaudo(request):
             'idEmpleado':idEmpleado,
             'idConsulta':idConsulta,
             'idMetodo':idMetodo,
+            'idDescuento':idDescuento,
             'estado':estado,
             'montoEfectivo':montoEfectivo,
             'numeroTarjeta':numeroTarjeta,
@@ -126,11 +119,12 @@ def crear_recaudo(request):
             'imp':imp,
             'total':total,
             'cambio':cambio,
+            'descuento':descuento,
             'medicamentos_lista':medicamentos_lista,
             'tratamientos_lista':tratamientos_lista,
             'examenes_lista':examenes_lista
         }
-        context = {}
+        
         response = requests.post(url+'recaudo/', resultado_json)
 
         if not idConsulta == 0:
@@ -159,21 +153,14 @@ def crear_recaudo(request):
             datos_pdf['montoTarjeta'] = montoTarjeta,
             datos_pdf['montoEfectivo'] = montoEfectivo
             datos_pdf['cambio'] = cambio
+            datos_pdf['descuento'] = descuento
+            datos_pdf['numMasc'] = mascara_tarjeta(numeroTarjeta)
                       
 
             #print(datos_pdf)
-            context = {'pacientes_list':pacientes_list,
-                        'empleados_list':empleados_list,
-                        'consultas_list':consultas_list,
-                        'medicamentos_list':medicamentos_list,
-                        'tratamientos_list':tratamientos_list,
-                        'examenes_list':examenes_list,
-                        'sar_list':sar_list,
-                        'metodo_list':metodo_list,
-                        'registro_temp':registro_temp,
-                        'mensaje': mensaje,
-                        'datos_pdf':datos_pdf
-                        }
+            context['mensaje'] =  mensaje
+            context['datos_pdf'] = datos_pdf
+            context['registro_temp'] = registro_temp
             
             pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
             response_pdf = HttpResponse(pdf, content_type='application/pdf')
@@ -182,17 +169,8 @@ def crear_recaudo(request):
         else:
             data = response.json()
             mensaje = data['message']
-            context = {'pacientes_list':pacientes_list,
-                        'empleados_list':empleados_list,
-                        'consultas_list':consultas_list,
-                        'medicamentos_list':medicamentos_list,
-                        'tratamientos_list':tratamientos_list,
-                        'examenes_list':examenes_list,
-                        'sar_list':sar_list,
-                        'metodo_list':metodo_list,
-                        'registro_temp':registro_temp,
-                        'mensaje': mensaje
-                        }
+            context['registro_temp'] = registro_temp
+            context['mensaje'] =  mensaje
         return render(request, 'recaudo/recaudo.html', context)
     else:
         return render(request, 'recaudo/recaudo.html', context)
@@ -385,3 +363,12 @@ def render_to_pdf(template_src, context_dict={}):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
+
+
+def mascara_tarjeta(str):
+    if str is None or len(str) <= 4:
+        return str
+    else:
+        ultimos_4_caracteres = str[-4:]
+        asteriscos = "*" * (len(str) - 4)
+        return "{}{}".format(asteriscos, ultimos_4_caracteres)

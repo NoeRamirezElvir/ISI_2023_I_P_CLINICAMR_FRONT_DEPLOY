@@ -1,16 +1,28 @@
-
 {% load static %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+    <style>
+        @page {
+        size: letter;
+        size: 7.500in 9.000in;
+        margin: 1cm 2cm;
+        }
+    </style>
+<body>
+    <img style="background-color: #00565F;" width="180px" height="110px" src="https://lh6.googleusercontent.com/KPqUCs1Opb7PFvg3PY5Ty21Jm84YQlj3Sjsp8tY-TDU9kNK6j00dRABXv8vtTiLcgSsGUCTFvxXf7qFxGtrqP8E3irDN-J_gzqIzK8NP3fphzP5znnrVzo9uFuf6gfRQWg=w1280" alt="Descripción de la imagen">
     <h1 style="text-align: left;"><strong>{{ datos_pdf.nombreEmpresa }}</strong></h1>
     <p style="text-align: left;">{{ datos_pdf.direccionEmpresa }}</p>
-    <p style="text-align: left;">Contacto: {{ datos_pdf.telefonoEmpresa }} <br> {{ datos_pdf.correoEmpresa}}</p>
+    <p style="text-align: left;">Tel: {{ datos_pdf.telefonoEmpresa }}</p>
+    <p style="text-align: left;">email: {{ datos_pdf.correoEmpresa}}</p>
+    <p style="text-align: left;">RTN: {{ datos_pdf.rtnEmpresa }}</p>
     <p style="text-align: left;">CAI: {{ datos_pdf.caiEmpresa }}</p>
     <h3 style="text-align: right;"><strong>Recaudo </strong></h3>
-    <p style="text-align: right;">&#35;{{ datos_pdf.numeroFactura }} </p>
     <p style="text-align: right;">Fecha:{{ datos_pdf.fechaFactura }} </p>
-    <p style="text-align: right;">Rango Permitido: <br> {{ datos_pdf.rangoInicial }} hasta {{ datos_pdf.rangoFinal }}</p>
     <p style="text-align: right;">Vencimiento:{{ datos_pdf.fechaLimite }}</p>
+    <p style="text-align: right;">&#35;{{ datos_pdf.numeroFactura }} </p>
+    <p style="text-align: right;">Rango Permitido: <br> {{ datos_pdf.rangoInicial }} hasta {{ datos_pdf.rangoFinal }}</p>
     <p style="text-align: right;">Remitente: {{ datos_pdf.nombreEmpleado }}</p>
+
     <hr />
     <p style="text-align: left;">Cliente</p>
     <p style="text-align: left;">Nombre: {{ datos_pdf.nombreCliente }} Documento: {{ datos_pdf.documentoCliente }}</p>
@@ -18,7 +30,7 @@
     <p style="text-align: left;">Dirección: {{ datos_pdf.direccionCliente }}</p>
     <hr />
     <p style="text-align: left;">M&eacute;todo de Pago: {{ datos_pdf.metodoPago }}    Monto en efectivo:{{ datos_pdf.montoEfectivo }}</p>
-    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numeroTarjeta.0 }}     Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}</p>
+    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numMasc }}     Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}</p>
     <p style="text-align: left;">Cambio: {{ datos_pdf.cambio }}</p>
     <p style="text-align: left;">&nbsp;</p>
     <table style="padding-left: 25px; padding-top: 5px;">
@@ -79,5 +91,9 @@
     <p style="text-align: left;">&nbsp;</p>
     <p style="text-align: right;">Base Importe:{{ datos_pdf.subtotalFactura.0 }}</p>
     <p style="text-align: right;">Impuestos: {{ datos_pdf.impuestosFactura.0}}</p>
+    <p style="text-align: right;">Descuentos: {{ datos_pdf.descuento}}</p>
     <p style="text-align: right;">Total: {{ datos_pdf.totalFactura.0 }}</p>
-{% endblock %}
+
+    <footer class="page-number"> </footer>
+</body>
+</html>
