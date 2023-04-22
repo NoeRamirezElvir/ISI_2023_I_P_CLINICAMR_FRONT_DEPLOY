@@ -19,6 +19,9 @@
   border: 1px solid #888;
   color: black !important;;
   width: 60%;
+  position: absolute;
+  top:-50px;
+  left: 335px;
 }
 
 .cerrar {
@@ -50,7 +53,7 @@
 
 .boton-agregar {
   max-height: 40px;
-  height: 40px;width: 200px;
+  height: 40px;width: 150px;
   color: black !important;
   margin-left: 5px;
   border-radius: 10px;
@@ -72,6 +75,9 @@
 .boton-agregar-modal:hover {
   background-color: #ffffff2e;
 
+}
+.modal-contenido select{
+  margin-top:5px;
 }
 input[type="text"] {
   width: 90%;

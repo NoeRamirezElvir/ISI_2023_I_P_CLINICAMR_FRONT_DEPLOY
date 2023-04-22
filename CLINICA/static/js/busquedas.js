@@ -94,4 +94,78 @@
     }
   }
   
+  function filtrarConsultas() {
+    const input = document.getElementById("buscarConsulta");
+    const valor = input.value.toLowerCase(); // Convertir el valor a minúsculas
   
+    const select = document.getElementById("selectConsulta");
+    select.innerHTML = '<option value="0" data-precio="00.00" data-impuesto="00.00" selected>Seleccione una opción</option>'; // Vaciar el select
+    var consultasb = document.getElementById("consultasb").value;
+    consultasb = consultasb.replace(/'/g, '"');
+    var consultas = JSON.parse(consultasb);
+
+    // Recorrer la lista de consultas y agregar las opciones que coincidan con el texto ingresado
+    for (const consulta of consultas) {
+      const nombre = consulta.idTipo.nombre.toLowerCase();
+      const documento = consulta.idCita.idPaciente.documento.toLowerCase();
+      if (nombre.includes(valor) || documento.includes(valor)) {
+        const option = document.createElement("option");
+        option.value = consulta.id;
+        option.textContent = `${consulta.id} - ${consulta.idTipo.nombre} : ${consulta.idCita.idPaciente.documento}`;
+        option.dataset.precio = consulta.idTipo.precio;
+        option.dataset.impuesto = consulta.idTipo.impuesto;
+
+        select.appendChild(option);
+      }
+    }
+  
+    // Si no hay opciones, mostrar un mensaje
+    if (select.options.length === 1) {
+      const option = document.createElement("option");
+      option.disabled = true;
+      option.textContent = "No se encontraron consultas";
+      select.appendChild(option);
+    }
+  }
+  
+  function filtrarPacientes() {
+    const input = document.getElementById("buscarPacientes");
+    const valor = input.value.toLowerCase(); // Convertir el valor a minúsculas
+  
+    const select = document.getElementById("selectPaciente");
+    select.innerHTML = '<option value="0" selected>Consumidor Final</option>'; // Vaciar el select y agregar la opción por defecto
+    var pacientesb = document.getElementById("pacientesb").value;
+    guardarCliente();
+    pacientesb = pacientesb.replace(/'/g, '"');
+    var pacientes = JSON.parse(pacientesb);
+
+    // Recorrer la lista de pacientes y agregar las opciones que coincidan con el texto ingresado
+    for (const item of pacientes) {
+      const nombre = item.nombre.toLowerCase();
+      const apellido = item.apellido.toLowerCase();
+      const documento = item.documento;
+      if (nombre.includes(valor) || apellido.includes(valor) || documento.includes(valor)) {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = `${item.id} - ${item.nombre} ${item.apellido} ${item.documento}`;
+
+        select.appendChild(option);
+      }
+    }
+  
+    // Si no hay opciones, mostrar un mensaje
+    if (select.options.length === 1) {
+      const option = document.createElement("option");
+      option.disabled = true;
+      option.textContent = "No se encontraron pacientes";
+      select.appendChild(option);
+    }
+  }
+  
+  function guardarCliente(){
+    var inputPaciente = document.getElementById("idPaciente");
+    var select = document.getElementById("selectPaciente");
+    var opcionSeleccionada = select.options[select.selectedIndex];
+
+    inputPaciente.value = opcionSeleccionada.value;
+  }

@@ -243,10 +243,13 @@ function cargarTablaExamen() {
   }
 
   function guardarConsulta(){
-    var select = document.getElementById("idConsulta");
+    var inputConsulta = document.getElementById("idConsulta");
+    var select = document.getElementById("selectConsulta");
     var opcionSeleccionada = select.options[select.selectedIndex];
     var precio = parseFloat(opcionSeleccionada.getAttribute("data-precio"));
     var impuesto = parseFloat(opcionSeleccionada.getAttribute("data-impuesto"));
+    inputConsulta.value = opcionSeleccionada.value;
+
     subtotal -= precioTemp;
     imp -= (precioTemp * impuestoTemp);
     total -= precioTemp + (precioTemp * impuestoTemp);

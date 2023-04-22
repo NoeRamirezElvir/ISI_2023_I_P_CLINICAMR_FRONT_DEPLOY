@@ -9,7 +9,7 @@
         }
     </style>
 <body>
-    <img style="background-color: #00565F;" width="180px" height="110px" src="https://lh6.googleusercontent.com/KPqUCs1Opb7PFvg3PY5Ty21Jm84YQlj3Sjsp8tY-TDU9kNK6j00dRABXv8vtTiLcgSsGUCTFvxXf7qFxGtrqP8E3irDN-J_gzqIzK8NP3fphzP5znnrVzo9uFuf6gfRQWg=w1280" alt="Descripción de la imagen">
+    <img style="background-color: #044949;" width="180px" height="110px" src="https://lh6.googleusercontent.com/KPqUCs1Opb7PFvg3PY5Ty21Jm84YQlj3Sjsp8tY-TDU9kNK6j00dRABXv8vtTiLcgSsGUCTFvxXf7qFxGtrqP8E3irDN-J_gzqIzK8NP3fphzP5znnrVzo9uFuf6gfRQWg=w1280" alt="Descripción de la imagen">
     <h1 style="text-align: left;"><strong>{{ datos_pdf.nombreEmpresa }}</strong></h1>
     <p style="text-align: left;">{{ datos_pdf.direccionEmpresa }}</p>
     <p style="text-align: left;">Tel: {{ datos_pdf.telefonoEmpresa }}</p>
@@ -29,25 +29,25 @@
     <p style="text-align: left;">Teléfono: {{ datos_pdf.telefonoCliente }} email: {{ datos_pdf.correoCliente}}</p>
     <p style="text-align: left;">Dirección: {{ datos_pdf.direccionCliente }}</p>
     <hr />
-    <p style="text-align: left;">M&eacute;todo de Pago: {{ datos_pdf.metodoPago }}    Monto en efectivo:{{ datos_pdf.montoEfectivo }}</p>
-    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numMasc }}     Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}</p>
+    <p style="text-align: left;">M&eacute;todo de Pago: {{ datos_pdf.metodoPago }}  Monto en efectivo:{{ datos_pdf.montoEfectivo }}</p>
+    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numMasc }}  Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}</p>
     <p style="text-align: left;">Cambio: {{ datos_pdf.cambio }}</p>
     <p style="text-align: left;">&nbsp;</p>
-    <table style="padding-left: 25px; padding-top: 5px;">
+    <table style="padding-top: 5px;">
     <tbody>
     <tr>
-    <td style="width: 18.0636%;">Descripci&oacute;n</td>
-    <td style="width: 16.7148%;">Precio</td>
-    <td style="width: 18.0636%;">Unidades</td>
-    <td style="width: 12.0305%;">IVA</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid black;background-color: #5b897b;padding-left: 5px;padding-right: 5px;">Descripci&oacute;n</td>
+    <td style="width: 16.7148%;border-bottom: 1px solid black;background-color: #5b897b;padding-left: 5px;padding-right: 5px;">Precio</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid black;background-color: #5b897b;padding-left: 5px;padding-right: 5px;">Unidades</td>
+    <td style="width: 12.0305%;border-bottom: 1px solid black;background-color: #5b897b;padding-left: 5px;padding-right: 5px;">IVA</td>
     </tr>
     {% if datos_pdf.medicamentos %}
     {% for medicamento in datos_pdf.medicamentos %}
     <tr>
-    <td style="width: 18.0636%;">{{ medicamento.nombre }}</td>
-    <td style="width: 16.7148%;">{{ medicamento.precio }}</td>
-    <td style="width: 18.0636%;">{{ medicamento.cantidad }}</td>
-    <td style="width: 12.0305%;">{{ medicamento.impuesto}}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">{{ medicamento.nombre }}</td>
+    <td style="width: 16.7148%;border-bottom: 1px solid rgb(205, 205, 205);">{{ medicamento.precio }}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">{{ medicamento.cantidad }}</td>
+    <td style="width: 12.0305%;border-bottom: 1px solid rgb(205, 205, 205);">{{ medicamento.impuesto}}</td>
     </tr>
     {% endfor %}
     {% endif %}
@@ -55,10 +55,10 @@
     {% if datos_pdf.consulta %}
     {% for consulta in datos_pdf.consulta %}
     <tr>
-    <td style="width: 18.0636%;">{{ consulta.idTipo.nombre }}</td>
-    <td style="width: 16.7148%;">{{ consulta.idTipo.precio }}</td>
-    <td style="width: 18.0636%;">N/A</td>
-    <td style="width: 12.0305%;">{{ consulta.idTipo.impuesto}}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">{{ consulta.idTipo.nombre }}</td>
+    <td style="width: 16.7148%;border-bottom: 1px solid rgb(205, 205, 205);">{{ consulta.idTipo.precio }}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">N/A</td>
+    <td style="width: 12.0305%;border-bottom: 1px solid rgb(205, 205, 205);">{{ consulta.idTipo.impuesto}}</td>
     </tr>
     {% endfor %}
     {% endif %}
@@ -66,10 +66,10 @@
     {% if datos_pdf.tratamientos %}
     {% for tratamiento in datos_pdf.tratamientos %}
     <tr>
-    <td style="width: 18.0636%;">{{ tratamiento.nombre }}</td>
-    <td style="width: 16.7148%;">{{ tratamiento.precio }}</td>
-    <td style="width: 18.0636%;">N/A</td>
-    <td style="width: 12.0305%;">{{ tratamiento.impuesto}}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">{{ tratamiento.nombre }}</td>
+    <td style="width: 16.7148%;border-bottom: 1px solid rgb(205, 205, 205);">{{ tratamiento.precio }}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">N/A</td>
+    <td style="width: 12.0305%;border-bottom: 1px solid rgb(205, 205, 205);">{{ tratamiento.impuesto}}</td>
     </tr>
     {% endfor %}
     {% endif %}
@@ -77,10 +77,10 @@
     {% if datos_pdf.examenes %}
     {% for examen in datos_pdf.examenes %}
     <tr>
-    <td style="width: 18.0636%;">{{ examen.nombre }}</td>
-    <td style="width: 16.7148%;">{{ examen.precio }}</td>
-    <td style="width: 18.0636%;">N/A</td>
-    <td style="width: 12.0305%;">{{ examen.impuesto}}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">{{ examen.nombre }}</td>
+    <td style="width: 16.7148%;border-bottom: 1px solid rgb(205, 205, 205);">{{ examen.precio }}</td>
+    <td style="width: 18.0636%;border-bottom: 1px solid rgb(205, 205, 205);">N/A</td>
+    <td style="width: 12.0305%;border-bottom: 1px solid rgb(205, 205, 205);">{{ examen.impuesto}}</td>
     </tr>
     {% endfor %}
     {% endif %}
