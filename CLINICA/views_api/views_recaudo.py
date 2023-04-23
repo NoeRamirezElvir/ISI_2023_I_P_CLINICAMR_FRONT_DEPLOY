@@ -55,7 +55,8 @@ def crear_recaudo(request):
             medicamento['id'] = int(item.split(" - ")[0])
             medicamento['nombre'] = str(item.split(" - ")[1])
             medicamento['precio'] = float(item.split(" - ")[2])
-            medicamento['impuesto'] = float(item.split(" - ")[3])
+            impuesto = float(item.split(" - ")[3])
+            medicamento['impuesto'] = "{:.2f}".format(impuesto)
             medicamento['cantidad'] = int(item.split(" - ")[4])
             medicamentos_lista.append(medicamento)
 
@@ -65,7 +66,8 @@ def crear_recaudo(request):
             tratamiento['id'] = int(item.split(" - ")[0])
             tratamiento['nombre'] = str(item.split(" - ")[1])
             tratamiento['precio'] = float(item.split(" - ")[2])
-            tratamiento['impuesto'] = float(item.split(" - ")[3])
+            impuesto = float(item.split(" - ")[3])
+            tratamiento['impuesto'] = "{:.2f}".format(impuesto)
             tratamientos_lista.append(tratamiento)
         
         examenes_lista = []
@@ -74,7 +76,8 @@ def crear_recaudo(request):
             examen['id'] = int(item.split(" - ")[0])
             examen['nombre'] = str(item.split(" - ")[1])
             examen['precio'] = float(item.split(" - ")[2])
-            examen['impuesto'] = float(item.split(" - ")[3])
+            impuesto = float(item.split(" - ")[3])
+            examen['impuesto'] = "{:.2f}".format(impuesto)
             examenes_lista.append(examen)
 
         # Crear el diccionario final
@@ -146,11 +149,11 @@ def crear_recaudo(request):
             datos_pdf['tratamientos'] = tratamientos_lista
             datos_pdf['examenes'] = examenes_lista
             datos_pdf['consulta'] = consulta
-            datos_pdf['subtotalFactura'] = subtotal,
-            datos_pdf['totalFactura'] = total,
-            datos_pdf['impuestosFactura'] = imp,
-            datos_pdf['numeroTarjeta'] = numeroTarjeta,
-            datos_pdf['montoTarjeta'] = montoTarjeta,
+            datos_pdf['subtotalFactura'] = subtotal
+            datos_pdf['totalFactura'] = total
+            datos_pdf['impuestosFactura'] = imp
+            datos_pdf['numeroTarjeta'] = numeroTarjeta
+            datos_pdf['montoTarjeta'] = montoTarjeta
             datos_pdf['montoEfectivo'] = montoEfectivo
             datos_pdf['cambio'] = cambio
             datos_pdf['descuento'] = descuento
@@ -243,7 +246,7 @@ def buscar_recaudo(request):
 
 def eliminar_recaudo(request,id):
     try:
-        if request.method == 'POST':
+        if request.method == 'POST' and 'eliminar' in request.POST:
             idTemporal = id
             response = requests.delete(url + f'recaudo/id/{idTemporal}')
             res = response.json()
@@ -267,8 +270,19 @@ def eliminar_recaudo(request,id):
         context = {'recaudo': recaudo, 'error': mensaje}
         return render(request, 'recaudo/buscar_recaudo.html', context)   
 
+def reimprimir_recaudo(request,id):
+    if request.method == 'POST' and 'reimprimir' in request.POST:
+        rsp = requests.get(url + f'reimprimirPdf/id/{id}')
+        data = rsp.json()
 
-     
+        datos_pdf = data['datos_pdf']
+        context = { 'datos_pdf': datos_pdf}
+
+        pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
+        response_pdf = HttpResponse(pdf, content_type='application/pdf')
+        response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
+        return response_pdf
+
 def list_sar():
     rsp_correlativo = requests.get(url+'correlativo/busqueda/activo/1')
     if rsp_correlativo.status_code == 200:

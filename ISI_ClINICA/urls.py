@@ -371,6 +371,7 @@ urlpatterns = [
 
     path('CLINICA/templates/recaudo/actualizar_recaudo.html',abrir_actualizar_recaudo,name="abrir_actualizar_recaudo"),
     path('CLINICA/templates/recaudo/actualizar_recaudo.html/<int:id>',actualizar_recaudo,name="actualizar_recaudo"),
+    path('CLINICA/templates/recaudo/buscar_recaudo.html/<int:id>',reimprimir_recaudo,name = 'reimprimir_recaudo'),
     path('CLINICA/templates/recaudo/buscar_recaudo.html/<int:id>',eliminar_recaudo,name = 'eliminar_recaudo'),
     path('CLINICA/templates/recaudo/buscar_recaudo.html',buscar_recaudo,name = 'buscar_recaudo'),
     path('CLINICA/templates/recaudo/recaudo.html',crear_recaudo, name="crear_recaudo"),

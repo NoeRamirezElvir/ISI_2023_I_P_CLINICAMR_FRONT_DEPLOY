@@ -349,6 +349,7 @@ urlpatterns = [
     path('',views_recaudo.eliminar_recaudo , name='eliminar_recaudo'),
     path('',views_recaudo.buscar_recaudo , name='buscar_recaudo'),
     path('',views_recaudo.crear_recaudo , name='crear_recaudo'),
+    path('',views_recaudo.reimprimir_recaudo , name='reimprimir_recaudo'),
 
     #Descuentos
     path('',views_descuento.abrir_actualizar_Descuentos , name='abrir_actualizar_Descuentos'),

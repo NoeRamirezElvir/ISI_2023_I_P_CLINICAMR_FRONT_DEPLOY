@@ -476,6 +476,8 @@ def crear_recaudo(request):#
     return render(request,'recaudo/recaudo.html')
 def eliminar_recaudo(request,id):#
     return render(request,'recaudo/recaudo.html')
+def reimprimir_recaudo(request,id):#
+    return render(request,'recaudo/buscar_recaudo.html')
 
 #Descuentos
 def abrir_actualizar_Descuentos(request):#

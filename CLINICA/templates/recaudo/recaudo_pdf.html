@@ -9,7 +9,7 @@
         }
     </style>
 <body>
-    <img style="background-color: #044949;" width="180px" height="110px" src="https://lh6.googleusercontent.com/KPqUCs1Opb7PFvg3PY5Ty21Jm84YQlj3Sjsp8tY-TDU9kNK6j00dRABXv8vtTiLcgSsGUCTFvxXf7qFxGtrqP8E3irDN-J_gzqIzK8NP3fphzP5znnrVzo9uFuf6gfRQWg=w1280" alt="Descripción de la imagen">
+    <img style="background-color: #044949;" width="180px" height="110px" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgpAdJz2hvG2XrDnndQW6u61Els_CyQm9s2Ot_XsNlw93dW1sOE90RaRXENEQV-Xa1sIWmUDz7juXFPe3a1devPN71YVIakGb2YbtZXLYMdxMhfQVaaXpSAiE0dI8Xjr-OS5Lb6xh1HC9N_apANOo6YKtFYmwJ62tvZbVDaPStfdkgkNTkGPLX8E-v/s320/logo2.png" alt="Descripción de la imagen">
     <h1 style="text-align: left;"><strong>{{ datos_pdf.nombreEmpresa }}</strong></h1>
     <p style="text-align: left;">{{ datos_pdf.direccionEmpresa }}</p>
     <p style="text-align: left;">Tel: {{ datos_pdf.telefonoEmpresa }}</p>
@@ -30,7 +30,7 @@
     <p style="text-align: left;">Dirección: {{ datos_pdf.direccionCliente }}</p>
     <hr />
     <p style="text-align: left;">M&eacute;todo de Pago: {{ datos_pdf.metodoPago }}  Monto en efectivo:{{ datos_pdf.montoEfectivo }}</p>
-    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numMasc }}  Monto de la tarjeta: {{ datos_pdf.montoTarjeta.0 }}</p>
+    <p style="text-align: left;">N&uacute;mero de tarjeta: {{ datos_pdf.numMasc }}  Monto de la tarjeta: {{ datos_pdf.montoTarjeta }}</p>
     <p style="text-align: left;">Cambio: {{ datos_pdf.cambio }}</p>
     <p style="text-align: left;">&nbsp;</p>
     <table style="padding-top: 5px;">
@@ -89,10 +89,10 @@
     </tbody>
     </table>
     <p style="text-align: left;">&nbsp;</p>
-    <p style="text-align: right;">Base Importe:{{ datos_pdf.subtotalFactura.0 }}</p>
-    <p style="text-align: right;">Impuestos: {{ datos_pdf.impuestosFactura.0}}</p>
+    <p style="text-align: right;">Base Importe:{{ datos_pdf.subtotalFactura }}</p>
+    <p style="text-align: right;">Impuestos: {{ datos_pdf.impuestosFactura}}</p>
     <p style="text-align: right;">Descuentos: {{ datos_pdf.descuento}}</p>
-    <p style="text-align: right;">Total: {{ datos_pdf.totalFactura.0 }}</p>
+    <p style="text-align: right;">Total: {{ datos_pdf.totalFactura }}</p>
 
     <footer class="page-number"> </footer>
 </body>

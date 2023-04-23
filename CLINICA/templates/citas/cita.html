@@ -109,9 +109,11 @@
   const fechaInput1 = document.getElementById('fechaProgramada');
   const fechaInput2 = document.getElementById('fechaMaxima');
 
+  fechaInput1.min = fechaInput.value;
   fechaInput1.addEventListener('change', (event) => {
     const fechaSeleccionada = event.target.value;
     fechaInput2.value = fechaSeleccionada;
+    fechaInput2.min = fechaInput1.value;
   });
 
 

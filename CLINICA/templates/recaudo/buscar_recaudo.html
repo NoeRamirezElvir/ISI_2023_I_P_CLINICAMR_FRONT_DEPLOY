@@ -86,11 +86,18 @@
                   <img src="{% static 'img/icons/icedit.png' %}">
               </button>
               </form>
-              <form action="{% url 'eliminar_recaudo' id=item.id  %}" method="post">
+              <form action="{% url 'eliminar_recaudo' id=item.id  %}?accion=eliminar" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
                 <button class="btnEliminar" name="eliminar" id="eliminar">
                   <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+              <form action="{% url 'reimprimir_recaudo' id=item.id  %}?accion=reimprimir" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_recaudo" value="{{ item.id }}">
+                <button class="btnEliminar" name="reimprimir" id="reimprimir">
+                  <img src="{% static 'img/icons/icpdfdoc.png' %}">
                 </button>
               </form>
             </td>
