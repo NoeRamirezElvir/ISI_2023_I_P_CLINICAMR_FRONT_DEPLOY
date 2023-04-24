@@ -7,7 +7,6 @@
 
 <div id="calendar" style="position: absolute;width: 78%; max-height: 80vh;margin:50px"></div>
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
   
@@ -22,9 +21,9 @@
         events: [
           {% for cita in citas %}
           {
-            title: "Cita:{{cita.id}}",
-            start: "{{cita.fechaProgramada}}",
-            end: '{{cita.fechaMaxima}}',
+            title: 'Cita:{{cita.id}}',
+            start: '{{cita.fechaPcal}}',
+            end: '{{cita.fechaMcal}}',
             url: '{% url "actualizar_citas" id=cita.id %}'
           },
           {% endfor %}

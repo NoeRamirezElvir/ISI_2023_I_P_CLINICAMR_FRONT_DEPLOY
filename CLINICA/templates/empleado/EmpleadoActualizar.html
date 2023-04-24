@@ -48,11 +48,11 @@
         <fieldset id="payment_method">
           <legend>Activo/Inactivo</legend>
           <div class="fieldgroup">
-            <input type="radio" name="payment_method" id="activo" value=1 {% if registro_temp.activo == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Activo
+            <input type="radio" name="payment_method" id="activo" value=1 {% if empleados.0.activo == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Activo
             </label>
           </div>
           <div class="fieldgroup">
-            <input type="radio" name="payment_method" id="inactivo" value=0  {% if registro_temp.activo == 0 %} checked {% endif %}><label
+            <input type="radio" name="payment_method" id="inactivo" value=0  {% if empleados.0.activo == 0 %} checked {% endif %}><label
               for="payment2">Inactivo</label>
           </div>
         </fieldset>
@@ -82,6 +82,7 @@
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idEspecialidadMedic1"> Especialidad </label>
               <select name="idEspecialidadMedic1" id="idEspecialidadMedic1">
+                <option value="0" {% if empleados.0.idEspecialidadMedicos == '0' %}selected{% endif %}>Seleccione una opción</option>"
                   {% for EspecialidadMedicos in EspecialidadMedico %}
                       <option value="{{ EspecialidadMedicos.id }}"{% if EspecialidadMedicos.id == empleados.0.idEspecialidadMedico_id %}selected{% endif %}>{{ EspecialidadMedicos.nombre }}</option>
                   {% endfor %}
@@ -91,8 +92,9 @@
             <div style="display: block;width: 100%">
               <label class="campo-registro" for="idCargoEmplead1">Cargos</label>
               <select name="idCargoEmplead1" id="idCargoEmplead1">
-                  {% for CargoEmpleados in CargoEmpleado %}
-                      <option value="{{ CargoEmpleados.id }}"{% if CargoEmpleados.id == registro_temp.idCargoEmpleado %}selected{% endif %}>{{ CargoEmpleados.nombre }}</option>
+                <option value="0" {% if empleados.0.idCargoEmpleados == '0' %}selected{% endif %}>Seleccione una opción</option>"
+                 {% for CargoEmpleados in CargoEmpleado %}
+                      <option value="{{ CargoEmpleados.id }}"{% if CargoEmpleados.id == empleados.0.idCargoEmpleado %}selected{% endif %}>{{ CargoEmpleados.nombre }}</option>
                   {% endfor %}
               </select>
             </div>

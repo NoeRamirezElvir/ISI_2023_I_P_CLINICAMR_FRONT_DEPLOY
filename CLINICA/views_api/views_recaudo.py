@@ -150,13 +150,13 @@ def crear_recaudo(request):
             datos_pdf['examenes'] = examenes_lista
             datos_pdf['consulta'] = consulta
             datos_pdf['subtotalFactura'] = subtotal
-            datos_pdf['totalFactura'] = total
+            datos_pdf['totalFactura'] = format(float(total),',.2f')
             datos_pdf['impuestosFactura'] = imp
             datos_pdf['numeroTarjeta'] = numeroTarjeta
-            datos_pdf['montoTarjeta'] = montoTarjeta
-            datos_pdf['montoEfectivo'] = montoEfectivo
-            datos_pdf['cambio'] = cambio
-            datos_pdf['descuento'] = descuento
+            datos_pdf['montoTarjeta'] = format(float(montoTarjeta),',.2f')
+            datos_pdf['montoEfectivo'] = format(float(montoEfectivo),',.2f')
+            datos_pdf['cambio'] = format(float(cambio),',.2f')
+            datos_pdf['descuento'] = format(float(descuento),',.2f')
             datos_pdf['numMasc'] = mascara_tarjeta(numeroTarjeta)
                       
 
