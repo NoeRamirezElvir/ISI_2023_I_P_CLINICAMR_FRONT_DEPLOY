@@ -12,7 +12,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def reimprimir_recaudo(request,id):
     if request.method == 'POST':
         rsp = requests.get(url + f'recaudo/busqueda/id/{id}')

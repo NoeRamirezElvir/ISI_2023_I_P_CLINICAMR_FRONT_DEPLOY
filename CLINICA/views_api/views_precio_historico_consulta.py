@@ -5,7 +5,7 @@ from django.shortcuts import render
 import requests
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
 def eliminar_precio_historico_consulta(request, id):
     try:

@@ -6,7 +6,7 @@ import requests
 from django.shortcuts import redirect
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def iniciar_sesion(request):
     if request.method == 'POST':
         username = request.POST['username']

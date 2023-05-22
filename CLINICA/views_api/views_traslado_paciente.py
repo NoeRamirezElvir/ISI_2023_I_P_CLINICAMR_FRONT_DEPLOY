@@ -5,7 +5,7 @@ from django.shortcuts import render
 import requests
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def listar_traslados(request):
     response = requests.get(url+'traslados/')
     if response.status_code == 200:

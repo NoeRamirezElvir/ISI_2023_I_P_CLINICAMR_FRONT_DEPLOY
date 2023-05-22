@@ -3,7 +3,7 @@ from django.shortcuts import render
 import requests
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def listar_Descuentos(request):
     response = requests.get(url+'Descuentos/')
     if response.status_code == 200:

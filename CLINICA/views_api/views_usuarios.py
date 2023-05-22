@@ -6,7 +6,7 @@ import requests
 from django.shortcuts import redirect
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 #LOS METODOS FUNCIONAN PARA ABRIR LAS PANTALLAS, ENVIAR O RECIBIR LOS DATOS
 #METODO GET. TRAE TODOS LOS USUARIOS PARA LA LISTA DE VISUALIZAR
 def listar_usuarios(request):

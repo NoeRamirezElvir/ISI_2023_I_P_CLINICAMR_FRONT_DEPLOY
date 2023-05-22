@@ -2,7 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 
 
 def listar_empleados(request):

@@ -5,7 +5,7 @@ from django.shortcuts import render
 import requests
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def eliminar_recaudo_detalle_examen(request, id):
     try:
         if request.method == 'POST':

@@ -13,7 +13,7 @@ from xhtml2pdf import pisa
 
 
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 
 def crear_recaudo(request):  
     rsp = requests.get(url+f'listasRecaudo/')
