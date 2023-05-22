@@ -28,7 +28,10 @@ def registrar_login(request):
             data = rsp_empleado.json()
             empleado = data['empleados']
     else:
-            empleado = []
+            response = requests.post(url+'empleados/', json={'nombre': 'administrador','apellidos': 'administrador','fechaNacimiento': '01/01/2000','idTipoDocumentos':None, 'idEspecialidadMedico':None, 'idCargoEmpleado':None, 'documento': 'N/A','telefono': 88888888,'email': 'admin.example@email.com','direccion': 'No Aplica','activo': 1 })
+            rsp_empleado = requests.get(url+'empleados/')
+            data = rsp_empleado.json()
+            empleado = data['empleados']
     if request.method == 'POST':
         idEmpleado = int(request.POST['idEmpleadl'])
         nombreUsuario = request.POST['username']

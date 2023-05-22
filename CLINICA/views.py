@@ -6,7 +6,7 @@ import requests
 def presentacion(request):
     return render(request,'presentacion/presentacion.html')
 
-url = 'http://localhost:8080/api/'
+url = 'https://clinicamr.onrender.com/api/'
 def salir_presentacion(request):
     rsp_empleado = requests.get(url+'usuarios/busqueda/sesion/1')
     if rsp_empleado.status_code == 200:
