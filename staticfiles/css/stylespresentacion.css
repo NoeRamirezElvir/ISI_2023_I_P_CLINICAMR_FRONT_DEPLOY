@@ -1,0 +1,203 @@
+*{
+    box-sizing: border-box;
+}
+h1{font-size: 3.5em;}
+h2{font-size: 2.7em;}
+h3{font-size: 2em;}
+p{font-size: 1.2em;}
+ul{list-style: none;}
+li{font-size: 1.2em;}
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+.container{
+    max-width: 1000px;
+    margin: auto;
+}
+header{
+    background-color: rgba(4, 58, 94, 0.87);
+}
+header .logo{
+    margin: 0;
+    width: 170px;
+    padding: 5px 10px;
+}
+header .container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+header nav{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 25px;
+}
+header a{
+    padding: 5px 9px;
+    text-decoration: none;
+    font-weight: bold;
+    color: antiquewhite;
+    text-transform: uppercase;
+}
+header a:hover{
+    color: aquamarine;
+}
+#hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100vh;
+    background-image: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    )
+    ,url("/CLINICA/static/img/images/imghome.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+#hero h1{
+    color: antiquewhite;
+}
+#informacion .container{
+    text-align: left;
+    padding: 100px 12px;
+}
+#servicios{
+    background-color: rgba(4, 58, 94);
+    color: antiquewhite;
+    text-align: center;
+}
+#servicios .container{
+    padding: 100px 0;
+}
+#servicios h2{
+    margin-top: 0;
+}
+#servicios p{
+    display: none;
+}
+#servicios .carta{
+    background-position: center center;
+    background-size: cover;
+    margin: 20px;
+    padding: 50px;
+    border-radius: 15px;
+}
+.carta:first-child{
+    background-image: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    )
+    ,url("/CLINICA/static/img/images/imgconsulta.png");
+}
+.carta:nth-child(2){
+    background-image: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    )
+    ,url("/CLINICA/static/img/images/imgexamen.png");
+}
+.carta:nth-child(3){
+    background-image: linear-gradient(
+        0deg,
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    )
+    ,url("/CLINICA/static/img/images/imgtratamiento.png");
+}
+#contact .container{
+    text-align: center;
+    padding: 25px 12px;
+
+}
+#contact li{
+    margin: 5px
+}
+#contact .container ul{
+    display: flex;
+    justify-content: center;
+}
+footer{
+    background-color: rgb(230, 230, 230);
+}
+footer p{
+    margin: 0;
+    padding: 12px;
+    color: rgb(100, 100, 100);
+}
+footer .container{
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+@media(min-width: 600px){
+    header{
+        position: fixed;
+        width: 100%;
+    }
+    header .container{
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    header nav{
+        flex-direction: row;
+        padding-bottom: 0;
+        padding-right: 0;
+    }
+
+    #informacion .container{
+        display: flex;
+        justify-content: space-evenly;
+    }
+    #informacion .texto{
+        width: 50%;
+        text-align: initial;
+        justify-content: center;
+        padding-left: 30px;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    #informacion h2{
+        margin-top: 0;
+    }
+    #informacion .img-container{
+        background-image: url("/CLINICA/static/img/images/imginfo.png");
+        background-size: cover;
+        background-position: center center;
+        height: 500px;
+        width: 600px;
+    }
+    #servicios .listaservice{
+        display: flex;
+        justify-content: center;
+    }
+    #servicios p{
+        display: block;
+        margin-bottom: 30px;
+    }
+    #servicios h3{
+        margin-top: 0;
+    }
+    #servicios .carta{
+        padding: 20px;
+        box-shadow: 2px 2px 10px rgb(0, 0, 0,0.5);
+    }
+    #contact .container ul{
+        display: flex;
+        justify-content: center;
+    }
+
+}

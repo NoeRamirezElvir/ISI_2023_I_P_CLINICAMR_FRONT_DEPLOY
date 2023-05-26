@@ -1,0 +1,135 @@
+.body-registro{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+.container-menu-nav{
+    width: 100vh;
+    position: absolute; 
+}
+.nav-menu-nav{
+    position: absolute;
+    background-color: #1A5276;
+    text-align: center;
+    display: flex;
+    width: 79vmax;
+    height: 50px;
+    left: 21.8vmax;
+}
+.nav-menu-nav a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding:10px
+}
+.nav-menu-nav a:hover{
+    border-bottom: 1px solid tomato;;
+}
+.nav-menu-nav ul{
+    margin-left: 50%;
+}
+.contenedor-registro{
+    position: absolute;
+    left:75vh;
+    top: 15vh;
+}
+.h1-registro {font-size: 2.5em;}
+.container-box-registro{
+    width: 600px;
+    height: auto;
+    max-width: 600px;
+    max-height: 1000px;
+    margin: 30px;
+    background-color: #1A5276;
+    position:relative;
+    box-sizing: border-box;
+
+}
+.container-box-registro h1{
+    background-color: none;
+    color: rgb(210, 210, 210);
+    position:absolute;
+    top:-50px;
+    right: 25vh;
+}
+.container-box-registro .h4-registro{
+    margin-left: 30px;
+    color: rgb(210, 210, 210)
+}
+.campos-registro label.campo-registro{
+    margin:10px;
+    padding: 0;
+    font-size: 1em;
+    display: block;
+    color: rgb(210, 210, 210);
+}
+.estado-registro {
+    width: 80%;
+    display:block;
+    color: rgb(210, 210, 210);
+}
+.estado-registro .radio-container-registro{
+    display: flex;
+}
+.estado-registro input[type="submit"]{
+    width: 54px;
+    margin-left: 30%;
+    margin-bottom: 5px;
+}
+.campos-registro input, select{
+    width: 95%;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    text-align: center;
+}
+.campos-registro input[type="text"],
+.campos-registro input[type="password"],
+.campos-registro select{
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.719);
+    background:#557a92;
+    height: 35px;
+    left: 35px;
+    color: rgb(210, 210, 210);
+    font-size: 16px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+.campos-registro input[type="text"]:hover,
+.campos-registro input[type="password"]:hover,
+.campos-registro select:hover{
+    background:#3C6776;
+    color:rgb(210, 210, 210);
+    box-shadow: 2px 2px 2px rgba(233, 28, 28, 0.5);
+}
+.campos-registro input[type="submit"]{
+    border: none;
+    outline: none;
+    height: 35px;
+    background:#27445c;
+    border-radius: 10px;
+    color: rgb(210, 210, 210);
+}
+.campos-registro input[type="submit"]:hover{
+    background: #3C6776;
+    border: 0.5px solid black;;
+}
+@media(min-width:700px){
+    .estado-registro {
+        margin-left: 60px;
+        margin-bottom: 20px;
+        display:flex;
+    }
+    .estado-registro .radio-container{
+        display:flex;
+    }
+    .estado-registro input[type="submit"]{
+        width: 54px;
+        margin-left: 10px;
+        margin-bottom: 0;
+    }
+}

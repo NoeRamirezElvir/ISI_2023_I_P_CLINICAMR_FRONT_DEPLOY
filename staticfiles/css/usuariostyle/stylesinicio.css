@@ -1,0 +1,117 @@
+.body-inicio{
+    background-color: #82b3b3;
+    background-image: url('/CLINICA/static/img/images/imgclinica.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    max-width: 100%;
+    overflow-x:hidden !important;
+
+}
+.container-menu-nav{
+    width: 100vh;
+    position: absolute; 
+}
+.-inicio{
+    background-color: #82b3b3;
+    font-weight: bold;
+    position: relative;
+    width: 245px;
+    top: -230px;
+}
+.texto-inicio ul{
+    list-style: none;
+    position: relative;
+    right: 90px;
+    top: -200px;
+    width: 365px;
+    overflow-y:scroll !important;;
+    max-height: 200px
+
+}
+.texto-inicio ul li{
+    height: 200px;
+}
+.texto-inicio ul li h3{
+    color: antiquewhite;
+}
+p {
+    font-size: 18px;
+    color: blanchedalmond;
+    width: 350px;
+    height: 300px;
+    overflow: hidden;
+}
+.nav-menu-nav{
+    position: absolute;
+    background-color: #022e2c;
+    text-align: center;
+    display: flex;
+    width: 79vmax;
+    height: 50px;
+    left: 21.8vmax;
+}
+.nav-menu-nav a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding:10px
+}
+.texto-inicio h3{
+    position: relative;
+    text-align: center;
+    margin:10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.nav-menu-nav a:hover{
+    border-bottom: 1px solid tomato;;
+}
+.nav-menu-nav ul{
+    margin-left: 50%;
+
+}
+.conte-inicio{
+    position:absolute;
+    left:50vh;
+    top:50px;
+    width: 200vh;
+    bottom: 10px;
+    max-height: 95%;
+    overflow-y: scroll ;
+    font-size:17px;
+
+   
+}
+.container-inicio{
+    max-width: 1000px;
+    width: 150vh;
+    margin: auto;
+    left: -75vmax;
+    top: 8vh;
+}
+.titulo-inicio{
+    padding-left: 8%;
+}
+#informacion-inicio .container-inicio{
+    display: relative;
+    align-items: flex-end;
+    padding-left: 15%;
+}
+#descripcion-inicio .container-inicio{
+    display: flex;
+    align-items: flex-end;
+    padding-left: 0;
+}
+#descripcion2-inicio .container-inicio{
+    display: flex;
+    align-items: flex-end;
+    padding-left: 0;
+}
+
+
+
+
+
+
