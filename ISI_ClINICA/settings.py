@@ -126,6 +126,10 @@ STATIC_URL = './CLINICA/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "./CLINICA/static/",
 ]
+STATICFILES_EXCLUDE_PATTERNS = [
+    'js/bootstrap.js.map',
+]
+
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
