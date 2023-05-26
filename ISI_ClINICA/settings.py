@@ -122,9 +122,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'CLINICA/static/'
+STATIC_URL = './CLINICA/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "staticfiles/",
+    BASE_DIR / "./CLINICA/static/",
 ]
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
