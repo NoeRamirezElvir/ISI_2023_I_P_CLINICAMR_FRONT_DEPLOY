@@ -1,10 +1,10 @@
-#!"C:\Users\nblad\Desktop\CLINICA MR\proyectos\ISI_2023_I_P_CLINICAMR_FRONT\venv\Scripts\python.exe"
-# EASY-INSTALL-ENTRY-SCRIPT: 'xhtml2pdf==0.2.10','console_scripts','pisa'
+#!"C:\Users\nblad\Desktop\Nueva carpeta\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\venv\Scripts\python.exe"
+# EASY-INSTALL-ENTRY-SCRIPT: 'xhtml2pdf==0.2.11','console_scripts','pisa'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'xhtml2pdf==0.2.10'
+__requires__ = 'xhtml2pdf==0.2.11'
 
 try:
     from importlib.metadata import distribution
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('xhtml2pdf==0.2.10', 'console_scripts', 'pisa')())
+    sys.exit(load_entry_point('xhtml2pdf==0.2.11', 'console_scripts', 'pisa')())

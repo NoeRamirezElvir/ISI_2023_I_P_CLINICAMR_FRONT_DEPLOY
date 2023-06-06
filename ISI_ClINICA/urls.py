@@ -163,8 +163,6 @@ urlpatterns = [
 
 
     #Muestras
-    path('CLINICA/templates/Muestras/MuestraActualizar.html',abrir_actualizar_muestras,name="abrir_actualizar_muestras"),
-    path('CLINICA/templates/Muestras/MuestraActualizar.html/<int:id>',actualizar_muestras,name="actualizar_muestras"),
     path('CLINICA/templates/Muestras/BuscarMuestra.html/<int:id>',eliminar_muestras,name = 'eliminar_muestras'),
     path('CLINICA/templates/Muestras/BuscarMuestra.html',buscar_muestras,name = 'buscar_muestras'),
     path('CLINICA/templates/Muestras/Muestra.html',crear_muestras, name="crear_muestras"),

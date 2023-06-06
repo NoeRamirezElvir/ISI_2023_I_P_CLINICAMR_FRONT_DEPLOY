@@ -127,8 +127,6 @@ urlpatterns = [
     path('',views_TipoMuestra.crear_TipoMuestra, name='crear_TipoMuestra'),
 
     #Muestras
-    path('',views_muestras.abrir_actualizar_muestras , name='abrir_actualizar_muestras'),
-    path('',views_muestras.actualizar_muestras , name='actualizar_muestras'),
     path('',views_muestras.eliminar_muestras , name='eliminar_muestras'),
     path('',views_muestras.listar_muestras, name='buscar_muestras'),
     path('',views_muestras.buscar_muestras, name='buscar_muestras'),

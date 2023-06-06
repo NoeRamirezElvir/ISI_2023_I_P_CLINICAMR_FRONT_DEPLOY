@@ -38,13 +38,6 @@
             <td>{{ muestra.fecha }}</td>
 
             <td>
-              <form action="{% url 'abrir_actualizar_muestras' %}" method="post" class="form-botones">
-                {% csrf_token %}
-                <input type="hidden" name="id_muestra" value="{{ muestra.id }}">
-                <button class="btnEditar" name="editar" id="editar">
-                  <img src="{% static 'img/icons/icedit.png' %}">
-                </button>
-              </form>
               <form action="{% url 'eliminar_muestras' id=muestra.id  %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_muestra" value="{{ muestra.id }}">

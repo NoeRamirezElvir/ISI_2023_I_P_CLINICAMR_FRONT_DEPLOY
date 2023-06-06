@@ -117,10 +117,6 @@ def eliminar_especialidades(request,id):#
 
 
 #Muestra
-def abrir_actualizar_muestras(request):#
-    return render(request,'Muestras/MuestraActualizar.html')
-def actualizar_muestras(request,id):#
-    return render(request,'Muestras/MuestraActualizar.html')
 def buscar_muestras(request):#
     return render(request,'Muestras/BuscarMuestra.html')
 def crear_muestras(request):#
