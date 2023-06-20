@@ -5,6 +5,34 @@
     overflow: hidden;
     background-color: #13454B; 
 }
+#contenedor-reportes{
+    position:relative;
+    left:50px;
+    top:70px;
+}
+#exportarBtn{
+    padding: 5px;
+    width: 90px;
+    height: 50px;
+    background-color: #273746;
+    border-radius: 5px;
+    color:gainsboro !important;
+  }
+#exportBtn{
+    padding: 5px;
+    width: 90px;
+    height: 50px;
+    background-color: #273746;
+    border-radius: 5px;
+    color:gainsboro !important;
+}
+#exportBtn:hover {
+    background-color: #3d556c;
+}
+#exportarBtn:hover{
+    background-color: #3d556c;
+}
+
 #contenido{
     display: block;
     width: calc(100% - 200px);

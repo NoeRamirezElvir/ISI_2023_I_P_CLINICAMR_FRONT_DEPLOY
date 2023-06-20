@@ -26,6 +26,12 @@
         top:70vh;
     }
 </style>
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar a Excel</button>
+  <button id="exportBtn">Exportar a PDF</button>
+</div>
 <div class="contenedor">
     <h1 class="logo"><span class="nombre-empresa">Registro de Citas</span></h1>
     <div class="wrapper animated bounceInLeft">
@@ -120,4 +126,5 @@
 </script>
 
 
+<script src="{% static 'js/js_reportes/rpt_citas.js' %}"></script>
 {% endblock %}

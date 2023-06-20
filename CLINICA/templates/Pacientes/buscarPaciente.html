@@ -4,6 +4,12 @@
 {% block tittle %}PACIENTES{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar a Excel</button>
+  <button id="exportBtn">Exportar a PDF</button>
+</div>
 <div class="contenedor-listar-campos">
     <h1 class="h1-listar">Registro de Pacientes</h1>
     <div class="busqueda-listar">
@@ -83,4 +89,5 @@
 </div>
 </div>
 {% endif %}
+<script src="{% static 'js/js_reportes/rpt_paciente.js' %}"></script>
 {% endblock %}

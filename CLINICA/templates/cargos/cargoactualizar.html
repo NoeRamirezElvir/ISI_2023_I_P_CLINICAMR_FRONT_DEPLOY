@@ -3,6 +3,12 @@
 
 {% block tittle %}Actualizar Cargo{% endblock %}
 {% block content %}
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar a Excel</button>
+  <button id="exportBtn">Exportar a PDF</button>
+</div>
 <div class="contenedor">
   <h1 class="logo"><span class="nombre-empresa">Actualizar Cargo</span></h1>
   <div class="wrapper animated bounceInLeft">
@@ -51,4 +57,5 @@
         <p>{{ mensaje }}</p>
     </div>
   {% endif %}
+  <script src="{% static 'js/js_reportes/rpt_cargos.js' %}"></script>
   {% endblock %}
