@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_tipo(request):
@@ -35,12 +36,12 @@ def crear_tipo(request):
             data = response.json()
             mensaje = data['message']
 
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
+            return render(request, 'Tipos/tipo.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'Tipos/tipo.html', {'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
+            return render(request, 'Tipos/tipo.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo': Subtipo,'impuestos': impuestos, 'registro_temp':registro_temp})
     else:
-        return render(request, 'Tipos/tipo.html',{'subtipo': Subtipo,'impuestos': impuestos})
+        return render(request, 'Tipos/tipo.html',{'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': Subtipo,'impuestos': impuestos})
     
 def abrir_actualizar_tipo(request):
     subtipos = list_subtipos()
@@ -55,7 +56,7 @@ def abrir_actualizar_tipo(request):
             mensaje = data['message']
          else:
             tipo = []
-         context = {'tipo': tipo,'subtipo': subtipos,'impuestos': impuestos, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo,'subtipo': subtipos,'impuestos': impuestos, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Tipos/tipoactualizar.html', context)
     
@@ -85,10 +86,10 @@ def actualizar_tipo(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos })
+            return render(request, 'Tipos/tipoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos})
+            return render(request, 'Tipos/tipoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tipo':tipo,'subtipo':subtipo, 'impuestos': impuestos})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tipo/busqueda/id/{idTemporal}')
@@ -96,10 +97,10 @@ def actualizar_tipo(request, id):
             data = response.json()
             tipo = data['tipos']
             mensaje = data['message']
-            return render(request, 'Tipos/tipoactualizar.html', {'tipo': tipo,'subtipo':subtipo,'idImpuesto': idImpuesto, 'impuestos': impuestos})
+            return render(request, 'Tipos/tipoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo,'subtipo':subtipo,'idImpuesto': idImpuesto, 'impuestos': impuestos})
         else:
             mensaje = data['message']
-            return render(request, 'Tipos/tipoactualizar.html', {'mensaje': mensaje,'tipo':tipo,'idImpuesto': idImpuesto,'subtipo':subtipo, 'impuestos': impuestos})
+            return render(request, 'Tipos/tipoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tipo':tipo,'idImpuesto': idImpuesto,'subtipo':subtipo, 'impuestos': impuestos})
 
 def eliminar_tipo(request, id):
     try:
@@ -114,7 +115,7 @@ def eliminar_tipo(request, id):
             else:
                 tipo = []
             mensaje = res['message']
-            context = {'tipo': tipo, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje': mensaje}
             return render(request, 'Tipos/buscartipo.html', context)     
     except:
         rsp_tipo = requests.get(url + 'tipo/') 
@@ -124,7 +125,7 @@ def eliminar_tipo(request, id):
         else:
             tipo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'tipo': tipo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'error': mensaje}
         return render(request, 'Tipos/buscartipo.html', context)     
     
 def buscar_tipo(request):
@@ -141,12 +142,12 @@ def buscar_tipo(request):
                     mensaje = data['message']
                     tipo = {}
                     tipo = data['tipos']
-                    context = {'tipo': tipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje':mensaje}
                     return render(request, 'Tipos/buscartipo.html', context)
                 else:
                     tipo = []
                     mensaje = 'No se encontraron tipo'
-                    return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})       
+                    return render(request, 'Tipos/buscartipo.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje': mensaje})       
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 data = response.json()
@@ -154,7 +155,7 @@ def buscar_tipo(request):
                     mensaje = data['message']
                     tipo = {}
                     tipo = data['tipos']
-                    context = {'tipo': tipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje':mensaje}
                     return render(request, 'Tipos/buscartipo.html', context)
                 else:
                     response = requests.get(url2+'subtipo/'+valor)
@@ -163,7 +164,7 @@ def buscar_tipo(request):
                         mensaje = data['message']
                         tipo = {}
                         tipo = data['tipos']
-                        context = {'tipo': tipo, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje':mensaje}
                         return render(request, 'Tipos/buscartipo.html', context)
                     else:
                         tipo = []
@@ -175,11 +176,11 @@ def buscar_tipo(request):
                 data = response.json()
                 tipo = data['tipos']
                 mensaje = data['message']   
-                return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})
+                return render(request, 'Tipos/buscartipo.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje': mensaje})
             else:
                 tipo = []
                 mensaje = 'No se encontraron tipo'
-            return render(request, 'Tipos/buscartipo.html', {'tipo': tipo, 'mensaje': mensaje})
+            return render(request, 'Tipos/buscartipo.html', {'reportes_lista':DatosReportes.cargar_lista_tipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipo': tipo, 'mensaje': mensaje})
 
 
 def list_subtipos():

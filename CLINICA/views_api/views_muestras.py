@@ -2,6 +2,9 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -38,12 +41,12 @@ def crear_muestras(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'Muestras/Muestra.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = data['message']
-            return render(request, 'Muestras/Muestra.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     else:
-        return render(request, 'Muestras/Muestra.html', {'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+        return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 def abrir_actualizar_muestras(request):
     if request.method == 'POST':
@@ -56,7 +59,7 @@ def abrir_actualizar_muestras(request):
             mensaje = data['message']
          else:
             muestras = []
-         context = {'muestras': muestras, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Muestras/MuestraActualizar.html', context)
     
@@ -77,10 +80,10 @@ def actualizar_muestras(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Muestras/MuestraActualizar.html', {'mensaje': mensaje,'muestras':muestras })
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Muestras/MuestraActualizar.html', {'mensaje': mensaje,'muestras':muestras})
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'muestras/busqueda/id/{idTemporal}')
@@ -88,10 +91,10 @@ def actualizar_muestras(request, id):
             data = response.json()
             muestras = data['muestras']
             mensaje = data['message']
-            return render(request, 'Muestras/MuestraActualizar.html', {'muestras': muestras})
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras})
         else:
             mensaje = data['message']
-            return render(request, 'Muestras/MuestraActualizar.html', {'mensaje': mensaje,'muestras':muestras})
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
 
 def eliminar_muestras(request, id):
     try:
@@ -106,7 +109,7 @@ def eliminar_muestras(request, id):
             else:
                 muestras = []
             mensaje = res['message']
-            context = {'muestras': muestras, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje}
             return render(request, 'Muestras/BuscarMuestra.html', context)     
     except:
         rsp_muestras = requests.get(url + 'muestras/') 
@@ -116,7 +119,7 @@ def eliminar_muestras(request, id):
         else:
             muestras = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'muestras': muestras, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'error': mensaje}
         return render(request, 'Muestras/BuscarMuestra.html', context)     
            
 def buscar_muestras(request):
@@ -131,13 +134,13 @@ def buscar_muestras(request):
                     mensaje = data['message']
                     muestras = {}
                     muestras = data['muestras']
-                    context = {'muestras': muestras, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
 
                     return render(request, 'Muestras/BuscarMuestra.html', context) 
                 else:
                     muestras = []
                     mensaje = 'No se encontraron muestras'
-                    return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
           
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -146,12 +149,12 @@ def buscar_muestras(request):
                     mensaje = data['message']
                     muestras = {}
                     muestras = data['muestras']
-                    context = {'muestras': muestras, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
                     return render(request, 'Muestras/BuscarMuestra.html', context)
                 else:
                     muestras = []
                     mensaje = 'No se encontraron muestras'
-                    return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'muestras/')
@@ -159,9 +162,9 @@ def buscar_muestras(request):
                 data = response.json()
                 muestras = data['muestras']
                 mensaje = data['message']   
-                return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+                return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
             else:
                 muestras = []
                 mensaje = 'No se encontraron muestras'
-            return render(request, 'Muestras/BuscarMuestra.html', {'muestras': muestras, 'mensaje': mensaje})
+            return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
     

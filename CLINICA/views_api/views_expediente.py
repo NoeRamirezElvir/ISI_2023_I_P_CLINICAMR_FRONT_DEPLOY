@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -27,12 +29,12 @@ def crear_expediente(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'expediente/expediente.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
+            return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
         else:
             mensaje = data['message']
-            return render(request, 'expediente/expediente.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
+            return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
     else:
-        return render(request, 'expediente/expediente.html', {'paciente_list':paciente_list})
+        return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':paciente_list})
     
 def abrir_actualizar_expediente(request):
     paciente_list = list_pacientes()
@@ -46,7 +48,7 @@ def abrir_actualizar_expediente(request):
             mensaje = data['message']
          else:
             expediente = []
-         context = {'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
+         context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
          mensaje = data['message']
          return render(request, 'expediente/actualizar_expediente.html', context)
 
@@ -61,7 +63,7 @@ def abrir_detalle_expediente(request):
             mensaje = data['message']
          else:
             expediente = []
-         context = {'expediente': expediente, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'expediente/ver_detalle_expediente.html', context)
     
@@ -83,10 +85,10 @@ def actualizar_expediente(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'expediente/actualizar_expediente.html', {'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list })
+            return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'expediente/actualizar_expediente.html', {'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
+            return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'expediente/busqueda/id/{idTemporal}')
@@ -94,10 +96,10 @@ def actualizar_expediente(request, id):
             data = response.json()
             expediente = data['expedientes']
             mensaje = data['message']
-            return render(request, 'expediente/actualizar_expediente.html', {'expediente': expediente, 'paciente_list':paciente_list})
+            return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'paciente_list':paciente_list})
         else:
             mensaje = data['message']
-            return render(request, 'expediente/actualizar_expediente.html', {'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
+            return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
 
 def eliminar_expediente(request, id):
     try:
@@ -112,7 +114,7 @@ def eliminar_expediente(request, id):
             else:
                 expediente = []
             mensaje = res['message']
-            context = {'expediente': expediente, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje}
             return render(request, 'expediente/buscar_expediente.html', context)     
     except:
         rsp_expediente = requests.get(url + 'expediente/') 
@@ -122,7 +124,7 @@ def eliminar_expediente(request, id):
         else:
             expediente = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'expediente': expediente, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'error': mensaje}
         return render(request, 'expediente/buscar_expediente.html', context)     
  
 def buscar_expediente(request):
@@ -139,7 +141,7 @@ def buscar_expediente(request):
                     mensaje = data['message']
                     expediente = {}
                     expediente = data['expedientes']
-                    context = {'expediente': expediente, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                     return render(request, 'expediente/buscar_expediente.html', context)
                 else:
                     response = requests.get(url2+'documento/'+valor)
@@ -148,12 +150,12 @@ def buscar_expediente(request):
                         mensaje = data['message']
                         expediente = {}
                         expediente = data['expedientes']
-                        context = {'expediente': expediente, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                         return render(request, 'expediente/buscar_expediente.html', context)
                     else:
                         expediente = []
                         mensaje = 'No se encontraron documentos'
-                        return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
+                        return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 if response.status_code == 200:
@@ -161,23 +163,23 @@ def buscar_expediente(request):
                     mensaje = data['message']
                     expediente = {}
                     expediente = data['expedientes']
-                    context = {'expediente': expediente, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                     return render(request, 'expediente/buscar_expediente.html', context)
                 else:
                     expediente = []
                     mensaje = 'No se encontraron documentos'
-                    return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
+                    return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
         else:
             response = requests.get(url+'expediente/')
             if response.status_code == 200:
                 data = response.json()
                 expediente = data['expedientes']
                 mensaje = data['message']   
-                return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
+                return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
             else:
                 expediente = []
                 mensaje = 'No se encontraron documentos'
-            return render(request, 'expediente/buscar_expediente.html', {'expediente': expediente, 'mensaje': mensaje})
+            return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
     
 def list_pacientes():
     rsp_paciente = requests.get(url+'pacientes/')

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -29,12 +30,12 @@ def crear_TipoMuestra(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje,  'registro_temp':registro_temp})
+            return render(request, 'TipoMuestra/TMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestra.html', {'mensaje': mensaje,  'registro_temp':registro_temp})
+            return render(request, 'TipoMuestra/TMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'registro_temp':registro_temp})
     else:
-        return render(request, 'TipoMuestra/TMuestra.html')
+        return render(request, 'TipoMuestra/TMuestra.html',{'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_TipoMuestra(request):
     if request.method == 'POST':
@@ -47,7 +48,7 @@ def abrir_actualizar_TipoMuestra(request):
             mensaje = data['message']
          else:
             tmuestra = []
-         context = {'tmuestra': tmuestra, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'TipoMuestra/TMuestraActualizar.html', context)
     
@@ -68,10 +69,10 @@ def actualizar_TipoMuestra(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'mensaje': mensaje,'tmuestra':tmuestra })
+            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tmuestra':tmuestra })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'mensaje': mensaje,'tmuestra':tmuestra})
+            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tmuestra':tmuestra})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tmuestra/busqueda/id/{idTemporal}')
@@ -79,10 +80,10 @@ def actualizar_TipoMuestra(request, id):
             data = response.json()
             tmuestra = data['tmuestra']
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestraActualizar.html ', {'tmuestra': tmuestra})
+            return render(request, 'TipoMuestra/TMuestraActualizar.html ', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra})
         else:
             mensaje = data['message']
-            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'mensaje': mensaje,'tmuestra':tmuestra})
+            return render(request, 'TipoMuestra/TMuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tmuestra':tmuestra})
 
 def eliminar_TipoMuestra(request, id):
     try:
@@ -97,7 +98,7 @@ def eliminar_TipoMuestra(request, id):
             else:
                 tmuestra = []
             mensaje = res['message']
-            context = {'tmuestra': tmuestra, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje': mensaje}
             return render(request, 'TipoMuestra/BuscarTMuestra.html', context)     
     except:
         rsp_tmuestra = requests.get(url + 'tmuestra/') 
@@ -107,7 +108,7 @@ def eliminar_TipoMuestra(request, id):
         else:
             tmuestra = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'tmuestra': tmuestra, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'error': mensaje}
         return render(request, 'TipoMuestra/BuscarTMuestra.html', context)     
     
 def buscar_TipoMuestra(request):
@@ -124,14 +125,13 @@ def buscar_TipoMuestra(request):
                     mensaje = data['message']
                     tmuestra = {}
                     tmuestra = data['tmuestra']
-                    context = {'tmuestra': tmuestra, 'mensaje':mensaje}
-                    print(context)
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje':mensaje}
                     return render(request, 'TipoMuestra/BuscarTMuestra.html', context) 
     
                 else:
                     tmuestra = []
                     mensaje = 'No se encontraron Tipos de Muestra'
-                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje': mensaje})
     
                       
             else:
@@ -141,12 +141,12 @@ def buscar_TipoMuestra(request):
                     mensaje = data['message']
                     tmuestra = {}
                     tmuestra = data['tmuestra']
-                    context = {'tmuestra': tmuestra, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje':mensaje}
                     return render(request, 'TipoMuestra/BuscarTMuestra.html', context)
                 else:
                     tmuestra = []
                     mensaje = 'No se encontraron Tipos de Muestra'
-                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+                    return render(request, 'TipoMuestra/BuscarTMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'tmuestra/')
@@ -154,9 +154,9 @@ def buscar_TipoMuestra(request):
                 data = response.json()
                 tmuestra = data['tmuestra']
                 mensaje = data['message']   
-                return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+                return render(request, 'TipoMuestra/BuscarTMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje': mensaje})
             else:
                 tmuestra = []
                 mensaje = 'No se encontraron Tipos de Muestra'
-            return render(request, 'TipoMuestra/BuscarTMuestra.html', {'tmuestra': tmuestra, 'mensaje': mensaje})
+            return render(request, 'TipoMuestra/BuscarTMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_tipo_muestra(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tmuestra': tmuestra, 'mensaje': mensaje})
     

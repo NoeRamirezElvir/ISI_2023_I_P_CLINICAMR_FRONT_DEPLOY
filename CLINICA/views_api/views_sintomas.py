@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -25,12 +26,12 @@ def crear_sintomas(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'sintomas/sintomas.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'sintomas/sintomas.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
-        return render(request, 'sintomas/sintomas.html')
+        return render(request, 'sintomas/sintomas.html',{'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_sintomas(request):
     if request.method == 'POST':
@@ -43,7 +44,7 @@ def abrir_actualizar_sintomas(request):
             mensaje = data['message']
          else:
             sintomas = []
-         context = {'sintomas': sintomas, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'sintomas/actualizar_sintomas.html', context)
     
@@ -61,10 +62,10 @@ def actualizar_sintomas(request, id):
         sintomas = data['sintomas']
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas })
+            return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas})
+            return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'sintomas/busqueda/id/{idTemporal}')
@@ -72,10 +73,10 @@ def actualizar_sintomas(request, id):
             data = response.json()
             sintomas = data['sintomas']
             mensaje = data['message']
-            return render(request, 'sintomas/actualizar_sintomas.html', {'sintomas': sintomas})
+            return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas})
         else:
             mensaje = data['message']
-            return render(request, 'sintomas/actualizar_sintomas.html', {'mensaje': mensaje,'sintomas':sintomas})
+            return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
 
 def eliminar_sintomas(request, id):
     try:
@@ -90,7 +91,7 @@ def eliminar_sintomas(request, id):
             else:
                 sintomas = []
             mensaje = res['message']
-            context = {'sintomas': sintomas, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje}
             return render(request, 'sintomas/buscar_sintomas.html', context)     
     except:
         rsp_cargos = requests.get(url + 'sintomas/') 
@@ -100,7 +101,7 @@ def eliminar_sintomas(request, id):
         else:
             sintomas = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'sintomas': sintomas, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'error': mensaje}
         return render(request, 'sintomas/buscar_sintomas.html', context)     
         
 def buscar_sintomas(request):
@@ -115,12 +116,12 @@ def buscar_sintomas(request):
                     mensaje = data['message']
                     sintomas = {}
                     sintomas = data['sintomas']
-                    context = {'sintomas': sintomas, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
                     return render(request, 'sintomas/buscar_sintomas.html', context)
                 else:
                     sintomas = []
                     mensaje = 'No se encontraron sintomas'
-                    return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -129,12 +130,12 @@ def buscar_sintomas(request):
                     mensaje = data['message']
                     sintomas = {}
                     sintomas = data['sintomas']
-                    context = {'sintomas': sintomas, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
                     return render(request, 'sintomas/buscar_sintomas.html', context)
                 else:
                     sintomas = []
                     mensaje = 'No se encontraron sintomas'
-                    return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
            
         else:
             response = requests.get(url+'sintomas/')
@@ -142,9 +143,9 @@ def buscar_sintomas(request):
                 data = response.json()
                 sintomas = data['sintomas']
                 mensaje = data['message']   
-                return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+                return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
             else:
                 sintomas = []
                 mensaje = 'No se encontraron sintomas'
-            return render(request, 'sintomas/buscar_sintomas.html', {'sintomas': sintomas, 'mensaje': mensaje})
+            return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
     

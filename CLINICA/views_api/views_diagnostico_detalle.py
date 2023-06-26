@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -19,9 +20,13 @@ def eliminar_diagnostico_detalle(request, id):
             else:
                 detalles = []
             mensaje = res['message']
-            context = {'detalles': detalles, 'mensaje': mensaje}
+            
+            
+            context = {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)     
     except:
+        
+        
         rsp_detalles = requests.get(url + 'diagnosticoDetalle/') 
         if rsp_detalles.status_code == 200:
             data = rsp_detalles.json()
@@ -29,50 +34,52 @@ def eliminar_diagnostico_detalle(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'detalles': detalles, 'error': mensaje}
+        context = {'detalles': detalles, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)     
     
 
 def buscar_diagnostico_detalle(request):
-        valor = request.GET.get('buscador', None)
-        url2 = url + 'diagnosticoDetalle/busqueda/'
-
-        if valor is not None and (len(valor)>0):      
-            if valor.isdigit():
-                response = requests.get(url2 + f'id/{valor}')
-                if response.status_code == 200:
-                    data = response.json()
-                    mensaje = data['message']
-                    detalles = {}
-                    detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
-                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)
-                else:
-                    detalles = []
-                    mensaje = 'No se encontrarón registros'
-                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
-            else:
-                response = requests.get(url2 + f'descripcion/{valor}')
-                if response.status_code == 200:
-                    data = response.json()
-                    mensaje = data['message']
-                    detalles = {}
-                    detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
-                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context) 
-                else:
-                    detalles = []
-                    mensaje = 'No se encontrarón registros'
-                    return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
     
-        else:
-            response = requests.get(url+'diagnosticoDetalle/')
+    
+    valor = request.GET.get('buscador', None)
+    url2 = url + 'diagnosticoDetalle/busqueda/'
+
+    if valor is not None and (len(valor)>0):      
+        if valor.isdigit():
+            response = requests.get(url2 + f'id/{valor}')
             if response.status_code == 200:
                 data = response.json()
+                mensaje = data['message']
+                detalles = {}
                 detalles = data['detalles']
-                mensaje = data['message']   
-                return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+                context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context)
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
-            return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+                return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        else:
+            response = requests.get(url2 + f'descripcion/{valor}')
+            if response.status_code == 200:
+                data = response.json()
+                mensaje = data['message']
+                detalles = {}
+                detalles = data['detalles']
+                context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', context) 
+            else:
+                detalles = []
+                mensaje = 'No se encontrarón registros'
+                return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+
+    else:
+        response = requests.get(url+'diagnosticoDetalle/')
+        if response.status_code == 200:
+            data = response.json()
+            detalles = data['detalles']
+            mensaje = data['message']   
+            return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        else:
+            detalles = []
+            mensaje = 'No se encontrarón registros'
+        return render(request, 'diagnostico_detalle/buscar_diagnostico_detalle.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})

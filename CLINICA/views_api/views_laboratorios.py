@@ -2,6 +2,8 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -28,12 +30,12 @@ def crear_laboratorios(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'Laboratorios/Laboratorios.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'Laboratorios/Laboratorios.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
-        return render(request, 'Laboratorios/Laboratorios.html')
+        return render(request, 'Laboratorios/Laboratorios.html',{'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_laboratorios(request):
     if request.method == 'POST':
@@ -46,7 +48,7 @@ def abrir_actualizar_laboratorios(request):
             mensaje = data['message']
          else:
             laboratorios = []
-         context = {'laboratorios': laboratorios, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Laboratorios/ActualizarLaboratorios.html', context)
     
@@ -68,10 +70,10 @@ def actualizar_laboratorios(request, id):
         
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'mensaje': mensaje,'laboratorios':laboratorios })
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'mensaje': mensaje,'laboratorios':laboratorios})
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'laboratorios/busqueda/id/{idTemporal}')
@@ -79,10 +81,10 @@ def actualizar_laboratorios(request, id):
             data = response.json()
             laboratorios = data['laboratorios']
             mensaje = data['message']
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'laboratorios': laboratorios})
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios})
         else:
             mensaje = data['message']
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'mensaje': mensaje,'laboratorios':laboratorios})
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
 
 def eliminar_laboratorios(request, id):
     try:
@@ -97,7 +99,7 @@ def eliminar_laboratorios(request, id):
             else:
                 laboratorios = []
             mensaje = res['message']
-            context = {'laboratorios': laboratorios, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje}
             return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
     except:
         rsp_laboratorios = requests.get(url + 'laboratorios/') 
@@ -107,7 +109,7 @@ def eliminar_laboratorios(request, id):
         else:
             laboratorios = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'laboratorios': laboratorios, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'error': mensaje}
         return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
    
 def buscar_laboratorios(request):
@@ -124,12 +126,12 @@ def buscar_laboratorios(request):
                     mensaje = data['message']
                     laboratorios = {}
                     laboratorios = data['laboratorios']
-                    context = {'laboratorios': laboratorios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
                     return render(request, 'Laboratorios/BuscarLaboratorios.html', context)  
                 else:
                     laboratorios = []
                     mensaje = 'No se encontraron laboratorios'
-                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
              
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -138,21 +140,21 @@ def buscar_laboratorios(request):
                     mensaje = data['message']
                     laboratorios = {}
                     laboratorios = data['laboratorios']
-                    context = {'laboratorios': laboratorios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
                     return render(request, 'Laboratorios/BuscarLaboratorios.html', context)
                 else:
                     laboratorios = []
                     mensaje = 'No se encontraron laboratorios'
-                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
         else:
             response = requests.get(url+'laboratorios/')
             if response.status_code == 200:
                 data = response.json()
                 laboratorios = data['laboratorios']
                 mensaje = data['message']   
-                return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
+                return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
             else:
                 laboratorios = []
                 mensaje = 'No se encontraron laboratorios'
-            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'laboratorios': laboratorios, 'mensaje': mensaje})
+            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
     

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
-
+from ..views_api.datos_reporte import DatosReportes
 
 url = 'https://clinicamr.onrender.com/api/'
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
@@ -20,7 +20,7 @@ def eliminar_precio_historico_medicamento(request, id):
             else:
                 historicos = []
             mensaje = res['message']
-            context = {'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)     
     except:
         rsp_historicos = requests.get(url + 'precioHistoricoMedicamento/') 
@@ -30,7 +30,7 @@ def eliminar_precio_historico_medicamento(request, id):
         else:
             historicos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)     
 
 def buscar_precio_historico_medicamento(request):
@@ -46,12 +46,12 @@ def buscar_precio_historico_medicamento(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)       
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
-                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -60,12 +60,12 @@ def buscar_precio_historico_medicamento(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
-                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'precioHistoricoMedicamento/')
@@ -73,8 +73,8 @@ def buscar_precio_historico_medicamento(request):
                 data = response.json()
                 historicos = data['historicos']
                 mensaje = data['message']   
-                return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón citas'
-            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})

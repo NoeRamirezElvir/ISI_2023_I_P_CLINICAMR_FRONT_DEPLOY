@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -25,12 +26,12 @@ def crear_documento(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'documentos/documento.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'documentos/documento.html')
+        return render(request, 'documentos/documento.html',{'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_documentos(request):
     if request.method == 'POST':
@@ -43,7 +44,7 @@ def abrir_actualizar_documentos(request):
             mensaje = data['message']
          else:
             documentos = []
-         context = {'documentos': documentos, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'documentos/documentoactualizar.html', context)
     
@@ -63,10 +64,10 @@ def actualizar_documento(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos })
+            return render(request, 'documentos/documentoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'documentos':documentos })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'documentos':documentos})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'documentos/busqueda/id/{idTemporal}')
@@ -74,10 +75,10 @@ def actualizar_documento(request, id):
             data = response.json()
             documentos = data['documentos']
             mensaje = data['message']
-            return render(request, 'documentos/documentoactualizar.html', {'documentos': documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos})
         else:
             mensaje = data['message']
-            return render(request, 'documentos/documentoactualizar.html', {'mensaje': mensaje,'documentos':documentos})
+            return render(request, 'documentos/documentoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'documentos':documentos})
 
 def eliminar_documento(request, id):
     try:
@@ -92,7 +93,7 @@ def eliminar_documento(request, id):
             else:
                 documentos = []
             mensaje = res['message']
-            context = {'documentos': documentos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje': mensaje}
             return render(request, 'documentos/buscarDocumento.html', context)     
     except:   
         rsp_documentos = requests.get(url + 'documentos/') 
@@ -102,7 +103,7 @@ def eliminar_documento(request, id):
         else:
             documentos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'documentos': documentos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'error': mensaje}
         return render(request, 'documentos/buscarDocumento.html', context)     
     
 def buscar_documentos(request):
@@ -119,13 +120,12 @@ def buscar_documentos(request):
                     mensaje = data['message']
                     documentos = {}
                     documentos = data['documentos']
-                    context = {'documentos': documentos, 'mensaje':mensaje}
-                    print(context)
+                    context = {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje':mensaje}
                     return render(request, 'documentos/buscarDocumento.html', context) 
                 else:
                     documentos = []
                     mensaje = 'No se encontraron documentos'
-                    return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+                    return render(request, 'documentos/buscarDocumento.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje': mensaje})
         
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -134,21 +134,21 @@ def buscar_documentos(request):
                     mensaje = data['message']
                     documentos = {}
                     documentos = data['documentos']
-                    context = {'documentos': documentos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje':mensaje}
                     return render(request, 'documentos/buscarDocumento.html', context)
                 else:
                     documentos = []
                     mensaje = 'No se encontraron documentos'
-                    return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+                    return render(request, 'documentos/buscarDocumento.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'documentos/')
             if response.status_code == 200:
                 data = response.json()
                 documentos = data['documentos']
                 mensaje = data['message']   
-                return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+                return render(request, 'documentos/buscarDocumento.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje': mensaje})
             else:
                 documentos = []
                 mensaje = 'No se encontraron documentos'
-            return render(request, 'documentos/buscarDocumento.html', {'documentos': documentos, 'mensaje': mensaje})
+            return render(request, 'documentos/buscarDocumento.html', {'reportes_lista':DatosReportes.cargar_lista_documentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'documentos': documentos, 'mensaje': mensaje})
     

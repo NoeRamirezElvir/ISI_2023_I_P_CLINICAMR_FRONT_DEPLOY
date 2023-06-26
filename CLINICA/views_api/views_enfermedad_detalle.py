@@ -3,6 +3,9 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -19,7 +22,7 @@ def eliminar_enfermedad_detalle(request, id):
             else:
                 detalles = []
             mensaje = res['message']
-            context = {'detalles': detalles, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje}
             return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)     
     except:
         rsp_detalles = requests.get(url + 'enfermedadDetalle/') 
@@ -29,7 +32,7 @@ def eliminar_enfermedad_detalle(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'detalles': detalles, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'error': mensaje}
         return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)     
 
 def buscar_enfermedad_detalle(request):
@@ -44,12 +47,12 @@ def buscar_enfermedad_detalle(request):
                     mensaje = data['message']
                     detalles = {}
                     detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
-                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -57,12 +60,12 @@ def buscar_enfermedad_detalle(request):
                     mensaje = data['message']
                     detalles = {}
                     detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)   
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
-                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
    
         else:
             response = requests.get(url+'enfermedadDetalle/')
@@ -70,8 +73,8 @@ def buscar_enfermedad_detalle(request):
                 data = response.json()
                 detalles = data['detalles']
                 mensaje = data['message']   
-                return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+                return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
-            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})

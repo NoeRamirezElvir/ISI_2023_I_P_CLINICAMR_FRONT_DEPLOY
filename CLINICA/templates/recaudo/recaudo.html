@@ -5,6 +5,13 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/recaudo_modal.css' %}">
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar Excel</button>
+  <button id="exportBtn">Exportar PDF</button>
+</div>
+<script src="{% static 'js/js_reportes/rpt_recaudo.js' %}"></script>
 <div class="contenedor">
     <div class="wrapper animated bounceInLeft">
       <div class="info-empresa">

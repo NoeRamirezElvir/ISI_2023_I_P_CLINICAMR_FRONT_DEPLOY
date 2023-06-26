@@ -4,6 +4,13 @@
 {% block tittle %}IMPUESTOS{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar Excel</button>
+  <button id="exportBtn">Exportar PDF</button>
+</div>
+<script src="{% static 'js/js_reportes/rpt_impuesto.js' %}"></script>
 <div class="contenedor-listar-campos">
   <h1 class="h1-listar">Registros de Impuestos</h1>
   <div class="busqueda-listar">

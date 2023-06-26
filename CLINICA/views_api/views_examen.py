@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -32,12 +33,12 @@ def crear_examenes(request):
         data = response.json()
         if response.status_code == 200:
             mensaje = data['message']
-            return render(request, 'examen/examen.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             mensaje = data['message']
-            return render(request, 'examen/examen.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
     else:
-        return render(request, 'examen/examen.html', {'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+        return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
     
 def abrir_actualizar_examenes(request):
     muestras_list = list_muestras()
@@ -52,7 +53,7 @@ def abrir_actualizar_examenes(request):
             mensaje = data['message']
          else:
             examenes = []
-         context = {'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
+         context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
          mensaje = data['message']
          return render(request, 'examen/actualizar_examen.html', context)
     
@@ -78,10 +79,10 @@ def actualizar_examenes(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'examen/actualizar_examen.html', {'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'examen/actualizar_examen.html', {'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'examen/busqueda/id/{idTemporal}')
@@ -89,10 +90,10 @@ def actualizar_examenes(request, id):
         if response.status_code == 200:
             examenes = data['examenes']
             mensaje = data['message']
-            return render(request, 'examen/actualizar_examen.html', {'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             mensaje = data['message']
-            return render(request, 'examen/actualizar_examen.html', {'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
 
 def eliminar_examenes(request, id):
     try:
@@ -107,7 +108,7 @@ def eliminar_examenes(request, id):
             else:
                 examenes = []
             mensaje = res['message']
-            context = {'examenes': examenes, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje}
             return render(request, 'examen/buscar_examen.html', context) 
     except:
         rsp_examenes = requests.get(url + 'examen/') 
@@ -117,7 +118,7 @@ def eliminar_examenes(request, id):
         else:
             examenes = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'examenes': examenes, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'error': mensaje}
         return render(request, 'examen/buscar_examen.html', context) 
 
     
@@ -134,7 +135,7 @@ def buscar_examenes(request):
                     mensaje = data['message']
                     examenes = {}
                     examenes = data['examenes']
-                    context = {'examenes': examenes, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                     return render(request, 'examen/buscar_examen.html', context)
                 else:        
                     response = requests.get(url2+'documento/'+valor)
@@ -143,12 +144,12 @@ def buscar_examenes(request):
                         mensaje = data['message']
                         examenes = {}
                         examenes = data['examenes']
-                        context = {'examenes': examenes, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
                     else:
                         examenes = []
                         mensaje = 'No se encontraron muestras'
-                        return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
+                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()
@@ -157,7 +158,7 @@ def buscar_examenes(request):
                     mensaje = data['message']
                     examenes = {}
                     examenes = data['examenes']
-                    context = {'examenes': examenes, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                     return render(request, 'examen/buscar_examen.html', context)
                 else:        
                     response = requests.get(url2+'nombre/'+valor)
@@ -166,23 +167,23 @@ def buscar_examenes(request):
                         mensaje = data['message']
                         examenes = {}
                         examenes = data['examenes']
-                        context = {'examenes': examenes, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
                     else:
                         examenes = []
                         mensaje = 'No se encontraron muestras'
-                        return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
+                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
         else:
             response = requests.get(url+'examen/')
             if response.status_code == 200:
                 data = response.json()
                 examenes = data['examenes']
                 mensaje = data['message']   
-                return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
+                return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
             else:
                 examenes = []
                 mensaje = 'No se encontraron muestras'
-            return render(request, 'examen/buscar_examen.html', {'examenes': examenes, 'mensaje': mensaje})
+            return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
 
 def list_tipos():
     rsp_tipo = requests.get(url+'tipo/busqueda/subtipo/examen')

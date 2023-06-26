@@ -26,8 +26,8 @@ def crear_citas(request):
             pacientes_list = data['pacientes']
     else:
             pacientes_list = []
-    reportes_lista = DatosReportes.cargar_lista_citas()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
         idPaciente = int(request.POST['idPaciente'])
         fechaActual= request.POST ['fechaActual']
@@ -42,17 +42,17 @@ def crear_citas(request):
         pacientedata = response.json()
         if response.status_code == 200:
             mensaje = pacientedata['message']
-            return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = pacientedata['message']
-            return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'citas/cita.html', { 'paciente_list': pacientes_list,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+        return render(request, 'citas/cita.html', { 'paciente_list': pacientes_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_citas(request):
-    reportes_lista = DatosReportes.cargar_lista_citas()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     rsp_paciente = requests.get(url+'pacientes/')
     if rsp_paciente.status_code == 200:
             data = rsp_paciente.json()
@@ -69,13 +69,13 @@ def abrir_actualizar_citas(request):
             mensaje = data['message']
          else:
             citas = []
-         context = {'citas': citas,'paciente_list': paciente_list, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+         context = {'citas': citas,'paciente_list': paciente_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'citas/cita_actualizar.html', context)   
     
 def actualizar_citas(request, id):
-    reportes_lista = DatosReportes.cargar_lista_citas()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     rsp_paciente = requests.get(url+'pacientes/')
     if rsp_paciente.status_code == 200:
             data = rsp_paciente.json()
@@ -98,10 +98,10 @@ def actualizar_citas(request, id):
         citas = data['citas']
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         idTemporal = id
         response = requests.get(url+f'citas/busqueda/id/{idTemporal}')
@@ -109,14 +109,12 @@ def actualizar_citas(request, id):
             data = response.json()
             citas = data['citas']
             mensaje = data['message']
-            return render(request, 'citas/cita_actualizar.html', {'citas': citas, 'paciente_list':paciente_list,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita_actualizar.html', {'citas': citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_citas(request, id):
-    reportes_lista = DatosReportes.cargar_lista_citas()
-    reportes_usuarios = DatosReportes.cargar_usuario()
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -129,7 +127,9 @@ def eliminar_citas(request, id):
             else:
                 citas = []
             mensaje = res['message']
-            context = {'citas': citas, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+            
+            
+            context = {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'citas/cita_buscar.html', context)     
     except:
         rsp_pacientes = requests.get(url + 'citas/') 
@@ -138,13 +138,15 @@ def eliminar_citas(request, id):
             citas = data['citas']
         else:
             citas = []
+        
+        
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'citas': citas, 'error': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+        context = {'citas': citas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'citas/cita_buscar.html', context) 
 
 def buscar_citas(request):
-        reportes_lista = DatosReportes.cargar_lista_citas()
-        reportes_usuarios = DatosReportes.cargar_usuario()
+        
+        
         valor = request.GET.get('buscador', None)
         url2 = url + 'citas/busqueda/'
 
@@ -158,7 +160,7 @@ def buscar_citas(request):
                     mensaje = data['message']
                     citas = {}
                     citas = data['citas']
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)
                 
                 else:
@@ -168,12 +170,12 @@ def buscar_citas(request):
                         mensaje = data['message']
                         citas = {}
                         citas = data['citas']
-                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'citas/cita_buscar.html', context)
                     else:
                         citas = []
                         mensaje = 'No se encontrarón citas'
-                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'citas/cita_buscar.html', context)  
             else:
                 response = requests.get(url2+f'documento/{valor}')
@@ -182,12 +184,12 @@ def buscar_citas(request):
                     mensaje = data['message']
                     citas = {}
                     citas = data['citas']
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)
                 else:
                     citas = []
                     mensaje = 'No se encontrarón citas'
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)  
         else:
             response = requests.get(url+'citas/')
@@ -195,11 +197,11 @@ def buscar_citas(request):
                 data = response.json()
                 citas = data['citas']
                 mensaje = data['message']   
-                return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+                return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 citas = []
                 mensaje = 'No se encontrarón citas'
-            return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_calendario(request):
     response = requests.get(url+'citas/')

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -44,16 +45,16 @@ def crear_traslados(request):
         data = response.json()
         if response.status_code == 200:
             mensaje = data['message']
-            return render(request, 'Traslados/traslado.html', {'mensaje': mensaje, 
+            return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 
                                                                'registro_temp':registro_temp,
                                                                'autorizacion_list':autorizacion_list, 
                                                                'pacientes_list':pacientes_list, 
                                                                'empleado_list':empleado_list})
         else:
             mensaje = data['message']
-            return render(request, 'Traslados/traslado.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'autorizacion_list':autorizacion_list, 'pacientes_list':pacientes_list, 'empleado_list':empleado_list})
+            return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'autorizacion_list':autorizacion_list, 'pacientes_list':pacientes_list, 'empleado_list':empleado_list})
     else:
-        return render(request, 'Traslados/traslado.html', {'autorizacion_list':autorizacion_list, 
+        return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'autorizacion_list':autorizacion_list, 
                                                           'pacientes_list':pacientes_list, 
                                                           'empleado_list':empleado_list})
     
@@ -75,7 +76,7 @@ def abrir_actualizar_traslados(request):
             mensaje = data['message']
          else:
             traslados = []
-         context = {'traslados': traslados, 'mensaje':mensaje,
+         context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje,
                                             'autorizacion_list':autorizacion_list,
                                             'pacientes_list':pacientes_list,
                                             'empleado_list':empleado_list                                          
@@ -111,14 +112,14 @@ def actualizar_traslados(request, id):
         
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Traslados/actualizar_traslado.html', {'mensaje': mensaje,'traslados':traslados,
+            return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                              'autorizacion_list':autorizacion_list,
                                                                                              'pacientes_list':pacientes_list,
                                                                                              'empleado_list':empleado_list                                          
                                                                                                 })
         else:                                                   
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Traslados/actualizar_traslado.html', {'mensaje': mensaje,'traslados':traslados,
+            return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                              'autorizacion_list':autorizacion_list,
                                                                                              'pacientes_list':pacientes_list,
                                                                                              'empleado_list':empleado_list })
@@ -129,13 +130,13 @@ def actualizar_traslados(request, id):
         if response.status_code == 200:
             traslados = data['traslados']
             mensaje = data['message']
-            return render(request, 'Traslados/actualizar_traslado.html', {'traslados':traslados,
+            return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados':traslados,
                                                                                              'autorizacion_list':autorizacion_list,
                                                                                              'pacientes_list':pacientes_list,
                                                                                              'empleado_list':empleado_list})
         else:
             mensaje = data['message']
-            return render(request, 'Traslados/actualizar_traslado.html', {'mensaje': mensaje,'traslados':traslados,
+            return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                              'autorizacion_list':autorizacion_list,
                                                                                              'pacientes_list':pacientes_list,
                                                                                              'empleado_list':empleado_list })
@@ -153,7 +154,7 @@ def eliminar_traslados(request, id):
             else:
                 traslados = []
             mensaje = res['message']
-            context = {'traslados': traslados, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje}
             return render(request, 'Traslados/buscar_traslado.html', context)     
     except:
         rsp_traslados = requests.get(url + 'traslados/') 
@@ -163,7 +164,7 @@ def eliminar_traslados(request, id):
         else:
             traslados = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'traslados': traslados, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'error': mensaje}
         return render(request, 'Traslados/buscar_traslado.html', context)     
      
 def buscar_traslados(request):
@@ -179,7 +180,7 @@ def buscar_traslados(request):
                     mensaje = data['message']
                     traslados = {}
                     traslados = data['traslados']
-                    context = {'traslados': traslados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
                     return render(request, 'Traslados/buscar_traslado.html', context)
                 
             else:        
@@ -189,12 +190,12 @@ def buscar_traslados(request):
                     mensaje = data['message']
                     traslados = {}
                     traslados = data['traslados']
-                    context = {'traslados': traslados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
                     return render(request, 'Traslados/buscar_traslado.html', context)
                 else:
                     traslados = []
                     mensaje = 'No se encontraron muestras'
-                    return render(request, 'Traslados/buscar_traslado.html', {'traslados': traslados, 'mensaje': mensaje})
+                    return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'traslados/')
@@ -202,12 +203,12 @@ def buscar_traslados(request):
                 data = response.json()
                 traslados = data['traslados']
                 mensaje = data['message']   
-                return render(request, 'Traslados/buscar_traslado.html', {'traslados': traslados, 'mensaje': mensaje})
+                return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
             
             else:
                 traslados = []
                 mensaje = 'No se encontraron traslados'
-            return render(request, 'Traslados/buscar_traslado.html', {'traslados': traslados, 'mensaje': mensaje})
+            return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
 
 
 def list_autorizacion():

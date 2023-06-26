@@ -3,6 +3,14 @@
 
 {% block tittle %}Registro de Laboratorios{% endblock %}
 {% block content %}
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar Excel</button>
+  <button id="exportBtn">Exportar PDF</button>
+</div>
+<script src="{% static 'js/js_reportes/rpt_laboratorio.js' %}"></script>
+
 <div class="contenedor">
   <h1 class="logo"><span class="nombre-empresa">Laboratorios Medical Rescue</span></h1>
   <div class="wrapper animated bounceInLeft">

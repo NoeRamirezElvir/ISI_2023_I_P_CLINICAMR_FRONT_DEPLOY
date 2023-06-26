@@ -2,6 +2,8 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -29,12 +31,12 @@ def crear_metodos_De_pago(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'MetodoDePago/MetodoDePago.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'MetodoDePago/MetodoDePago.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
-        return render(request, 'MetodoDePago/MetodoDePago.html')
+        return render(request, 'MetodoDePago/MetodoDePago.html',{'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_metodos_De_pago(request):
     if request.method == 'POST':
@@ -47,7 +49,7 @@ def abrir_actualizar_metodos_De_pago(request):
             mensaje = data['message']
          else:
             metodop = []
-         context = {'metodop': metodop, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', context)
     
@@ -68,10 +70,10 @@ def actualizar_metodos_De_pago(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'mensaje': mensaje,'metodop':metodop })
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'mensaje': mensaje,'metodop':metodop})
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'metodop/busqueda/id/{idTemporal}')
@@ -79,10 +81,10 @@ def actualizar_metodos_De_pago(request, id):
             data = response.json()
             metodop = data['metodop']
             mensaje = data['message']
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'metodop': metodop})
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop})
         else:
             mensaje = data['message']
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'mensaje': mensaje,'metodop':metodop})
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
 
 def eliminar_metodos_De_pago(request, id):
     try:
@@ -97,7 +99,7 @@ def eliminar_metodos_De_pago(request, id):
             else:
                 metodop = []
             mensaje = res['message']
-            context = {'metodop': metodop, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje}
             return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
     except:
         rsp_metodop = requests.get(url + 'metodop/') 
@@ -107,7 +109,7 @@ def eliminar_metodos_De_pago(request, id):
         else:
             metodop = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'metodop': metodop, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'error': mensaje}
         return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
 
 
@@ -125,12 +127,12 @@ def buscar_metodos_De_pago(request):
                     mensaje = data['message']
                     metodop = {}
                     metodop = data['metodop']
-                    context = {'metodop': metodop, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
                     return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
                 else:
                     metodop = []
                     mensaje = 'No se encontraron Metodos de pago'
-                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -139,12 +141,12 @@ def buscar_metodos_De_pago(request):
                     mensaje = data['message']
                     metodop = {}
                     metodop = data['metodop']
-                    context = {'metodop': metodop, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
                     return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
                 else:
                     metodop = []
                     mensaje = 'No se encontraron Metodos de pago'
-                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'metodop/')
@@ -152,9 +154,9 @@ def buscar_metodos_De_pago(request):
                 data = response.json()
                 metodop = data['metodop']
                 mensaje = data['message']   
-                return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+                return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
             else:
                 metodop = []
                 mensaje = 'No se encontraron Metodos de pago'
-            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'metodop': metodop, 'mensaje': mensaje})
+            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
     

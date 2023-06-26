@@ -3,6 +3,8 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -20,6 +22,8 @@ def listar_diagnosticos(request):
 def crear_diagnosticos(request):
     #Se cargan las listas para los SELECT
     enfermedades = list_enfermedades()
+    
+    
     if request.method == 'POST':
         descripcion = request.POST['descripcion']
         valores_seleccionados_json = request.POST['valoresSeleccionados']
@@ -48,16 +52,18 @@ def crear_diagnosticos(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'diagnostico/diagnostico.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'enfermedades':enfermedades})
+            return render(request, 'diagnostico/diagnostico.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             data = response.json()
             mensaje = data['message']
-        return render(request, 'diagnostico/diagnostico.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'enfermedades':enfermedades})
+        return render(request, 'diagnostico/diagnostico.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades})
+        return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def abrir_actualizar_diagnosticos(request):
     #Se cargan las listas para los SELECT
+    
+    
     enfermedades = list_enfermedades()
     if request.method == 'POST':
          resp = requests.get(url+'diagnostico/busqueda/id/'+str(request.POST['id_diagnostico']))
@@ -77,12 +83,14 @@ def abrir_actualizar_diagnosticos(request):
             registro_temp = {'id':id, 'descripcion': descripcion, 'lista': ids_Enfermedades}
          else:
             registro_temp = {}
-         context = {'registro_temp': registro_temp,'enfermedades': enfermedades, 'mensaje':mensaje}
+         context = {'registro_temp': registro_temp,'enfermedades': enfermedades, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'diagnostico/Actualizar_diagnostico.html', context)   
 
 def actualizar_diagnosticos(request, id):
     #Se cargan las listas para los SELECT
+    
+    
     enfermedades = list_enfermedades()
     if request.method == 'POST':
         idTemporal = id
@@ -124,10 +132,10 @@ def actualizar_diagnosticos(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades})
+            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades})
+            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'diagnostico/busqueda/id/{idTemporal}')
@@ -142,59 +150,63 @@ def actualizar_diagnosticos(request, id):
 
             # crear un diccionario con los datos deseados
             registro_temp = {'id':id_diagnosticos, 'descripcion': descripcion, 'lista': ids_enfermedades}
-            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'registro_temp': registro_temp, 'enfermedades':enfermedades})
+            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'registro_temp': registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades})
+            return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 
 def buscar_diagnosticos(request):
-        valor = request.GET.get('buscador', None)
-        url2 = url + 'diagnostico/busqueda/'
-        if valor is not None and (len(valor)>0):
-            if valor.isdigit():
-                id = int(valor)
-                response = requests.get(url2 + f'id/{id}')
-                if response.status_code == 200:
-                    data = response.json()
-                    mensaje = data['message']
-                    diagnostico = {}
-                    diagnostico = data['diagnosticos']
-                    context = {'diagnostico': diagnostico, 'mensaje':mensaje}
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', context) 
-                else:
-                    diagnostico = []
-                    mensaje = 'No se encontraron registros'
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje})
-      
-            else:
-                response = requests.get(url2+'descripcion/'+valor)
-                if response.status_code == 200:
-                    data = response.json()
-                    mensaje = data['message']
-                    diagnostico = {}
-                    diagnostico = data['diagnosticos']
-                    context = {'diagnostico': diagnostico, 'mensaje':mensaje}
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', context)
-                else:
-                    diagnostico = []
-                    mensaje = 'No se encontraron registros'
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje})
-        else:
-            response = requests.get(url+'diagnostico/')
+    
+    
+    valor = request.GET.get('buscador', None)
+    url2 = url + 'diagnostico/busqueda/'
+    if valor is not None and (len(valor)>0):
+        if valor.isdigit():
+            id = int(valor)
+            response = requests.get(url2 + f'id/{id}')
             if response.status_code == 200:
                 data = response.json()
+                mensaje = data['message']
+                diagnostico = {}
                 diagnostico = data['diagnosticos']
-                
-                mensaje = data['message']   
-                return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje})
+                context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                return render(request, 'diagnostico/Buscar_diagnostico.html', context) 
             else:
                 diagnostico = []
                 mensaje = 'No se encontraron registros'
-            return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje})
+                return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+    
+        else:
+            response = requests.get(url2+'descripcion/'+valor)
+            if response.status_code == 200:
+                data = response.json()
+                mensaje = data['message']
+                diagnostico = {}
+                diagnostico = data['diagnosticos']
+                context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                return render(request, 'diagnostico/Buscar_diagnostico.html', context)
+            else:
+                diagnostico = []
+                mensaje = 'No se encontraron registros'
+                return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+    else:
+        response = requests.get(url+'diagnostico/')
+        if response.status_code == 200:
+            data = response.json()
+            diagnostico = data['diagnosticos']
+            
+            mensaje = data['message']   
+            return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        else:
+            diagnostico = []
+            mensaje = 'No se encontraron registros'
+        return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
-def eliminar_diagnosticos(request, id):  
+def eliminar_diagnosticos(request, id):
+    
+      
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -205,11 +217,11 @@ def eliminar_diagnosticos(request, id):
             if rsp_diagnostico.status_code == 200:
                 data = rsp_diagnostico.json()
                 diagnostico = data['diagnosticos']
-                context = {'diagnostico': diagnostico}
+                context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             else:
                 diagnostico = []
                 mensaje = res['message']
-                context = {'diagnostico': diagnostico, 'mensaje': mensaje}
+                context = {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'diagnostico/Buscar_diagnostico.html', context) 
     except:
         rsp_diagnostico = requests.get(url + 'diagnostico/') 
@@ -217,16 +229,12 @@ def eliminar_diagnosticos(request, id):
         if  rsp_diagnostico.status_code == 200:
             data = rsp_diagnostico.json()
             diagnostico = data['diagnosticos']
-            context = {'diagnostico': diagnostico}
+            context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         else:
             diagnostico = []
         mensaje = 'No se puede eliminar, esta siendo utilizando en otros registros'
-        context = {'diagnostico': diagnostico, 'error': mensaje}
+        context = {'diagnostico': diagnostico, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'diagnostico/Buscar_diagnostico.html', context)
-
-
-
-
 
 
 def list_enfermedades():

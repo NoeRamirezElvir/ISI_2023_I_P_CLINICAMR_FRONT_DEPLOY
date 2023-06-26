@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -25,12 +26,12 @@ def crear_parametros_generales(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'parametros_generales/parametros_generales.html', {'mensaje': mensaje, 'parametrosgenerales': registro_temp})
+            return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'parametros_generales/parametros_generales.html', {'mensaje': mensaje, 'parametrosgenerales': registro_temp})
+            return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
     else:
-        return render(request, 'parametros_generales/parametros_generales.html')
+        return render(request, 'parametros_generales/parametros_generales.html',{'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_parametros_generales(request):
     if request.method == 'POST':
@@ -43,7 +44,7 @@ def abrir_actualizar_parametros_generales(request):
             mensaje = data['message']
          else:
             parametrosgenerales = []
-         context = {'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'parametros_generales/Actualizar_parametros_generales.html', context)
     
@@ -64,10 +65,10 @@ def actualizar_parametros_generales(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'mensaje': mensaje,'parametrosgenerales':parametrosgenerales })
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'parametrosgenerales/busqueda/id/{idTemporal}')
@@ -75,10 +76,10 @@ def actualizar_parametros_generales(request, id):
             data = response.json()
             parametrosgenerales = data['parametrosgenerales']
             mensaje = data['message']
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales})
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales})
         else:
             mensaje = data['message']
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
 
 def eliminar_parametros_generales(request, id):
     try:
@@ -93,7 +94,7 @@ def eliminar_parametros_generales(request, id):
             else:
                 parametrosgenerales = []
             mensaje = res['message']
-            context = {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
             return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
     except:
         rsp_parametrosgenerales = requests.get(url + 'parametrosgenerales/') 
@@ -103,7 +104,7 @@ def eliminar_parametros_generales(request, id):
         else:
             parametrosgenerales = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'parametrosgenerales': parametrosgenerales, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'error': mensaje}
         return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
         
 def buscar_parametros_generales(request):
@@ -118,12 +119,12 @@ def buscar_parametros_generales(request):
                     mensaje = data['message']
                     parametrosgenerales = {}
                     parametrosgenerales = data['parametrosgenerales']
-                    context = {'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)       
                 else:
                     parametrosgenerales = []
                     mensaje = 'No se encontraron parametros generales'
-                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -132,12 +133,12 @@ def buscar_parametros_generales(request):
                     mensaje = data['message']
                     parametrosgenerales = {}
                     parametrosgenerales = data['parametrosgenerales']
-                    context = {'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)
                 else:
                     parametrosgenerales = []
                     mensaje = 'No se encontraron parametros generales'
-                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
       
         else:
             response = requests.get(url+'parametrosgenerales/')
@@ -145,9 +146,9 @@ def buscar_parametros_generales(request):
                 data = response.json()
                 parametrosgenerales = data['parametrosgenerales']
                 mensaje = data['message']   
-                return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
             else:
                 parametrosgenerales = []
                 mensaje = 'No se encontraron parametros generales'
-            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
       

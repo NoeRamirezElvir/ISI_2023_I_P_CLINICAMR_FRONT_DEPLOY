@@ -2,6 +2,8 @@ from decimal import Decimal
 from django.http import HttpResponse
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -55,7 +57,9 @@ def crear_medicamentos(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'medicamentos/medicamentos.html', {'mensaje': mensaje, 
+            return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                      'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                      'mensaje': mensaje, 
                                                                       'registro_temp': registro_temp,
                                                                       'tipos':tipos,
                                                                       'proveedores':proveedores,
@@ -63,15 +67,19 @@ def crear_medicamentos(request):
         else:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'medicamentos/medicamentos.html', {'mensaje': mensaje, 
+            return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                      'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                      'mensaje': mensaje, 
                                                                       'registro_temp': registro_temp,
                                                                       'tipos':tipos,
                                                                       'proveedores':proveedores,
                                                                       'impuestos':impuestos})
     else:
-        return render(request, 'medicamentos/medicamentos.html',{'tipos':tipos,
-                                                                'proveedores':proveedores,
-                                                                'impuestos':impuestos})
+        return render(request, 'medicamentos/medicamentos.html',{'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                 'tipos':tipos,
+                                                                 'proveedores':proveedores,
+                                                                 'impuestos':impuestos})
     
 def abrir_actualizar_medicamentos(request):
     tipos = list_tipos()
@@ -87,7 +95,7 @@ def abrir_actualizar_medicamentos(request):
             mensaje = data['message']
          else:
             medicamentos = []
-         context = {'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'medicamentos/actualizar_medicamentos.html', context)
     
@@ -124,14 +132,18 @@ def actualizar_medicamentos(request, id):
         medicamentos = data['medicamentos']
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'medicamentos/actualizar_medicamentos.html', {'mensaje': mensaje,
+            return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                                 'mensaje': mensaje,
                                                                                  'medicamentos':medicamentos,
                                                                                  'tipos':tipos,
                                                                                  'proveedores':proveedores,
                                                                                  'impuestos':impuestos})
         else:
             mensaje = rsp['message']                           
-            return render(request, 'medicamentos/actualizar_medicamentos.html', {'mensaje': mensaje,
+            return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                                 'mensaje': mensaje,
                                                                                  'medicamentos':medicamentos,
                                                                                  'tipos':tipos,
                                                                                  'proveedores':proveedores,
@@ -142,14 +154,18 @@ def actualizar_medicamentos(request, id):
             data = response.json()
             medicamentos = data['medicamentos']
             mensaje = data['message']
-            return render(request, 'medicamentos/actualizar_medicamentos.html', {'mensaje': mensaje,
+            return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                                 'mensaje': mensaje,
                                                                                  'medicamentos':medicamentos,
                                                                                  'tipos':tipos,
                                                                                  'proveedores':proveedores,
                                                                                  'impuestos':impuestos})
         else:
             mensaje = data['message']
-            return render(request, 'medicamentos/actualizar_medicamentos.html', {'mensaje': mensaje,
+            return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
+                                                                                 'mensaje': mensaje,
                                                                                  'medicamentos':medicamentos,
                                                                                  'tipos':tipos,
                                                                                  'proveedores':proveedores,
@@ -166,11 +182,11 @@ def eliminar_medicamentos(request, id):
             if rsp_medicamentos.status_code == 200:
                 data = rsp_medicamentos.json()
                 medicamentos = data['medicamentos']
-                context = {'medicamentos': medicamentos}
+                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
             else:
                 medicamentos = []
                 mensaje = res['message']
-                context = {'medicamentos': medicamentos, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje}
             return render(request, 'medicamentos/buscar_medicamentos.html', context) 
     except:
         rsp_medicamentos = requests.get(url + 'medicamentos/') 
@@ -178,11 +194,11 @@ def eliminar_medicamentos(request, id):
         if  rsp_medicamentos.status_code == 200:
             data = rsp_medicamentos.json()
             medicamentos = data['medicamentos']
-            context = {'medicamentos': medicamentos}
+            context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
         else:
             medicamentos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'medicamentos': medicamentos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'error': mensaje}
         return render(request, 'medicamentos/buscar_medicamentos.html', context)
     
 def buscar_medicamentos(request):
@@ -198,12 +214,12 @@ def buscar_medicamentos(request):
                     mensaje = data['message']
                     medicamentos = {}
                     medicamentos = data['medicamentos']
-                    context = {'medicamentos': medicamentos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
                     return render(request, 'medicamentos/buscar_medicamentos.html', context)    
                 else:
                     medicamentos = []
                     mensaje = 'No se encontraron registros'
-                    return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
        
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -212,12 +228,12 @@ def buscar_medicamentos(request):
                     mensaje = data['message']
                     medicamentos = {}
                     medicamentos = data['medicamentos']
-                    context = {'medicamentos': medicamentos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
                     return render(request, 'medicamentos/buscar_medicamentos.html', context)
                 else:
                     medicamentos = []
                     mensaje = 'No se encontraron registros'
-                    return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'medicamentos/')
@@ -225,11 +241,11 @@ def buscar_medicamentos(request):
                 data = response.json()
                 medicamentos = data['medicamentos']
                 mensaje = data['message']   
-                return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+                return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
             else:
                 medicamentos = []
                 mensaje = 'No se encontraron registros'
-            return render(request, 'medicamentos/buscar_medicamentos.html', {'medicamentos': medicamentos, 'mensaje': mensaje})
+            return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
     
 def list_tipos():
     rsp_tipo = requests.get(url+'tipo/busqueda/subtipo/medicamento')

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import requests
-
+from ..views_api.datos_reporte import DatosReportes
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_correlativo(request):
@@ -15,6 +15,8 @@ def listar_correlativo(request):
     return render(request, 'correlativo/buscar_correlativo.html', context)
 
 def crear_correlativo(request):
+    
+    
     if request.method == 'POST':
         cai = request.POST['cai']
         rangoInicial = int(request.POST['rangoInicial'])
@@ -38,14 +40,16 @@ def crear_correlativo(request):
         if response.status_code == 200:
         
             mensaje = data['message']
-            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'correlativo/correlativo.html')
+        return render(request, 'correlativo/correlativo.html',{'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_correlativo(request):
+    
+    
     if request.method == 'POST':
          print(request.POST['id_correlativo'])
          resp = requests.get(url+'correlativo/busqueda/id/'+str(request.POST['id_correlativo']))
@@ -57,11 +61,13 @@ def abrir_actualizar_correlativo(request):
             mensaje = data['message']
          else:
             correlativo = []
-         context = {'correlativo': correlativo, 'mensaje':mensaje}
+         context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'correlativo/actualizar_correlativo.html', context)
     
 def actualizar_correlativo(request, id):
+    
+    
     if request.method == 'POST':
         idTemporal = id
         cai = request.POST['cai']
@@ -87,10 +93,10 @@ def actualizar_correlativo(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo })
+            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo ,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo})
+            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'correlativo/busqueda/id/{idTemporal}')
@@ -98,12 +104,14 @@ def actualizar_correlativo(request, id):
             data = response.json()
             correlativo = data['correlativo']
             mensaje = data['message']
-            return render(request, 'correlativo/actualizar_correlativo.html', {'correlativo':correlativo})
+            return render(request, 'correlativo/actualizar_correlativo.html', {'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo})
+            return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_correlativo(request, id):
+    
+    
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -116,7 +124,7 @@ def eliminar_correlativo(request, id):
             else:
                 correlativo = []
             mensaje = res['message']
-            context = {'correlativo': correlativo, 'mensaje': mensaje}
+            context = {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'correlativo/buscar_correlativo.html', context)     
     except:
         rsp_correlativo = requests.get(url + 'correlativo/') 
@@ -126,10 +134,12 @@ def eliminar_correlativo(request, id):
         else:
             correlativo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'correlativo': correlativo, 'error': mensaje}
+        context = {'correlativo': correlativo, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'correlativo/buscar_correlativo.html', context)     
          
 def buscar_correlativo(request):
+        
+        
         valor = request.GET.get('buscador', None)
         url2 = url + 'correlativo/busqueda/'
 
@@ -143,12 +153,12 @@ def buscar_correlativo(request):
                     mensaje = data['message']
                     correlativo = {}
                     correlativo = data['correlativo']
-                    context = {'correlativo': correlativo, 'mensaje':mensaje}
+                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'correlativo/buscar_correlativo.html', context)
                 else:
                     correlativo = []
                     mensaje = 'No se encontraron correlativos'
-                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
           
             else:
                 response = requests.get(url2+'cai/'+valor)
@@ -157,12 +167,12 @@ def buscar_correlativo(request):
                     mensaje = data['message']
                     correlativo = {}
                     correlativo = data['correlativo']
-                    context = {'correlativo': correlativo, 'mensaje':mensaje}
+                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'correlativo/buscar_correlativo.html', context)
                 else:
                     correlativo = []
                     mensaje = 'No se encontraron correlativos'
-                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
         else:
             response = requests.get(url+'correlativo/')
@@ -170,9 +180,9 @@ def buscar_correlativo(request):
                 data = response.json()
                 correlativo = data['correlativo']
                 mensaje = data['message']   
-                return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+                return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 correlativo = []
                 mensaje = 'No se encontraron correlativos'
-            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje})
+            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

@@ -16,8 +16,8 @@ def listar_autorizacion(request):
     return render(request, 'Autorizacion/Autorizar.html', context)
 
 def crear_autorizacion(request):
-    reportes_lista = DatosReportes.cargar_lista_autorizacion()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
         motivos = request.POST['motivos']        
         confirmacion = int(request.POST['payment_method'])
@@ -28,16 +28,16 @@ def crear_autorizacion(request):
         data = response.json()
         if response.status_code == 200:
             mensaje = data['message']
-            return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+        return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_autorizacion(request):
-    reportes_lista = DatosReportes.cargar_lista_autorizacion()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
          resp = requests.get(url+'autorizar/busqueda/id/'+str(request.POST['id_autorizar']))
          data = resp.json()
@@ -48,13 +48,13 @@ def abrir_actualizar_autorizacion(request):
             mensaje = data['message']
          else:
             autorizar = []
-         context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+         context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'Autorizacion/Autorizaractualizar.html', context)
     
 def actualizar_autorizacion(request, id):
-    reportes_lista = DatosReportes.cargar_lista_autorizacion()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
         idTemporal = id
         motivos = request.POST['motivos']
@@ -71,10 +71,10 @@ def actualizar_autorizacion(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar ,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar ,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'autorizar/busqueda/id/{idTemporal}')
@@ -82,14 +82,12 @@ def actualizar_autorizacion(request, id):
         if response.status_code == 200:
             autorizar = data['autorizar']
             mensaje = data['message']
-            return render(request, 'Autorizacion/Autorizaractualizar.html', {'autorizar': autorizar,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizaractualizar.html', {'autorizar': autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_autorizacion(request, id):
-    reportes_lista = DatosReportes.cargar_lista_autorizacion()
-    reportes_usuarios = DatosReportes.cargar_usuario()
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -102,9 +100,13 @@ def eliminar_autorizacion(request, id):
             else:
                 autorizar = []
             mensaje = res['message']
-            context = {'autorizar': autorizar, 'error': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+            
+            
+            context = {'autorizar': autorizar, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'Autorizacion/buscarAutorizar.html', context)
     except:
+        
+        
         rsp_autorizar = requests.get(url + 'autorizar/') 
         if rsp_autorizar.status_code == 200:
             data = rsp_autorizar.json()
@@ -112,12 +114,12 @@ def eliminar_autorizacion(request, id):
         else:
             autorizar = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+        context = {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Autorizacion/buscarAutorizar.html', context)     
     
 def buscar_autorizacion(request):
-        reportes_lista = DatosReportes.cargar_lista_autorizacion()
-        reportes_usuarios = DatosReportes.cargar_usuario()
+        
+        
         valor = request.GET.get('buscador', None)
         url2 = url + 'autorizar/busqueda/'
 
@@ -131,12 +133,12 @@ def buscar_autorizacion(request):
                     mensaje = data['message']
                     autorizar = {}
                     autorizar = data['autorizar']
-                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Autorizacion/buscarAutorizar.html', context)
                 else:
                     autorizar = []
                     mensaje = 'No se encontraron Autorizaciones de pacientes'
-                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})    
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
             else:
                 response = requests.get(url2+'motivos/'+valor)
                 if response.status_code == 200:
@@ -144,21 +146,21 @@ def buscar_autorizacion(request):
                     mensaje = data['message']
                     autorizar = {}
                     autorizar = data['autorizar']
-                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Autorizacion/buscarAutorizar.html', context)
                 else:
                     autorizar = []
                     mensaje = 'No se encontraron Autorizaciones de pacientes'
-                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})    
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
         else:
             response = requests.get(url+'autorizar/')
             if response.status_code == 200:
                 data = response.json()
                 autorizar = data['autorizar']
                 mensaje = data['message']   
-                return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+                return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 autorizar = []
                 mensaje = 'No se encontraron Autorizaciones de pacientes'
-            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

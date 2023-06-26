@@ -3,6 +3,9 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -48,13 +51,13 @@ def crear_enfermedad(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'enfermedad/enfermedad.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'sintomas':sintomas})
         else:
             data = response.json()
             mensaje = data['message']
-        return render(request, 'enfermedad/enfermedad.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'sintomas':sintomas})
+        return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': "mensaje", 'registro_temp':registro_temp, 'sintomas':sintomas})
     else:
-        return render(request, 'enfermedad/enfermedad.html', {'sintomas':sintomas})
+        return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas':sintomas})
 
 def abrir_actualizar_enfermedad(request):
     #Se cargan las listas para los SELECT
@@ -77,7 +80,7 @@ def abrir_actualizar_enfermedad(request):
             registro_temp = {'id':id, 'nombre': nombre, 'lista': ids_sintomas}
          else:
             registro_temp = {}
-         context = {'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'enfermedad/actualizar_enfermedad.html', context)   
 
@@ -124,10 +127,10 @@ def actualizar_enfermedad(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'enfermedad/actualizar_enfermedad.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'enfermedad/actualizar_enfermedad.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'enfermedades/busqueda/id/{idTemporal}')
@@ -142,10 +145,10 @@ def actualizar_enfermedad(request, id):
 
             # crear un diccionario con los datos deseados
             registro_temp = {'id':id_enfermedad, 'nombre': nombre, 'lista': ids_sintomas}
-            return render(request, 'enfermedad/actualizar_enfermedad.html', {'registro_temp': registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp, 'sintomas':sintomas})
         else:
             mensaje = data['message']
-            return render(request, 'enfermedad/actualizar_enfermedad.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
 
 
 def buscar_enfermedad(request):
@@ -160,12 +163,12 @@ def buscar_enfermedad(request):
                     mensaje = data['message']
                     enfermedades = {}
                     enfermedades = data['enfermedades']
-                    context = {'enfermedades': enfermedades, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
                     return render(request, 'enfermedad/buscar_enfermedad.html', context)  
                 else:
                     enfermedades = []
                     mensaje = 'No se encontraron registros'
-                    return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})     
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})     
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -173,23 +176,23 @@ def buscar_enfermedad(request):
                     mensaje = data['message']
                     enfermedades = {}
                     enfermedades = data['enfermedades']
-                    context = {'enfermedades': enfermedades, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
                     return render(request, 'enfermedad/buscar_enfermedad.html', context)
                 else:
                     enfermedades = []
                     mensaje = 'No se encontraron registros'
-                    return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
         else:
             response = requests.get(url+'enfermedades/')
             if response.status_code == 200:
                 data = response.json()
                 enfermedades = data['enfermedades']
                 mensaje = data['message']   
-                return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})
+                return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
             else:
                 enfermedades = []
                 mensaje = 'No se encontraron registros'
-            return render(request, 'enfermedad/buscar_enfermedad.html', {'enfermedades': enfermedades, 'mensaje': mensaje})
+            return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
 
 def eliminar_enfermedad(request, id):  
     try:
@@ -202,11 +205,11 @@ def eliminar_enfermedad(request, id):
             if rsp_enfermedades.status_code == 200:
                 data = rsp_enfermedades.json()
                 enfermedades = data['enfermedades']
-                context = {'enfermedades': enfermedades}
+                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
             else:
                 enfermedades = []
                 mensaje = res['message']
-                context = {'enfermedades': enfermedades, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje}
             return render(request, 'enfermedades/buscar_enfermedad.html', context) 
     except:
         rsp_enfermedades = requests.get(url + 'enfermedades/') 
@@ -215,11 +218,11 @@ def eliminar_enfermedad(request, id):
         if  rsp_enfermedades.status_code == 200:
             data = rsp_enfermedades.json()
             enfermedades = data['enfermedades']
-            context = {'enfermedades': enfermedades}
+            context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
         else:
             enfermedades = []
             mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'enfermedades': enfermedades, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'error': mensaje}
         return render(request, 'enfermedad/buscar_enfermedad.html', context)
 
 

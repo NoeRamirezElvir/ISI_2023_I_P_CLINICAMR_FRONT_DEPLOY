@@ -3,6 +3,8 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -19,7 +21,7 @@ def eliminar_impuesto_historico(request, id):
             else:
                 historicos = []
             mensaje = res['message']
-            context = {'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
     except:
         rsp_pacientes = requests.get(url + 'impuestoHistorico/') 
@@ -29,7 +31,7 @@ def eliminar_impuesto_historico(request, id):
         else:
             historicos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
    
 def buscar_impuesto_historico(request):
@@ -45,12 +47,12 @@ def buscar_impuesto_historico(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
-                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
               
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -59,20 +61,20 @@ def buscar_impuesto_historico(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
-                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'impuestoHistorico/')
             if response.status_code == 200:
                 data = response.json()
                 historicos = data['historicos']
                 mensaje = data['message']   
-                return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón citas'
-            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})

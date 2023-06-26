@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -31,12 +32,12 @@ def crear_tratamientos(request):
         data = response.json()
         if response.status_code == 200:
             mensaje = data['message']
-            return render(request, 'tratamiento/tratamiento.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = data['message']
-            return render(request, 'tratamiento/tratamiento.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     else:
-        return render(request, 'tratamiento/tratamiento.html', {'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+        return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 def abrir_actualizar_tratamientos(request):
     pacientes_list = list_pacientes()
@@ -51,7 +52,7 @@ def abrir_actualizar_tratamientos(request):
             mensaje = data['message']
          else:
             tratamientos = []
-         context = {'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
+         context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
          mensaje = data['message']
          return render(request, 'tratamiento/Actualizar_tratamiento.html', context)
     
@@ -76,10 +77,10 @@ def actualizar_tratamientos(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'tratamientos/busqueda/id/{idTemporal}')
@@ -87,10 +88,10 @@ def actualizar_tratamientos(request, id):
         if response.status_code == 200:
             tratamientos = data['tratamientos']
             mensaje = data['message']
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             mensaje = data['message']
-            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
 
 def eliminar_tratamientos(request, id):
     try:
@@ -105,7 +106,7 @@ def eliminar_tratamientos(request, id):
             else:
                 tratamientos = []
             mensaje = res['message']
-            context = {'tratamientos': tratamientos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje}
             return render(request, 'tratamiento/Buscar_tratamiento.html', context)
     except:
         rsp_tratamientos = requests.get(url + 'tratamientos/') 
@@ -115,7 +116,7 @@ def eliminar_tratamientos(request, id):
         else:
             tratamientos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'tratamientos': tratamientos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'error': mensaje}
         return render(request, 'tratamiento/Buscar_tratamiento.html', context)
 
     
@@ -131,8 +132,7 @@ def buscar_tratamientos(request):
                     mensaje = data['message']
                     tratamientos = {}
                     tratamientos = data['tratamientos']
-                    context = {'tratamientos': tratamientos, 'mensaje':mensaje}
-                    print(context)
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje}
                     return render(request, 'tratamiento/Buscar_tratamiento.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -146,7 +146,7 @@ def buscar_tratamientos(request):
                 else:
                     tratamientos = []
                     mensaje = 'No se encontraron muestras'
-                    return render(request, 'tratamiento/Buscar_tratamiento.html', {'tratamientos': tratamientos, 'mensaje': mensaje})
+                    return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'tratamientos/')
@@ -154,11 +154,11 @@ def buscar_tratamientos(request):
                 data = response.json()
                 tratamientos = data['tratamientos']
                 mensaje = data['message']   
-                return render(request, 'tratamiento/Buscar_tratamiento.html', {'tratamientos': tratamientos, 'mensaje': mensaje})
+                return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
             else:
                 tratamientos = []
                 mensaje = 'No se encontraron muestras'
-            return render(request, 'tratamiento/Buscar_tratamiento.html', {'tratamientos': tratamientos, 'mensaje': mensaje})
+            return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
 
 def list_tipos():
     rsp_tipo = requests.get(url+'tipo/busqueda/subtipo/tratamiento')

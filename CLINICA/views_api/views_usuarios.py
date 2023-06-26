@@ -4,6 +4,8 @@ from django.shortcuts import render
 from passlib.context import CryptContext
 import requests
 from django.shortcuts import redirect
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -42,12 +44,12 @@ def crear_usuario(request):
         if response.status_code == 200:
             userdata = response.json()
             mensaje = userdata['message']
-            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
+            return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
         else:
             mensaje = userdata['usuariosr']
-            return render(request, 'usuario/registro.html', {'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
+            return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
     else:
-        return render(request, 'usuario/registro.html', { 'empleado': empleado})
+        return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(), 'empleado': empleado})
 
 
 #METODO PARA ABRIR LA PANTALLA DE ACTUALIZAR, TOMANDO EL ID DE LA PANTALLA VISUALIZAR Y ASI LLENAR LOS CAMPOS CON ESTA INFORMACION
@@ -67,7 +69,7 @@ def abrir_actualizar_usuarios(request):
             mensaje = data['message']
          else:
             usuarios = []
-         context = {'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'usuario/actualizar.html', context,)
 
@@ -101,10 +103,10 @@ def actualizar_usuario(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'usuario/actualizar.html', {'mensaje': mensaje,'usuariosr':usuario, 'empleado': empleado })
+            return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario, 'empleado': empleado })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'usuario/actualizar.html', {'mensaje': mensaje,'usuariosr':usuario,'empleado': empleado, 'contra':password})
+            return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario,'empleado': empleado, 'contra':password})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'usuarios/busqueda/id/{idTemporal}')
@@ -112,10 +114,10 @@ def actualizar_usuario(request, id):
             data = response.json()
             usuario = data['usuariosr']
             mensaje = data['message']
-            return render(request, 'usuario/actualizar.html', {'usuariosr': usuario})
+            return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuario})
         else:
             mensaje = data['message']
-            return render(request, 'usuario/actualizar.html', {'mensaje': mensaje,'usuariosr':usuario})
+            return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario})
         
 
 def eliminar_usuario(request, id):
@@ -131,7 +133,7 @@ def eliminar_usuario(request, id):
             else:
                 usuarios = []
             mensaje = res['message']
-            context = {'usuariosr': usuarios, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje}
             return render(request, 'usuario/listar.html', context)     
     except:
         rsp_usuario = requests.get(url + 'usuarios/') 
@@ -141,7 +143,7 @@ def eliminar_usuario(request, id):
         else:
             usuarios = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'usuariosr': usuarios, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'error': mensaje}
         return render(request, 'usuario/listar.html', context)     
     
 def buscar_usuarios(request):
@@ -158,12 +160,12 @@ def buscar_usuarios(request):
                     mensaje = data['message']
                     usuarios = {}
                     usuarios = data['usuariosr']
-                    context = {'usuariosr': usuarios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
                     return render(request, 'usuario/listar.html', context) 
                 else:
                     usuarios = []
                     mensaje = 'No se encontraron usuarios'
-                    return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
           
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -172,12 +174,12 @@ def buscar_usuarios(request):
                     mensaje = data['message']
                     usuarios = {}
                     usuarios = data['usuariosr']
-                    context = {'usuariosr': usuarios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
                     return render(request, 'usuario/listar.html', context)
                 else:
                     usuarios = []
                     mensaje = 'No se encontraron usuarios'
-                    return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
     
 
         else:
@@ -186,11 +188,11 @@ def buscar_usuarios(request):
                 data = response.json()
                 usuarios = data['usuariosr']
                 mensaje = data['message']   
-                return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+                return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
             else:
                 usuarios = []
                 mensaje = 'No se encontraron usuarios'
-            return render(request, 'usuario/listar.html', {'usuariosr': usuarios, 'mensaje': mensaje})
+            return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
     
 
 

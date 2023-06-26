@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -164,6 +166,8 @@ def crear_recaudo(request):
             context['mensaje'] =  mensaje
             context['datos_pdf'] = datos_pdf
             context['registro_temp'] = registro_temp
+            context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+            context['reportes_usuarios'] = DatosReportes.cargar_usuario()
             
             pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
             response_pdf = HttpResponse(pdf, content_type='application/pdf')
@@ -174,8 +178,12 @@ def crear_recaudo(request):
             mensaje = data['message']
             context['registro_temp'] = registro_temp
             context['mensaje'] =  mensaje
+            context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+            context['reportes_usuarios'] = DatosReportes.cargar_usuario()
         return render(request, 'recaudo/recaudo.html', context)
     else:
+        context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+        context['reportes_usuarios'] = DatosReportes.cargar_usuario()
         return render(request, 'recaudo/recaudo.html', context)
 
 def actualizar_recaudo(request,id):
@@ -194,10 +202,10 @@ def actualizar_recaudo(request,id):
 
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'recaudo/buscar_recaudo.html', {'mensaje': mensaje, 'recaudo': recaudo})
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'recaudo': recaudo})
         else:
             mensaje = rsp['message']                            
-            return render(request, 'recaudo/buscar_recaudo.html', {'mensaje': mensaje,'recaudo': recaudo})
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': recaudo})
 
 def buscar_recaudo(request):
     valor = request.GET.get('buscador', None)
@@ -211,12 +219,12 @@ def buscar_recaudo(request):
                 mensaje = data['message']
                 recaudo = {}
                 recaudo = data['recaudo']
-                context = {'recaudo': recaudo, 'mensaje':mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
                 return render(request, 'recaudo/buscar_recaudo.html', context)  
             else:
                 recaudo = []
                 mensaje = 'No se encontraron registros'
-                return render(request, 'recaudo/buscar_recaudo.html', {'recaudo': recaudo, 'mensaje': mensaje})     
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})     
         else:
             response = requests.get(url2+'numeroFactura/'+valor)
             if response.status_code == 200:
@@ -224,23 +232,23 @@ def buscar_recaudo(request):
                 mensaje = data['message']
                 recaudo = {}
                 recaudo = data['recaudo']
-                context = {'recaudo': recaudo, 'mensaje':mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
                 return render(request, 'recaudo/buscar_recaudo.html', context)
             else:
                 recaudo = []
                 mensaje = 'No se encontraron registros'
-                return render(request, 'recaudo/buscar_recaudo.html', {'recaudo': recaudo, 'mensaje': mensaje})
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
     else:
         response = requests.get(url+'recaudo/')
         if response.status_code == 200:
             data = response.json()
             recaudo = data['recaudo']
             mensaje = data['message']   
-            return render(request, 'recaudo/buscar_recaudo.html', {'recaudo': recaudo, 'mensaje': mensaje})
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
         else:
             recaudo = []
             mensaje = 'No se encontraron registros'
-        return render(request, 'recaudo/buscar_recaudo.html', {'recaudo': recaudo, 'mensaje': mensaje})
+        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
 
 
 
@@ -257,7 +265,7 @@ def eliminar_recaudo(request,id):
             else:
                 recaudo = []
             mensaje = res['message']
-            context = {'recaudo': recaudo, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
             return render(request, 'recaudo/buscar_recaudo.html', context)   
     except:
         rsp_recaudo = requests.get(url + 'recaudo/') 
@@ -267,7 +275,7 @@ def eliminar_recaudo(request,id):
         else:
             recaudo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'recaudo': recaudo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
         return render(request, 'recaudo/buscar_recaudo.html', context)   
 
 def reimprimir_recaudo(request,id):
@@ -276,7 +284,7 @@ def reimprimir_recaudo(request,id):
         data = rsp.json()
 
         datos_pdf = data['datos_pdf']
-        context = { 'datos_pdf': datos_pdf}
+        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_pdf': datos_pdf}
 
         pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
         response_pdf = HttpResponse(pdf, content_type='application/pdf')

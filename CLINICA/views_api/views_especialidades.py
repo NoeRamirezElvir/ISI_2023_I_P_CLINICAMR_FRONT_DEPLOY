@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -29,12 +30,12 @@ def crear_especialidades(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'especialidad/especialidad.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
-        return render(request, 'especialidad/especialidad.html')
+        return render(request, 'especialidad/especialidad.html',{'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_especialidades(request):
     if request.method == 'POST':
@@ -47,7 +48,7 @@ def abrir_actualizar_especialidades(request):
             mensaje = data['message']
          else:
             especialidad = []
-         context = {'especialidad': especialidad, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'especialidad/especialidadActualizar.html', context)
     
@@ -68,10 +69,10 @@ def actualizar_especialidades(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad })
+            return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'especialidad/busqueda/id/{idTemporal}')
@@ -79,10 +80,10 @@ def actualizar_especialidades(request, id):
             data = response.json()
             usuario = data['especialidad']
             mensaje = data['message']
-            return render(request, 'especialidad/especialidadActualizar.html', {'especialidad': especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad})
         else:
             mensaje = data['message']
-            return render(request, 'especialidad/especialidadActualizar.html', {'mensaje': mensaje,'especialidad':especialidad})
+            return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
 
 def eliminar_especialidades(request, id):
     try:
@@ -97,7 +98,7 @@ def eliminar_especialidades(request, id):
             else:
                 especialidad = []
             mensaje = res['message']
-            context = {'especialidad': especialidad, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje}
             return render(request, 'especialidad/BuscarEspecialidad.html', context)     
     except:
         rsp_especialidad = requests.get(url + 'especialidad/') 
@@ -107,7 +108,7 @@ def eliminar_especialidades(request, id):
         else:
             especialidad = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'especialidad': especialidad, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'error': mensaje}
         return render(request, 'especialidad/BuscarEspecialidad.html', context)     
 
 def buscar_especialidades(request):
@@ -124,13 +125,12 @@ def buscar_especialidades(request):
                     mensaje = data['message']
                     especialidad = {}
                     especialidad = data['especialidad']
-                    context = {'especialidad': especialidad, 'mensaje':mensaje}
-                    print(context)
+                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
                     return render(request, 'especialidad/BuscarEspecialidad.html', context)     
                 else:
                     especialidad = []
                     mensaje = 'No se encontraron especialidades'
-                    return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})  
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})  
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -138,12 +138,12 @@ def buscar_especialidades(request):
                     mensaje = data['message']
                     especialidad = {}
                     especialidad = data['especialidad']
-                    context = {'especialidad': especialidad, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
                     return render(request, 'especialidad/BuscarEspecialidad.html', context)
                 else:
                     especialidad = []
                     mensaje = 'No se encontraron especialidades'
-                    return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'especialidad/')
@@ -151,9 +151,9 @@ def buscar_especialidades(request):
                 data = response.json()
                 especialidad = data['especialidad']
                 mensaje = data['message']   
-                return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+                return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
             else:
                 especialidad = []
                 mensaje = 'No se encontraron especialidades'
-            return render(request, 'especialidad/BuscarEspecialidad.html', {'especialidad': especialidad, 'mensaje': mensaje})
+            return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
     

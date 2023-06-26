@@ -26,8 +26,8 @@ def crear_paciente(request):
             TipoDocumento = data['documentos']
     else:
             TipoDocumento = []
-    reportes_lista = DatosReportes.cargar_lista_pacientes()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
         
         nombre = request.POST['nombre']
@@ -45,13 +45,13 @@ def crear_paciente(request):
         if response.status_code == 200:
             pacientedata = response.json()
             mensaje = pacientedata['message']
-            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = pacientedata['message']
             
-            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+        return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_pacientes(request):
@@ -61,8 +61,8 @@ def abrir_actualizar_pacientes(request):
             TipoDocumento = data['documentos']
     else:
             TipoDocumento = []
-    reportes_lista = DatosReportes.cargar_lista_pacientes()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
          resp = requests.get(url+'pacientes/busqueda/id/'+str(request.POST['id_pacientes']))
          data = resp.json()
@@ -73,7 +73,7 @@ def abrir_actualizar_pacientes(request):
             mensaje = data['message']
          else:
             pacientes = []
-         context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+         context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'Pacientes/PacienteActualizar.html', context)   
     
@@ -84,8 +84,8 @@ def actualizar_pacientes(request, id):
             TipoDocumento = data['documentos']
     else:
             TipoDocumento = []
-    reportes_lista = DatosReportes.cargar_lista_pacientes()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     if request.method == 'POST':
         idTemporal = id
         nombre = request.POST['nombre']
@@ -110,10 +110,10 @@ def actualizar_pacientes(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'pacientes/busqueda/id/{idTemporal}')
@@ -121,14 +121,14 @@ def actualizar_pacientes(request, id):
             data = response.json()
             pacientes = data['pacientes']
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_pacientes(request, id):
-    reportes_lista = DatosReportes.cargar_lista_pacientes()
-    reportes_usuarios = DatosReportes.cargar_usuario()
+    
+    
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -141,7 +141,7 @@ def eliminar_pacientes(request, id):
             else:
                 pacientes = []
             mensaje = res['message']
-            context = {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+            context = {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'Pacientes/buscarPaciente.html', context)     
     except:
         rsp_pacientes = requests.get(url + 'pacientes/') 
@@ -151,12 +151,12 @@ def eliminar_pacientes(request, id):
         else:
             pacientes = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'pacientes': pacientes, 'error': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+        context = {'pacientes': pacientes, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Pacientes/buscarPaciente.html', context)     
             
 def buscar_pacientes(request):
-        reportes_lista = DatosReportes.cargar_lista_pacientes()
-        reportes_usuarios = DatosReportes.cargar_usuario()
+        
+        
         valor = request.GET.get('buscador', None)
         url2 = url + 'pacientes/busqueda/'
 
@@ -170,12 +170,12 @@ def buscar_pacientes(request):
                     mensaje = data['message']
                     pacientes = {}
                     pacientes = data['pacientes']
-                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Pacientes/buscarPaciente.html', context) 
                 else:
                     pacientes = []
                     mensaje = 'No se encontro paciente'
-                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -184,12 +184,12 @@ def buscar_pacientes(request):
                     mensaje = data['message']
                     pacientes = {}
                     pacientes = data['pacientes']
-                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios}
+                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Pacientes/buscarPaciente.html', context)
                 else:
                     pacientes = []
                     mensaje = 'No se encontro paciente'
-                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
         else:
@@ -198,9 +198,9 @@ def buscar_pacientes(request):
                 data = response.json()
                 pacientes = data['pacientes']
                 mensaje = data['message']   
-                return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+                return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 pacientes = []
                 mensaje = 'No se encontro paciente'
-            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':reportes_lista,'reportes_usuarios':reportes_usuarios})
+            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

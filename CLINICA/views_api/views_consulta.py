@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -22,6 +23,8 @@ def crear_consulta(request):
     diagnostico_list = list_diagnostico()
     cita_list = list_cita()
     tipo_list = list_tipo()
+    
+    
     if request.method == 'POST':
         idCita = int(request.POST['idCita'])
         idTipo = int(request.POST['idTipo'])
@@ -56,19 +59,21 @@ def crear_consulta(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'consulta/consulta.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+            return render(request, 'consulta/consulta.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             data = response.json()
             mensaje = data['message']
-        return render(request, 'consulta/consulta.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+        return render(request, 'consulta/consulta.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
-        return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+        return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def abrir_actualizar_consulta(request):
     #Se cargan las listas para los SELECT
     diagnostico_list = list_diagnostico()
     cita_list = list_cita()
     tipo_list = list_tipo()
+    
+    
     if request.method == 'POST':
          resp = requests.get(url+'consultas/busqueda/id/'+str(request.POST['id_consulta']))
          data = resp.json()
@@ -90,7 +95,7 @@ def abrir_actualizar_consulta(request):
             registro_temp = {'id':id, 'idCita': idCita,'idTipo': idTipo,'recomendaciones': recomendaciones,'informacionAdicional': informacionAdicional, 'lista': ids_diagnosticos}
          else:
             registro_temp = {}
-         context = {'registro_temp': registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list, 'mensaje':mensaje}
+         context = {'registro_temp': registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
          mensaje = data['message']
          return render(request, 'consulta/actualizar_consulta.html', context)   
 
@@ -99,6 +104,8 @@ def actualizar_consulta(request, id):
     diagnostico_list = list_diagnostico()
     cita_list = list_cita()
     tipo_list = list_tipo()
+    
+    
     if request.method == 'POST':
         idTemporal = id
         idCita = int(request.POST['idCita'])
@@ -148,10 +155,10 @@ def actualizar_consulta(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'consultas/busqueda/id/{idTemporal}')
@@ -169,15 +176,17 @@ def actualizar_consulta(request, id):
 
             # crear un diccionario con los datos deseados
             registro_temp = {'id':id_consulta, 'idCita': idCita,'idTipo': idTipo,'recomendaciones': recomendaciones,'informacionAdicional': informacionAdicional, 'lista': ids_diagnosticos}
-            return render(request, 'consulta/actualizar_consulta.html', {'registro_temp': registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+            return render(request, 'consulta/actualizar_consulta.html', {'registro_temp': registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list})
+            return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def buscar_consulta(request):
         valor = request.GET.get('buscador', None)
         url2 = url + 'consultas/busqueda/'
+        
+        
         if valor is not None and (len(valor)>0):
             if valor.isdigit():
                 id = int(valor)
@@ -188,7 +197,7 @@ def buscar_consulta(request):
                     mensaje = data['message']
                     consultas = {}
                     consultas = data['consultas']
-                    context = {'consultas': consultas, 'mensaje':mensaje}
+                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:        
                     response = requests.get(url2+'documento/'+valor)
@@ -197,12 +206,12 @@ def buscar_consulta(request):
                         mensaje = data['message']
                         consultas = {}
                         consultas = data['consultas']
-                        context = {'consultas': consultas, 'mensaje':mensaje}
+                        context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'consulta/buscar_consulta.html', context)
                     else:
                         consultas = []
                         mensaje = 'No se encontraron muestras'
-                        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje})
+                        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()
@@ -211,25 +220,27 @@ def buscar_consulta(request):
                     mensaje = data['message']
                     consultas = {}
                     consultas = data['consultas']
-                    context = {'consultas': consultas, 'mensaje':mensaje}
+                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:
                     consultas = []
                     mensaje = 'No se encontraron muestras'
-                    return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje})
+                    return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             response = requests.get(url+'consultas/')
             if response.status_code == 200:
                 data = response.json()
                 consultas = data['consultas']
                 mensaje = data['message']   
-                return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje})
+                return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 consultas = []
                 mensaje = 'No se encontraron consultas'
-            return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje})
+            return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_consulta(request, id):  
+    
+    
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -240,11 +251,11 @@ def eliminar_consulta(request, id):
             if rsp_consultas.status_code == 200:
                 data = rsp_consultas.json()
                 consultas = data['consultas']
-                context = {'consultas': consultas}
+                context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             else:
                 enfermedades = []
                 mensaje = res['message']
-                context = {'enfermedades': enfermedades, 'mensaje': mensaje}
+                context = {'enfermedades': enfermedades, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'consultas/buscar_consultas.html', context) 
     except:
         rsp_consultas = requests.get(url + 'consultas/') 
@@ -253,11 +264,11 @@ def eliminar_consulta(request, id):
         if  rsp_consultas.status_code == 200:
             data = rsp_consultas.json()
             consultas = data['consultas']
-            context = {'consultas': consultas}
+            context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         else:
             consultas = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'consultas': consultas, 'error': mensaje}
+        context = {'consultas': consultas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'consulta/buscar_consulta.html', context)
 
 

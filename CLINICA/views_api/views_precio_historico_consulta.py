@@ -3,6 +3,8 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -20,7 +22,7 @@ def eliminar_precio_historico_consulta(request, id):
             else:
                 historicos = []
             mensaje = res['message']
-            context = {'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)     
     except:
         rsp_historicos = requests.get(url + 'precioHistoricoConsulta/') 
@@ -30,7 +32,7 @@ def eliminar_precio_historico_consulta(request, id):
         else:
             historicos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)             
 
 def buscar_precio_historico_consulta(request):
@@ -46,12 +48,12 @@ def buscar_precio_historico_consulta(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)       
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de examenes'
-                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -60,12 +62,12 @@ def buscar_precio_historico_consulta(request):
                     mensaje = data['message']
                     historicos = {}
                     historicos = data['historicos']
-                    context = {'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de examenes'
-                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'precioHistoricoConsulta/')
@@ -73,8 +75,8 @@ def buscar_precio_historico_consulta(request):
                 data = response.json()
                 historicos = data['historicos']
                 mensaje = data['message']   
-                return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón historicos de examenes'
-            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})

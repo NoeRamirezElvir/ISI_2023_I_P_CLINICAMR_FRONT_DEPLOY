@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -26,12 +27,12 @@ def crear_subtipo(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipo.html', {'mensaje': mensaje, 'registro_temp':registro_temp})
+            return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
     else:
-        return render(request, 'SubTipo/subtipo.html')
+        return render(request, 'SubTipo/subtipo.html',{'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def abrir_actualizar_subtipo(request):
     if request.method == 'POST':
@@ -44,7 +45,7 @@ def abrir_actualizar_subtipo(request):
             mensaje = data['message']
          else:
             subtipo = []
-         context = {'subtipo': subtipo, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'SubTipo/subtipoActualizar.html', context)
     
@@ -65,10 +66,10 @@ def actualizar_subtipo(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'SubTipo/subtipoActualizar.html', {'mensaje': mensaje,'subtipo':subtipo })
+            return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'SubTipo/subtipoActualizar.html', {'mensaje': mensaje,'subtipo':subtipo})
+            return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'subtipo/busqueda/id/{idTemporal}')
@@ -76,10 +77,10 @@ def actualizar_subtipo(request, id):
             data = response.json()
             subtipo = data['subtipo']
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipoActualizar.html', {'subtipo': subtipo})
+            return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo})
         else:
             mensaje = data['message']
-            return render(request, 'SubTipo/subtipoActualizar.html', {'mensaje': mensaje,'subtipo':subtipo})
+            return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
 
 def eliminar_subtipo(request, id):
     try:
@@ -94,7 +95,7 @@ def eliminar_subtipo(request, id):
             else:
                 subtipo = []
             mensaje = res['message']
-            context = {'subtipo': subtipo, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje}
             return render(request, 'SubTipo/buscarsubtipo.html', context)     
     except:
         rsp_subtipo = requests.get(url + 'subtipo/') 
@@ -104,7 +105,7 @@ def eliminar_subtipo(request, id):
         else:
             subtipo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'subtipo': subtipo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'error': mensaje}
         return render(request, 'SubTipo/buscarsubtipo.html', context)     
        
 def buscar_subtipo(request):
@@ -121,12 +122,12 @@ def buscar_subtipo(request):
                     mensaje = data['message']
                     subtipo = {}
                     subtipo = data['subtipo']
-                    context = {'subtipo': subtipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
                     return render(request, 'SubTipo/buscarsubtipo.html', context)
                 else:
                     subtipo = []
                     mensaje = 'No se encontraron subtipo'
-                    return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -135,12 +136,12 @@ def buscar_subtipo(request):
                     mensaje = data['message']
                     subtipo = {}
                     subtipo = data['subtipo']
-                    context = {'subtipo': subtipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
                     return render(request, 'SubTipo/buscarsubtipo.html', context)
                 else:
                     subtipo = []
                     mensaje = 'No se encontraron subtipo'
-                    return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'subtipo/')
@@ -148,9 +149,9 @@ def buscar_subtipo(request):
                 data = response.json()
                 subtipo = data['subtipo']
                 mensaje = data['message']   
-                return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+                return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
             else:
                 subtipo = []
                 mensaje = 'No se encontraron subtipo'
-            return render(request, 'SubTipo/buscarsubtipo.html', {'subtipo': subtipo, 'mensaje': mensaje})
+            return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
     

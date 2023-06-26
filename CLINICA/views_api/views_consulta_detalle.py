@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
-
+from ..views_api.datos_reporte import DatosReportes
 
 url = 'https://clinicamr.onrender.com/api/'
 def eliminar_detalle_consulta(request, id):
@@ -19,7 +19,7 @@ def eliminar_detalle_consulta(request, id):
             else:
                 detalles = []
             mensaje = res['message']
-            context = {'detalles': detalles, 'mensaje': mensaje}
+            context = {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)     
     except:
         rsp_detalles = requests.get(url + 'consultaDetalle/') 
@@ -29,10 +29,10 @@ def eliminar_detalle_consulta(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'detalles': detalles, 'error': mensaje}
+        context = {'detalles': detalles, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)
 
-def buscar_detalle_consulta(request):
+def buscar_detalle_consulta(request): 
         valor = request.GET.get('buscador', None)
         url2 = url + 'consultaDetalle/busqueda/'
 
@@ -44,12 +44,12 @@ def buscar_detalle_consulta(request):
                     mensaje = data['message']
                     detalles = {}
                     detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
+                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
-                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})  
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -57,20 +57,20 @@ def buscar_detalle_consulta(request):
                     mensaje = data['message']
                     detalles = {}
                     detalles = data['detalles']
-                    context = {'detalles': detalles, 'mensaje':mensaje}
+                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)   
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
-                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})  
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
         else:
             response = requests.get(url+'consultaDetalle/')
             if response.status_code == 200:
                 data = response.json()
                 detalles = data['detalles']
                 mensaje = data['message']   
-                return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})
+                return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
-            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})

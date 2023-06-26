@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from django.shortcuts import render
 import requests
+from ..views_api.datos_reporte import DatosReportes
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_proveedor(request):
@@ -28,12 +29,12 @@ def crear_proveedor(request):
         if response.status_code == 200:
             data = response.json()
             mensaje = data['message']
-            return render(request, 'Proveedor/Proveedor.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'tipos':tipos})
+            return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'tipos':tipos})
         else:
             mensaje = data['message']
-            return render(request, 'Proveedor/Proveedor.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'tipos':tipos})
+            return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'tipos':tipos})
     else:
-        return render(request, 'Proveedor/Proveedor.html', {'tipos':tipos})
+        return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipos':tipos})
     
 def abrir_actualizar_proveedor(request):
     if request.method == 'POST':
@@ -46,7 +47,7 @@ def abrir_actualizar_proveedor(request):
             mensaje = data['message']
          else:
             proveedores = []
-         context = {'proveedores': proveedores, 'mensaje':mensaje}
+         context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
          mensaje = data['message']
          return render(request, 'Proveedor/ProveedorActualizar.html', context)
     
@@ -68,10 +69,10 @@ def actualizar_proveedor(request, id):
         #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
         if rsp['message'] == "La actualización fue exitosa.":
             mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'mensaje': mensaje,'proveedores':proveedores })
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores })
         else:
             mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'mensaje': mensaje,'proveedores':proveedores})
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
     else:
         #Y aqui no se que hice la verdad
         response = requests.get(url+f'proveedores/busqueda/id/{idTemporal}')
@@ -79,10 +80,10 @@ def actualizar_proveedor(request, id):
             data = response.json()
             proveedores = data['proveedores']
             mensaje = data['message']
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'proveedores': proveedores})
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores})
         else:
             mensaje = data['message']
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'mensaje': mensaje,'proveedores':proveedores})
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
 
 def eliminar_proveedor(request, id):
     try:
@@ -97,7 +98,7 @@ def eliminar_proveedor(request, id):
             else:
                 proveedores = []
             mensaje = res['message']
-            context = {'proveedores': proveedores, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje}
             return render(request, 'Proveedor/BuscarProveedor.html', context)     
     except:
         rsp_proveedores = requests.get(url + 'proveedores/') 
@@ -107,7 +108,7 @@ def eliminar_proveedor(request, id):
         else:
             proveedores = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'proveedores': proveedores, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'error': mensaje}
         return render(request, 'Proveedor/BuscarProveedor.html', context)     
 
 def buscar_proveedor(request):
@@ -122,12 +123,12 @@ def buscar_proveedor(request):
                     mensaje = data['message']
                     proveedores = {}
                     proveedores = data['proveedores']
-                    context = {'proveedores': proveedores, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
                     return render(request, 'Proveedor/BuscarProveedor.html', context) 
                 else:
                     proveedores = []
                     mensaje = 'No se encontraron proveedores'
-                    return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -136,12 +137,12 @@ def buscar_proveedor(request):
                     mensaje = data['message']
                     proveedores = {}
                     proveedores = data['proveedores']
-                    context = {'proveedores': proveedores, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
                     return render(request, 'Proveedor/BuscarProveedor.html', context)
                 else:
                     proveedores = []
                     mensaje = 'No se encontraron proveedores'
-                    return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'proveedores/')
@@ -149,11 +150,11 @@ def buscar_proveedor(request):
                 data = response.json()
                 proveedores = data['proveedores']
                 mensaje = data['message']   
-                return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+                return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
             else:
                 proveedores = []
                 mensaje = 'No se encontraron proveedores'
-            return render(request, 'Proveedor/BuscarProveedor.html', {'proveedores': proveedores, 'mensaje': mensaje})
+            return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
 
 
 def list_tipos():
