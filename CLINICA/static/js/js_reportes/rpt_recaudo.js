@@ -124,9 +124,9 @@ document.addEventListener("DOMContentLoaded", function() {
                   { text: dato.idPaciente.nombre, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
                   { text: dato.idEmpleado.nombre, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
                   { text: dato.idMetodoPago.nombre, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
-                  { text: dato.descuento, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
-                  { text: dato.impuesto, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
-                  { text: dato.total, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
+                  { text: "Lps. " + dato.descuento, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
+                  { text: "Lps. " + dato.impuesto, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
+                  { text: "Lps. " + dato.total, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' },
                   { text: dato.fechaEntrega === 'null' ? "Sin Entregar":"Pagada " + dato.fechaEntrega, fillColor: index % 2 === 0 ? '#E5E5E5' : '#D9D9D9',style:'name' }
                 ];
               })
