@@ -42,6 +42,7 @@
                         <td>{{ cargo.descripcion }}</td>
                         <td>{{ cargo.activo }}</td>
                         <td> 
+                            {% if cargo.id %}
                             <form action="{% url 'abrir_actualizar_cargos' %}" method="post" class="form-botones">
                                 {% csrf_token %}
                             <input type="hidden" name="id_cargo" value="{{ cargo.id }}">
@@ -49,6 +50,10 @@
                                   <img src="{% static 'img/icons/icedit.png' %}">
                             </button>
                             </form>
+                            {% else %}
+                                <p>El ID del cargo no está disponible.</p>
+                            {% endif %}
+                            {% if cargo.id %}
                             <form action="{% url 'eliminar_cargo' id=cargo.id  %}"  method="post">
                                 {% csrf_token %}
                             <input type="hidden" name="id_cargo" value="{{ cargo.id }}">
@@ -56,6 +61,9 @@
                               <img src="{% static 'img/icons/icdelete.png' %}">
                             </button>
                             </form>
+                            {% else %}
+                                <p>El ID del cargo no está disponible.</p>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

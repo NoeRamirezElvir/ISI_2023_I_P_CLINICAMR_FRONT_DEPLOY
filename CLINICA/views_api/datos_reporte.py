@@ -1,5 +1,8 @@
 import requests
 
+from ..views_api.logger import definir_log_info
+
+
 url = 'https://clinicamr.onrender.com/api/'
 class DatosReportes():
 
@@ -23,13 +26,26 @@ class DatosReportes():
         return lista
     
     def cargar_lista_cargos():
-        response = requests.get(url+'cargos/')
-        if response.status_code == 200:
-            data = response.json()
-            lista = data['cargos']
-        else:
+        try:
+            response = requests.get(url+'cargos/')
+            if response.status_code == 200:
+                data = response.json()
+                lista = data['cargos']
+                if data['message'] != "Consulta exitosa":
+                    logger = definir_log_info('cargos_pdf','logs_cargo')
+                    logger.debug("No se obtuvieron cargos")
+                else:
+                    logger = definir_log_info('cargos_pdf','logs_cargo')
+                    logger.debug("Se obtuvo la informacion correspondiente a cargos")
+            else:
+                lista  = []
+            return lista
+        except Exception as e:
+            logger = definir_log_info('cargos_pdf_excepcion','logs_cargo')
+            logger.exception(f"Se produjo una excepcion: {str(e)}")
             lista  = []
-        return lista
+            return lista
+
     
     def cargar_lista_citas():
         response = requests.get(url+'citas/')
