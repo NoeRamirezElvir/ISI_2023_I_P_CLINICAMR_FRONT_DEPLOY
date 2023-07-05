@@ -56,7 +56,7 @@
           <select name="idPaciente" id="idPaciente">
           <option value="0" {% if registro_temp.idPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
           {% for pacientes in pacientes_list %}
-                <option value="{{ pacientes.id }}"{% if pacientes.id == pacientes.0.idPaciente.id %}selected{% endif %}>{{ pacientes.nombre }} {{ pacientes.apellido }} - {{ pacientes.documento }}</option>
+                <option value="{{ pacientes.id }}"{% if pacientes.id == pacientes.id %}selected{% endif %}>{{ pacientes.nombre }} {{ pacientes.apellido }} - {{ pacientes.documento }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -70,7 +70,7 @@
         <select name="idAutorizacionPaciente" id="idAutorizacionPaciente">
         <option value="0" {% if registro_temp.idAutorizacionPaciente == '0' %}selected{% endif %}>Seleccione una opción</option>"
         {% for autorizacion in autorizacion_list %}
-              <option value="{{ autorizacion.id }}"{% if autorizacion.id == autorizacion.0.idAutorizacionPaciente.id %}selected{% endif %}>{{ autorizacion.id }} {{ autorizacion.motivos }} </option>
+              <option value="{{ autorizacion.id }}"{% if autorizacion.id == autorizacion.id %}selected{% endif %}>{{ autorizacion.id }} {{ autorizacion.motivos }} </option>
               {% endfor %}
             </select>
           </div>
@@ -84,7 +84,7 @@
             <select name="idEmpleado" id="idEmpleado">
             <option value="0" {% if registro_temp.idEmpleado == '0' %}selected{% endif %}>Seleccione una opción</option>"
             {% for empleado in empleado_list %}
-            <option value="{{ empleado.id }}"{% if empleado.id == empleado.0.idEmpleado.id %}selected{% endif %}>{{ emepleado.id }} {{ empleado.nombre }} {{ empleado.apellidos }} </option>
+            <option value="{{ empleado.id }}"{% if empleado.id == empleado.id %}selected{% endif %}>{{ emepleado.id }} {{ empleado.nombre }} {{ empleado.apellidos }} </option>
               {% endfor %}
             </select>
           </div>

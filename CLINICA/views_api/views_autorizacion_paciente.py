@@ -18,7 +18,6 @@ def listar_autorizacion(request):
 
 def crear_autorizacion(request):
     try:
-
         if request.method == 'POST':
             motivos = request.POST['motivos']        
             confirmacion = int(request.POST['payment_method'])
@@ -104,9 +103,9 @@ def actualizar_autorizacion(request, id):
                 logger.debug("Actualizacion correcta de la autorizacion: " + mensaje)
                 return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar ,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
+                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('error_actualizar','logs_autorizacion')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad

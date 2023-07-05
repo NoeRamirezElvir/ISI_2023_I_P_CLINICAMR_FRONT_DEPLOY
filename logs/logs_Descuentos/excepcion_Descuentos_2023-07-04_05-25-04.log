@@ -1,6 +1,0 @@
-2023-07-04 05:25:04,341 - Thread-2 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:cannot access local variable 'mensaje' where it is not associated with a value
-Traceback (most recent call last):
-  File "C:\Users\50431\Desktop\ISI\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_descuento.py", line 110, in actualizar_Descuentos
-    logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                                                          ^^^^^^^
-UnboundLocalError: cannot access local variable 'mensaje' where it is not associated with a value

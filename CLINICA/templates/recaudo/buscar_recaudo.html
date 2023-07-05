@@ -69,12 +69,13 @@
             <td>{{ item.fechaFacturacion }}</td>
             <td>
               <select id="mi-select">
-                <option value="Pendiente"{% if item.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="Pendiente" selected>Pendiente</option>
                 <option value="Enviada"{% if item.estado == 'Enviada' %}selected{% endif %}>Enviada</option>
                 <option value="Pagada"{% if item.estado == 'Pagada' %}selected{% endif %}>Pagada</option>
                 <option value="Vencida"{% if item.estado == 'Vencida' %}selected{% endif %}>Vencida</option>
                 <option value="Anulada"{% if item.estado == 'Anulada' %}selected{% endif %}>Anulada</option>
               </select>
+              
             </td>
             <td>{{ item.idCorrelativo.cai }}</td>
             <td>{{ item.idPaciente.nombre }}</td>
@@ -93,7 +94,7 @@
                   <img src="{% static 'img/icons/icedit.png' %}">
               </button>
               </form>
-              <form action="{% url 'eliminar_recaudo' id=item.id  %}?accion=eliminar" method="post">
+              <form action="{% url 'reimprimir_recaudo' id=item.id  %}?accion=eliminar" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
                 <button class="btnEliminar" name="eliminar" id="eliminar">
@@ -127,12 +128,16 @@
 </div>
 {% endif %}
 <script>
-  var miSelect = document.getElementById("mi-select");
-  var miInput = document.getElementById("mi-input");
+var selectElements = document.querySelectorAll("#mi-select");
 
-  miSelect.addEventListener("change", function() {
-    miInput.value = miSelect.value;
+selectElements.forEach(function(selectElement) {
+  var row = selectElement.closest("tr");
+  var hiddenInput = row.querySelector("#mi-input");
+
+  selectElement.addEventListener("change", function() {
+    hiddenInput.value = selectElement.value;
   });
-</script>
+});
 
+</script>
 {% endblock %}

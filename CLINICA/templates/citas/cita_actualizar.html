@@ -71,19 +71,19 @@
           
           <div style="display: inline-flex ;width: 100%">
             <div style="display: block;width: 100%">
-              <input type="hidden" name="fechaActual" id="fechaActual" value="citas.0.fechaActual">
+              <input type="hidden" name="fechaActual" id="fechaActual" value="{{citas.0.fechaAcal}}">
               <label class="campo-registro">Fecha de Registro</label>
-              <input type="datetime-local" name="fechaRegistro" id="fechaRegistro" disabled value="{{citas.0.fechaActual}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
+              <input type="datetime-local" name="fechaRegistro" id="fechaRegistro" disabled value="{{citas.0.fechaAcal}}" min="01/01/2000T00:00" max="31/12/2030T23:59">
             </div>
             <div style="display: block;width: 100%">
               <label  class="campo-registro">Fecha Programada</label>
-              <input type="datetime-local" name="fechaProgramada" required value="{{citas.0.fechaProgramada}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
+              <input type="datetime-local" name="fechaProgramada" required value="{{citas.0.fechaPcal}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
             </div>
           </div>
           <div style="display: inline-flex ;width: 71%">
             <div style="display: block;width: 71%">
               <label class="campo-registro">Fecha Máxima</label>
-              <input type="datetime-local" name="fechaMaxima" required value="{{citas.0.fechaMaxima}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
+              <input type="datetime-local" name="fechaMaxima" required value="{{citas.0.fechaMcal}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
             </div>
           </div>
           <p class="full">
@@ -109,5 +109,6 @@
     fechaInput2.value = fechaSeleccionada;
   });
 </script>
+
 <script src="{% static 'js/js_reportes/rpt_citas.js' %}"></script>
 {% endblock %}

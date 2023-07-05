@@ -102,8 +102,7 @@ def abrir_actualizar_citas(request):
         return render(request, 'citas/cita_actualizar.html', context)
     
 def actualizar_citas(request, id):
-    try:
-        
+    try: 
         rsp_paciente = requests.get(url+'pacientes/')
         if rsp_paciente.status_code == 200:
                 data = rsp_paciente.json()
@@ -117,10 +116,11 @@ def actualizar_citas(request, id):
             fechaActual= request.POST ['fechaActual']
             fechaProgramada = request.POST['fechaProgramada']
             fechaMaxima = request.POST['fechaMaxima']
-            activa = request.POST ['activado']
-
+            activa = int(request.POST ['activado'])
+            
             response = requests.put(url+f'citas/id/{idTemporal}',json={'idPaciente':idPaciente,'fechaActual': fechaActual,'fechaProgramada': fechaProgramada,'fechaMaxima': fechaMaxima,'activa': activa })
             rsp =  response.json()
+
             res = requests.get(url+f'citas/busqueda/id/{idTemporal}')
             data = res.json()
             citas = data['citas']
@@ -130,15 +130,15 @@ def actualizar_citas(request, id):
                 logger.debug("Actualizacion correcta del citas: " + mensaje)
                 return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
+                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('error_actualizar','logs_citas')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             idTemporal = id
             response = requests.get(url+f'citas/busqueda/id/{idTemporal}')
+            data = response.json()
             if response.status_code == 200:
-                data = response.json()
                 citas = data['citas']
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_citas')

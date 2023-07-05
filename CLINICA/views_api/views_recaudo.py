@@ -12,7 +12,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 from ..views_api.datos_reporte import DatosReportes
-
+from ..views_api.logger import definir_log_info
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -21,224 +21,292 @@ def crear_recaudo(request):
     rsp = requests.get(url+f'listasRecaudo/')
     data = rsp.json()
     context = data
+    try:
+        if request.method == 'POST':
+            fechaActual = request.POST['fechaActual']
+            idCorrelativo = int(request.POST['idCorrelativo'])
+            idPaciente = int(request.POST['idPaciente'])
+            idEmpleado = int(request.POST['idEmpleado'])
+            idConsulta = int(request.POST['idConsulta'])
+            idMetodo = int(request.POST['idMetodo'])
+            idDescuento = int(request.POST['idDescuento'])
+            estado = request.POST['estado']
 
-    if request.method == 'POST':
-        fechaActual = request.POST['fechaActual']
-        idCorrelativo = int(request.POST['idCorrelativo'])
-        idPaciente = int(request.POST['idPaciente'])
-        idEmpleado = int(request.POST['idEmpleado'])
-        idConsulta = int(request.POST['idConsulta'])
-        idMetodo = int(request.POST['idMetodo'])
-        idDescuento = int(request.POST['idDescuento'])
-        estado = request.POST['estado']
+            montoEfectivo = request.POST.get('montoEfectivo') if request.POST.get('montoEfectivo') else '00.00'
+            numeroTarjeta = request.POST.get('numeroTarjeta') if request.POST.get('numeroTarjeta') else 'N/A'
+            serie = request.POST['serie']
+            montoTarjeta = request.POST.get('montoTarjeta') if request.POST.get('montoTarjeta') else '00.00'
 
-        montoEfectivo = request.POST.get('montoEfectivo') if request.POST.get('montoEfectivo') else '00.00'
-        numeroTarjeta = request.POST.get('numeroTarjeta') if request.POST.get('numeroTarjeta') else 'N/A'
-        serie = request.POST['serie']
-        montoTarjeta = request.POST.get('montoTarjeta') if request.POST.get('montoTarjeta') else '00.00'
+            subtotal = request.POST.get('subtotal')
+            imp = request.POST.get('imp')
+            total = request.POST.get('total')
+            cambio = request.POST.get('cambio') if request.POST.get('cambio') else '00.00'
+            descuento = request.POST.get('des') if request.POST.get('des') else '00.00'
 
-        subtotal = request.POST.get('subtotal')
-        imp = request.POST.get('imp')
-        total = request.POST.get('total')
-        cambio = request.POST.get('cambio') if request.POST.get('cambio') else '00.00'
-        descuento = request.POST.get('des') if request.POST.get('des') else '00.00'
+            medicamentos = request.POST['medicamentosSeleccionados']
+            tratamientos = request.POST['tratamientosSeleccionados']
+            examenes = request.POST['examenesSeleccionados']
+            medicamentos_seleccionados = json.loads(medicamentos)
+            tratamientos_seleccionados = json.loads(tratamientos)
+            examenes_seleccionados = json.loads(examenes)
 
-        medicamentos = request.POST['medicamentosSeleccionados']
-        tratamientos = request.POST['tratamientosSeleccionados']
-        examenes = request.POST['examenesSeleccionados']
-        medicamentos_seleccionados = json.loads(medicamentos)
-        tratamientos_seleccionados = json.loads(tratamientos)
-        examenes_seleccionados = json.loads(examenes)
+            medicamentos_lista = []
+            for item in medicamentos_seleccionados:
 
-        medicamentos_lista = []
-        for item in medicamentos_seleccionados:
+                medicamento = {}
+                medicamento['id'] = int(item.split(" - ")[0])
+                medicamento['nombre'] = str(item.split(" - ")[1])
+                medicamento['precio'] = float(item.split(" - ")[2])
+                impuesto = float(item.split(" - ")[3])
+                medicamento['impuesto'] = "{:.2f}".format(impuesto)
+                medicamento['cantidad'] = int(item.split(" - ")[4])
+                medicamentos_lista.append(medicamento)
 
-            medicamento = {}
-            medicamento['id'] = int(item.split(" - ")[0])
-            medicamento['nombre'] = str(item.split(" - ")[1])
-            medicamento['precio'] = float(item.split(" - ")[2])
-            impuesto = float(item.split(" - ")[3])
-            medicamento['impuesto'] = "{:.2f}".format(impuesto)
-            medicamento['cantidad'] = int(item.split(" - ")[4])
-            medicamentos_lista.append(medicamento)
-
-        tratamientos_lista = []
-        for item in tratamientos_seleccionados:
-            tratamiento = {}
-            tratamiento['id'] = int(item.split(" - ")[0])
-            tratamiento['nombre'] = str(item.split(" - ")[1])
-            tratamiento['precio'] = float(item.split(" - ")[2])
-            impuesto = float(item.split(" - ")[3])
-            tratamiento['impuesto'] = "{:.2f}".format(impuesto)
-            tratamientos_lista.append(tratamiento)
-        
-        examenes_lista = []
-        for item in examenes_seleccionados:
-            examen = {}
-            examen['id'] = int(item.split(" - ")[0])
-            examen['nombre'] = str(item.split(" - ")[1])
-            examen['precio'] = float(item.split(" - ")[2])
-            impuesto = float(item.split(" - ")[3])
-            examen['impuesto'] = "{:.2f}".format(impuesto)
-            examenes_lista.append(examen)
-
-        # Crear el diccionario final
-        resultado = {}
-        resultado['correlativo'] = idCorrelativo
-        resultado['idPaciente'] = idPaciente
-        resultado['fechaActual'] = fechaActual
-        resultado['idEmpleado'] = idEmpleado
-        resultado['idMetodo'] = idMetodo
-        resultado['idConsulta'] = idConsulta
-        resultado['idDescuento'] = idDescuento
-        resultado['montoEfectivo'] = montoEfectivo
-        resultado['numeroTarjeta'] = numeroTarjeta
-        resultado['estado'] = estado
-        resultado['medicamentos'] = medicamentos_lista
-        resultado['tratamientos'] = tratamientos_lista
-        resultado['examenes'] = examenes_lista
-        resultado['total'] = total
-        resultado['subtotal'] = subtotal
-        resultado['cambio'] = cambio
-        resultado['descuento'] = descuento
-        resultado['imp'] = imp
-        resultado['montoTarjeta'] = montoTarjeta
-        
-        
-        resultado_json = json.dumps(resultado)
-
-        registro_temp = {
-            'fechaActual':fechaActual,
-            'idCorrelativo':idCorrelativo,
-            'idPaciente':idPaciente,
-            'idEmpleado':idEmpleado,
-            'idConsulta':idConsulta,
-            'idMetodo':idMetodo,
-            'idDescuento':idDescuento,
-            'estado':estado,
-            'montoEfectivo':montoEfectivo,
-            'numeroTarjeta':numeroTarjeta,
-            'montoTarjeta':montoTarjeta,
-            'subtotal':subtotal,
-            'serie':serie,
-            'imp':imp,
-            'total':total,
-            'cambio':cambio,
-            'descuento':descuento,
-            'medicamentos_lista':medicamentos_lista,
-            'tratamientos_lista':tratamientos_lista,
-            'examenes_lista':examenes_lista
-        }
-        
-        response = requests.post(url+'recaudo/', resultado_json)
-
-        if not idConsulta == 0:
-            rsp_consulta = requests.get(url+f'consultas/busqueda/id/{idConsulta}')
-            data = rsp_consulta.json()
-            consulta = data['consultas']
-        else:
-            consulta = None
-        data={}
-        data = response.json()
-        mensaje = data['message']
-        
-        if mensaje == "Registro Exitoso.":
-            data = response.json()
-            mensaje = data['message']
-            registro_temp['numeroFactura'] = data['numeroFactura']
-            datos_pdf = data['datos_pdf']
-            datos_pdf['medicamentos'] = medicamentos_lista
-            datos_pdf['tratamientos'] = tratamientos_lista
-            datos_pdf['examenes'] = examenes_lista
-            datos_pdf['consulta'] = consulta
-            datos_pdf['subtotalFactura'] = subtotal
-            datos_pdf['totalFactura'] = format(float(total),',.2f')
-            datos_pdf['impuestosFactura'] = imp
-            datos_pdf['numeroTarjeta'] = numeroTarjeta
-            datos_pdf['montoTarjeta'] = format(float(montoTarjeta),',.2f')
-            datos_pdf['montoEfectivo'] = format(float(montoEfectivo),',.2f')
-            datos_pdf['cambio'] = format(float(cambio),',.2f')
-            datos_pdf['descuento'] = format(float(descuento),',.2f')
-            datos_pdf['numMasc'] = mascara_tarjeta(numeroTarjeta)
-                      
-
-            #print(datos_pdf)
-            context['mensaje'] =  mensaje
-            context['datos_pdf'] = datos_pdf
-            context['registro_temp'] = registro_temp
-            context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
-            context['reportes_usuarios'] = DatosReportes.cargar_usuario()
+            tratamientos_lista = []
+            for item in tratamientos_seleccionados:
+                tratamiento = {}
+                tratamiento['id'] = int(item.split(" - ")[0])
+                tratamiento['nombre'] = str(item.split(" - ")[1])
+                tratamiento['precio'] = float(item.split(" - ")[2])
+                impuesto = float(item.split(" - ")[3])
+                tratamiento['impuesto'] = "{:.2f}".format(impuesto)
+                tratamientos_lista.append(tratamiento)
             
-            pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
-            response_pdf = HttpResponse(pdf, content_type='application/pdf')
-            response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
-            return response_pdf
-        else:
+            examenes_lista = []
+            for item in examenes_seleccionados:
+                examen = {}
+                examen['id'] = int(item.split(" - ")[0])
+                examen['nombre'] = str(item.split(" - ")[1])
+                examen['precio'] = float(item.split(" - ")[2])
+                impuesto = float(item.split(" - ")[3])
+                examen['impuesto'] = "{:.2f}".format(impuesto)
+                examenes_lista.append(examen)
+
+            # Crear el diccionario final
+            resultado = {}
+            resultado['correlativo'] = idCorrelativo
+            resultado['idPaciente'] = idPaciente
+            resultado['fechaActual'] = fechaActual
+            resultado['idEmpleado'] = idEmpleado
+            resultado['idMetodo'] = idMetodo
+            resultado['idConsulta'] = idConsulta
+            resultado['idDescuento'] = idDescuento
+            resultado['montoEfectivo'] = montoEfectivo
+            resultado['numeroTarjeta'] = numeroTarjeta
+            resultado['estado'] = estado
+            resultado['medicamentos'] = medicamentos_lista
+            resultado['tratamientos'] = tratamientos_lista
+            resultado['examenes'] = examenes_lista
+            resultado['total'] = total
+            resultado['subtotal'] = subtotal
+            resultado['cambio'] = cambio
+            resultado['descuento'] = descuento
+            resultado['imp'] = imp
+            resultado['montoTarjeta'] = montoTarjeta
+            
+            
+            resultado_json = json.dumps(resultado)
+
+            registro_temp = {
+                'fechaActual':fechaActual,
+                'idCorrelativo':idCorrelativo,
+                'idPaciente':idPaciente,
+                'idEmpleado':idEmpleado,
+                'idConsulta':idConsulta,
+                'idMetodo':idMetodo,
+                'idDescuento':idDescuento,
+                'estado':estado,
+                'montoEfectivo':montoEfectivo,
+                'numeroTarjeta':numeroTarjeta,
+                'montoTarjeta':montoTarjeta,
+                'subtotal':subtotal,
+                'serie':serie,
+                'imp':imp,
+                'total':total,
+                'cambio':cambio,
+                'descuento':descuento,
+                'medicamentos_lista':medicamentos_lista,
+                'tratamientos_lista':tratamientos_lista,
+                'examenes_lista':examenes_lista
+            }
+            
+            response = requests.post(url+'recaudo/', resultado_json)
+
+            if not idConsulta == 0:
+                rsp_consulta = requests.get(url+f'consultas/busqueda/id/{idConsulta}')
+                data = rsp_consulta.json()
+                consulta = data['consultas']
+            else:
+                consulta = None
+            data={}
             data = response.json()
             mensaje = data['message']
-            context['registro_temp'] = registro_temp
-            context['mensaje'] =  mensaje
+            
+            if mensaje == "Registro Exitoso.":
+                data = response.json()
+                mensaje = data['message']
+                registro_temp['numeroFactura'] = data['numeroFactura']
+                datos_pdf = data['datos_pdf']
+                datos_pdf['medicamentos'] = medicamentos_lista
+                datos_pdf['tratamientos'] = tratamientos_lista
+                datos_pdf['examenes'] = examenes_lista
+                datos_pdf['consulta'] = consulta
+                datos_pdf['subtotalFactura'] = subtotal
+                datos_pdf['totalFactura'] = format(float(total),',.2f')
+                datos_pdf['impuestosFactura'] = imp
+                datos_pdf['numeroTarjeta'] = numeroTarjeta
+                datos_pdf['montoTarjeta'] = format(float(montoTarjeta),',.2f')
+                datos_pdf['montoEfectivo'] = format(float(montoEfectivo),',.2f')
+                datos_pdf['cambio'] = format(float(cambio),',.2f')
+                datos_pdf['descuento'] = format(float(descuento),',.2f')
+                datos_pdf['numMasc'] = mascara_tarjeta(numeroTarjeta)
+                        
+
+                #print(datos_pdf)
+                context['mensaje'] =  mensaje
+                context['datos_pdf'] = datos_pdf
+                context['registro_temp'] = registro_temp
+                context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+                context['reportes_usuarios'] = DatosReportes.cargar_usuario()
+                
+                pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
+                response_pdf = HttpResponse(pdf, content_type='application/pdf')
+                response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
+                logger = definir_log_info('crear_recaudo','logs_recaudo')
+                logger.debug(f"Se ha realizado un registro")
+                return response_pdf
+            else:
+                data = response.json()
+                mensaje = data['message']
+                context['registro_temp'] = registro_temp
+                context['mensaje'] =  mensaje
+                context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+                context['reportes_usuarios'] = DatosReportes.cargar_usuario()
+                logger = definir_log_info('crear_recaudo','logs_recaudo')
+                logger.info("Se obtuvo una respuesta invalida: " + mensaje)
+            return render(request, 'recaudo/recaudo.html', context)
+        else:
             context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
             context['reportes_usuarios'] = DatosReportes.cargar_usuario()
-        return render(request, 'recaudo/recaudo.html', context)
-    else:
+            logger = definir_log_info('crear_recaudo','logs_recaudo')
+            logger.debug('Entrando a la funcion de registro')
+            return render(request, 'recaudo/recaudo.html', context)
+    except Exception as e:
+        mensaje = 'Ocurrio una excepcion'
+        logger = definir_log_info('excepcion_recaudo','logs_recaudo')
+        logger.exception("Ocurrio una excepcion:" + str(e))
         context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
         context['reportes_usuarios'] = DatosReportes.cargar_usuario()
         return render(request, 'recaudo/recaudo.html', context)
-
+  
 def actualizar_recaudo(request,id):
-    if request.method == 'POST':
-        idTemporal = id
-        estado = request.POST['mi-input']
-        response = requests.put(url+f'recaudo/id/{idTemporal}', json={'estado': estado})
-        rsp =  response.json()
+    datos = {}
+    try:
+        if request.method == 'POST':
+            idTemporal = id
+            estado = request.POST['mi-input']
+            response = requests.put(url+f'recaudo/id/{idTemporal}', json={'estado': estado})
+            rsp =  response.json()
 
-        rsp_recaudos = requests.get(url+'recaudo/')
-        if rsp_recaudos.status_code == 200:
-            data = rsp_recaudos.json()
-            recaudo = data['recaudo'] 
-        else:
-            recaudo = []
+            rsp_recaudos = requests.get(url+'recaudo/')
+            if rsp_recaudos.status_code == 200:
+                data = rsp_recaudos.json()
+                recaudo = data['recaudo'] 
+                datos = data['recaudo']
+                logger = definir_log_info('abrir_actualizar_recaudo','logs_recaudo')
+                logger.debug("Se obtuvo el registro correspondiente a la actualizacion: ")
+            else:
+                recaudo = []
 
-        if rsp['message'] == "La actualización fue exitosa.":
-            mensaje = rsp['message']+'- Actualizado Correctamente'
-            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'recaudo': recaudo})
-        else:
-            mensaje = rsp['message']                            
-            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': recaudo})
-
+            if rsp['message'] == "La actualización fue exitosa.":
+                mensaje = rsp['message']+'- Actualizado Correctamente'
+                logger = definir_log_info('actualizar_recaudo','logs_recaudo')
+                logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'recaudo': recaudo})
+            else:
+                mensaje = rsp['message']  
+                logger = definir_log_info('actualizar_recaudo','logs_recaudo')
+                logger.info("Se obtuvo una respuesta invalida" + mensaje)                          
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': recaudo})
+    except Exception as e:
+        mensaje = 'Ocurrio una excepcion'
+        logger = definir_log_info('excepcion_recaudo','logs_recaudo')
+        logger.exception("Ocurrio una excepcion:" + str(e))
+        mensaje = rsp['message']                            
+        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': datos})
+    
+  
 def buscar_recaudo(request):
-    valor = request.GET.get('buscador', None)
-    url2 = url + 'recaudo/busqueda/'
-    if valor is not None and (len(valor)>0):
-        if valor.isdigit():
-            id = int(valor)
-            response = requests.get(url2 + f'id/{id}')
-            if response.status_code == 200:
-                data = response.json()
-                mensaje = data['message']
-                recaudo = {}
-                recaudo = data['recaudo']
-                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
-                return render(request, 'recaudo/buscar_recaudo.html', context)  
+    try:
+        valor = request.GET.get('buscador', None)
+        url2 = url + 'recaudo/busqueda/'
+        if valor is not None and (len(valor)>0):
+            if valor.isdigit():
+                id = int(valor)
+                response = requests.get(url2 + f'id/{id}')
+                if response.status_code == 200:
+                    data = response.json()
+                    mensaje = data['message']
+                    recaudo = {}
+                    recaudo = data['recaudo']
+                    if recaudo != []:   
+                        logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                        logger.debug(f"Se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
+                    else:
+                        logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                        logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
+                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
+                    return render(request, 'recaudo/buscar_recaudo.html', context)  
+                else:
+                    recaudo = []
+                    mensaje = 'No se encontraron registros'
+                    logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                    logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
+                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})     
             else:
-                recaudo = []
-                mensaje = 'No se encontraron registros'
-                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})     
+                response = requests.get(url2+'numeroFactura/'+valor)
+                if response.status_code == 200:
+                    data = response.json()
+                    mensaje = data['message']
+                    recaudo = {}
+                    recaudo = data['recaudo']
+                    if recaudo != []:   
+                        logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                        logger.debug(f"Se obtuvieron los registros:Filtrado(numeroFactura){valor} - {mensaje}")
+                    else:
+                        logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                        logger.info(f"No se obtuvieron los registros:Filtrado(numeroFactura){valor} - {mensaje}")
+                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
+                    return render(request, 'recaudo/buscar_recaudo.html', context)
+                else:
+                    recaudo = []
+                    mensaje = 'No se encontraron registros'
+                    logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                    logger.info(f"No se obtuvieron los registros:Filtrado(numeroFactura){valor} - {mensaje}")
+                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
         else:
-            response = requests.get(url2+'numeroFactura/'+valor)
+            response = requests.get(url+'recaudo/')
             if response.status_code == 200:
                 data = response.json()
-                mensaje = data['message']
-                recaudo = {}
                 recaudo = data['recaudo']
-                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
-                return render(request, 'recaudo/buscar_recaudo.html', context)
+                mensaje = data['message']   
+                if recaudo != []:   
+                    logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                    logger.debug(f"Se obtuvieron los registros:{mensaje}")
+                else:
+                    logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                    logger.info(f"No se obtuvieron los registros:{mensaje}")
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
             else:
                 recaudo = []
                 mensaje = 'No se encontraron registros'
-                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
-    else:
+                logger = definir_log_info('buscar_recaudo','logs_recaudo')
+                logger.info(f"No se obtuvieron los registros:{mensaje}")
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+    except Exception as e:
+        mensaje = 'Ocurrio una excepcion'
+        logger = definir_log_info('excepcion_recaudo','logs_recaudo')
+        logger.exception("Ocurrio una excepcion:" + str(e))
         response = requests.get(url+'recaudo/')
         if response.status_code == 200:
             data = response.json()
@@ -249,7 +317,8 @@ def buscar_recaudo(request):
             recaudo = []
             mensaje = 'No se encontraron registros'
         return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
-
+    
+  
 
 
 def eliminar_recaudo(request,id):
@@ -279,17 +348,56 @@ def eliminar_recaudo(request,id):
         return render(request, 'recaudo/buscar_recaudo.html', context)   
 
 def reimprimir_recaudo(request,id):
-    if request.method == 'POST' and 'reimprimir' in request.POST:
-        rsp = requests.get(url + f'reimprimirPdf/id/{id}')
-        data = rsp.json()
+    try:
+        if request.method == 'POST':
+            if 'reimprimir' in request.POST:
+                rsp = requests.get(url + f'reimprimirPdf/id/{id}')
+                data = rsp.json()
 
-        datos_pdf = data['datos_pdf']
-        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_pdf': datos_pdf}
+                datos_pdf = data['datos_pdf']
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_pdf': datos_pdf}
 
-        pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
-        response_pdf = HttpResponse(pdf, content_type='application/pdf')
-        response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
-        return response_pdf
+                pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
+                response_pdf = HttpResponse(pdf, content_type='application/pdf')
+                response_pdf['Content-Disposition'] = 'attachment; filename="recaudo.pdf"'
+                logger = definir_log_info('reimpresion_recaudo','logs_recaudo')
+                logger.info("Se ha reimprimido un registro de recaudo")
+                return response_pdf
+            elif 'eliminar' in request.POST:
+                idTemporal = id
+                response = requests.delete(url + f'recaudo/id/{idTemporal}')
+                res = response.json()
+                rsp_recaudo = requests.get(url + 'recaudo/') 
+                if rsp_recaudo.status_code == 200:
+                    data = rsp_recaudo.json()
+                    recaudo = data['recaudo']
+                    if response.json()['message'] == 'Registro Eliminado':
+                        logger = definir_log_info('eliminar_recaudo','logs_recaudo')
+                        logger.info("Registro eliminado correctamente")
+                    else:
+                        logger = definir_log_info('eliminar_recaudo','logs_recaudo')
+                        logger.info("No se ha podido eliminar el registro")
+                else:
+                    recaudo = []
+                    logger = definir_log_info('eliminar_recaudo','logs_recaudo')
+                    logger.warning("Se obtuvo una respuesta invalida" + mensaje)
+                mensaje = res['message']
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
+                return render(request, 'recaudo/buscar_recaudo.html', context)   
+    except Exception as e:
+        mensaje = 'Ocurrio una excepcion'
+        logger = definir_log_info('excepcion_recaudo','logs_recaudo')
+        logger.exception("Ocurrio una excepcion:" + str(e))
+  
+        rsp_recaudo = requests.get(url + 'recaudo/') 
+        if rsp_recaudo.status_code == 200:
+            data = rsp_recaudo.json()
+            recaudo = data['recaudo']
+        else:
+            recaudo = []
+        mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
+        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
+        return render(request, 'recaudo/buscar_recaudo.html', context)
 
 def list_sar():
     rsp_correlativo = requests.get(url+'correlativo/busqueda/activo/1')

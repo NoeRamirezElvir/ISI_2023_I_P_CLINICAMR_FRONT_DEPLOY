@@ -4,7 +4,6 @@ import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
 
-
 url = 'https://clinicamr.onrender.com/api/'
 def listar_documentos(request):
     response = requests.get(url+'documentos/')

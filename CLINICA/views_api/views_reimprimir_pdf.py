@@ -17,8 +17,6 @@ def reimprimir_recaudo(request,id):
     if request.method == 'POST':
         rsp = requests.get(url + f'recaudo/busqueda/id/{id}')
         data = rsp.json()
-        print('data')
-
         context = {}
         pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
         response_pdf = HttpResponse(pdf, content_type='application/pdf')

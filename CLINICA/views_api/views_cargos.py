@@ -106,15 +106,15 @@ def actualizar_cargo(request, id):
                 logger.debug("Actualizacion correcta del cargo: " + mensaje)
                 return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos ,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
+                mensaje = rsp['message']                           
                 logger = definir_log_info('error_actualizar','logs_cargo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'cargos/busqueda/id/{idTemporal}')
-            if response.status_code == 200:
-                data = response.json()
+            data = response.json()
+            if response.status_code == 200:  
                 cargos = data['cargos']
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_cargo')
@@ -128,7 +128,7 @@ def actualizar_cargo(request, id):
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'cargos/cargoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 def eliminar_cargo(request, id):
     try:
@@ -150,6 +150,8 @@ def eliminar_cargo(request, id):
             context = {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'cargos/buscarCargo.html', context)
     except Exception as e:
+        logger = definir_log_info('excepcion_cargo','logs_cargo')
+        logger.exception("Ocurrio una excepcion:" + str(mensaje))
         rsp_cargos = requests.get(url + 'cargos/') 
         if rsp_cargos.status_code == 200:
             data = rsp_cargos.json()
@@ -157,8 +159,6 @@ def eliminar_cargo(request, id):
         else:
             cargos = [] 
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros o esta protegido'
-        logger = definir_log_info('excepcion_cargo','logs_cargo')
-        logger.exception("Ocurrio una excepcion:" + str(mensaje))
         context = {'cargos': cargos, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'cargos/buscarCargo.html', context)      
     

@@ -72,7 +72,7 @@ def crear_consulta(request):
                 data = response.json()
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_consulta')
-                logger.warning("No se pudo crear el consulta: " + mensaje)
+                logger.warning("No se obtuvo respuesta del servidor: " + mensaje)
             return render(request, 'consulta/consulta.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_consulta','logs_consulta')
@@ -122,7 +122,7 @@ def abrir_actualizar_consulta(request):
             else:
                 registro_temp = {}
                 logger = definir_log_info('error_abrir_actualizar','logs_consulta')
-                logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
+                logger.warning("Se obtuvo una respuesta invalida")
             context = {'registro_temp': registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'consulta/actualizar_consulta.html', context)   
@@ -135,12 +135,10 @@ def abrir_actualizar_consulta(request):
     
 
 def actualizar_consulta(request, id):
-        #Se cargan las listas para los SELECT
-        diagnostico_list = list_diagnostico()
-        cita_list = list_cita()
-        tipo_list = list_tipo()
-        
-        
+    diagnostico_list = list_diagnostico()
+    cita_list = list_cita()
+    tipo_list = list_tipo()
+    try:
         if request.method == 'POST':
             idTemporal = id
             idCita = int(request.POST['idCita'])
@@ -190,12 +188,17 @@ def actualizar_consulta(request, id):
             #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
             if rsp['message'] == "La actualización fue exitosa.":
                 mensaje = rsp['message']+'- Actualizado Correctamente'
+                logger = definir_log_info('actualizar_consulta','logs_consulta')
+                logger.debug(f"Se actualizo la consulta: ID {id_consulta}")
                 return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
-                mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
+                mensaje = rsp['message']                         
+                logger = definir_log_info('actualizar_consulta','logs_consulta')
+                logger.info(f"No se pudo actualizar: {mensaje}")
                 return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
-            #Y aqui no se que hice la verdad
+            logger = definir_log_info('actualizar_consulta','logs_consulta')
+            logger.debug("Obteniendo información de la consulta")
             response = requests.get(url+f'consultas/busqueda/id/{idTemporal}')
             if response.status_code == 200:
                 data = response.json()
@@ -214,10 +217,19 @@ def actualizar_consulta(request, id):
                 return render(request, 'consulta/actualizar_consulta.html', {'registro_temp': registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
+                logger = definir_log_info('error_actualizar_consulta','logs_consulta')
+                logger.warning(f"Respuesta invalida del servidor: {mensaje}")
                 return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+    except Exception as e:
+        mensaje = 'Error'
+        logger = definir_log_info('excepcion_consulta','logs_consulta')
+        logger.exception("Ocurrio una excepcion:" + str(e))
+        return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        
 
 
 def buscar_consulta(request):
+    try:
         valor = request.GET.get('buscador', None)
         url2 = url + 'consultas/busqueda/'
         
@@ -232,6 +244,8 @@ def buscar_consulta(request):
                     mensaje = data['message']
                     consultas = {}
                     consultas = data['consultas']
+                    logger = definir_log_info('buscar_consulta','logs_consulta')
+                    logger.debug("Se obtuvo la consulta especifica(filtrado por ID)")
                     context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:        
@@ -241,6 +255,8 @@ def buscar_consulta(request):
                         mensaje = data['message']
                         consultas = {}
                         consultas = data['consultas']
+                        logger = definir_log_info('buscar_consulta','logs_consulta')
+                        logger.debug("Se obtuvo la consulta especifica(filtrado por Documento)")
                         context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'consulta/buscar_consulta.html', context)
                     else:
@@ -255,27 +271,39 @@ def buscar_consulta(request):
                     mensaje = data['message']
                     consultas = {}
                     consultas = data['consultas']
+                    logger = definir_log_info('buscar_consulta','logs_consulta')
+                    logger.debug("Se obtuvo la consulta especifica(filtrado por Documento)")
                     context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:
                     consultas = []
-                    mensaje = 'No se encontraron muestras'
+                    mensaje = 'No se encontraron consultas'
+                    logger = definir_log_info('buscar_consulta','logs_consulta')
+                    logger.info("No se encontraron registros")
                     return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             response = requests.get(url+'consultas/')
             if response.status_code == 200:
                 data = response.json()
                 consultas = data['consultas']
-                mensaje = data['message']   
+                mensaje = data['message']  
+                logger = definir_log_info('buscar_consulta','logs_consulta')
+                logger.info("No obtuvieron registros")
                 return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 consultas = []
                 mensaje = 'No se encontraron consultas'
+                logger = definir_log_info('buscar_consulta','logs_consulta')
+                logger.info("No se encontraron registros")
             return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+    except Exception as e:
+        mensaje = 'Error'
+        logger = definir_log_info('excepcion_consulta','logs_consulta')
+        logger.exception("Ocurrio una excepcion:" + str(e))
+        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+
 
 def eliminar_consulta(request, id):  
-    
-    
     try:
         if request.method == 'POST':
             idTemporal = id
@@ -286,13 +314,17 @@ def eliminar_consulta(request, id):
             if rsp_consultas.status_code == 200:
                 data = rsp_consultas.json()
                 consultas = data['consultas']
+                logger = definir_log_info('eliminar_consulta','logs_consulta')
+                logger.info("Se elimino la consulta")
                 context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             else:
                 enfermedades = []
                 mensaje = res['message']
+                logger = definir_log_info('eliminar_consulta','logs_consulta')
+                logger.info("No se pudo eliminar la consulta")
                 context = {'enfermedades': enfermedades, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'consultas/buscar_consultas.html', context) 
-    except:
+    except Exception as e:
         rsp_consultas = requests.get(url + 'consultas/') 
         context ={}
         mensaje = {}
@@ -304,6 +336,8 @@ def eliminar_consulta(request, id):
             consultas = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         context = {'consultas': consultas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        logger = definir_log_info('excepcion_consulta','logs_consulta')
+        logger.exception("Ocurrio una excepcion:" + str(e))
         return render(request, 'consulta/buscar_consulta.html', context)
 
 

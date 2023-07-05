@@ -66,7 +66,7 @@ def crear_correlativo(request):
 
 def abrir_actualizar_correlativo(request):
     try:
-    
+
         if request.method == 'POST':
             print(request.POST['id_correlativo'])
             resp = requests.get(url+'correlativo/busqueda/id/'+str(request.POST['id_correlativo']))

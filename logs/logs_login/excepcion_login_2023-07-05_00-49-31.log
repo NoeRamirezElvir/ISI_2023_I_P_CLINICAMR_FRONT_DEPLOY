@@ -1,0 +1,6 @@
+2023-07-05 00:49:31,945 - Thread-12 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:cannot access local variable 'logger' where it is not associated with a value
+Traceback (most recent call last):
+  File "C:\Users\nblad\Desktop\FRONT_ACTUALIZADO\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_login.py", line 24, in iniciar_sesion
+    logger.debug(f'Ha tratado de iniciar sesion - Usuario:{username}, {mensaje}')
+    ^^^^^^
+UnboundLocalError: cannot access local variable 'logger' where it is not associated with a value
