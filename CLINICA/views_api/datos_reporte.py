@@ -924,3 +924,71 @@ class DatosReportes():
             logger.exception(f"Se produjo una excepcion: {str(e)}")
             lista  = []
             return lista
+
+
+    def cargar_lista_permisos():
+        try:
+            response = requests.get(url+'permisos/')
+            if response.status_code == 200:
+                data = response.json()
+                lista = data['permisos']
+                if data['message'] != "Consulta exitosa":
+                    logger = definir_log_info('pdf_permisos','logs_pdf_permisos')
+                    logger.debug("No se obtuvieron los registros(permisos)")
+                else:
+                    logger = definir_log_info('pdf_permisos','logs_pdf_permisos')
+                    logger.debug("Se obtuvieron los registros(permisos)")
+            else:
+                lista  = []
+            return lista
+        except Exception as e:
+            logger = definir_log_info('pdf_permisos','logs_pdf_permisos')
+            logger.exception(f"Se produjo una excepcion: {str(e)}")
+            lista  = []
+            return lista
+
+
+
+    def cargar_lista_acciones():
+        try:
+            response = requests.get(url+'acciones/')
+            if response.status_code == 200:
+                data = response.json()
+                lista = data['acciones']
+                if data['message'] != "Consulta exitosa":
+                    logger = definir_log_info('pdf_acciones','logs_pdf_acciones')
+                    logger.debug("No se obtuvieron los registros(acciones)")
+                else:
+                    logger = definir_log_info('pdf_acciones','logs_pdf_acciones')
+                    logger.debug("Se obtuvieron los registros(acciones)")
+            else:
+                lista  = []
+            return lista
+        except Exception as e:
+            logger = definir_log_info('pdf_acciones','logs_pdf_acciones')
+            logger.exception(f"Se produjo una excepcion: {str(e)}")
+            lista  = []
+            return lista
+        
+
+    def cargar_lista_pantallas():
+        try:
+            response = requests.get(url+'pantallas/')
+            if response.status_code == 200:
+                data = response.json()
+                lista = data['pantallas']
+                if data['message'] != "Consulta exitosa":
+                    logger = definir_log_info('pdf_pantallas','logs_pdf_pantallas')
+                    logger.debug("No se obtuvieron los registros(pantallas)")
+                else:
+                    logger = definir_log_info('pdf_pantallas','logs_pdf_pantallas')
+                    logger.debug("Se obtuvieron los registros(pantallas)")
+            else:
+                lista  = []
+            return lista
+        except Exception as e:
+            logger = definir_log_info('pdf_acciones','logs_pdf_acciones')
+            logger.exception(f"Se produjo una excepcion: {str(e)}")
+            lista  = []
+            return lista
+

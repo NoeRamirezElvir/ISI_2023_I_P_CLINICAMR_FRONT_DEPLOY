@@ -1,0 +1,87 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Permisos{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar Excel</button>
+  <button id="exportBtn">Exportar PDF</button>
+</div>
+<script src="{% static 'js/js_reportes/rpt_permisos.js' %}"></script>
+
+<div class="contenedor-listar-campos">
+  <h1 class="h1-listar">Registros de Permisos</h1>
+  <div class="busqueda-listar">
+    <form method="GET" action="{% url 'buscar_permisos' %}">
+      {% csrf_token %}
+      <div class="buscador-listar">
+        <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
+      </div>
+      <div class="btnBusqueda-listar">
+        <input id="btnBuscarUsuario " type="submit" value="Buscar">
+      </div>
+    </form>
+    <a class="btn-agregar" href="/CLINICA/templates/permisos/permiso.html" class="btn-agregar-link">Agregar</a>
+  </div>
+  <div class="container-listar">
+    <div class="tabla-listar">
+      <table class="tftable-listar">
+        <thead>
+          <tr class="tfheader-listar">
+            <th style="color:aliceblue">ID</th>
+            <th style="color:aliceblue">Acciones(nombre)</th>
+            <th style="color:aliceblue">Pantallas/nombre</th>
+            
+            <th style="color:aliceblue">Cargo Empleado</th>
+            <th style="color:aliceblue">activo</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% if permisos %}
+          {% for permiso in permisos %}
+          <tr>
+            <td>{{ permiso.id }}</td>
+            <td>{{ permiso.idAcciones.id}}  <br>{{ permiso.idAcciones.nombre}}  </td>
+            <td>{{ permiso.idPantallas.id }}  <br> {{ permiso.idPantallas.nombre }} </td>
+            <td>{{ permiso.idCargoEmpleado.id }}   <br> {{ permiso.idCargoEmpleado.nombre }} </td>
+            <td>{{ permiso.activo }}</td>
+            
+            <td>
+              <form action="{% url 'abrir_actualizar_permisos' %}" method="post" class="form-botones">
+                {% csrf_token %}
+                <input type="hidden" name="id_permisos" value="{{ permiso.id }}">
+                <button class="btnEditar" name="editar" id="editar">
+                  <img src="{% static 'img/icons/icedit.png' %}">
+                </button>
+              </form>
+              <form action="{% url 'eliminar_permisos' id=permiso.id  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id_permisos" value="{{ permiso.id }}">
+                <button class="btnEliminar" name="eliminar" id="eliminar">
+                  <img src="{% static 'img/icons/icdelete.png' %}">
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="7">No se encontraron permisos.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if error %}
+<div id="alert-alert-info" style="top:100px">
+  <p>{{ error }}</p>
+</div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Actualizar Acciones{% endblock %}
+{% block content %}
+<style type="text/css">
+    #alert-alert-info {
+        top: 70vh;
+    }
+</style>
+<div id="contenedor-reportes">
+    <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+    <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+    <button id="exportarBtn" >Exportar Excel</button>
+    <button id="exportBtn">Exportar PDF</button>
+  </div>
+  <script src="{% static 'js/js_reportes/rpt_permisos.js' %}"></script>
+<div class="contenedor">
+  <h1 class="logo"><span class="nombre-empresa">Actualizar Permisos</span></h1>
+  <div class="wrapper animated bounceInLeft">
+      <div class="info-empresa">
+          <h3>Medical Rescue</h3>
+          <ul class="servicios">
+              <li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa,
+              </li>
+              <li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+              <li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+              <button class="button"><a href="/CLINICA/templates/permisos/buscar_permiso.html">BUSCAR</a></button>
+          </ul>
+      </div>
+      <div class="contacto">
+          <h3></h3>
+        <form method="POST" action="{% url 'actualizar_permisos' id=Permisos.0.id %}">
+          {% csrf_token %}
+
+        <fieldset id="payment_method" style="height: 70px;">
+            <legend>Activo/Inactivo</legend>
+            <div class="fieldgroup">
+            <input type="radio" name="payment_method" id="activo" value=1 {% if permisos.0.activo == 1 %}checked {% endif %}><label for= "payment1">Activo
+            </label>
+            </div>
+            <div class="fieldgroup">
+            <input type="radio" name="payment_method" id="inactivo" value=0 {% if permisos.0.activo == 0 %}checked {% endif %}><label for= "payment2">Inactivo
+            </label>
+            </div>
+            </fieldset>
+
+
+        <div style="display: inline-flex ;width: 100%">
+          <div style="display: block;width: 100%">
+          <label class="campo-registro" for="idAcciones">Información de  las Acciones</label>
+          <select name="idAcciones" id="idAcciones">
+          <option value="0" {% if registro_temp.idAcciones == '0' %}selected{% endif %}>Seleccione una opción</option>"
+          {% for acciones in acciones_list %}
+                <option value="{{ acciones.id }}"{% if acciones.id == acciones.id %}selected{% endif %}>{{ acciones.id }} {{ acciones.nombre }} </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+
+
+        <div style="display: inline-flex ;width: 100%">
+        <div style="display: block;width: 100%">
+        <label class="campo-registro" for="idTipoDocument1">Pantalla(nombre)</label>
+        <select name="idPantallas" id="idPantallas">
+        <option value="0" {% if registro_temp.idPantallas == '0' %}selected{% endif %}>Seleccione una opción</option>"
+        {% for pantallas in pantallas_list %}
+              <option value="{{ pantallas.id }}"{% if pantallas.id == pantallas.id %}selected{% endif %}>{{ pantallas.id }} {{ pantallas.nombre }} </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        
+
+          <div style="display: inline-flex ;width: 100%">
+            <div style="display: block;width: 100%">
+            <label class="campo-registro" for="idTipoDocument1">Cargo empleado</label>
+            <select name="idCargoEmpleado" id="idCargoEmpleado">
+            <option value="0" {% if registro_temp.idCargoEmpleado == '0' %}selected{% endif %}>Seleccione una opción</option>"
+            {% for cargos in cargos_list %}
+            <option value="{{ cargos.id }}"{% if cargos.id == cargos.id %}selected{% endif %}>{{ cargos.id }} {{ cargos.nombre }} {{ cargos.descripcion }} </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        
+
+            <p>
+
+            
+
+        <p class="full">
+          <button class="boton-enviar" style="position: relative; bottom: -10px;">Actualizar</button>
+        </p></p>
+      </form>
+
+{% if mensaje %}
+<div id="alert-alert-info">
+  <p>{{ mensaje }}</p>
+</div>
+{% endif %}
+
+
+{% endblock %}

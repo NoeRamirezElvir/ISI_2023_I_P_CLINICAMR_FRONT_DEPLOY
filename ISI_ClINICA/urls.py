@@ -61,6 +61,9 @@ from CLINICA.views_api.views_traslado_paciente import *
 from CLINICA.views_api.views_correlativo_SAR import *
 from CLINICA.views_api.views_recaudo import *
 from CLINICA.views_api.views_descuento import *
+from CLINICA.views_api.views_permisos import *
+from CLINICA.views_api.views_acciones import *
+from CLINICA.views_api.views_pantallas import *
 
 
 urlpatterns = [
@@ -384,5 +387,29 @@ urlpatterns = [
     path('CLINICA/templates/Descuentos/BuscarDescuento.html',listar_Descuentos, name="listar_Descuentos"),
 
 
+    #Permisos
+    path('CLINICA/templates/permisos/actualizar_permiso.html',abrir_actualizar_permisos,name="abrir_actualizar_permisos"),
+    path('CLINICA/templates/permisos/actualizar_permiso.html/<int:id>',actualizar_permisos,name="actualizar_permisos"),
+    path('CLINICA/templates/permisos/buscar_permiso.html/<int:id>',eliminar_permisos,name = 'eliminar_permisos'),
+    path('CLINICA/templates/permisos/buscar_permiso.html',buscar_permisos,name = 'buscar_permisos'),
+    path('CLINICA/templates/permisos/permiso.html',crear_permisos, name="crear_permisos"),
+    path('CLINICA/templates/permisos/buscar_permiso.html',listar_permisos, name="listar_permisos"),
+
+    #Acciones
+    path('CLINICA/templates/acciones/actualizar_acciones.html',abrir_actualizar_acciones,name="abrir_actualizar_acciones"),
+    path('CLINICA/templates/acciones/actualizar_acciones.html/<int:id>',actualizar_acciones,name="actualizar_acciones"),
+    path('CLINICA/templates/acciones/Buscar_acciones.html/<int:id>',eliminar_acciones,name = 'eliminar_acciones'),
+    path('CLINICA/templates/acciones/Buscar_acciones.html',buscar_acciones,name = 'buscar_acciones'),
+    path('CLINICA/templates/acciones/acciones.html',crear_acciones, name="crear_acciones"),
+    path('CLINICA/templates/acciones/Buscar_acciones.html',listar_acciones, name="listar_acciones"),
+
+
+    #Pantallas
+    path('CLINICA/templates/pantallas/actualizar_pantallas.html',abrir_actualizar_pantallas,name="abrir_actualizar_pantallas"),
+    path('CLINICA/templates/pantallas/actualizar_pantallas.html/<int:id>',actualizar_pantallas,name="actualizar_pantallas"),
+    path('CLINICA/templates/pantallas/Buscar_pantallas.html/<int:id>',eliminar_pantallas,name = 'eliminar_pantallas'),
+    path('CLINICA/templates/pantallas/Buscar_pantallas.html',buscar_pantallas,name = 'buscar_pantallas'),
+    path('CLINICA/templates/pantallas/pantallas.html',crear_pantallas, name="crear_pantallas"),
+    path('CLINICA/templates/pantallas/Buscar_pantallas.html',listar_pantallas, name="listar_pantallas"),
 
 ]

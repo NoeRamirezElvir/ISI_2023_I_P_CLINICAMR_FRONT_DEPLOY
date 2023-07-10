@@ -486,3 +486,43 @@ def crear_Descuentos(request):#
     return render(request,'Descuentos/Descuento.html')
 def eliminar_Descuentos(request,id):#
     return render(request,'Descuentos/Descuento.html')
+
+
+
+#PERMISOS
+def abrir_actualizar_permisos(request):#
+    return render(request,'permisos/actualizar_permiso.html')
+def actualizar_permisos(request,id):#
+    return render(request,'permisos/actualizar_permiso.html')
+def buscar_permisos(request):#
+    return render(request,'permisos/buscar_permiso.html')
+def crear_permisos(request):#
+    return render(request,'permisos/permiso.html')
+def eliminar_permisos(request,id):#
+    return render(request,'permisos/permiso.html')
+
+
+#Acciones
+def abrir_actualizar_acciones(request):#
+    return render(request,'acciones/actualizar_acciones.html')
+def actualizar_acciones(request,id):#
+    return render(request,'acciones/actualizar_acciones.html')
+def buscar_acciones(request):#
+    return render(request,'acciones/Buscar_acciones.html')
+def crear_acciones(request):#
+    return render(request,'acciones/acciones.html')
+def eliminar_acciones(request,id):#
+    return render(request,'acciones/acciones.html')
+
+
+#Pantallas
+def abrir_actualizar_pantallas(request):#
+    return render(request,'pantallas/actualizar_pantallas.html')
+def actualizar_pantallas(request,id):#
+    return render(request,'pantallas/actualizar_acciones.html')
+def buscar_pantallas(request):#
+    return render(request,'pantallas/Buscar_acciones.html')
+def crear_pantallas(request):#
+    return render(request,'pantallas/pantallas.html')
+def eliminar_pantallas(request,id):#
+    return render(request,'pantallas/pantallas.html')

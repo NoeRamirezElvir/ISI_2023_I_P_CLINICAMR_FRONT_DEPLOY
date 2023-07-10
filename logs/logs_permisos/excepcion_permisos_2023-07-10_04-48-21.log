@@ -1,0 +1,6 @@
+2023-07-10 04:48:21,404 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:cannot access local variable 'permisos' where it is not associated with a value
+Traceback (most recent call last):
+  File "C:\Users\50431\Desktop\ISI\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_permisos.py", line 91, in abrir_actualizar_permisos
+    print(permisos)
+          ^^^^^^^^
+UnboundLocalError: cannot access local variable 'permisos' where it is not associated with a value

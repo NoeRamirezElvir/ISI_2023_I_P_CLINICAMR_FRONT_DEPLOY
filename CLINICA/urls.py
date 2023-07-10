@@ -43,6 +43,9 @@ from views_api import views_traslado_paciente
 from views_api import views_correlativo_SAR
 from views_api import views_recaudo
 from views_api import views_descuento
+from views_api import views_permisos
+from views_api import views_acciones
+from views_api import views_pantallas
 
 urlpatterns = [
     path('', views.presentacion,name='presentacion'),
@@ -357,7 +360,29 @@ urlpatterns = [
     path('',views_descuento.buscar_Descuentos, name='buscar_Descuentos'),
     path('',views_descuento.crear_Descuentos, name='crear_Descuentos'),
 
+    #Permisos
+    path('',views_permisos.abrir_actualizar_permisos , name='abrir_actualizar_permisos'),
+    path('',views_permisos.actualizar_permisos , name='actualizar_permisos'),
+    path('',views_permisos.eliminar_permisos , name='eliminar_permisos'),
+    path('',views_permisos.listar_permisos , name='listar_permisos'),
+    path('',views_permisos.buscar_permisos , name='buscar_permisos'),
+    path('',views_permisos.crear_permisos , name='crear_permisos'),
 
+    #Acciones
+    path('',views_acciones.abrir_actualizar_acciones , name='abrir_actualizar_acciones'),
+    path('',views_acciones.actualizar_acciones , name='actualizar_acciones'),
+    path('',views_acciones.eliminar_acciones , name='eliminar_acciones'),
+    path('',views_acciones.listar_acciones , name='listar_acciones'),
+    path('',views_acciones.buscar_acciones , name='buscar_acciones'),
+    path('',views_acciones.crear_acciones , name='crear_acciones'),
+
+    #pantallas
+    path('',views_pantallas.abrir_actualizar_pantallas , name='abrir_actualizar_pantallas'),
+    path('',views_pantallas.actualizar_pantallas , name='actualizar_pantallas'),
+    path('',views_pantallas.eliminar_pantallas , name='eliminar_pantallas'),
+    path('',views_pantallas.listar_pantallas , name='listar_pantallas'),
+    path('',views_pantallas.buscar_pantallas , name='buscar_pantallas'),
+    path('',views_pantallas.crear_pantallas , name='crear_pantallas'),
 
 ]
 #path('',views.cargo, name='cargo'),

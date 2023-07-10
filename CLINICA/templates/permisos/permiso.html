@@ -1,0 +1,120 @@
+{% extends 'base_principal.html' %}
+{% load static %}
+
+{% block tittle %}Registro de Permisos{% endblock %}
+{% block content %}
+<style type="text/css">
+input[type="text"] {
+width: 90%;
+height: 40px;
+}
+input[type="datetime-local"] {
+width: 90%;
+height: 40px;
+text-align: center;
+}
+select {
+width: 90%;
+height: 40px;
+}
+#alert-alert-info {
+top: 75vh;
+}
+.boton-enviar{
+margin-top: 20px;
+}
+</style>
+<div id="contenedor-reportes">
+  <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
+  <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
+  <button id="exportarBtn" >Exportar Excel</button>
+  <button id="exportBtn">Exportar PDF</button>
+</div>
+<script src="{% static 'js/js_reportes/rpt_permisos.js' %}"></script>
+<div class="contenedor">
+<h1 class="logo"><span class="nombre-empresa">Permisos Medical Rescue</span></h1>
+<div class="wrapper animated bounceInLeft">
+<div class="info-empresa">
+<h3>Medical Rescue</h3>
+<ul class="servicios">
+<li><i class="fa fa-map-marker"></i> Colonia Humuya, Avenida Altiplano, Calle Poseidón, Tegucigalpa, </li>
+<li><i class="fa fa-mobile"></i> 504 9784-9821</li>
+<li><i class="fa fa-envelope"></i> MedicalR@gmail.com</li>
+<button class="button"><a href="/CLINICA/templates/permisos/buscar_permiso.html">Buscar</a> </button>
+</ul>
+</div>
+<div class="contacto">
+<h3></h3>
+<form method="POST" action="{% url 'crear_permisos' %}">
+{% csrf_token %}
+
+
+
+<div style="display: inline-flex ;width: 100%">
+<div style="display: block;width: 100%">
+<label class="campo-registro" for="idAcciones">Acciones</label>
+<select name="idAcciones" id="idAcciones">
+<option value="0" {% if registro_temp.idAcciones == '0' %}selected{% endif %}>Seleccione una opción</option>"
+{% for acciones in acciones_list %}
+<option value="{{ acciones.id }}"{% if acciones.id == registro_temp.idAcciones %}selected{% endif %}>{{ acciones.id }} {{ acciones.nombre }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+
+
+<div style="display: inline-flex ;width: 100%">
+<div style="display: block;width: 100%">
+<label class="campo-registro" for="idPantallas">Pantalla(nombre)</label>
+<select name="idPantallas" id="idPantallas">
+<option value="0" {% if registro_temp.idPantallas == '0' %}selected{% endif %}>Seleccione una opción</option>"
+{% for pantallas in pantallas_list %}
+<option value="{{ pantallas.id }}"{% if pantallas.id == registro_temp.idPantallas %}selected{% endif %}>{{ pantallas.id }} {{ pantallas.nombre }} </option>
+{% endfor %}
+</select>
+</div>
+</div>
+
+<div style="display: inline-flex ;width: 100%">
+<div style="display: block;width: 100%">
+<label class="campo-registro" for="idTipoDocument1">Cargo de empleados</label>
+<select name="idCargoEmpleado" id="idCargoEmpleado">
+<option value="0" {% if registro_temp.idCargoEmpleado == '0' %}selected{% endif %}>Seleccione una opción</option>"
+{% for cargos in cargos_list %}
+<option value="{{ cargos.id }}"{% if cargos.id == registro_temp.idCargoEmpleado %}selected{% endif %}>{{ cargos.id }} {{ cargos.nombre }} </option>
+{% endfor %}
+</select>
+</div>
+</div>
+
+<fieldset id="payment_method">
+    <legend>Activo/Inactivo</legend>
+    <div class="fieldgroup">
+      <input type="radio" name="payment_method" id="activo" value=1 {% if registro_temp.activo == 1 %} checked {% else %} checked {% endif %}><label for="payment1">Activo
+      </label>
+    </div>
+    <div class="fieldgroup">
+      <input type="radio" name="payment_method" id="inactivo" value=0  {% if registro_temp.activo == 0 %} checked {% endif %}><label
+        for="payment2">Inactivo</label>
+    </div>
+  </fieldset>
+
+
+
+
+
+
+
+
+
+<p class="full">
+<button class="boton-enviar" >Guardar</button>
+</p>
+</form>
+
+{% if mensaje %}
+<div id="alert-alert-info">
+<p>{{ mensaje }}</p>
+</div>
+{% endif %}
+{% endblock %}

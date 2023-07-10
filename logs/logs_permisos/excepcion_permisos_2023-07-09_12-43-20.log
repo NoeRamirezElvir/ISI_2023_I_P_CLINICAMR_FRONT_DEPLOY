@@ -1,0 +1,14 @@
+2023-07-09 12:43:20,201 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:permisos/buscar_traslado.html
+Traceback (most recent call last):
+  File "C:\Users\50431\Desktop\ISI\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_permisos.py", line 286, in buscar_permisos
+    return render(request, 'permisos/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\50431\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\50431\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\50431\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: permisos/buscar_traslado.html
