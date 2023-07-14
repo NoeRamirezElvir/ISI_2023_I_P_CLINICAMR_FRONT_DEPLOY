@@ -18,3 +18,23 @@ if (cuadroDialogo) {
     cuadroDialogo.style.display = 'none';
   }, 5000);
 }
+
+var botones = document.getElementsByClassName("activarFormulario");
+
+for (var i = 0; i < botones.length; i++) {
+  botones[i].addEventListener("click", function(event) {
+    event.preventDefault(); // Evita que el enlace recargue la página
+
+    // Mostrar mensaje de alerta
+    alert('No cuenta con los permisos necesarios para realizar la acción, pongase en contacto con el administrador');
+  });
+}
+
+var inputs = document.querySelectorAll('input');
+inputs.forEach(function(input) {
+  input.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  });
+});

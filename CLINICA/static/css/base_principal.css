@@ -10,6 +10,20 @@
     left:250px;
     top:5px;
 }
+.activarFormulario{
+    margin:5px;
+    width: 85px;
+    height: 25px;
+    background-image: url("/CLINICA/static/img/icons/icnoacces.png");
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-size: 20px;
+    text-align: left;
+    color: white;
+    display: flow-root;
+    text-decoration: none;
+
+}
 #exportarBtn{
     padding-left: 35px;
     width: 150px;

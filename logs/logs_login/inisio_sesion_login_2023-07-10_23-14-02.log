@@ -1,0 +1,2 @@
+2023-07-10 23:14:02,415 - Thread-5 (process_request_thread) - MainProcess - DEBUG - Se ha iniciado sesion - Usuario:noe.ramirez
+2023-07-10 23:14:02,752 - Thread-5 (process_request_thread) - MainProcess - DEBUG - Entrando a funcion iniciar sesion

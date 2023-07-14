@@ -6,6 +6,7 @@ import requests
 from ..views_api.datos_reporte import DatosReportes
 
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_cargos(request):
@@ -38,20 +39,20 @@ def crear_cargo(request):
                 else:
                     logger = definir_log_info('crear','logs_cargo')
                     logger.debug(f"Se ha registrado un cargo: Nombre={nombre}")
-                return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_cargo')
                 logger.warning("No se pudo crear el cargo: " + mensaje)
-                return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
         else:
             logger = definir_log_info('crear_cargo','logs_cargo')
             logger.debug('Entrando a la funcion crear cargo')
-            return render(request, 'cargos/cargo.html',{'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'cargos/cargo.html',{'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'cargos/cargo.html',{'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'cargos/cargo.html',{'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
 
 def abrir_actualizar_cargos(request):
     try:
@@ -73,13 +74,13 @@ def abrir_actualizar_cargos(request):
                 cargos = []
                 logger = definir_log_info('error_abrir_actualizar','logs_cargo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-            context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
             mensaje = data['message']
             return render(request, 'cargos/cargoactualizar.html', context)
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
         return render(request, 'cargos/cargoactualizar.html', context)
     
 def actualizar_cargo(request, id):
@@ -104,12 +105,12 @@ def actualizar_cargo(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar','logs_cargo')
                 logger.debug("Actualizacion correcta del cargo: " + mensaje)
-                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos ,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos ,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
             else:
                 mensaje = rsp['message']                           
                 logger = definir_log_info('error_actualizar','logs_cargo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'cargos/busqueda/id/{idTemporal}')
@@ -119,16 +120,16 @@ def actualizar_cargo(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_cargo')
                 logger.debug("Obteniendo informacion del cargo: " + mensaje)
-                return render(request, 'cargos/cargoactualizar.html', {'cargos': cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargoactualizar.html', {'cargos': cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar','logs_cargo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/cargoactualizar.html', {'mensaje': mensaje,'cargos':cargos,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'cargos/cargoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'cargos/cargoactualizar.html', {'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
     
 def eliminar_cargo(request, id):
     try:
@@ -147,7 +148,7 @@ def eliminar_cargo(request, id):
                 logger = definir_log_info('error_eliminar_cargo','logs_cargo')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
             return render(request, 'cargos/buscarCargo.html', context)
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
@@ -159,7 +160,7 @@ def eliminar_cargo(request, id):
         else:
             cargos = [] 
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros o esta protegido'
-        context = {'cargos': cargos, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'cargos': cargos, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
         return render(request, 'cargos/buscarCargo.html', context)      
     
 def buscar_cargos(request):
@@ -177,14 +178,14 @@ def buscar_cargos(request):
                     cargos = data['cargos']
                     logger = definir_log_info('buscar_cargo','logs_cargo')
                     logger.debug("Se obtuvo el cargo especifico(filtrado por ID): " + mensaje)
-                    context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
                     return render(request, 'cargos/buscarCargo.html', context)     
                 else:
                     cargos = []
                     mensaje = 'No se encontraron cargos'
                     logger = definir_log_info('error_buscar_cargo','logs_cargo')
                     logger.debug("No se obtuvo el cargo especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
+                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})  
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -194,14 +195,14 @@ def buscar_cargos(request):
                     cargos = data['cargos']
                     logger = definir_log_info('buscar_cargo','logs_cargo')
                     logger.debug("Se obtuvo el cargo especifico(filtrado por nombre): " + mensaje)
-                    context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'cargos': cargos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()}
                     return render(request, 'cargos/buscarCargo.html', context)
                 else:
                     cargos = []
                     mensaje = 'No se encontraron cargos'
                     logger = definir_log_info('error_buscar_cargo','logs_cargo')
                     logger.debug("No se obtuvo el cargo especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
         else:
             response = requests.get(url+'cargos/')
             if response.status_code == 200:
@@ -210,13 +211,13 @@ def buscar_cargos(request):
                 mensaje = data['message']  
                 logger = definir_log_info('buscar_cargo','logs_cargo')
                 logger.debug("Se obtuvieron todos los cargos: " + mensaje )
-                return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
             else:
                 cargos = []
                 mensaje = 'No se encontraron cargos'
                 logger = definir_log_info('error_buscar_cargo','logs_cargo')
                 logger.debug("No se obtuvo el cargo especifico(filtrado por ID): " + mensaje)
-            return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
     except Exception as e:
         logger = definir_log_info('excepcion_cargo','logs_cargo')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -227,11 +228,11 @@ def buscar_cargos(request):
             mensaje = data['message']  
             logger = definir_log_info('buscar_cargo','logs_cargo')
             logger.debug("Se obtuvieron todos los cargos: " + mensaje ) 
-            return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
         else:
             cargos = []
             mensaje = 'No se encontraron cargos'
             logger = definir_log_info('error_buscar_cargo','logs_cargo')
             logger.debug("No se pudo obtener informacion de cargos: " + mensaje)
-        return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'cargos/buscarCargo.html', {'cargos': cargos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_cargos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos()})
     

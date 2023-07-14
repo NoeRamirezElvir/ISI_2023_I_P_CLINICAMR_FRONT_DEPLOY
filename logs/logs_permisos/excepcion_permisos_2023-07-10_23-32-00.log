@@ -1,0 +1,6 @@
+2023-07-10 23:32:00,917 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:'dict' object has no attribute 'id'
+Traceback (most recent call last):
+  File "C:\Users\nblad\Desktop\Nueva carpeta (2)\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_permisos.py", line 92, in abrir_actualizar_permisos
+    print(data['permisos'][0].id)
+          ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'id'

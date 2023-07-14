@@ -1,0 +1,2 @@
+2023-07-11 21:15:05,047 - Thread-19 (process_request_thread) - MainProcess - DEBUG - Se ha iniciado sesion - Usuario:admin
+2023-07-11 21:15:05,541 - Thread-20 (process_request_thread) - MainProcess - DEBUG - Entrando a funcion iniciar sesion

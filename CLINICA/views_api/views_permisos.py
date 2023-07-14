@@ -5,7 +5,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
-
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -43,7 +43,6 @@ def crear_permisos(request):
                                                         'activo':activo
                                                         })
             data = response.json()
-            print (data)
             if response.status_code == 200:
                 mensaje = data['message']
                 if mensaje != 'Registro Exitoso.':
@@ -52,7 +51,7 @@ def crear_permisos(request):
                 else:
                     logger = definir_log_info('crear_permisos','logs_permisos')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 
+                return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'mensaje': mensaje, 
                                                                 'registro_temp':registro_temp,
                                                                 'acciones_list':acciones_list, 
                                                                 'cargos_list':cargos_list, 
@@ -61,18 +60,18 @@ def crear_permisos(request):
                 mensaje = data['message']
                 logger = definir_log_info('crear_permisos','logs_permisos')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'acciones_list':acciones_list, 'cargos_list':cargos_list, 'pantallas_list':pantallas_list})
+                return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'mensaje': mensaje,'registro_temp':registro_temp, 'acciones_list':acciones_list, 'cargos_list':cargos_list, 'pantallas_list':pantallas_list})
         else:
             logger = definir_log_info('crear_permisos','logs_permisos')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'acciones_list':acciones_list, 
+            return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'acciones_list':acciones_list, 
                                                             'cargos_list':cargos_list, 
                                                             'pantallas_list':pantallas_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_permisos','logs_permisos')
         logger.exception("Ocurrio una excepcion:" + str(e))   
-        return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+        return render(request, 'permisos/permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                          'acciones_list':acciones_list, 
                                                         'cargos_list':cargos_list, 
                                                         'pantallas_list':pantallas_list})
@@ -104,20 +103,19 @@ def abrir_actualizar_permisos(request):
                 permisos = []
                 logger = definir_log_info('abrir_actualizar_permisos','logs_permisos')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje':mensaje,
+            context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje':mensaje,
                                                 'acciones_list':acciones_list,
                                                 'cargos_list':cargos_list,
                                                 'pantallas_list':pantallas_list                                          
                                                 }
             mensaje = data['message']
-            print(context)
             return render(request, 'permisos/actualizar_permiso.html', context)
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_permisos','logs_permisos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         permisos = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje':mensaje,
+        context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje':mensaje,
                                             'acciones_list':acciones_list,
                                             'cargos_list':cargos_list,
                                             'pantallas_list':pantallas_list                                          
@@ -134,16 +132,17 @@ def actualizar_permisos(request, id):
             idAcciones = int(request.POST['idAcciones'])
             idCargoEmpleado = int(request.POST['idCargoEmpleado'])
             idPantallas = int(request.POST['idPantallas'])
-            activo = request.POST['payment_method']
+            activo = int(request.POST['payment_method'])
             
 
             response = requests.put(url+f'permisos/id/{idTemporal}', json={'idAcciones': idAcciones, 
                                                                             'idCargoEmpleado': idCargoEmpleado, 
                                                                             'idPantallas': idPantallas, 
-                                                                            'activo':activo, 
+                                                                            'activo':activo
                                                                             })
 
             rsp =  response.json()
+
             res = requests.get(url+f'permisos/busqueda/id/{idTemporal}')
             data = res.json()
             permisos = data['permisos']
@@ -154,7 +153,7 @@ def actualizar_permisos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_permisos','logs_permisos')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                                             'mensaje': mensaje,
                                                                             'permisos':permisos,
                                                                             'acciones_list':acciones_list,
@@ -165,7 +164,7 @@ def actualizar_permisos(request, id):
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('actualizar_permisos','logs_permisos')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                                             'mensaje': mensaje,
                                                                             'permisos':permisos,
                                                                             'acciones_list':acciones_list,
@@ -180,7 +179,7 @@ def actualizar_permisos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_permisos','logs_permisos')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                                             'permisos':permisos,
                                                                             'acciones_list':acciones_list,
                                                                             'cargos_list':cargos_list,
@@ -191,7 +190,7 @@ def actualizar_permisos(request, id):
                 logger = definir_log_info('actualizar_permisos','logs_permisos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
                 
-                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+                return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                                             'mensaje': mensaje,
                                                                             'permisos':permisos,
                                                                             'acciones_list':acciones_list,
@@ -202,7 +201,7 @@ def actualizar_permisos(request, id):
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_permisos','logs_permisos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),
+        return render(request, 'permisos/actualizar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),
                                                                     'mensaje': mensaje,
                                                                     'permisos':{},
                                                                     'acciones_list':acciones_list,
@@ -231,7 +230,7 @@ def eliminar_permisos(request, id):
                 logger = definir_log_info('eliminar_permisos','logs_permisos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje': mensaje}
             return render(request, 'permisos/buscar_permiso.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -244,7 +243,7 @@ def eliminar_permisos(request, id):
         else:
             permisos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'error': mensaje}
         return render(request, 'permisos/buscar_permiso.html', context)     
      
 def buscar_permisos(request):
@@ -267,7 +266,7 @@ def buscar_permisos(request):
                     else:
                         logger = definir_log_info('buscar_permisos','logs_permisos')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje':mensaje}
                     return render(request, 'permisos/buscar_permiso.html', context)
                 
             else:        
@@ -283,14 +282,14 @@ def buscar_permisos(request):
                     else:
                         logger = definir_log_info('buscar_permisos','logs_permisos')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje':mensaje}
                     return render(request, 'permisos/buscar_permiso.html', context)
                 else:
                     permisos = []
                     mensaje = 'No se encontraron muestras'
                     logger = definir_log_info('buscar_permisos','logs_permisos')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje})
+                    return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'permisos/')
@@ -304,20 +303,20 @@ def buscar_permisos(request):
                 else:
                     logger = definir_log_info('buscar_permisos','logs_permisos')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")   
-                return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje})
+                return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje': mensaje})
             
             else:
                 permisos = []
                 mensaje = 'No se encontraron permisos'
                 logger = definir_log_info('buscar_permisos','logs_permisos')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje})
+            return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_permisos','logs_permisos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         permisos = []
-        return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'permisos': permisos, 'mensaje': mensaje})
+        return render(request, 'permisos/buscar_permiso.html', {'reportes_lista':DatosReportes.cargar_lista_permisos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'permisos': permisos, 'mensaje': mensaje})
    
 
 def list_acciones():

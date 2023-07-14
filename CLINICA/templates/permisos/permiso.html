@@ -53,12 +53,12 @@ margin-top: 20px;
 <div style="display: inline-flex ;width: 100%">
 <div style="display: block;width: 100%">
 <label class="campo-registro" for="idAcciones">Acciones</label>
-<select name="idAcciones" id="idAcciones">
+<div class="custom-select"><select name="idAcciones" id="idAcciones">
 <option value="0" {% if registro_temp.idAcciones == '0' %}selected{% endif %}>Seleccione una opción</option>"
 {% for acciones in acciones_list %}
 <option value="{{ acciones.id }}"{% if acciones.id == registro_temp.idAcciones %}selected{% endif %}>{{ acciones.id }} {{ acciones.nombre }}</option>
 {% endfor %}
-</select>
+</select></div>
 </div>
 </div>
 
@@ -66,25 +66,25 @@ margin-top: 20px;
 <div style="display: inline-flex ;width: 100%">
 <div style="display: block;width: 100%">
 <label class="campo-registro" for="idPantallas">Pantalla(nombre)</label>
-<select name="idPantallas" id="idPantallas">
+<div class="custom-select"><select name="idPantallas" id="idPantallas">
 <option value="0" {% if registro_temp.idPantallas == '0' %}selected{% endif %}>Seleccione una opción</option>"
 {% for pantallas in pantallas_list %}
 <option value="{{ pantallas.id }}"{% if pantallas.id == registro_temp.idPantallas %}selected{% endif %}>{{ pantallas.id }} {{ pantallas.nombre }} </option>
 {% endfor %}
-</select>
+</select></div>
 </div>
 </div>
 
 <div style="display: inline-flex ;width: 100%">
 <div style="display: block;width: 100%">
 <label class="campo-registro" for="idTipoDocument1">Cargo de empleados</label>
-<select name="idCargoEmpleado" id="idCargoEmpleado">
+<div class="custom-select"><select name="idCargoEmpleado" id="idCargoEmpleado">
 <option value="0" {% if registro_temp.idCargoEmpleado == '0' %}selected{% endif %}>Seleccione una opción</option>"
 {% for cargos in cargos_list %}
 <option value="{{ cargos.id }}"{% if cargos.id == registro_temp.idCargoEmpleado %}selected{% endif %}>{{ cargos.id }} {{ cargos.nombre }} </option>
 {% endfor %}
 </select>
-</div>
+</div></div>
 </div>
 
 <fieldset id="payment_method">
@@ -117,4 +117,5 @@ margin-top: 20px;
 <p>{{ mensaje }}</p>
 </div>
 {% endif %}
+
 {% endblock %}

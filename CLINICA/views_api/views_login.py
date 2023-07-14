@@ -5,6 +5,7 @@ from passlib.context import CryptContext
 import requests
 from django.shortcuts import redirect
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 url = 'https://clinicamr.onrender.com/api/'
 def iniciar_sesion(request):
@@ -18,7 +19,7 @@ def iniciar_sesion(request):
                 mensaje = data['mensaje']
                 logger = definir_log_info('inisio_sesion_login','logs_login')
                 logger.debug(f'Se ha iniciado sesion - Usuario:{username}')
-                return render(request, 'inicio.html', {'mensaje': mensaje})
+                return render(request, 'inicio.html', {'mensaje': mensaje, 'datos_permisos':cargar_datos()})
             else:
                 mensaje = data['mensaje']
                 logger = definir_log_info('inisio_sesion_login','logs_login')
