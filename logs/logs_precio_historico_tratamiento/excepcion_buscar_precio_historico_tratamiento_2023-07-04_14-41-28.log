@@ -1,7 +1,0 @@
-2023-07-04 14:41:28,318 - Thread-2 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:'list' object has no attribute 'length'
-Traceback (most recent call last):
-  File "C:\Users\nblad\Desktop\FRONT_ACTUALIZADO\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_precio_historico_tratamiento.py", line 63, in buscar_precio_historico_tratamiento
-    if historicos.length > 0:
-       ^^^^^^^^^^^^^^^^^
-AttributeError: 'list' object has no attribute 'length'
-2023-07-04 14:41:28,625 - Thread-2 (process_request_thread) - MainProcess - INFO - Se obtuvieron los registros:Consulta exitosa

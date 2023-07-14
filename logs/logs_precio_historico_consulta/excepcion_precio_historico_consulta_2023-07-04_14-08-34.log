@@ -1,5 +1,0 @@
-2023-07-04 14:08:34,977 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:
-Traceback (most recent call last):
-  File "C:\Users\nblad\Desktop\FRONT_ACTUALIZADO\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_precio_historico_consulta.py", line 52, in buscar_precio_historico_consulta
-    raise NotImplementedError
-NotImplementedError

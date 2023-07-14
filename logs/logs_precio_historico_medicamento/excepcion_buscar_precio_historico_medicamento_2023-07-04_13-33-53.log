@@ -1,5 +1,0 @@
-2023-07-04 13:33:53,623 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:Error
-Traceback (most recent call last):
-  File "C:\Users\nblad\Desktop\FRONT_ACTUALIZADO\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_precio_historico_medicamento.py", line 51, in buscar_precio_historico_medicamento
-    raise Exception('Error')
-Exception: Error
