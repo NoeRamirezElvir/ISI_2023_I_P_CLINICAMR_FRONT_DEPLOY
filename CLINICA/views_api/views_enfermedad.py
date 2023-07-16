@@ -5,6 +5,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -58,21 +59,21 @@ def crear_enfermedad(request):
                 else:
                     logger = definir_log_info('crear_enfermedad','logs_enfermedad')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'sintomas':sintomas})
+                return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'sintomas':sintomas})
             else:
                 data = response.json()
                 mensaje = data['message']
                 logger = definir_log_info('crear_enfermedad','logs_enfermedad')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-            return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': "mensaje", 'registro_temp':registro_temp, 'sintomas':sintomas})
+            return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': "mensaje", 'registro_temp':registro_temp, 'sintomas':sintomas})
         else:
             logger = definir_log_info('crear_enfermedad','logs_enfermedad')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas':sintomas})
+            return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas':sintomas})
     except Exception as e:
         logger = definir_log_info('excepcion_enfermedad','logs_enfermedad')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas':sintomas})
+        return render(request, 'enfermedad/enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas':sintomas})
     
 
 def abrir_actualizar_enfermedad(request):
@@ -106,7 +107,7 @@ def abrir_actualizar_enfermedad(request):
                 registro_temp = {}
                 logger = definir_log_info('abrir_actualizar_enfermedad','logs_enfermedad')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'enfermedad/actualizar_enfermedad.html', context)   
     except Exception as e:
@@ -114,7 +115,7 @@ def abrir_actualizar_enfermedad(request):
         logger.exception("Ocurrio una excepcion:" + str(e))
         registro_temp = {}
         mensaje = "Ocurrio una excepcion"
-        context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp,'sintomas': sintomas, 'mensaje':mensaje}
         return render(request, 'enfermedad/actualizar_enfermedad.html', context)
 
 def actualizar_enfermedad(request, id):
@@ -163,12 +164,12 @@ def actualizar_enfermedad(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_enfermedad','logs_enfermedad')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
             else:
                 mensaje = rsp['message']   
                 logger = definir_log_info('actualizar_enfermedad','logs_enfermedad')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'enfermedades/busqueda/id/{idTemporal}')
@@ -185,17 +186,17 @@ def actualizar_enfermedad(request, id):
                 registro_temp = {'id':id_enfermedad, 'nombre': nombre, 'lista': ids_sintomas}
                 logger = definir_log_info('actualizar_enfermedad','logs_enfermedad')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp, 'sintomas':sintomas})
+                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'registro_temp': registro_temp, 'sintomas':sintomas})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_enfermedad','logs_enfermedad')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+                return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
     except Exception as e:
         logger = definir_log_info('excepcion_enfermedad','logs_enfermedad')
         logger.exception("Ocurrio una excepcion:" + str(e))
         mensaje = "Ocurrio una excepcion"
-        return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
+        return render(request, 'enfermedad/actualizar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'sintomas':sintomas})
     
 
 def buscar_enfermedad(request):
@@ -217,14 +218,14 @@ def buscar_enfermedad(request):
                     else:
                         logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
                     return render(request, 'enfermedad/buscar_enfermedad.html', context)  
                 else:
                     enfermedades = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})     
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})     
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -238,14 +239,14 @@ def buscar_enfermedad(request):
                     else:
                         logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje':mensaje}
                     return render(request, 'enfermedad/buscar_enfermedad.html', context)
                 else:
                     enfermedades = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
+                    return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
         else:
             response = requests.get(url+'enfermedades/')
             if response.status_code == 200:
@@ -258,19 +259,19 @@ def buscar_enfermedad(request):
                 else:
                     logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                     logger.info(f"No se obtuvieron los registros:{mensaje}") 
-                return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
+                return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
             else:
                 enfermedades = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('buscar_enfermedad','logs_enfermedad')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
+            return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_enfermedad','logs_enfermedad')
         logger.exception("Ocurrio una excepcion:" + str(e))
         enfermedades = []
         mensaje = 'Ocurrio una excepcion'
-        return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
+        return render(request, 'enfermedad/buscar_enfermedad.html', {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje})
     
 
 def eliminar_enfermedad(request, id):  
@@ -286,13 +287,13 @@ def eliminar_enfermedad(request, id):
                 enfermedades = data['enfermedades']
                 logger = definir_log_info('eliminar_enfermedad','logs_enfermedad')
                 logger.info("Registro eliminado correctamente")
-                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
+                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
             else:
                 enfermedades = []
                 mensaje = res['message']
                 logger = definir_log_info('eliminar_enfermedad','logs_enfermedad')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'mensaje': mensaje}
             return render(request, 'enfermedades/buscar_enfermedad.html', context) 
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -305,11 +306,11 @@ def eliminar_enfermedad(request, id):
         if  rsp_enfermedades.status_code == 200:
             data = rsp_enfermedades.json()
             enfermedades = data['enfermedades']
-            context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
+            context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades}
         else:
             enfermedades = []
             mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_enfermedades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'enfermedades': enfermedades, 'error': mensaje}
         return render(request, 'enfermedad/buscar_enfermedad.html', context)
 
 

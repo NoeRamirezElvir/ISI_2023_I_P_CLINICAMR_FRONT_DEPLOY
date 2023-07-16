@@ -4,6 +4,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -37,21 +38,21 @@ def crear_laboratorios(request):
                 else:
                     logger = definir_log_info('crear_laboratorios','logs_laboratorios')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_laboratorios','logs_laboratorios')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'Laboratorios/Laboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_laboratorios','logs_laboratorios')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Laboratorios/Laboratorios.html',{'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Laboratorios/Laboratorios.html',{'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_laboratorios','logs_laboratorios')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Laboratorios/Laboratorios.html',{'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Laboratorios/Laboratorios.html',{'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def abrir_actualizar_laboratorios(request):
@@ -74,7 +75,7 @@ def abrir_actualizar_laboratorios(request):
                 laboratorios = []
                 logger = definir_log_info('abrir_actualizar_laboratorios','logs_laboratorios')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'Laboratorios/ActualizarLaboratorios.html', context)
     except Exception as e:
@@ -82,7 +83,7 @@ def abrir_actualizar_laboratorios(request):
         logger = definir_log_info('excepcion_laboratorios','logs_laboratorios')
         logger.exception("Ocurrio una excepcion:" + str(e))
         laboratorios = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
         return render(request, 'Laboratorios/ActualizarLaboratorios.html', context)
     
 
@@ -107,12 +108,12 @@ def actualizar_laboratorios(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_laboratorios','logs_laboratorios')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios })
+                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios })
             else:
                 mensaje = rsp['message']       
                 logger = definir_log_info('actualizar_laboratorios','logs_laboratorios')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                     #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
+                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'laboratorios/busqueda/id/{idTemporal}')
@@ -122,12 +123,12 @@ def actualizar_laboratorios(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_laboratorios','logs_laboratorios')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios})
+                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_laboratorios','logs_laboratorios')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
+                return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_laboratorios','logs_laboratorios')
@@ -137,10 +138,10 @@ def actualizar_laboratorios(request, id):
             data = response.json()
             laboratorios = data['laboratorios']
             mensaje = data['message']
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios})
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios})
         else:
             mensaje = data['message']
-            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
+            return render(request, 'Laboratorios/ActualizarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'laboratorios':laboratorios})
     
 
 def eliminar_laboratorios(request, id):
@@ -165,7 +166,7 @@ def eliminar_laboratorios(request, id):
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
 
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje}
             return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -178,7 +179,7 @@ def eliminar_laboratorios(request, id):
         else:
             laboratorios = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'error': mensaje}
         return render(request, 'Laboratorios/BuscarLaboratorios.html', context)     
    
 def buscar_laboratorios(request):
@@ -202,14 +203,14 @@ def buscar_laboratorios(request):
                     else:
                         logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
                     return render(request, 'Laboratorios/BuscarLaboratorios.html', context)  
                 else:
                     laboratorios = []
                     mensaje = 'No se encontraron laboratorios'
                     logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
              
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -224,14 +225,14 @@ def buscar_laboratorios(request):
                     else:
                         logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje':mensaje}
                     return render(request, 'Laboratorios/BuscarLaboratorios.html', context)
                 else:
                     laboratorios = []
                     mensaje = 'No se encontraron laboratorios'
                     logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+                    return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
         else:
             response = requests.get(url+'laboratorios/')
             if response.status_code == 200:
@@ -244,13 +245,13 @@ def buscar_laboratorios(request):
                 else:
                     logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+                return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
             else:
                 laboratorios = []
                 mensaje = 'No se encontraron laboratorios'
                 logger = definir_log_info('buscar_laboratorios','logs_laboratorios')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_laboratorios','logs_laboratorios')
@@ -260,9 +261,9 @@ def buscar_laboratorios(request):
             data = response.json()
             laboratorios = data['laboratorios']
             mensaje = data['message']   
-            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+            return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
         else:
             laboratorios = []
             mensaje = 'No se encontraron laboratorios'
-        return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
+        return render(request, 'Laboratorios/BuscarLaboratorios.html', {'reportes_lista':DatosReportes.cargar_lista_laboratorios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'laboratorios': laboratorios, 'mensaje': mensaje})
    

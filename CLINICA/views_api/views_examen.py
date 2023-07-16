@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_examenes(request):
@@ -40,21 +42,21 @@ def crear_examenes(request):
                 else:
                     logger = definir_log_info('crear_examen','logs_examen')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+                return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_examen','logs_examen')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+                return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             logger = definir_log_info('crear_examen','logs_examen')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_examen','logs_examen')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+        return render(request, 'examen/examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
    
 def abrir_actualizar_examenes(request):
     muestras_list = list_muestras()
@@ -78,7 +80,7 @@ def abrir_actualizar_examenes(request):
                 examenes = []
                 logger = definir_log_info('abrir_actualizar_examen','logs_examen')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
+            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
             mensaje = data['message']
             return render(request, 'examen/actualizar_examen.html', context)
     except Exception as e:
@@ -86,7 +88,7 @@ def abrir_actualizar_examenes(request):
         logger = definir_log_info('excepcion_examen','logs_examen')
         logger.exception("Ocurrio una excepcion:" + str(e))
         examenes = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
+        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list}
         return render(request, 'examen/actualizar_examen.html', context)
 
 def actualizar_examenes(request, id):
@@ -114,12 +116,12 @@ def actualizar_examenes(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_examen','logs_examen')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
             else:
                 mensaje = rsp['message']  
                 logger = definir_log_info('actualizar_examen','logs_examen')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                          #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'examen/busqueda/id/{idTemporal}')
@@ -129,12 +131,12 @@ def actualizar_examenes(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_examen','logs_examen')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_examen','logs_examen')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
+                return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_examen','logs_examen')
@@ -144,10 +146,10 @@ def actualizar_examenes(request, id):
         if response.status_code == 200:
             examenes = data['examenes']
             mensaje = data['message']
-            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes,'muestra_list':muestras_list, 'tipo_list':tipo_list, 'laboratorio_list':laboratorios_list})
         else:
             mensaje = data['message']
-            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
+            return render(request, 'examen/actualizar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'examenes':examenes, 'muestras_list':muestras_list, 'tipo_list':tipo_list})
     
 
 def eliminar_examenes(request, id):
@@ -171,7 +173,7 @@ def eliminar_examenes(request, id):
                 logger = definir_log_info('eliminar_examen','logs_examen')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje}
             return render(request, 'examen/buscar_examen.html', context) 
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -184,7 +186,7 @@ def eliminar_examenes(request, id):
         else:
             examenes = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'error': mensaje}
         return render(request, 'examen/buscar_examen.html', context) 
 
     
@@ -208,7 +210,7 @@ def buscar_examenes(request):
                     else:
                         logger = definir_log_info('buscar_examen','logs_examen')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                     return render(request, 'examen/buscar_examen.html', context)
                 else:        
                     response = requests.get(url2+'documento/'+valor)
@@ -223,14 +225,14 @@ def buscar_examenes(request):
                         else:
                             logger = definir_log_info('buscar_examen','logs_examen')
                             logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
                     else:
                         examenes = []
                         mensaje = 'No se encontraron muestras'
                         logger = definir_log_info('buscar_examen','logs_examen')
                         logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
+                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()
@@ -245,7 +247,7 @@ def buscar_examenes(request):
                     else:
                         logger = definir_log_info('buscar_examen','logs_examen')
                         logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                     return render(request, 'examen/buscar_examen.html', context)
                 else:        
                     response = requests.get(url2+'nombre/'+valor)
@@ -260,14 +262,14 @@ def buscar_examenes(request):
                         else:
                             logger = definir_log_info('buscar_examen','logs_examen')
                             logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
+                            context = {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje':mensaje}
                         return render(request, 'examen/buscar_examen.html', context)
                     else:
                         examenes = []
                         mensaje = 'No se encontraron muestras'
                         logger = definir_log_info('buscar_examen','logs_examen')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
+                        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
         else:
             response = requests.get(url+'examen/')
             if response.status_code == 200:
@@ -280,19 +282,19 @@ def buscar_examenes(request):
                 else:
                     logger = definir_log_info('buscar_examen','logs_examen')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
+                return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
             else:
                 examenes = []
                 mensaje = 'No se encontraron muestras'
                 logger = definir_log_info('buscar_examen','logs_examen')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
+            return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_examen','logs_examen')
         logger.exception("Ocurrio una excepcion:" + str(e))
         examenes = []
-        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
+        return render(request, 'examen/buscar_examen.html', {'reportes_lista':DatosReportes.cargar_lista_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'examenes': examenes, 'mensaje': mensaje})
    
 
 def list_tipos():

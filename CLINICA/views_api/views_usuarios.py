@@ -6,6 +6,8 @@ import requests
 from django.shortcuts import redirect
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -51,21 +53,21 @@ def crear_usuario(request):
                 else:
                     logger = definir_log_info('crear_usuarios','logs_usuarios')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
+                return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
             else:
                 mensaje = userdata['usuariosr']
                 logger = definir_log_info('crear_usuarios','logs_usuarios')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
+                return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'empleado': empleado, 'registro_temp': registro_temp})
         else:
             logger = definir_log_info('crear_usuarios','logs_usuarios')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(), 'empleado': empleado})
+            return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(), 'empleado': empleado})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_usuarios','logs_usuarios')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(), 'empleado': empleado})
+        return render(request, 'usuario/registro.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(), 'empleado': empleado})
     
 
 #METODO PARA ABRIR LA PANTALLA DE ACTUALIZAR, TOMANDO EL ID DE LA PANTALLA VISUALIZAR Y ASI LLENAR LOS CAMPOS CON ESTA INFORMACION
@@ -94,7 +96,7 @@ def abrir_actualizar_usuarios(request):
                 usuarios = []
                 logger = definir_log_info('abrir_actualizar_usuarios','logs_usuarios')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'usuario/actualizar.html', context,)
     except Exception as e:
@@ -102,7 +104,7 @@ def abrir_actualizar_usuarios(request):
         logger = definir_log_info('excepcion_usuarios','logs_usuarios')
         logger.exception("Ocurrio una excepcion:" + str(e))
         usuarios = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'empleado':empleado, 'mensaje':mensaje}
         return render(request, 'usuario/actualizar.html', context,)
 
 #METODO PARA ACTUALIZAR Y ABRIR LA PANTALLA DE VISUALIZAR
@@ -138,12 +140,12 @@ def actualizar_usuario(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_usuarios','logs_usuarios')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario, 'empleado': empleado })
+                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario, 'empleado': empleado })
             else:
                 mensaje = rsp['message']
                 logger = definir_log_info('actualizar_usuarios','logs_usuarios')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario,'empleado': empleado, 'contra':password})
+                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario,'empleado': empleado, 'contra':password})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'usuarios/busqueda/id/{idTemporal}')
@@ -153,18 +155,18 @@ def actualizar_usuario(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_usuarios','logs_usuarios')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuario})
+                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuario})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_usuarios','logs_usuarios')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario})
+                return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_usuarios','logs_usuarios')
         logger.exception("Ocurrio una excepcion:" + str(e))  
         mensaje = data['message']
-        return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario})
+        return render(request, 'usuario/actualizar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'usuariosr':usuario})
       
 
 def eliminar_usuario(request, id):
@@ -188,7 +190,7 @@ def eliminar_usuario(request, id):
                 logger = definir_log_info('eliminar_usuarios','logs_usuarios')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje}
             return render(request, 'usuario/listar.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -201,7 +203,7 @@ def eliminar_usuario(request, id):
         else:
             usuarios = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'error': mensaje}
         return render(request, 'usuario/listar.html', context)     
     
 def buscar_usuarios(request):
@@ -225,14 +227,14 @@ def buscar_usuarios(request):
                     else:
                         logger = definir_log_info('buscar_usuarios','logs_usuarios')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
                     return render(request, 'usuario/listar.html', context) 
                 else:
                     usuarios = []
                     mensaje = 'No se encontraron usuarios'
                     logger = definir_log_info('buscar_usuarios','logs_usuarios')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
+                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
           
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -247,14 +249,14 @@ def buscar_usuarios(request):
                     else:
                         logger = definir_log_info('buscar_usuarios','logs_usuarios')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje':mensaje}
                     return render(request, 'usuario/listar.html', context)
                 else:
                     usuarios = []
                     mensaje = 'No se encontraron usuarios'
                     logger = definir_log_info('buscar_usuarios','logs_usuarios')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
+                    return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
     
 
         else:
@@ -269,20 +271,20 @@ def buscar_usuarios(request):
                 else:
                     logger = definir_log_info('buscar_usuarios','logs_usuarios')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")  
-                return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
+                return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
             else:
                 usuarios = []
                 mensaje = 'No se encontraron usuarios'
                 logger = definir_log_info('buscar_usuarios','logs_usuarios')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
+            return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_usuarios','logs_usuarios')
         logger.exception("Ocurrio una excepcion:" + str(e))  
         usuarios = []
         mensaje = 'No se encontraron usuarios'
-        return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
+        return render(request, 'usuario/listar.html', {'reportes_lista':DatosReportes.cargar_lista_usuarios(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'usuariosr': usuarios, 'mensaje': mensaje})
     
 
 

@@ -13,6 +13,7 @@ from xhtml2pdf import pisa
 
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -167,6 +168,7 @@ def crear_recaudo(request):
                 context['datos_pdf'] = datos_pdf
                 context['registro_temp'] = registro_temp
                 context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+                context['datos_permisos']=cargar_datos()
                 context['reportes_usuarios'] = DatosReportes.cargar_usuario()
                 
                 pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
@@ -181,12 +183,14 @@ def crear_recaudo(request):
                 context['registro_temp'] = registro_temp
                 context['mensaje'] =  mensaje
                 context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+                context['datos_permisos']=cargar_datos()
                 context['reportes_usuarios'] = DatosReportes.cargar_usuario()
                 logger = definir_log_info('crear_recaudo','logs_recaudo')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
             return render(request, 'recaudo/recaudo.html', context)
         else:
             context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+            context['datos_permisos']=cargar_datos()
             context['reportes_usuarios'] = DatosReportes.cargar_usuario()
             logger = definir_log_info('crear_recaudo','logs_recaudo')
             logger.debug('Entrando a la funcion de registro')
@@ -196,6 +200,7 @@ def crear_recaudo(request):
         logger = definir_log_info('excepcion_recaudo','logs_recaudo')
         logger.exception("Ocurrio una excepcion:" + str(e))
         context['reportes_lista'] = DatosReportes.cargar_lista_recaudo()
+        context['datos_permisos']=cargar_datos()
         context['reportes_usuarios'] = DatosReportes.cargar_usuario()
         return render(request, 'recaudo/recaudo.html', context)
   
@@ -222,18 +227,18 @@ def actualizar_recaudo(request,id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_recaudo','logs_recaudo')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'recaudo': recaudo})
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'recaudo': recaudo})
             else:
                 mensaje = rsp['message']  
                 logger = definir_log_info('actualizar_recaudo','logs_recaudo')
                 logger.info("Se obtuvo una respuesta invalida" + mensaje)                          
-                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': recaudo})
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': recaudo})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_recaudo','logs_recaudo')
         logger.exception("Ocurrio una excepcion:" + str(e))
         mensaje = rsp['message']                            
-        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': datos})
+        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'recaudo': datos})
     
   
 def buscar_recaudo(request):
@@ -255,14 +260,14 @@ def buscar_recaudo(request):
                     else:
                         logger = definir_log_info('buscar_recaudo','logs_recaudo')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
                     return render(request, 'recaudo/buscar_recaudo.html', context)  
                 else:
                     recaudo = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_recaudo','logs_recaudo')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})     
+                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})     
             else:
                 response = requests.get(url2+'numeroFactura/'+valor)
                 if response.status_code == 200:
@@ -276,14 +281,14 @@ def buscar_recaudo(request):
                     else:
                         logger = definir_log_info('buscar_recaudo','logs_recaudo')
                         logger.info(f"No se obtuvieron los registros:Filtrado(numeroFactura){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje':mensaje}
                     return render(request, 'recaudo/buscar_recaudo.html', context)
                 else:
                     recaudo = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_recaudo','logs_recaudo')
                     logger.info(f"No se obtuvieron los registros:Filtrado(numeroFactura){valor} - {mensaje}")
-                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+                    return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
         else:
             response = requests.get(url+'recaudo/')
             if response.status_code == 200:
@@ -296,13 +301,13 @@ def buscar_recaudo(request):
                 else:
                     logger = definir_log_info('buscar_recaudo','logs_recaudo')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+                return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
             else:
                 recaudo = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('buscar_recaudo','logs_recaudo')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_recaudo','logs_recaudo')
@@ -312,11 +317,11 @@ def buscar_recaudo(request):
             data = response.json()
             recaudo = data['recaudo']
             mensaje = data['message']   
-            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+            return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
         else:
             recaudo = []
             mensaje = 'No se encontraron registros'
-        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
+        return render(request, 'recaudo/buscar_recaudo.html', {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje})
     
   
 
@@ -334,7 +339,7 @@ def eliminar_recaudo(request,id):
             else:
                 recaudo = []
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
             return render(request, 'recaudo/buscar_recaudo.html', context)   
     except:
         rsp_recaudo = requests.get(url + 'recaudo/') 
@@ -344,7 +349,7 @@ def eliminar_recaudo(request,id):
         else:
             recaudo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
         return render(request, 'recaudo/buscar_recaudo.html', context)   
 
 def reimprimir_recaudo(request,id):
@@ -355,7 +360,7 @@ def reimprimir_recaudo(request,id):
                 data = rsp.json()
 
                 datos_pdf = data['datos_pdf']
-                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_pdf': datos_pdf}
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_pdf': datos_pdf}
 
                 pdf = render_to_pdf('recaudo/recaudo_pdf.html', context)
                 response_pdf = HttpResponse(pdf, content_type='application/pdf')
@@ -382,7 +387,7 @@ def reimprimir_recaudo(request,id):
                     logger = definir_log_info('eliminar_recaudo','logs_recaudo')
                     logger.warning("Se obtuvo una respuesta invalida" + mensaje)
                 mensaje = res['message']
-                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'mensaje': mensaje}
                 return render(request, 'recaudo/buscar_recaudo.html', context)   
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -396,7 +401,7 @@ def reimprimir_recaudo(request,id):
         else:
             recaudo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_recaudo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'recaudo': recaudo, 'error': mensaje}
         return render(request, 'recaudo/buscar_recaudo.html', context)
 
 def list_sar():

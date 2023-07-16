@@ -4,6 +4,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_pacientes(request):
@@ -51,21 +53,21 @@ def crear_paciente(request):
                 else:
                     logger = definir_log_info('crear_paciente','logs_paciente')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = pacientedata['message']
                 logger = definir_log_info('crear_paciente','logs_paciente')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/Paciente.html', {'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_paciente','logs_paciente')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_paciente','logs_paciente')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Pacientes/Paciente.html', { 'TipoDocumento': TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
    
 
 def abrir_actualizar_pacientes(request):
@@ -95,7 +97,7 @@ def abrir_actualizar_pacientes(request):
                 pacientes = []
                 logger = definir_log_info('abrir_actualizar_paciente','logs_paciente')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'Pacientes/PacienteActualizar.html', context)   
     except Exception as e:
@@ -103,7 +105,7 @@ def abrir_actualizar_pacientes(request):
         logger = definir_log_info('excepcion_paciente','logs_paciente')
         logger.exception("Ocurrio una excepcion:" + str(e))
         pacientes = []
-        context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'pacientes': pacientes,'TipoDocumento': TipoDocumento, 'mensaje':mensaje ,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Pacientes/PacienteActualizar.html', context)   
    
 
@@ -142,12 +144,12 @@ def actualizar_pacientes(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_paciente','logs_paciente')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = rsp['message']          
                 logger = definir_log_info('actualizar_paciente','logs_paciente')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'pacientes/busqueda/id/{idTemporal}')
@@ -157,12 +159,12 @@ def actualizar_pacientes(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_paciente','logs_paciente')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_paciente','logs_paciente')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_paciente','logs_paciente')
@@ -172,10 +174,10 @@ def actualizar_pacientes(request, id):
             data = response.json()
             pacientes = data['pacientes']
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'pacientes': pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             mensaje = data['message']
-            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Pacientes/PacienteActualizar.html', {'mensaje': mensaje,'pacientes':pacientes, 'TipoDocumento':TipoDocumento,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def eliminar_pacientes(request, id):
@@ -202,7 +204,7 @@ def eliminar_pacientes(request, id):
                 logger = definir_log_info('eliminar_paciente','logs_paciente')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'Pacientes/buscarPaciente.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -215,7 +217,7 @@ def eliminar_pacientes(request, id):
         else:
             pacientes = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'pacientes': pacientes, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'pacientes': pacientes, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Pacientes/buscarPaciente.html', context)     
             
 def buscar_pacientes(request):
@@ -240,14 +242,14 @@ def buscar_pacientes(request):
                     else:
                         logger = definir_log_info('buscar_paciente','logs_paciente')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Pacientes/buscarPaciente.html', context) 
                 else:
                     pacientes = []
                     mensaje = 'No se encontro paciente'
                     logger = definir_log_info('buscar_paciente','logs_paciente')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -262,14 +264,14 @@ def buscar_pacientes(request):
                     else:
                         logger = definir_log_info('buscar_paciente','logs_paciente')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'pacientes': pacientes, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Pacientes/buscarPaciente.html', context)
                 else:
                     pacientes = []
                     mensaje = 'No se encontro paciente'
                     logger = definir_log_info('buscar_paciente','logs_paciente')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
         else:
@@ -284,13 +286,13 @@ def buscar_pacientes(request):
                 else:
                     logger = definir_log_info('buscar_paciente','logs_paciente')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 pacientes = []
                 mensaje = 'No se encontro paciente'
                 logger = definir_log_info('buscar_paciente','logs_paciente')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_paciente','logs_paciente')
@@ -300,9 +302,9 @@ def buscar_pacientes(request):
             data = response.json()
             pacientes = data['pacientes']
             mensaje = data['message']   
-            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             pacientes = []
             mensaje = 'No se encontro paciente'
-        return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Pacientes/buscarPaciente.html', {'pacientes': pacientes, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_pacientes(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

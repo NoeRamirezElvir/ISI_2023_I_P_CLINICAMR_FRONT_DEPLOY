@@ -4,6 +4,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_autorizacion(request):
@@ -34,20 +36,20 @@ def crear_autorizacion(request):
                 else:
                     logger = definir_log_info('crear','logs_autorizacion')
                     logger.debug(f"Se ha registrado un autorizacion: Motivos={motivos}")
-                return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_autorizacion')
                 logger.warning("No se pudo crear el autorizacion: " + mensaje)
-                return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizar.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_autorizacion','logs_autorizacion')
             logger.debug('Entrando a la funcion crear autorizacion')
-            return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_autorizacion','logs_autorizacion')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Autorizacion/Autorizar.html',{'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_autorizacion(request):
@@ -70,13 +72,13 @@ def abrir_actualizar_autorizacion(request):
                 autorizar = []
                 logger = definir_log_info('error_abrir_actualizar','logs_autorizacion')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-            context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'Autorizacion/Autorizaractualizar.html', context)
     except Exception as e:
         logger = definir_log_info('excepcion_autorizacion','logs_autorizacion')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Autorizacion/Autorizaractualizar.html', context)
 
 
@@ -101,12 +103,12 @@ def actualizar_autorizacion(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar','logs_autorizacion')
                 logger.debug("Actualizacion correcta de la autorizacion: " + mensaje)
-                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar ,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar ,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('error_actualizar','logs_autorizacion')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'autorizar/busqueda/id/{idTemporal}')
@@ -116,17 +118,17 @@ def actualizar_autorizacion(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_autorizacion')
                 logger.debug("Obteniendo informacion del autorizacion: " + mensaje)
-                return render(request, 'Autorizacion/Autorizaractualizar.html', {'autorizar': autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizaractualizar.html', {'autorizar': autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar','logs_autorizacion')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
     except Exception as e:
         logger = definir_log_info('excepcion_autorizacion','logs_autorizacion')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Autorizacion/Autorizaractualizar.html', {'mensaje': mensaje,'autorizar':autorizar,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 
@@ -147,7 +149,7 @@ def eliminar_autorizacion(request, id):
                 logger = definir_log_info('error_eliminar_autorizacion','logs_autorizacion')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'autorizar': autorizar, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'autorizar': autorizar, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'Autorizacion/buscarAutorizar.html', context)
     except Exception as e:     
         rsp_autorizar = requests.get(url + 'autorizar/') 
@@ -159,7 +161,7 @@ def eliminar_autorizacion(request, id):
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         logger = definir_log_info('excepcion_autorizacion','logs_autorizacion')
         logger.exception("Ocurrio una excepcion:" + str(mensaje))
-        context = {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'Autorizacion/buscarAutorizar.html', context)     
     
 def buscar_autorizacion(request):
@@ -180,14 +182,14 @@ def buscar_autorizacion(request):
                     autorizar = data['autorizar']
                     logger = definir_log_info('buscar_autorizacion','logs_autorizacion')
                     logger.debug("Se obtuvo el autorizacion especifico(filtrado por ID): " + mensaje)
-                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Autorizacion/buscarAutorizar.html', context)
                 else:
                     autorizar = []
                     mensaje = 'No se encontraron Autorizaciones de pacientes'
                     logger = definir_log_info('error_buscar_autorizacion','logs_autorizacion')
                     logger.debug("No se obtuvo el autorizacion especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
             else:
                 response = requests.get(url2+'motivos/'+valor)
                 if response.status_code == 200:
@@ -197,14 +199,14 @@ def buscar_autorizacion(request):
                     autorizar = data['autorizar']
                     logger = definir_log_info('buscar_autorizacion','logs_autorizacion')
                     logger.debug("Se obtuvo el autorizacion especifico(filtrado por nombre): " + mensaje)
-                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'autorizar': autorizar, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'Autorizacion/buscarAutorizar.html', context)
                 else:
                     autorizar = []
                     mensaje = 'No se encontraron Autorizaciones de pacientes'
                     logger = definir_log_info('error_buscar_autorizacion','logs_autorizacion')
                     logger.debug("No se obtuvo el autorizacion especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
+                    return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})    
         else:
             response = requests.get(url+'autorizar/')
             if response.status_code == 200:
@@ -213,13 +215,13 @@ def buscar_autorizacion(request):
                 mensaje = data['message'] 
                 logger = definir_log_info('buscar_autorizacion','logs_autorizacion')
                 logger.debug("Se obtuvieron todos los autorizacions: " + mensaje )  
-                return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 autorizar = []
                 logger = definir_log_info('error_buscar_autorizacion','logs_autorizacion')
                 logger.debug("No se obtuvo el autorizacion especifico(filtrado por ID): " + mensaje)
                 mensaje = 'No se encontraron Autorizaciones de pacientes'
-            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
     except Exception as e:
         logger = definir_log_info('excepcion_autorizacion','logs_autorizacion')
@@ -231,11 +233,11 @@ def buscar_autorizacion(request):
             mensaje = data['message']  
             logger = definir_log_info('buscar_autorizacion','logs_autorizacion')
             logger.debug("Se obtuvieron todos los autorizacions: " + mensaje ) 
-            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             autorizar = []
             mensaje = 'No se encontraron autorizacions'
             logger = definir_log_info('error_buscar_autorizacion','logs_autorizacion')
             logger.debug("No se pudo obtener informacion de autorizacions: " + mensaje)
-        return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Autorizacion/buscarAutorizar.html', {'autorizar': autorizar, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_autorizacion(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

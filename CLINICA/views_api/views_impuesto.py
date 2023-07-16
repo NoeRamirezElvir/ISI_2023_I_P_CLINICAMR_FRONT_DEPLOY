@@ -3,6 +3,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -34,21 +35,21 @@ def crear_Impuestos(request):
                 else:
                     logger = definir_log_info('crear_impuesto','logs_impuesto')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Impuestos/Impuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'impuestos': registro_temp})
+                return render(request, 'Impuestos/Impuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'impuestos': registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_impuesto','logs_impuesto')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Impuestos/Impuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'impuestos': registro_temp})
+                return render(request, 'Impuestos/Impuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'impuestos': registro_temp})
         else:
             logger = definir_log_info('crear_impuesto','logs_impuesto')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Impuestos/Impuesto.html',{'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'Impuestos/Impuesto.html',{'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_impuesto','logs_impuesto')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Impuestos/Impuesto.html',{'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Impuestos/Impuesto.html',{'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def abrir_actualizar_Impuestos(request):
@@ -71,7 +72,7 @@ def abrir_actualizar_Impuestos(request):
                 Impuestos = []
                 logger = definir_log_info('abrir_actualizar_impuesto','logs_impuesto')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'Impuestos/ImpuestoActualizar.html', context)
     except Exception as e:
@@ -79,7 +80,7 @@ def abrir_actualizar_Impuestos(request):
         logger = definir_log_info('excepcion_impuesto','logs_impuesto')
         logger.exception("Ocurrio una excepcion:" + str(e))
         Impuestos = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
         return render(request, 'Impuestos/ImpuestoActualizar.html', context)
     
 
@@ -102,12 +103,12 @@ def actualizar_Impuestos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_impuesto','logs_impuesto')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos })
+                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos })
             else:
                 mensaje = rsp['message']      
                 logger = definir_log_info('actualizar_impuesto','logs_impuesto')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                      #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
+                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'Impuestos/busqueda/id/{idTemporal}')
@@ -117,12 +118,12 @@ def actualizar_Impuestos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_impuesto','logs_impuesto')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos})
+                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_impuesto','logs_impuesto')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
+                return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_impuesto','logs_impuesto')
@@ -132,10 +133,10 @@ def actualizar_Impuestos(request, id):
             data = response.json()
             Impuestos = data['Impuestos']
             mensaje = data['message']
-            return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos})
+            return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos})
         else:
             mensaje = data['message']
-            return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
+            return render(request, 'Impuestos/ImpuestoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'Impuestos':Impuestos})
     
 
 def eliminar_Impuestos(request, id):  
@@ -155,13 +156,13 @@ def eliminar_Impuestos(request, id):
                 else:
                     logger = definir_log_info('eliminar_impuesto','logs_impuesto')
                     logger.info("No se ha podido eliminar el registro")
-                context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos}
+                context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos}
             else:
                 Impuestos = []
                 mensaje = res['message']
                 logger = definir_log_info('eliminar_impuesto','logs_impuesto')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje}
             return render(request, 'Impuestos/BuscarImpuesto.html', context) 
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -172,11 +173,11 @@ def eliminar_Impuestos(request, id):
         if  rsp_Impuestos.status_code == 200:
             data = rsp_Impuestos.json()
             Impuestos = data['Impuestos']
-            context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos}
+            context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos}
         else:
             Impuestos = []
         mensaje = 'No se puede eliminar, esta siendo utilizando en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'error': mensaje}
         return render(request, 'Impuestos/BuscarImpuesto.html', context)
     
 def buscar_Impuestos(request):
@@ -200,14 +201,14 @@ def buscar_Impuestos(request):
                     else:
                         logger = definir_log_info('buscar_impuesto','logs_impuesto')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
                     return render(request, 'Impuestos/BuscarImpuesto.html', context)   
                 else:
                     Impuestos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_impuesto','logs_impuesto')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+                    return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
             
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -222,14 +223,14 @@ def buscar_Impuestos(request):
                     else:
                         logger = definir_log_info('buscar_impuesto','logs_impuesto')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje':mensaje}
                     return render(request, 'Impuestos/BuscarImpuesto.html', context)
                 else:
                     Impuestos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_impuesto','logs_impuesto')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+                    return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'Impuestos/')
             if response.status_code == 200:
@@ -242,13 +243,13 @@ def buscar_Impuestos(request):
                 else:
                     logger = definir_log_info('buscar_impuesto','logs_impuesto')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+                return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
             else:
                 Impuestos = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('buscar_impuesto','logs_impuesto')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+            return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_impuesto','logs_impuesto')
@@ -258,9 +259,9 @@ def buscar_Impuestos(request):
             data = response.json()
             Impuestos = data['Impuestos']
             mensaje = data['message']   
-            return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+            return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
         else:
             Impuestos = []
             mensaje = 'No se encontraron registros'
-        return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
+        return render(request, 'Impuestos/BuscarImpuesto.html', {'reportes_lista':DatosReportes.cargar_lista_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'Impuestos': Impuestos, 'mensaje': mensaje})
     

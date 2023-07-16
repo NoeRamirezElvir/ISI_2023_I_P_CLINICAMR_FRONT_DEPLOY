@@ -4,6 +4,7 @@ import json
 from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 from ..views_api.logger import definir_log_info
@@ -58,21 +59,21 @@ def crear_diagnosticos(request):
                 else:
                     logger = definir_log_info('crear_diagnostico','logs_diagnostico')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'diagnostico/diagnostico.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/diagnostico.html', {'mensaje': mensaje, 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 data = response.json()
                 mensaje = data['message']
                 logger = definir_log_info('crear_diagnostico','logs_diagnostico')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-            return render(request, 'diagnostico/diagnostico.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'diagnostico/diagnostico.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_diagnostico','logs_diagnostico')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_diagnostico','logs_diagnostico')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'diagnostico/diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
      
 def abrir_actualizar_diagnosticos(request):
     #Se cargan las listas para los SELECT
@@ -105,12 +106,12 @@ def abrir_actualizar_diagnosticos(request):
                 logger = definir_log_info('abrir_actualizar_diagnostico','logs_diagnostico')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = data['message']
-            context = {'registro_temp': registro_temp,'enfermedades': enfermedades, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'registro_temp': registro_temp,'enfermedades': enfermedades, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'diagnostico/Actualizar_diagnostico.html', context)   
     except Exception as e:
         logger = definir_log_info('excepcion_diagnostico','logs_diagnostico')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'enfermedades': enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'enfermedades': enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'diagnostico/Actualizar_diagnostico.html', context)  
     
 def actualizar_diagnosticos(request, id):
@@ -158,12 +159,12 @@ def actualizar_diagnosticos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_diagnostico','logs_diagnostico')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = rsp['message']
                 logger = definir_log_info('actualizar_diagnostico','logs_diagnostico')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'diagnostico/busqueda/id/{idTemporal}')
@@ -178,16 +179,16 @@ def actualizar_diagnosticos(request, id):
                 logger = definir_log_info('actualizar_diagnostico','logs_diagnostico')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
                 registro_temp = {'id':id_diagnosticos, 'descripcion': descripcion, 'lista': ids_enfermedades}
-                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'registro_temp': registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'registro_temp': registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_diagnostico','logs_diagnostico')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado: " + mensaje)
-                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/Actualizar_diagnostico.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_diagnostico','logs_diagnostico')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'diagnostico/Actualizar_diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'diagnostico/Actualizar_diagnostico.html', {'enfermedades':enfermedades,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def buscar_diagnosticos(request):
@@ -210,14 +211,14 @@ def buscar_diagnosticos(request):
                         logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
 
-                    context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'diagnostico/Buscar_diagnostico.html', context) 
                 else:
                     diagnostico = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         
             else:
                 response = requests.get(url2+'descripcion/'+valor)
@@ -232,14 +233,14 @@ def buscar_diagnosticos(request):
                     else:
                         logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                         logger.info(f"No se obtuvieron los registros:Filtrado(descripcion){valor} - {mensaje}")
-                    context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'diagnostico': diagnostico, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'diagnostico/Buscar_diagnostico.html', context)
                 else:
                     diagnostico = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                     logger.info(f"No se obtuvieron los registros:Filtrado(descripcion){valor} - {mensaje}")
-                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             response = requests.get(url+'diagnostico/')
             if response.status_code == 200:
@@ -252,19 +253,19 @@ def buscar_diagnosticos(request):
                 else:
                     logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")  
-                return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 diagnostico = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('buscar_diagnostico','logs_diagnostico')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_diagnostico','logs_diagnostico')
         logger.exception("Ocurrio una excepcion:" + str(e))
         diagnostico = []
         mensaje = 'Ocurrio una excepcion'
-        return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'diagnostico/Buscar_diagnostico.html', {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def eliminar_diagnosticos(request, id):
@@ -280,14 +281,14 @@ def eliminar_diagnosticos(request, id):
                 diagnostico = data['diagnosticos']
                 logger = definir_log_info('eliminar_diagnostico','logs_diagnostico')
                 logger.info("Registro eliminado correctamente")
-                context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             else:
                 diagnostico = []
                 mensaje = res['message']
                 logger = definir_log_info('eliminar_diagnostico','logs_diagnostico')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
 
-                context = {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                context = {'diagnostico': diagnostico, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'diagnostico/Buscar_diagnostico.html', context) 
     except Exception as e:
         logger = definir_log_info('excepcion_diagnostico','logs_diagnostico')
@@ -298,11 +299,11 @@ def eliminar_diagnosticos(request, id):
         if  rsp_diagnostico.status_code == 200:
             data = rsp_diagnostico.json()
             diagnostico = data['diagnosticos']
-            context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'diagnostico': diagnostico,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         else:
             diagnostico = []
         mensaje = 'No se puede eliminar, esta siendo utilizando en otros registros'
-        context = {'diagnostico': diagnostico, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'diagnostico': diagnostico, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_diagnostico(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'diagnostico/Buscar_diagnostico.html', context)
 
 

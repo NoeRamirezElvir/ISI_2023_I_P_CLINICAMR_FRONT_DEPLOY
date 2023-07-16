@@ -4,6 +4,9 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -38,21 +41,21 @@ def crear_proveedor(request):
                 else:
                     logger = definir_log_info('crear_proveedor','logs_proveedor')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'tipos':tipos})
+                return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'tipos':tipos})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_proveedor','logs_proveedor')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'tipos':tipos})
+                return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'tipos':tipos})
         else:
             logger = definir_log_info('crear_proveedor','logs_proveedor')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipos':tipos})
+            return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipos':tipos})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_proveedor','logs_proveedor')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipos':tipos})
+        return render(request, 'Proveedor/Proveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tipos':tipos})
     
 
 def abrir_actualizar_proveedor(request):
@@ -75,7 +78,7 @@ def abrir_actualizar_proveedor(request):
                 proveedores = []
                 logger = definir_log_info('abrir_actualizar_proveedor','logs_proveedor')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'Proveedor/ProveedorActualizar.html', context)
     except Exception as e:
@@ -83,7 +86,7 @@ def abrir_actualizar_proveedor(request):
         logger = definir_log_info('excepcion_proveedor','logs_proveedor')
         logger.exception("Ocurrio una excepcion:" + str(e))
         proveedores = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
         return render(request, 'Proveedor/ProveedorActualizar.html', context)
     
 
@@ -108,12 +111,12 @@ def actualizar_proveedor(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_proveedor','logs_proveedor')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores })
+                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores })
             else:
                 mensaje = rsp['message']  
                 logger = definir_log_info('actualizar_proveedor','logs_proveedor')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                          #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
+                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'proveedores/busqueda/id/{idTemporal}')
@@ -123,12 +126,12 @@ def actualizar_proveedor(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_proveedor','logs_proveedor')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores})
+                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_proveedor','logs_proveedor')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
+                return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_proveedor','logs_proveedor')
@@ -138,10 +141,10 @@ def actualizar_proveedor(request, id):
             data = response.json()
             proveedores = data['proveedores']
             mensaje = data['message']
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores})
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores})
         else:
             mensaje = data['message']
-            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
+            return render(request, 'Proveedor/ProveedorActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'proveedores':proveedores})
     
 
 def eliminar_proveedor(request, id):
@@ -165,7 +168,7 @@ def eliminar_proveedor(request, id):
                 logger = definir_log_info('eliminar_proveedor','logs_proveedor')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje}
             return render(request, 'Proveedor/BuscarProveedor.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -178,7 +181,7 @@ def eliminar_proveedor(request, id):
         else:
             proveedores = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'error': mensaje}
         return render(request, 'Proveedor/BuscarProveedor.html', context)     
 
 def buscar_proveedor(request):
@@ -200,14 +203,14 @@ def buscar_proveedor(request):
                     else:
                         logger = definir_log_info('buscar_proveedor','logs_proveedor')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
                     return render(request, 'Proveedor/BuscarProveedor.html', context) 
                 else:
                     proveedores = []
                     mensaje = 'No se encontraron proveedores'
                     logger = definir_log_info('buscar_proveedor','logs_proveedor')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -222,14 +225,14 @@ def buscar_proveedor(request):
                     else:
                         logger = definir_log_info('buscar_proveedor','logs_proveedor')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje':mensaje}
                     return render(request, 'Proveedor/BuscarProveedor.html', context)
                 else:
                     proveedores = []
                     mensaje = 'No se encontraron proveedores'
                     logger = definir_log_info('buscar_proveedor','logs_proveedor')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+                    return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'proveedores/')
@@ -243,13 +246,13 @@ def buscar_proveedor(request):
                 else:
                     logger = definir_log_info('buscar_proveedor','logs_proveedor')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+                return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
             else:
                 proveedores = []
                 mensaje = 'No se encontraron proveedores'
                 logger = definir_log_info('buscar_proveedor','logs_proveedor')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+            return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_proveedor','logs_proveedor')
@@ -259,11 +262,11 @@ def buscar_proveedor(request):
             data = response.json()
             proveedores = data['proveedores']
             mensaje = data['message']   
-            return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+            return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
         else:
             proveedores = []
             mensaje = 'No se encontraron proveedores'
-        return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
+        return render(request, 'Proveedor/BuscarProveedor.html', {'reportes_lista':DatosReportes.cargar_lista_proveedores(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'proveedores': proveedores, 'mensaje': mensaje})
     
 
 

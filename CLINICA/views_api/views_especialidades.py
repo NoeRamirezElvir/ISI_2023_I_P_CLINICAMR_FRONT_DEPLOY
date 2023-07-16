@@ -4,6 +4,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_especialidades(request):
@@ -37,21 +39,21 @@ def crear_especialidades(request):
                 else:
                     logger = definir_log_info('crear_especialidad','logs_especialidad')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_especialidad','logs_especialidad')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'especialidad/especialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_especialidad','logs_especialidad')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'especialidad/especialidad.html',{'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'especialidad/especialidad.html',{'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_especialidad','logs_especialidad')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'especialidad/especialidad.html',{'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje':mensaje})
+        return render(request, 'especialidad/especialidad.html',{'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje':mensaje})
     
 
 def abrir_actualizar_especialidades(request):
@@ -74,7 +76,7 @@ def abrir_actualizar_especialidades(request):
                 especialidad = []
                 logger = definir_log_info('abrir_actualizar_especialidad','logs_especialidad')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'especialidad/especialidadActualizar.html', context)
     except Exception as e:
@@ -82,7 +84,7 @@ def abrir_actualizar_especialidades(request):
         logger = definir_log_info('excepcion_especialidad','logs_especialidad')
         logger.exception("Ocurrio una excepcion:" + str(e))
         especialidad = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
         return render(request, 'especialidad/especialidadActualizar.html', context)
 
 def actualizar_especialidades(request, id):
@@ -105,12 +107,12 @@ def actualizar_especialidades(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_especialidad','logs_especialidad')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad })
+                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad })
             else:
                 mensaje = rsp['message']   
                 logger = definir_log_info('actualizar_especialidad','logs_especialidad')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
+                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'especialidad/busqueda/id/{idTemporal}')
@@ -120,17 +122,17 @@ def actualizar_especialidades(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_especialidad','logs_especialidad')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad})
+                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_especialidad','logs_especialidad')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
+                return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_especialidad','logs_especialidad')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
+        return render(request, 'especialidad/especialidadActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'especialidad':especialidad})
        
 def eliminar_especialidades(request, id):
     try:
@@ -153,7 +155,7 @@ def eliminar_especialidades(request, id):
                 logger = definir_log_info('eliminar_especialidad','logs_especialidad')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje}
             return render(request, 'especialidad/BuscarEspecialidad.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -166,7 +168,7 @@ def eliminar_especialidades(request, id):
         else:
             especialidad = []
         mensaje += ' No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'error': mensaje}
         return render(request, 'especialidad/BuscarEspecialidad.html', context)     
 
 def buscar_especialidades(request):
@@ -190,14 +192,14 @@ def buscar_especialidades(request):
                     else:
                         logger = definir_log_info('buscar_especialidad','logs_especialidad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
                     return render(request, 'especialidad/BuscarEspecialidad.html', context)     
                 else:
                     especialidad = []
                     mensaje = 'No se encontraron especialidades'
                     logger = definir_log_info('buscar_especialidad','logs_especialidad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})  
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})  
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -211,14 +213,14 @@ def buscar_especialidades(request):
                     else:
                         logger = definir_log_info('buscar_especialidad','logs_especialidad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje':mensaje}
                     return render(request, 'especialidad/BuscarEspecialidad.html', context)
                 else:
                     especialidad = []
                     mensaje = 'No se encontraron especialidades'
                     logger = definir_log_info('buscar_especialidad','logs_especialidad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
+                    return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'especialidad/')
@@ -232,17 +234,17 @@ def buscar_especialidades(request):
                 else:
                     logger = definir_log_info('buscar_especialidad','logs_especialidad')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
+                return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
             else:
                 especialidad = []
                 mensaje = 'No se encontraron especialidades'
                 logger = definir_log_info('buscar_especialidad','logs_especialidad')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
+            return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_especialidad','logs_especialidad')
         logger.exception("Ocurrio una excepcion:" + str(e))
         especialidad = []
-        return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
+        return render(request, 'especialidad/BuscarEspecialidad.html', {'reportes_lista':DatosReportes.cargar_lista_especialidades(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'especialidad': especialidad, 'mensaje': mensaje})
    

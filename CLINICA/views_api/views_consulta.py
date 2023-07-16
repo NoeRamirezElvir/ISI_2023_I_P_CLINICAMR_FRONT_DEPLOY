@@ -5,6 +5,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -67,22 +68,22 @@ def crear_consulta(request):
                 else:
                     logger = definir_log_info('crear','logs_consulta')
                     logger.debug(f"Se ha registrado un consulta: idCita={idCita}")
-                return render(request, 'consulta/consulta.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/consulta.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 data = response.json()
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_consulta')
                 logger.warning("No se obtuvo respuesta del servidor: " + mensaje)
-            return render(request, 'consulta/consulta.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'consulta/consulta.html', {'mensaje': "mensaje", 'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_consulta','logs_consulta')
             logger.debug('Entrando a la funcion crear consulta')
-            return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
     except Exception as e:
         logger = definir_log_info('excepcion_consulta','logs_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'consulta/consulta.html', {'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_consulta(request):
@@ -123,14 +124,14 @@ def abrir_actualizar_consulta(request):
                 registro_temp = {}
                 logger = definir_log_info('error_abrir_actualizar','logs_consulta')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'registro_temp': registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'registro_temp': registro_temp,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'consulta/actualizar_consulta.html', context)   
 
     except Exception as e:
         logger = definir_log_info('excepcion_consulta','logs_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'consultas/consultaactualizar.html', context)
     
 
@@ -190,12 +191,12 @@ def actualizar_consulta(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_consulta','logs_consulta')
                 logger.debug(f"Se actualizo la consulta: ID {id_consulta}")
-                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = rsp['message']                         
                 logger = definir_log_info('actualizar_consulta','logs_consulta')
                 logger.info(f"No se pudo actualizar: {mensaje}")
-                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('actualizar_consulta','logs_consulta')
             logger.debug("Obteniendo información de la consulta")
@@ -214,17 +215,17 @@ def actualizar_consulta(request, id):
 
                 # crear un diccionario con los datos deseados
                 registro_temp = {'id':id_consulta, 'idCita': idCita,'idTipo': idTipo,'recomendaciones': recomendaciones,'informacionAdicional': informacionAdicional, 'lista': ids_diagnosticos}
-                return render(request, 'consulta/actualizar_consulta.html', {'registro_temp': registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/actualizar_consulta.html', {'registro_temp': registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar_consulta','logs_consulta')
                 logger.warning(f"Respuesta invalida del servidor: {mensaje}")
-                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'registro_temp':registro_temp, 'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Error'
         logger = definir_log_info('excepcion_consulta','logs_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'consulta/actualizar_consulta.html', {'mensaje': mensaje,'diagnostico_list':diagnostico_list,'cita_list':cita_list,'tipo_list':tipo_list,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         
 
 
@@ -246,7 +247,7 @@ def buscar_consulta(request):
                     consultas = data['consultas']
                     logger = definir_log_info('buscar_consulta','logs_consulta')
                     logger.debug("Se obtuvo la consulta especifica(filtrado por ID)")
-                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:        
                     response = requests.get(url2+'documento/'+valor)
@@ -257,12 +258,12 @@ def buscar_consulta(request):
                         consultas = data['consultas']
                         logger = definir_log_info('buscar_consulta','logs_consulta')
                         logger.debug("Se obtuvo la consulta especifica(filtrado por Documento)")
-                        context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                        context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'consulta/buscar_consulta.html', context)
                     else:
                         consultas = []
                         mensaje = 'No se encontraron muestras'
-                        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 data = response.json()
@@ -273,14 +274,14 @@ def buscar_consulta(request):
                     consultas = data['consultas']
                     logger = definir_log_info('buscar_consulta','logs_consulta')
                     logger.debug("Se obtuvo la consulta especifica(filtrado por Documento)")
-                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'consultas': consultas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'consulta/buscar_consulta.html', context)
                 else:
                     consultas = []
                     mensaje = 'No se encontraron consultas'
                     logger = definir_log_info('buscar_consulta','logs_consulta')
                     logger.info("No se encontraron registros")
-                    return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             response = requests.get(url+'consultas/')
             if response.status_code == 200:
@@ -289,18 +290,18 @@ def buscar_consulta(request):
                 mensaje = data['message']  
                 logger = definir_log_info('buscar_consulta','logs_consulta')
                 logger.info("No obtuvieron registros")
-                return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 consultas = []
                 mensaje = 'No se encontraron consultas'
                 logger = definir_log_info('buscar_consulta','logs_consulta')
                 logger.info("No se encontraron registros")
-            return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Error'
         logger = definir_log_info('excepcion_consulta','logs_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'consulta/buscar_consulta.html', {'consultas': consultas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def eliminar_consulta(request, id):  
@@ -316,13 +317,13 @@ def eliminar_consulta(request, id):
                 consultas = data['consultas']
                 logger = definir_log_info('eliminar_consulta','logs_consulta')
                 logger.info("Se elimino la consulta")
-                context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             else:
                 enfermedades = []
                 mensaje = res['message']
                 logger = definir_log_info('eliminar_consulta','logs_consulta')
                 logger.info("No se pudo eliminar la consulta")
-                context = {'enfermedades': enfermedades, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                context = {'enfermedades': enfermedades, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'consultas/buscar_consultas.html', context) 
     except Exception as e:
         rsp_consultas = requests.get(url + 'consultas/') 
@@ -331,11 +332,11 @@ def eliminar_consulta(request, id):
         if  rsp_consultas.status_code == 200:
             data = rsp_consultas.json()
             consultas = data['consultas']
-            context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'consultas': consultas,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         else:
             consultas = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'consultas': consultas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'consultas': consultas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_consultas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         logger = definir_log_info('excepcion_consulta','logs_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
         return render(request, 'consulta/buscar_consulta.html', context)

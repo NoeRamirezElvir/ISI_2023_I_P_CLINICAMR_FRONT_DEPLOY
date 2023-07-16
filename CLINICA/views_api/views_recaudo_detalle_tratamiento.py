@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def eliminar_recaudo_detalle_tratamiento(request, id):
@@ -24,7 +26,7 @@ def eliminar_recaudo_detalle_tratamiento(request, id):
                 logger = definir_log_info('eliminar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                 logger.info(f"No se elimino el registro:{id}")
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje}
             return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)     
     except Exception as e:
         logger = definir_log_info('excepcion_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
@@ -36,7 +38,7 @@ def eliminar_recaudo_detalle_tratamiento(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'error': mensaje}
         return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)     
 
 def buscar_recaudo_detalle_tratamiento(request):
@@ -58,14 +60,14 @@ def buscar_recaudo_detalle_tratamiento(request):
                     else:
                         logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                         logger.info(f"No se obtuvieron los registros(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                     logger.info(f"No se obtuvieron los registros(ID){valor} - {mensaje}")
-                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2 + f'numeroFactura/{valor}')
@@ -80,14 +82,14 @@ def buscar_recaudo_detalle_tratamiento(request):
                     else:
                         logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                         logger.info(f"No se obtuvieron los registros:(Numero de Factura){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', context)      
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                     logger.info(f"No se obtuvieron los registros:(Numero de Factura){valor} - {mensaje}")
-                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'recaudoDetalleTratamiento/')
@@ -101,13 +103,13 @@ def buscar_recaudo_detalle_tratamiento(request):
                 else:
                     logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
                 logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -122,11 +124,11 @@ def buscar_recaudo_detalle_tratamiento(request):
             else:
                 logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
         else:
             detalles = []
             mensaje = 'No se encontrarón registros'
             logger = definir_log_info('buscar_recaudo_detalle_tratamiento','logs_recaudo_detalle_tratamiento')
             logger.info(f"No se obtuvieron los registros:{mensaje}")
-        return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+        return render(request, 'recaudo_detalle_tratamiento/buscar_recaudo_detalle_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_recaudo_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
     

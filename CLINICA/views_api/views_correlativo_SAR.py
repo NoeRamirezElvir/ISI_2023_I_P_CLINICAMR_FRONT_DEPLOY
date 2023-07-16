@@ -3,6 +3,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_correlativo(request):
@@ -48,20 +50,20 @@ def crear_correlativo(request):
                     logger = definir_log_info('crear','logs_correlativo')
                     logger.debug(f"Se ha registrado un correlativo: Cai={cai}")
 
-                return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_correlativo')
                 logger.warning("No se pudo crear el correlativo: " + mensaje)
-                return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_correlativo','logs_correlativo')
             logger.debug('Entrando a la funcion crear correlativo')
-            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-    return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})       
+    return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})       
 
 
 def abrir_actualizar_correlativo(request):
@@ -86,13 +88,13 @@ def abrir_actualizar_correlativo(request):
                 correlativo = []
                 logger = definir_log_info('error_abrir_actualizar','logs_correlativo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-            context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'correlativo/actualizar_correlativo.html', context)
     except Exception as e:
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'correlativo/actualizar_correlativo.html', context)
 
 def actualizar_correlativo(request, id):
@@ -125,12 +127,12 @@ def actualizar_correlativo(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar','logs_correlativo')
                 logger.debug("Actualizacion correcta del correlativo: " + mensaje)
-                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo ,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo ,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 logger = definir_log_info('error_actualizar','logs_correlativo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'correlativo/busqueda/id/{idTemporal}')
@@ -140,16 +142,16 @@ def actualizar_correlativo(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_correlativo')
                 logger.debug("Obteniendo informacion del correlativo: " + mensaje)
-                return render(request, 'correlativo/actualizar_correlativo.html', {'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/actualizar_correlativo.html', {'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar','logs_correlativo')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'correlativo/actualizar_correlativo.html', {'mensaje': mensaje,'correlativo':correlativo,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def eliminar_correlativo(request, id):
@@ -171,7 +173,7 @@ def eliminar_correlativo(request, id):
                 logger = definir_log_info('error_eliminar_correlativo','logs_correlativo')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'correlativo/buscar_correlativo.html', context)     
     except Exception as e:
         rsp_correlativo = requests.get(url + 'correlativo/') 
@@ -183,7 +185,7 @@ def eliminar_correlativo(request, id):
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
         logger.exception("Ocurrio una excepcion:" + str(mensaje))
-        context = {'correlativo': correlativo, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'correlativo': correlativo, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'correlativo/buscar_correlativo.html', context)     
          
 def buscar_correlativo(request):
@@ -204,14 +206,14 @@ def buscar_correlativo(request):
                     correlativo = data['correlativo']
                     logger = definir_log_info('buscar_correlativo','logs_correlativo')
                     logger.debug("Se obtuvo el correlativo especifico(filtrado por ID): " + mensaje)
-                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'correlativo/buscar_correlativo.html', context)
                 else:
                     correlativo = []
                     mensaje = 'No se encontraron correlativos'
                     logger = definir_log_info('error_buscar_correlativo','logs_correlativo')
                     logger.debug("No se obtuvo el correlativo especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
           
             else:
                 response = requests.get(url2+'cai/'+valor)
@@ -222,14 +224,14 @@ def buscar_correlativo(request):
                     correlativo = data['correlativo']
                     logger = definir_log_info('buscar_correlativo','logs_correlativo')
                     logger.debug("Se obtuvo el correlativo especifico(filtrado por nombre): " + mensaje)
-                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'correlativo': correlativo, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'correlativo/buscar_correlativo.html', context)
                 else:
                     correlativo = []
                     mensaje = 'No se encontraron correlativos'
                     logger = definir_log_info('error_buscar_correlativo','logs_correlativo')
                     logger.debug("No se obtuvo el correlativo especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
         else:
             response = requests.get(url+'correlativo/')
@@ -239,13 +241,13 @@ def buscar_correlativo(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_correlativo','logs_correlativo')
                 logger.debug("Se obtuvieron todos los correlativos: " + mensaje )
-                return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 correlativo = []
                 mensaje = 'No se encontraron correlativos'
                 logger = definir_log_info('error_buscar_correlativo','logs_correlativo')
                 logger.debug("No se obtuvo el correlativo especifico(filtrado por ID): " + mensaje)
-            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
     except Exception as e:
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
@@ -257,11 +259,11 @@ def buscar_correlativo(request):
             mensaje = data['message']  
             logger = definir_log_info('buscar_correlativo','logs_correlativo')
             logger.debug("Se obtuvieron todos los correlativos: " + mensaje ) 
-            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             correlativo = []
             mensaje = 'No se encontraron correlativos'
             logger = definir_log_info('error_buscar_correlativo','logs_correlativo')
             logger.debug("No se pudo obtener informacion de correlativos: " + mensaje)
-        return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     

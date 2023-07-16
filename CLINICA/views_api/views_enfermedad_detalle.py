@@ -5,6 +5,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -26,7 +27,7 @@ def eliminar_enfermedad_detalle(request, id):
                 logger = definir_log_info('eliminar_detalle_enfermedad','logs_detalle_enfermedad')
                 logger.info(f"No se elimino el registro:{id}")
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje}
             return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)     
     except Exception as e:
         logger = definir_log_info('excepcion_detalle_enfermedad','logs_detalle_enfermedad')
@@ -38,7 +39,7 @@ def eliminar_enfermedad_detalle(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'error': mensaje}
         return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)     
 
 def buscar_enfermedad_detalle(request):
@@ -60,14 +61,14 @@ def buscar_enfermedad_detalle(request):
                     else:
                         logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -81,14 +82,14 @@ def buscar_enfermedad_detalle(request):
                     else:
                         logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                         logger.info(f"No se obtuvieron los registros:Filtrado(Nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje':mensaje}
                     return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', context)   
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                     logger.info(f"No se obtuvieron los registros:Filtrado(Nombre){valor} - {mensaje}")
-                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                    return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
    
         else:
             response = requests.get(url+'enfermedadDetalle/')
@@ -102,13 +103,13 @@ def buscar_enfermedad_detalle(request):
                 else:
                     logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+                return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
                 logger = definir_log_info('buscar_detalle_enfermedad','logs_detalle_enfermedad')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_recaudo_detalle_medicamento','logs_recaudo_detalle_medicamento')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -117,9 +118,9 @@ def buscar_enfermedad_detalle(request):
             data = response.json()
             detalles = data['detalles']
             mensaje = data['message']   
-            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+            return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
         else:
             detalles = []
             mensaje = 'No se encontrarón registros'
-        return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
+        return render(request, 'enfermedad_detalle/buscar_enfermedad_detalle.html', {'reportes_lista':DatosReportes.cargar_lista_detalle_enfermedad(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'detalles': detalles, 'mensaje': mensaje})
     

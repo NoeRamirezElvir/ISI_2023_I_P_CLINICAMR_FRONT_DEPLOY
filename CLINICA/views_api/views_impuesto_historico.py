@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -29,7 +31,7 @@ def eliminar_impuesto_historico(request, id):
             mensaje = res['message']
             logger = definir_log_info('eliminar_historico_impuesto','logs_historico_impuesto')
             logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-            context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -42,7 +44,7 @@ def eliminar_impuesto_historico(request, id):
         else:
             historicos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)     
    
 def buscar_impuesto_historico(request):
@@ -65,14 +67,14 @@ def buscar_impuesto_historico(request):
                     else:
                         logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
                     logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
               
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -87,14 +89,14 @@ def buscar_impuesto_historico(request):
                     else:
                         logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'impuesto_historico/impuesto_historico_buscar.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón citas'
                     logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
         else:
             response = requests.get(url+'impuestoHistorico/')
             if response.status_code == 200:
@@ -107,13 +109,13 @@ def buscar_impuesto_historico(request):
                 else:
                     logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón citas'
                 logger = definir_log_info('buscar_historico_impuesto','logs_historico_impuesto')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_historico_impuesto','logs_historico_impuesto')
@@ -123,9 +125,9 @@ def buscar_impuesto_historico(request):
             data = response.json()
             historicos = data['historicos']
             mensaje = data['message']   
-            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
         else:
             historicos = []
             mensaje = 'No se encontrarón citas'
-        return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+        return render(request, 'impuesto_historico/impuesto_historico_buscar.html', {'reportes_lista':DatosReportes.cargar_lista_historico_impuesto(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
     

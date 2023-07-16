@@ -4,6 +4,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -64,7 +65,7 @@ def crear_medicamentos(request):
                 else:
                     logger = definir_log_info('crear_medicamentos','logs_medicamentos')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                         'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                         'mensaje': mensaje, 
                                                                         'registro_temp': registro_temp,
@@ -76,7 +77,7 @@ def crear_medicamentos(request):
                 mensaje = data['message']
                 logger = definir_log_info('crear_medicamentos','logs_medicamentos')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                         'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                         'mensaje': mensaje, 
                                                                         'registro_temp': registro_temp,
@@ -86,7 +87,7 @@ def crear_medicamentos(request):
         else:
             logger = definir_log_info('crear_medicamentos','logs_medicamentos')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'medicamentos/medicamentos.html',{'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+            return render(request, 'medicamentos/medicamentos.html',{'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                     'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                     'tipos':tipos,
                                                                     'proveedores':proveedores,
@@ -95,7 +96,7 @@ def crear_medicamentos(request):
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_medicamentos','logs_medicamentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'medicamentos/medicamentos.html',{'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+        return render(request, 'medicamentos/medicamentos.html',{'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                 'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                 'tipos':tipos,
                                                                 'proveedores':proveedores,
@@ -125,7 +126,7 @@ def abrir_actualizar_medicamentos(request):
                 medicamentos = []
                 logger = definir_log_info('abrir_actualizar_medicamentos','logs_medicamentos')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'medicamentos/actualizar_medicamentos.html', context)
     except Exception as e:
@@ -133,7 +134,7 @@ def abrir_actualizar_medicamentos(request):
         logger = definir_log_info('excepcion_medicamentos','logs_medicamentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         medicamentos = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos,'tipos':tipos, 'proveedores':proveedores, 'impuestos':impuestos, 'mensaje':mensaje}
         mensaje = data['message']
         return render(request, 'medicamentos/actualizar_medicamentos.html', context)
    
@@ -174,7 +175,7 @@ def actualizar_medicamentos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_medicamentos','logs_medicamentos')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                                     'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                                     'mensaje': mensaje,
                                                                                     'medicamentos':medicamentos,
@@ -185,7 +186,7 @@ def actualizar_medicamentos(request, id):
                 mensaje = rsp['message']       
                 logger = definir_log_info('actualizar_medicamentos','logs_medicamentos')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                    
-                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                                     'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                                     'mensaje': mensaje,
                                                                                     'medicamentos':medicamentos,
@@ -200,7 +201,7 @@ def actualizar_medicamentos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_medicamentos','logs_medicamentos')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                                     'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                                     'mensaje': mensaje,
                                                                                     'medicamentos':medicamentos,
@@ -211,7 +212,7 @@ def actualizar_medicamentos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_medicamentos','logs_medicamentos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+                return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                                     'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                                     'mensaje': mensaje,
                                                                                     'medicamentos':medicamentos,
@@ -223,7 +224,7 @@ def actualizar_medicamentos(request, id):
         logger = definir_log_info('excepcion_medicamentos','logs_medicamentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         mensaje = data['message']
-        return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),
+        return render(request, 'medicamentos/actualizar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),
                                                                             'reportes_usuarios':DatosReportes.cargar_usuario(),
                                                                             'mensaje': mensaje,
                                                                             'medicamentos':[],
@@ -249,13 +250,13 @@ def eliminar_medicamentos(request, id):
                 else:
                     logger = definir_log_info('eliminar_medicamentos','logs_medicamentos')
                     logger.info("No se ha podido eliminar el registro")
-                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
+                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
             else:
                 medicamentos = []
                 mensaje = res['message']
                 logger = definir_log_info('eliminar_medicamentos','logs_medicamentos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje}
+                context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje}
             return render(request, 'medicamentos/buscar_medicamentos.html', context) 
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -266,11 +267,11 @@ def eliminar_medicamentos(request, id):
         if  rsp_medicamentos.status_code == 200:
             data = rsp_medicamentos.json()
             medicamentos = data['medicamentos']
-            context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
+            context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos}
         else:
             medicamentos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'error': mensaje}
         return render(request, 'medicamentos/buscar_medicamentos.html', context)
     
 def buscar_medicamentos(request):
@@ -293,14 +294,14 @@ def buscar_medicamentos(request):
                     else:
                         logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
                     return render(request, 'medicamentos/buscar_medicamentos.html', context)    
                 else:
                     medicamentos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
        
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -315,14 +316,14 @@ def buscar_medicamentos(request):
                     else:
                         logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje':mensaje}
                     return render(request, 'medicamentos/buscar_medicamentos.html', context)
                 else:
                     medicamentos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+                    return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'medicamentos/')
@@ -336,13 +337,13 @@ def buscar_medicamentos(request):
                 else:
                     logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+                return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
             else:
                 medicamentos = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('buscar_medicamentos','logs_medicamentos')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+            return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_medicamentos','logs_medicamentos')
@@ -352,11 +353,11 @@ def buscar_medicamentos(request):
             data = response.json()
             medicamentos = data['medicamentos']
             mensaje = data['message']   
-            return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+            return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
         else:
             medicamentos = []
             mensaje = 'No se encontraron registros'
-        return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
+        return render(request, 'medicamentos/buscar_medicamentos.html', {'reportes_lista':DatosReportes.cargar_lista_medicamentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'medicamentos': medicamentos, 'mensaje': mensaje})
     
 
 def list_tipos():

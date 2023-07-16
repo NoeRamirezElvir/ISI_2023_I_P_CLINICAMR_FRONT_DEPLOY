@@ -3,6 +3,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_parametros_generales(request):
@@ -33,21 +35,21 @@ def crear_parametros_generales(request):
                 else:
                     logger = definir_log_info('crear_parametros_generales','logs_parametros_generales')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
+                return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_parametros_generales','logs_parametros_generales')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
+                return render(request, 'parametros_generales/parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'parametrosgenerales': registro_temp})
         else:
             logger = definir_log_info('crear_parametros_generales','logs_parametros_generales')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'parametros_generales/parametros_generales.html',{'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'parametros_generales/parametros_generales.html',{'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_parametros_generales','logs_parametros_generales')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'parametros_generales/parametros_generales.html',{'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'parametros_generales/parametros_generales.html',{'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
    
 
 def abrir_actualizar_parametros_generales(request):
@@ -70,7 +72,7 @@ def abrir_actualizar_parametros_generales(request):
                 parametrosgenerales = []
                 logger = definir_log_info('abrir_actualizar_parametros_generales','logs_parametros_generales')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'parametros_generales/Actualizar_parametros_generales.html', context)
     except Exception as e:
@@ -78,7 +80,7 @@ def abrir_actualizar_parametros_generales(request):
         logger = definir_log_info('excepcion_parametros_generales','logs_parametros_generales')
         logger.exception("Ocurrio una excepcion:" + str(e))
         parametrosgenerales = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
         return render(request, 'parametros_generales/Actualizar_parametros_generales.html', context)
    
 
@@ -102,12 +104,12 @@ def actualizar_parametros_generales(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_parametros_generales','logs_parametros_generales')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales })
+                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales })
             else:
                 mensaje = rsp['message']      
                 logger = definir_log_info('actualizar_parametros_generales','logs_parametros_generales')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                      #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
+                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'parametrosgenerales/busqueda/id/{idTemporal}')
@@ -117,12 +119,12 @@ def actualizar_parametros_generales(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_parametros_generales','logs_parametros_generales')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales})
+                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_parametros_generales','logs_parametros_generales')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
+                return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_parametros_generales','logs_parametros_generales')
@@ -132,10 +134,10 @@ def actualizar_parametros_generales(request, id):
             data = response.json()
             parametrosgenerales = data['parametrosgenerales']
             mensaje = data['message']
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales})
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales})
         else:
             mensaje = data['message']
-            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
+            return render(request, 'parametros_generales/Actualizar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'parametrosgenerales':parametrosgenerales})
     
 
 def eliminar_parametros_generales(request, id):
@@ -159,7 +161,7 @@ def eliminar_parametros_generales(request, id):
                 logger = definir_log_info('eliminar_parametros_generales','logs_parametros_generales')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje}
             return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -172,7 +174,7 @@ def eliminar_parametros_generales(request, id):
         else:
             parametrosgenerales = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'error': mensaje}
         return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)  
         
 def buscar_parametros_generales(request):
@@ -194,14 +196,14 @@ def buscar_parametros_generales(request):
                     else:
                         logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)       
                 else:
                     parametrosgenerales = []
                     mensaje = 'No se encontraron parametros generales'
                     logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -216,14 +218,14 @@ def buscar_parametros_generales(request):
                     else:
                         logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje':mensaje}
                     return render(request, 'parametros_generales/Buscar_parametros_generales.html', context)
                 else:
                     parametrosgenerales = []
                     mensaje = 'No se encontraron parametros generales'
                     logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                    return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
       
         else:
             response = requests.get(url+'parametrosgenerales/')
@@ -237,13 +239,13 @@ def buscar_parametros_generales(request):
                 else:
                     logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+                return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
             else:
                 parametrosgenerales = []
                 mensaje = 'No se encontraron parametros generales'
                 logger = definir_log_info('buscar_parametros_generales','logs_parametros_generales')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_parametros_generales','logs_parametros_generales')
@@ -253,9 +255,9 @@ def buscar_parametros_generales(request):
             data = response.json()
             parametrosgenerales = data['parametrosgenerales']
             mensaje = data['message']   
-            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+            return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
         else:
             parametrosgenerales = []
             mensaje = 'No se encontraron parametros generales'
-        return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
+        return render(request, 'parametros_generales/Buscar_parametros_generales.html', {'reportes_lista':DatosReportes.cargar_lista_parametros_generales(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'parametrosgenerales': parametrosgenerales, 'mensaje': mensaje})
      

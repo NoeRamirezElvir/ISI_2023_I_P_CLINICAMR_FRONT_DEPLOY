@@ -3,6 +3,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -36,21 +38,21 @@ def crear_expediente(request):
                 else:
                     logger = definir_log_info('crear_expediente','logs_expediente')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
+                return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_expediente','logs_expediente')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
+                return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':paciente_list})
         else:
             logger = definir_log_info('crear_expediente','logs_expediente')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':paciente_list})
+            return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':paciente_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_expediente','logs_expediente')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':paciente_list})
+        return render(request, 'expediente/expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':paciente_list})
      
 def abrir_actualizar_expediente(request):
     paciente_list = list_pacientes()
@@ -73,7 +75,7 @@ def abrir_actualizar_expediente(request):
                 expediente = []
                 logger = definir_log_info('abrir_actualizar_expediente','logs_expediente')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
+            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
             mensaje = data['message']
             return render(request, 'expediente/actualizar_expediente.html', context)
     except Exception as e:
@@ -81,7 +83,7 @@ def abrir_actualizar_expediente(request):
         logger = definir_log_info('excepcion_expediente','logs_expediente')
         logger.exception("Ocurrio una excepcion:" + str(e))
         expediente = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
+        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje,'paciente_list':paciente_list}
         return render(request, 'expediente/actualizar_expediente.html', context) 
     
 def abrir_detalle_expediente(request):
@@ -97,7 +99,7 @@ def abrir_detalle_expediente(request):
                 mensaje = data['message']
             else:
                 expediente = []
-            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'expediente/ver_detalle_expediente.html', context)
     except Exception as e:
@@ -105,7 +107,7 @@ def abrir_detalle_expediente(request):
         logger = definir_log_info('excepcion_expediente','logs_expediente')
         logger.exception("Ocurrio una excepcion:" + str(e))
         expediente = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
         return render(request, 'expediente/ver_detalle_expediente.html', context)
 
 def actualizar_expediente(request, id):
@@ -130,12 +132,12 @@ def actualizar_expediente(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_expediente','logs_expediente')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list })
+                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list })
             else:
                 mensaje = rsp['message'] 
                 logger = definir_log_info('actualizar_expediente','logs_expediente')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
+                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'expediente/busqueda/id/{idTemporal}')
@@ -145,17 +147,17 @@ def actualizar_expediente(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_expediente','logs_expediente')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'paciente_list':paciente_list})
+                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'paciente_list':paciente_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_expediente','logs_expediente')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
+                return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_expediente','logs_expediente')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
+        return render(request, 'expediente/actualizar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'expediente':expediente, 'paciente_list':paciente_list})
     
 
 def eliminar_expediente(request, id):
@@ -179,7 +181,7 @@ def eliminar_expediente(request, id):
                 logger = definir_log_info('eliminar_expediente','logs_expediente')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje}
             return render(request, 'expediente/buscar_expediente.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -192,7 +194,7 @@ def eliminar_expediente(request, id):
         else:
             expediente = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'error': mensaje}
         return render(request, 'expediente/buscar_expediente.html', context)     
  
 def buscar_expediente(request):
@@ -215,7 +217,7 @@ def buscar_expediente(request):
                     else:
                         logger = definir_log_info('buscar_expediente','logs_expediente')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                     return render(request, 'expediente/buscar_expediente.html', context)
                 else:
                     response = requests.get(url2+'documento/'+valor)
@@ -230,14 +232,14 @@ def buscar_expediente(request):
                         else:
                             logger = definir_log_info('buscar_expediente','logs_expediente')
                             logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
+                        context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                         return render(request, 'expediente/buscar_expediente.html', context)
                     else:
                         expediente = []
                         mensaje = 'No se encontraron documentos'
                         logger = definir_log_info('buscar_expediente','logs_expediente')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID - documento){valor} - {mensaje}")
-                        return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
+                        return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'documento/'+valor)
                 if response.status_code == 200:
@@ -251,14 +253,14 @@ def buscar_expediente(request):
                     else:
                         logger = definir_log_info('buscar_expediente','logs_expediente')
                         logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje':mensaje}
                     return render(request, 'expediente/buscar_expediente.html', context)
                 else:
                     expediente = []
                     mensaje = 'No se encontraron documentos'
                     logger = definir_log_info('buscar_expediente','logs_expediente')
                     logger.info(f"No se obtuvieron los registros:Filtrado(documento){valor} - {mensaje}")
-                    return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
+                    return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
         else:
             response = requests.get(url+'expediente/')
             if response.status_code == 200:
@@ -271,13 +273,13 @@ def buscar_expediente(request):
                 else:
                     logger = definir_log_info('buscar_expediente','logs_expediente')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")  
-                return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
+                return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
             else:
                 expediente = []
                 mensaje = 'No se encontraron documentos'
                 logger = definir_log_info('buscar_expediente','logs_expediente')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
+            return render(request, 'expediente/buscar_expediente.html', {'reportes_lista':DatosReportes.cargar_lista_expediente(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'expediente': expediente, 'mensaje': mensaje})
     
 def list_pacientes():
     rsp_paciente = requests.get(url+'pacientes/')

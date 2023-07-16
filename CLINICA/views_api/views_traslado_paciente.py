@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_traslados(request):
@@ -51,7 +53,7 @@ def crear_traslados(request):
                 else:
                     logger = definir_log_info('crear_traslados','logs_traslados')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 
+                return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 
                                                                 'registro_temp':registro_temp,
                                                                 'autorizacion_list':autorizacion_list, 
                                                                 'pacientes_list':pacientes_list, 
@@ -60,18 +62,18 @@ def crear_traslados(request):
                 mensaje = data['message']
                 logger = definir_log_info('crear_traslados','logs_traslados')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'autorizacion_list':autorizacion_list, 'pacientes_list':pacientes_list, 'empleado_list':empleado_list})
+                return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'autorizacion_list':autorizacion_list, 'pacientes_list':pacientes_list, 'empleado_list':empleado_list})
         else:
             logger = definir_log_info('crear_traslados','logs_traslados')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'autorizacion_list':autorizacion_list, 
+            return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'autorizacion_list':autorizacion_list, 
                                                             'pacientes_list':pacientes_list, 
                                                             'empleado_list':empleado_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_traslados','logs_traslados')
         logger.exception("Ocurrio una excepcion:" + str(e))   
-        return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'autorizacion_list':autorizacion_list, 
+        return render(request, 'Traslados/traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'autorizacion_list':autorizacion_list, 
                                                         'pacientes_list':pacientes_list, 
                                                         'empleado_list':empleado_list})
 
@@ -100,7 +102,7 @@ def abrir_actualizar_traslados(request):
                 traslados = []
                 logger = definir_log_info('abrir_actualizar_traslados','logs_traslados')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje,
+            context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje,
                                                 'autorizacion_list':autorizacion_list,
                                                 'pacientes_list':pacientes_list,
                                                 'empleado_list':empleado_list                                          
@@ -112,7 +114,7 @@ def abrir_actualizar_traslados(request):
         logger = definir_log_info('excepcion_traslados','logs_traslados')
         logger.exception("Ocurrio una excepcion:" + str(e))
         traslados = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje,
+        context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje,
                                             'autorizacion_list':autorizacion_list,
                                             'pacientes_list':pacientes_list,
                                             'empleado_list':empleado_list                                          
@@ -149,7 +151,7 @@ def actualizar_traslados(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_traslados','logs_traslados')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
+                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                                 'autorizacion_list':autorizacion_list,
                                                                                                 'pacientes_list':pacientes_list,
                                                                                                 'empleado_list':empleado_list                                          
@@ -158,7 +160,7 @@ def actualizar_traslados(request, id):
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('actualizar_traslados','logs_traslados')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
+                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                                 'autorizacion_list':autorizacion_list,
                                                                                                 'pacientes_list':pacientes_list,
                                                                                                 'empleado_list':empleado_list })
@@ -171,7 +173,7 @@ def actualizar_traslados(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_traslados','logs_traslados')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados':traslados,
+                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados':traslados,
                                                                                                 'autorizacion_list':autorizacion_list,
                                                                                                 'pacientes_list':pacientes_list,
                                                                                                 'empleado_list':empleado_list})
@@ -179,7 +181,7 @@ def actualizar_traslados(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_traslados','logs_traslados')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
+                return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':traslados,
                                                                                                 'autorizacion_list':autorizacion_list,
                                                                                                 'pacientes_list':pacientes_list,
                                                                                                 'empleado_list':empleado_list })
@@ -187,7 +189,7 @@ def actualizar_traslados(request, id):
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_traslados','logs_traslados')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':{},
+        return render(request, 'Traslados/actualizar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'traslados':{},
                                                                                         'autorizacion_list':autorizacion_list,
                                                                                         'pacientes_list':pacientes_list,
                                                                                         'empleado_list':empleado_list })
@@ -214,7 +216,7 @@ def eliminar_traslados(request, id):
                 logger = definir_log_info('eliminar_traslados','logs_traslados')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje}
             return render(request, 'Traslados/buscar_traslado.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -227,7 +229,7 @@ def eliminar_traslados(request, id):
         else:
             traslados = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'error': mensaje}
         return render(request, 'Traslados/buscar_traslado.html', context)     
      
 def buscar_traslados(request):
@@ -250,7 +252,7 @@ def buscar_traslados(request):
                     else:
                         logger = definir_log_info('buscar_traslados','logs_traslados')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
                     return render(request, 'Traslados/buscar_traslado.html', context)
                 
             else:        
@@ -266,14 +268,14 @@ def buscar_traslados(request):
                     else:
                         logger = definir_log_info('buscar_traslados','logs_traslados')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje':mensaje}
                     return render(request, 'Traslados/buscar_traslado.html', context)
                 else:
                     traslados = []
                     mensaje = 'No se encontraron muestras'
                     logger = definir_log_info('buscar_traslados','logs_traslados')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
+                    return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'traslados/')
@@ -287,20 +289,20 @@ def buscar_traslados(request):
                 else:
                     logger = definir_log_info('buscar_traslados','logs_traslados')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")   
-                return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
+                return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
             
             else:
                 traslados = []
                 mensaje = 'No se encontraron traslados'
                 logger = definir_log_info('buscar_traslados','logs_traslados')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
+            return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_traslados','logs_traslados')
         logger.exception("Ocurrio una excepcion:" + str(e))
         traslados = []
-        return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
+        return render(request, 'Traslados/buscar_traslado.html', {'reportes_lista':DatosReportes.cargar_lista_traslados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'traslados': traslados, 'mensaje': mensaje})
    
 
 def list_autorizacion():

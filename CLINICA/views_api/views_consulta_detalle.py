@@ -6,6 +6,8 @@ import requests
 from ..views_api.datos_reporte import DatosReportes
 
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def eliminar_detalle_consulta(request, id):
@@ -25,7 +27,7 @@ def eliminar_detalle_consulta(request, id):
                 logger = definir_log_info('eliminar_detalle_consulta','logs_detalle_consulta')
                 logger.info(f"No se pudo eliminar un detalle de consulta: ID {id}")
             mensaje = res['message']
-            context = {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)     
     except Exception as e:
         rsp_detalles = requests.get(url + 'consultaDetalle/') 
@@ -35,7 +37,7 @@ def eliminar_detalle_consulta(request, id):
         else:
             detalles = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'detalles': detalles, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'detalles': detalles, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         logger = definir_log_info('excepcion_detalle_consulta','logs_detalle_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
         return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)
@@ -55,14 +57,14 @@ def buscar_detalle_consulta(request):
                     detalles = data['detalles']
                     logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                     logger.info(f"Se obtuvo el registro especifico(Filtrado por ID): {valor}")
-                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                     logger.info(f"No se encontro registro: {valor}, {mensaje}")
-                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
             else:
                 response = requests.get(url2 + f'nombre/{valor}')
                 if response.status_code == 200:
@@ -72,14 +74,14 @@ def buscar_detalle_consulta(request):
                     detalles = data['detalles']
                     logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                     logger.info(f"Se obtuvo el registro especifico(Filtrado por Documento): {valor}")
-                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'detalles': detalles, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'detalle_consulta/buscar_detalle_consulta.html', context)   
                 else:
                     detalles = []
                     mensaje = 'No se encontrarón registros'
                     logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                     logger.info(f"No se encontro registro: {valor}, {mensaje}")
-                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
+                    return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})  
         else:
             response = requests.get(url+'consultaDetalle/')
             if response.status_code == 200:
@@ -88,13 +90,13 @@ def buscar_detalle_consulta(request):
                 mensaje = data['message']
                 logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                 logger.debug(f"Se obtuvieron los registros")  
-                return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 detalles = []
                 mensaje = 'No se encontrarón registros'
                 logger = definir_log_info('buscar_detalle_consulta','logs_detalle_consulta')
                 logger.info(f"Se obtuvieron los registros: {mensaje}")  
-            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Error'
         logger = definir_log_info('excepcion_consulta','logs_consulta')
@@ -104,8 +106,8 @@ def buscar_detalle_consulta(request):
             data = response.json()
             detalles = data['detalles']
             mensaje = data['message']   
-            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             detalles = []
             mensaje = 'No se encontrarón registros'
-        return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'detalle_consulta/buscar_detalle_consulta.html', {'detalles': detalles, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_detalle_consulta(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})

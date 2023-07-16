@@ -3,6 +3,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -34,21 +36,21 @@ def crear_Descuentos(request):
                 else:
                     logger = definir_log_info('crear','logs_Descuentos')
                     logger.debug(f"Se ha registrado un Descuentos: Nombre={nombre}")
-                return render(request, 'Descuentos/Descuento.html', {'mensaje': mensaje, 'Descuentos': registro_temp,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/Descuento.html', {'mensaje': mensaje, 'Descuentos': registro_temp,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_crear','logs_Descuentos')
                 logger.warning("No se pudo crear  Descuentos: " + mensaje)
-                return render(request, 'Descuentos/Descuento.html', {'mensaje': mensaje, 'Descuentos': registro_temp,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/Descuento.html', {'mensaje': mensaje, 'Descuentos': registro_temp,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_Descuentos','logs_Descuentos')
             logger.debug('Entrando a la funcion crear Descuentos')
-            return render(request, 'Descuentos/Descuento.html',{'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+            return render(request, 'Descuentos/Descuento.html',{'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
     
     except Exception as e:
         logger = definir_log_info('excepcion_Descuentos','logs_Descuentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Descuentos/Descuento.html',{'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'Descuentos/Descuento.html',{'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_Descuentos(request):
@@ -72,14 +74,14 @@ def abrir_actualizar_Descuentos(request):
                 Descuentos = []
                 logger = definir_log_info('error_abrir_actualizar','logs_Descuentos')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-            context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+            context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'Descuentos/DescuentoActualizar.html', context)
     
     except Exception as e:
         logger = definir_log_info('excepcion_Descuentos','logs_Descuentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+        context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
         return render(request, 'Descuentos/DescuentoActualizar.html', context)
 
 
@@ -105,12 +107,12 @@ def actualizar_Descuentos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar','logs_Descuentos')
                 logger.debug("Actualizacion correcta del Descuentos: " + mensaje)
-                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Descuentos':Descuentos ,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Descuentos':Descuentos ,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
             else:
                 logger = definir_log_info('error_actualizar','logs_Descuentos')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Descuentos':Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Descuentos':Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'Descuentos/busqueda/id/{idTemporal}')
@@ -120,17 +122,17 @@ def actualizar_Descuentos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_Descuentos')
                 logger.debug("Obteniendo informacion del Descuentos: " + mensaje)
-                return render(request, 'Descuentos/DescuentoActualizar.html', {'Nombre': nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/DescuentoActualizar.html', {'Nombre': nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar','logs_Descuentos')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Nombre':nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Nombre':nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
 
     except Exception as e:
         logger = definir_log_info('excepcion_Descuentos','logs_Descuentos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Nombre':nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+        return render(request, 'Descuentos/DescuentoActualizar.html', {'mensaje': mensaje,'Nombre':nombre,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
 
 
 
@@ -147,13 +149,13 @@ def eliminar_Descuentos(request, id):
                 Descuentos = data['Descuentos']
                 logger = definir_log_info('eliminar_Descuentos','logs_Descuentos')
                 logger.info("Descuentos eliminado correctamente")
-                context = {'Descuentos': Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+                context = {'Descuentos': Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
             else:
                 Descuentos = []
                 logger = definir_log_info('error_eliminar_Descuentos','logs_Descuentos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
                 mensaje = res['message']
-                context = {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+                context = {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
             return render(request, 'Descuentos/BuscarDescuento.html', context) 
     except:
         rsp_Descuentos = requests.get(url + 'Descuentos/') 
@@ -161,13 +163,13 @@ def eliminar_Descuentos(request, id):
         if  rsp_Descuentos.status_code == 200:
             data = rsp_Descuentos.json()
             Descuentos = data['Descuentos']
-            context = {'Descuentos': Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario(),'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+            context = {'Descuentos': Descuentos,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario(),'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
         else:
             Descuentos = []
         mensaje = 'No se puede eliminar, esta siendo utilizando en otros registros'
         logger = definir_log_info('excepcion_Descuentos','logs_Descuentos')
         logger.exception("Ocurrio una excepcion:" + str(mensaje))
-        context = {'Descuentos': Descuentos, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+        context = {'Descuentos': Descuentos, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
         return render(request, 'Descuentos/BuscarDescuento.html', context)
     
 
@@ -189,14 +191,14 @@ def buscar_Descuentos(request):
                     Descuentos = data['Descuentos']
                     logger = definir_log_info('buscar_Descuentos','logs_Descuentos')
                     logger.debug("Se obtuvo el Descuentos especifico(filtrado por ID): " + mensaje)
-                    context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+                    context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
                     return render(request, 'Descuentos/BuscarDescuento.html', context)   
                 else:
                     Descuentos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('error_buscar_Descuentos','logs_Descuentos')
                     logger.debug("No se obtuvo el Descuentos especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                    return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
             
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -207,14 +209,14 @@ def buscar_Descuentos(request):
                     Descuentos = data['Descuentos']
                     logger = definir_log_info('buscar_Descuentos','logs_Descuentos')
                     logger.debug("Se obtuvo el Descuentos especifico(filtrado por nombre): " + mensaje)
-                    context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
+                    context = {'Descuentos': Descuentos, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()}
                     return render(request, 'Descuentos/BuscarDescuento.html', context)
                 else:
                     Descuentos = []
                     mensaje = 'No se encontraron registros'
                     logger = definir_log_info('error_buscar_Descuentos','logs_Descuentos')
                     logger.debug("No se obtuvo el Descuentos especifico(filtrado por ID): " + mensaje)
-                    return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                    return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
         else:
             response = requests.get(url+'Descuentos/')
             if response.status_code == 200:
@@ -223,13 +225,13 @@ def buscar_Descuentos(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_Descuentos','logs_Descuentos')
                 logger.debug("Se obtuvieron todos los Descuentoss: " + mensaje )
-                return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+                return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
             else:
                 Descuentos = []
                 mensaje = 'No se encontraron registros'
                 logger = definir_log_info('error_buscar_Descuentos','logs_Descuentos')
                 logger.debug("No se obtuvo el Descuentos especifico(filtrado por ID): " + mensaje)    
-            return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+            return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
     
     
     except Exception as e:
@@ -242,11 +244,11 @@ def buscar_Descuentos(request):
             mensaje = data['message']  
             logger = definir_log_info('buscar_Descuentos','logs_Descuentos')
             logger.debug("Se obtuvieron todos los Descuentoss: " + mensaje ) 
-            return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+            return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
         else:
             Descuentos = []
             mensaje = 'No se encontraron Descuentos'
             logger = definir_log_info('error_buscar_Descuentos','logs_Descuentos')
             logger.debug("No se pudo obtener informacion de Descuentoss: " + mensaje)
-        return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
+        return render(request, 'Descuentos/BuscarDescuento.html', {'Descuentos': Descuentos, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_descuentos(),'datos_permisos':cargar_datos(),'reportes_usuarios': DatosReportes.cargar_usuario()})
     

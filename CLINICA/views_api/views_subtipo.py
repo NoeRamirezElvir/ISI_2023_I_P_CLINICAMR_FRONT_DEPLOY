@@ -4,6 +4,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_subtipo(request):
@@ -34,21 +36,21 @@ def crear_subtipo(request):
                 else:
                     logger = definir_log_info('crear_subtipo','logs_subtipo')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_subtipo','logs_subtipo')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'SubTipo/subtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_subtipo','logs_subtipo')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'SubTipo/subtipo.html',{'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'SubTipo/subtipo.html',{'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_subtipo','logs_subtipo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'SubTipo/subtipo.html',{'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'SubTipo/subtipo.html',{'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def abrir_actualizar_subtipo(request):
@@ -71,7 +73,7 @@ def abrir_actualizar_subtipo(request):
                 subtipo = []
                 logger = definir_log_info('abrir_actualizar_subtipo','logs_subtipo')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'SubTipo/subtipoActualizar.html', context)
     except Exception as e:
@@ -79,7 +81,7 @@ def abrir_actualizar_subtipo(request):
         logger = definir_log_info('excepcion_subtipo','logs_subtipo')
         logger.exception("Ocurrio una excepcion:" + str(e))
         subtipo = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
         return render(request, 'SubTipo/subtipoActualizar.html', context)
     
 def actualizar_subtipo(request, id):
@@ -102,12 +104,12 @@ def actualizar_subtipo(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_subtipo','logs_subtipo')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo })
+                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo })
             else:
                 mensaje = rsp['message']   
                 logger = definir_log_info('actualizar_subtipo','logs_subtipo')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                         #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
+                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'subtipo/busqueda/id/{idTemporal}')
@@ -117,18 +119,18 @@ def actualizar_subtipo(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_subtipo','logs_subtipo')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo})
+                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_subtipo','logs_subtipo')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
+                return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':subtipo})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_subtipo','logs_subtipo')
         logger.exception("Ocurrio una excepcion:" + str(e))
         mensaje = data['message']
-        return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':{}})
+        return render(request, 'SubTipo/subtipoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'subtipo':{}})
     
 
 def eliminar_subtipo(request, id):
@@ -152,7 +154,7 @@ def eliminar_subtipo(request, id):
                 logger = definir_log_info('eliminar_subtipo','logs_subtipo')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje}
             return render(request, 'SubTipo/buscarsubtipo.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -165,7 +167,7 @@ def eliminar_subtipo(request, id):
         else:
             subtipo = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'error': mensaje}
         return render(request, 'SubTipo/buscarsubtipo.html', context)     
        
 def buscar_subtipo(request):
@@ -189,14 +191,14 @@ def buscar_subtipo(request):
                     else:
                         logger = definir_log_info('buscar_subtipo','logs_subtipo')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
                     return render(request, 'SubTipo/buscarsubtipo.html', context)
                 else:
                     subtipo = []
                     mensaje = 'No se encontraron subtipo'
                     logger = definir_log_info('buscar_subtipo','logs_subtipo')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -211,14 +213,14 @@ def buscar_subtipo(request):
                     else:
                         logger = definir_log_info('buscar_subtipo','logs_subtipo')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje':mensaje}
                     return render(request, 'SubTipo/buscarsubtipo.html', context)
                 else:
                     subtipo = []
                     mensaje = 'No se encontraron subtipo'
                     logger = definir_log_info('buscar_subtipo','logs_subtipo')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
+                    return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'subtipo/')
@@ -232,17 +234,17 @@ def buscar_subtipo(request):
                 else:
                     logger = definir_log_info('buscar_subtipo','logs_subtipo')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
+                return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
             else:
                 subtipo = []
                 mensaje = 'No se encontraron subtipo'
                 logger = definir_log_info('buscar_subtipo','logs_subtipo')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
+            return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_subtipo','logs_subtipo')
         logger.exception("Ocurrio una excepcion:" + str(e))
         subtipo = []
-        return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
+        return render(request, 'SubTipo/buscarsubtipo.html', {'reportes_lista':DatosReportes.cargar_lista_subtipo(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'subtipo': subtipo, 'mensaje': mensaje})
     

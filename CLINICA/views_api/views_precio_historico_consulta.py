@@ -5,6 +5,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -26,7 +27,7 @@ def eliminar_precio_historico_consulta(request, id):
                 logger = definir_log_info('eliminar_precio_historico_consulta','logs_precio_historico_consulta')
                 logger.info(f"No se elimino un registro: {id}") 
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)     
     except Exception as e:
         rsp_historicos = requests.get(url + 'precioHistoricoConsulta/') 
@@ -42,7 +43,7 @@ def eliminar_precio_historico_consulta(request, id):
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         logger = definir_log_info('eliminar_precio_historico_consulta','logs_precio_historico_consulta')
         logger.warning(f"No se pudo eliminar: {id}, {mensaje} , {str(e)}") 
-        context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'error': mensaje}
         return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)             
 
 def buscar_precio_historico_consulta(request):
@@ -60,14 +61,14 @@ def buscar_precio_historico_consulta(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                     logger.debug(f"Se obtuvieron los registros: Filtrado(ID)({valor}) - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)       
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de consultas'
                     logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                     logger.debug(f"No se obtuvieron los registros: Filtrado(ID)({valor}) - {mensaje}")
-                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -78,14 +79,14 @@ def buscar_precio_historico_consulta(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                     logger.debug(f"Se obtuvieron los registros: Filtrado(Nombre)({valor}) - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de consultas'
                     logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                     logger.debug(f"No se obtuvieron los registros: Filtrado(Nombre)({valor}) - {mensaje}")
-                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'precioHistoricoConsulta/')
@@ -95,13 +96,13 @@ def buscar_precio_historico_consulta(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                 logger.debug(f"Se obtuvieron los registros - {mensaje}")
-                return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón historicos de consultas'
                 logger = definir_log_info('buscar_precio_historico_consulta','logs_precio_historico_consulta')
                 logger.debug(f"No se obtuvieron los registros - {mensaje}")
-            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_precio_historico_consulta','logs_precio_historico_consulta')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -113,10 +114,10 @@ def buscar_precio_historico_consulta(request):
             mensaje = data['message']  
             logger = definir_log_info('excepcion_buscar_precio_historico_consulta','logs_precio_historico_consulta')
             logger.debug(f"Se obtuvieron los registros - {mensaje}") 
-            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})
         else:
             historicos = []
             mensaje = 'No se encontrarón historicos de consultas'
             logger = definir_log_info('excepcion_buscar_precio_historico_consulta','logs_precio_historico_consulta')
             logger.debug(f"Se obtuvieron los registros - {mensaje}") 
-        return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+        return render(request, 'precio_historico_consulta/buscar_precio_historico_consulta.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_consulta(),'reportes_usuarios':DatosReportes.cargar_usuario(),'datos_permisos':cargar_datos(),'historicos': historicos, 'mensaje': mensaje})

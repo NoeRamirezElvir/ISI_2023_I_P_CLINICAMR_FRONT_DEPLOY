@@ -4,6 +4,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_empleados(request):
@@ -53,21 +55,21 @@ def crear_empleados(request):
                 else:
                     logger = definir_log_info('crear_empleados','logs_empleados')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'empleado/empleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'registro_temp':registro_temp})
+                return render(request, 'empleado/empleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'registro_temp':registro_temp})
             else:
                 empleadosdata = response.json()
                 mensaje = empleadosdata['message']
                 logger = definir_log_info('crear_empleados','logs_empleados')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'empleado/empleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'registro_temp':registro_temp})
+                return render(request, 'empleado/empleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,  'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_empleados','logs_empleados')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'empleado/empleado.html', { 'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+            return render(request, 'empleado/empleado.html', { 'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
     except Exception as e:
         logger = definir_log_info('excepcion_empleados','logs_empleados')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'empleado/empleado.html', { 'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+        return render(request, 'empleado/empleado.html', { 'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
 
 def list_tipodocumento():
     rsp_TipoDocumento = requests.get(url+'documentos/')
@@ -131,13 +133,13 @@ def abrir_actualizar_empleados(request):
                 empleados = []
                 logger = definir_log_info('abrir_actualizar_empleados','logs_empleados')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-            context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados,'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados,'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'empleado/EmpleadoActualizar.html', context)   
     except Exception as e:
         logger = definir_log_info('excepcion_empleados','logs_empleados')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados,'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado}
+        context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados,'TipoDocumento': TipoDocumento, 'EspecialidadMedico': EspecialidadMedico,'CargoEmpleado': CargoEmpleado}
         return render(request, 'empleado/EmpleadoActualizar.html', context)  
 
 def actualizar_empleados(request, id):
@@ -177,12 +179,12 @@ def actualizar_empleados(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_empleados','logs_empleados')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
             else:
                 mensaje = rsp['message'] 
                 logger = definir_log_info('actualizar_empleados','logs_empleados')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                           #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'empleados/busqueda/id/{idTemporal}')
@@ -192,12 +194,12 @@ def actualizar_empleados(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_empleados','logs_empleados')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_empleados','logs_empleados')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+                return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
     except Exception as e:
         logger = definir_log_info('excepcion_empleados','logs_empleados')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -206,10 +208,10 @@ def actualizar_empleados(request, id):
             data = response.json()
             empleados = data['empleados']
             mensaje = data['message']
-            return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+            return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
         else:
             mensaje = data['message']
-            return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
+            return render(request, 'empleado/EmpleadoActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'empleados':empleados, 'TipoDocumento':TipoDocumento,'EspecialidadMedico ': EspecialidadMedico,'CargoEmpleado': CargoEmpleado})
     
 
 
@@ -230,7 +232,7 @@ def eliminar_empleados(request, id):
                 logger = definir_log_info('eliminar_empleados','logs_empleados')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje}
             return render(request, 'empleado/buscarEmpleado.html', context)     
     except Exception as e:
         logger = definir_log_info('excepcion_empleados','logs_empleados')
@@ -242,7 +244,7 @@ def eliminar_empleados(request, id):
         else:
             empleados = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'error': mensaje}
         return render(request, 'empleado/buscarEmpleado.html', context)     
     
 def buscar_empleados(request):
@@ -266,14 +268,14 @@ def buscar_empleados(request):
                     else:
                         logger = definir_log_info('buscar_empleados','logs_empleados')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje':mensaje}
                     return render(request, 'empleado/buscarEmpleado.html', context)       
                 else:
                     empleados = []
                     mensaje = 'No se encontro empleados'
                     logger = definir_log_info('buscar_empleados','logs_empleados')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+                    return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
             else:
                 response = requests.get(url2+'nombre/'+valor)
                 if response.status_code == 200:
@@ -287,14 +289,14 @@ def buscar_empleados(request):
                     else:
                         logger = definir_log_info('buscar_empleados','logs_empleados')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje':mensaje}
                     return render(request, 'empleado/buscarEmpleado.html', context)
                 else:
                     empleados = []
                     mensaje = 'No se encontro empleados'
                     logger = definir_log_info('buscar_empleados','logs_empleados')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+                    return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
         else:
             response = requests.get(url+'empleados/')
             if response.status_code == 200:
@@ -307,13 +309,13 @@ def buscar_empleados(request):
                 else:
                     logger = definir_log_info('buscar_empleados','logs_empleados')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")  
-                return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+                return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
             else:
                 empleados = []
                 mensaje = 'No se encontro empleados'
                 logger = definir_log_info('buscar_empleados','logs_empleados')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+            return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_empleados','logs_empleados')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -323,9 +325,9 @@ def buscar_empleados(request):
             data = response.json()
             empleados = data['empleados']
             mensaje = data['message']   
-            return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+            return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
         else:
             empleados = []
             mensaje = 'No se encontro empleados'
-        return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
+        return render(request, 'empleado/buscarEmpleado.html', {'reportes_lista':DatosReportes.cargar_lista_empleados(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'empleados': empleados, 'mensaje': mensaje})
     

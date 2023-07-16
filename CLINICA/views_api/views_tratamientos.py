@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_tratamientos(request):
@@ -38,22 +40,22 @@ def crear_tratamientos(request):
                 else:
                     logger = definir_log_info('crear_tratamientos','logs_tratamientos')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_tratamientos','logs_tratamientos')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             logger = definir_log_info('crear_tratamientos','logs_tratamientos')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         tratamientos = {}
         logger = definir_log_info('excepcion_tratamientos','logs_tratamientos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+        return render(request, 'tratamiento/tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 def abrir_actualizar_tratamientos(request):
     pacientes_list = list_pacientes()
@@ -77,7 +79,7 @@ def abrir_actualizar_tratamientos(request):
                 tratamientos = []
                 logger = definir_log_info('abrir_actualizar_tratamientos','logs_tratamientos')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
+            context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
             mensaje = data['message']
             return render(request, 'tratamiento/Actualizar_tratamiento.html', context)
     except Exception as e:
@@ -85,7 +87,7 @@ def abrir_actualizar_tratamientos(request):
         logger = definir_log_info('excepcion_tratamientos','logs_tratamientos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         tratamientos = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
+        context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje, 'paciente_list':pacientes_list, 'tipo_list':tipo_list}
         return render(request, 'tratamiento/Actualizar_tratamiento.html', context)
     
 def actualizar_tratamientos(request, id):
@@ -112,12 +114,12 @@ def actualizar_tratamientos(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_tratamientos','logs_tratamientos')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
             else:
                 mensaje = rsp['message']     
                 logger = definir_log_info('actualizar_tratamientos','logs_tratamientos')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                       #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos,'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'tratamientos/busqueda/id/{idTemporal}')
@@ -127,18 +129,18 @@ def actualizar_tratamientos(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_tratamientos','logs_tratamientos')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_tratamientos','logs_tratamientos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         tratamientos = {}
         logger = definir_log_info('excepcion_tratamientos','logs_tratamientos')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+        return render(request, 'tratamiento/Actualizar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'tratamientos':tratamientos, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 
 def eliminar_tratamientos(request, id):
@@ -162,7 +164,7 @@ def eliminar_tratamientos(request, id):
                 logger = definir_log_info('eliminar_tratamientos','logs_tratamientos')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje}
             return render(request, 'tratamiento/Buscar_tratamiento.html', context)
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -175,7 +177,7 @@ def eliminar_tratamientos(request, id):
         else:
             tratamientos = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'error': mensaje}
         return render(request, 'tratamiento/Buscar_tratamiento.html', context)
 
     
@@ -198,7 +200,7 @@ def buscar_tratamientos(request):
                     else:
                         logger = definir_log_info('buscar_tratamientos','logs_tratamientos')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje':mensaje}
                     return render(request, 'tratamiento/Buscar_tratamiento.html', context)       
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -220,7 +222,7 @@ def buscar_tratamientos(request):
                     mensaje = 'No se encontraron muestras'
                     logger = definir_log_info('buscar_tratamientos','logs_tratamientos')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
+                    return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'tratamientos/')
@@ -234,19 +236,19 @@ def buscar_tratamientos(request):
                 else:
                     logger = definir_log_info('buscar_tratamientos','logs_tratamientos')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
+                return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
             else:
                 tratamientos = []
                 mensaje = 'No se encontraron muestras'
                 logger = definir_log_info('buscar_tratamientos','logs_tratamientos')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
+            return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_tratamientos','logs_tratamientos')
         logger.exception("Ocurrio una excepcion:" + str(e))
         tratamientos = []
-        return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
+        return render(request, 'tratamiento/Buscar_tratamiento.html', {'reportes_lista':DatosReportes.cargar_lista_tratamiento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'tratamientos': tratamientos, 'mensaje': mensaje})
    
 
 def list_tipos():

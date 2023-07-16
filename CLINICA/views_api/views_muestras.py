@@ -4,6 +4,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 
@@ -48,21 +49,21 @@ def crear_muestras(request):
                 else:
                     logger = definir_log_info('crear_muestras','logs_muestras')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_muestras','logs_muestras')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+                return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'registro_temp':registro_temp, 'paciente_list':pacientes_list, 'tipo_list':tipo_list})
         else:
             logger = definir_log_info('crear_muestras','logs_muestras')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+            return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_muestras','logs_muestras')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
+        return render(request, 'Muestras/Muestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'paciente_list':pacientes_list, 'tipo_list':tipo_list})
     
 
 def abrir_actualizar_muestras(request):
@@ -77,7 +78,7 @@ def abrir_actualizar_muestras(request):
                 mensaje = data['message']
             else:
                 muestras = []
-            context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'Muestras/MuestraActualizar.html', context)
     except Exception as e:
@@ -85,7 +86,7 @@ def abrir_actualizar_muestras(request):
         logger = definir_log_info('excepcion_muestras','logs_muestras')
         logger.exception("Ocurrio una excepcion:" + str(e))
         muestras = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
         return render(request, 'Muestras/MuestraActualizar.html', context)
     
 
@@ -107,10 +108,10 @@ def actualizar_muestras(request, id):
             #Se valida el mensaje que viene de la consulta a la API, este viene con el KEY - MESSAGE
             if rsp['message'] == "La actualización fue exitosa.":
                 mensaje = rsp['message']+'- Actualizado Correctamente'
-                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras })
+                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras })
             else:
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
+                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'muestras/busqueda/id/{idTemporal}')
@@ -118,10 +119,10 @@ def actualizar_muestras(request, id):
                 data = response.json()
                 muestras = data['muestras']
                 mensaje = data['message']
-                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras})
+                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras})
             else:
                 mensaje = data['message']
-                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
+                return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_muestras','logs_muestras')
@@ -131,10 +132,10 @@ def actualizar_muestras(request, id):
             data = response.json()
             muestras = data['muestras']
             mensaje = data['message']
-            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras})
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras})
         else:
             mensaje = data['message']
-            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
+            return render(request, 'Muestras/MuestraActualizar.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'muestras':muestras})
     
 
 def eliminar_muestras(request, id):
@@ -158,7 +159,7 @@ def eliminar_muestras(request, id):
                 muestras = []
                 logger = definir_log_info('eliminar_muestras','logs_muestras')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-            context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje}
             return render(request, 'Muestras/BuscarMuestra.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -171,7 +172,7 @@ def eliminar_muestras(request, id):
         else:
             muestras = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'error': mensaje}
         return render(request, 'Muestras/BuscarMuestra.html', context)     
            
 def buscar_muestras(request):
@@ -193,7 +194,7 @@ def buscar_muestras(request):
                     else:
                         logger = definir_log_info('buscar_muestras','logs_muestras')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
 
                     return render(request, 'Muestras/BuscarMuestra.html', context) 
                 else:
@@ -201,7 +202,7 @@ def buscar_muestras(request):
                     mensaje = 'No se encontraron muestras'
                     logger = definir_log_info('buscar_muestras','logs_muestras')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
           
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -216,14 +217,14 @@ def buscar_muestras(request):
                     else:
                         logger = definir_log_info('buscar_muestras','logs_muestras')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje':mensaje}
                     return render(request, 'Muestras/BuscarMuestra.html', context)
                 else:
                     muestras = []
                     mensaje = 'No se encontraron muestras'
                     logger = definir_log_info('buscar_muestras','logs_muestras')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+                    return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'muestras/')
@@ -237,13 +238,13 @@ def buscar_muestras(request):
                 else:
                     logger = definir_log_info('buscar_muestras','logs_muestras')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")  
-                return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+                return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
             else:
                 muestras = []
                 mensaje = 'No se encontraron muestras'
                 logger = definir_log_info('buscar_muestras','logs_muestras')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
-            return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+            return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_muestras','logs_muestras')
@@ -253,9 +254,9 @@ def buscar_muestras(request):
             data = response.json()
             muestras = data['muestras']
             mensaje = data['message']   
-            return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+            return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
         else:
             muestras = []
             mensaje = 'No se encontraron muestras'
-        return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
+        return render(request, 'Muestras/BuscarMuestra.html', {'reportes_lista':DatosReportes.cargar_lista_muestras(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'muestras': muestras, 'mensaje': mensaje})
    

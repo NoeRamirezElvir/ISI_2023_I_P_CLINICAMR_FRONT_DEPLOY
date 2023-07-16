@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_citas(request):
@@ -48,20 +50,20 @@ def crear_citas(request):
                 else:
                     logger = definir_log_info('crear','logs_citas')
                     logger.debug(f"Se ha registrado un citas: idPaciente={idPaciente}")
-                return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = pacientedata['message']
                 logger = definir_log_info('error_crear','logs_citas')
                 logger.warning("No se pudo crear el citas: " + mensaje)
-                return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita.html', {'mensaje': mensaje,  'paciente_list': pacientes_list, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             logger = definir_log_info('crear_citas','logs_citas')
             logger.debug('Entrando a la funcion crear citas')
-            return render(request, 'citas/cita.html', { 'paciente_list': pacientes_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'citas/cita.html', { 'paciente_list': pacientes_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_citas','logs_citas')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'citas/cita.html',{'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'citas/cita.html',{'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def abrir_actualizar_citas(request):
     try:
@@ -92,13 +94,13 @@ def abrir_actualizar_citas(request):
                 citas = []
                 logger = definir_log_info('error_abrir_actualizar','logs_citas')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-            context = {'citas': citas,'paciente_list': paciente_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'citas': citas,'paciente_list': paciente_list, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             mensaje = data['message']
             return render(request, 'citas/cita_actualizar.html', context)   
     except Exception as e:
         logger = definir_log_info('excepcion_citas','logs_citas')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'citas/cita_actualizar.html', context)
     
 def actualizar_citas(request, id):
@@ -128,12 +130,12 @@ def actualizar_citas(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar','logs_citas')
                 logger.debug("Actualizacion correcta del citas: " + mensaje)
-                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('error_actualizar','logs_citas')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             idTemporal = id
             response = requests.get(url+f'citas/busqueda/id/{idTemporal}')
@@ -143,16 +145,16 @@ def actualizar_citas(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar','logs_citas')
                 logger.debug("Obteniendo informacion del citas: " + mensaje)
-                return render(request, 'citas/cita_actualizar.html', {'citas': citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita_actualizar.html', {'citas': citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('error_actualizar','logs_citas')
                 logger.warning("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_citas','logs_citas')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'citas/cita_actualizar.html', {'mensaje': mensaje,'citas':citas, 'paciente_list':paciente_list,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 def eliminar_citas(request, id):
     try:
@@ -171,7 +173,7 @@ def eliminar_citas(request, id):
                 logger = definir_log_info('error_eliminar_citas','logs_citas')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+            context = {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
             return render(request, 'citas/cita_buscar.html', context)     
     except Exception as e:
         rsp_pacientes = requests.get(url + 'citas/') 
@@ -183,7 +185,7 @@ def eliminar_citas(request, id):
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
         logger = definir_log_info('excepcion_citas','logs_citas')
         logger.exception("Ocurrio una excepcion:" + str(mensaje))
-        context = {'citas': citas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+        context = {'citas': citas, 'error': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
         return render(request, 'citas/cita_buscar.html', context) 
 
 def buscar_citas(request):
@@ -204,7 +206,7 @@ def buscar_citas(request):
                     citas = data['citas']
                     logger = definir_log_info('buscar_citas','logs_citas')
                     logger.debug("Se obtuvo el citas especifico(filtrado por ID): " + mensaje)
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)
                 
                 else:
@@ -216,14 +218,14 @@ def buscar_citas(request):
                         citas = data['citas']
                         logger = definir_log_info('buscar_citas','logs_citas')
                         logger.debug("Se obtuvo el citas especifico(filtrado por ID): " + mensaje)
-                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'citas/cita_buscar.html', context)
                     else:
                         citas = []
                         mensaje = 'No se encontrarón citas'
                         logger = definir_log_info('error_buscar_citas','logs_citas')
                         logger.debug("No se obtuvo el citas especifico(filtrado por ID): " + mensaje)
-                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                        context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                         return render(request, 'citas/cita_buscar.html', context)  
             else:
                 response = requests.get(url2+f'documento/{valor}')
@@ -234,14 +236,14 @@ def buscar_citas(request):
                     citas = data['citas']
                     logger = definir_log_info('buscar_citas','logs_citas')
                     logger.debug("Se obtuvo el citas especifico(filtrado por nombre): " + mensaje)
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)
                 else:
                     citas = []
                     mensaje = 'No se encontrarón citas'
                     logger = definir_log_info('error_buscar_citas','logs_citas')
                     logger.debug("No se obtuvo el citas especifico(filtrado por ID): " + mensaje)
-                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()}
+                    context = {'citas': citas, 'mensaje':mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()}
                     return render(request, 'citas/cita_buscar.html', context)  
         else:
             response = requests.get(url+'citas/')
@@ -251,13 +253,13 @@ def buscar_citas(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_citas','logs_citas')
                 logger.debug("Se obtuvieron todos los citass: " + mensaje )
-                return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
             else:
                 citas = []
                 mensaje = 'No se encontrarón citas'
                 logger = definir_log_info('error_buscar_citas','logs_citas')
                 logger.debug("No se obtuvo el citas especifico(filtrado por ID): " + mensaje)
-            return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'citas/cita_buscar.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         logger = definir_log_info('excepcion_citas','logs_citas')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -268,13 +270,13 @@ def buscar_citas(request):
             mensaje = data['message']  
             logger = definir_log_info('buscar_citas','logs_citas')
             logger.debug("Se obtuvieron todos los citass: " + mensaje ) 
-            return render(request, 'citas/cita_buscar.html.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'citas/cita_buscar.html.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
         else:
             citas = []
             mensaje = 'No se encontraron citass'
             logger = definir_log_info('error_buscar_citas','logs_citas')
             logger.debug("No se pudo obtener informacion de citass: " + mensaje)
-        return render(request, 'citas/cita_buscar.html.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'citas/cita_buscar.html.html', {'citas': citas, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_citas(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     
 
 def abrir_calendario(request):

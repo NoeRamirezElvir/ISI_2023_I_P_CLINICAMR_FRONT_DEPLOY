@@ -4,6 +4,9 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
+
 
 url = 'https://clinicamr.onrender.com/api/'
 def listar_sintomas(request):
@@ -33,21 +36,21 @@ def crear_sintomas(request):
                 else:
                     logger = definir_log_info('crear_sintomas','logs_sintomas')
                     logger.debug(f"Se ha realizado un registro")
-                return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_sintomas','logs_sintomas')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'sintomas/sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_sintomas','logs_sintomas')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'sintomas/sintomas.html',{'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'sintomas/sintomas.html',{'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_sintomas','logs_sintomas')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'sintomas/sintomas.html',{'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'sintomas/sintomas.html',{'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
    
 
 def abrir_actualizar_sintomas(request):
@@ -70,7 +73,7 @@ def abrir_actualizar_sintomas(request):
                 sintomas = []
                 logger = definir_log_info('abrir_actualizar_sintomas','logs_sintomas')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'sintomas/actualizar_sintomas.html', context)
     except Exception as e:
@@ -78,7 +81,7 @@ def abrir_actualizar_sintomas(request):
         logger = definir_log_info('excepcion_sintomas','logs_sintomas')
         logger.exception("Ocurrio una excepcion:" + str(e))
         sintomas = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
         return render(request, 'sintomas/actualizar_sintomas.html', context)
     
 def actualizar_sintomas(request, id):
@@ -98,12 +101,12 @@ def actualizar_sintomas(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_sintomas','logs_sintomas')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas })
+                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas })
             else:
                 mensaje = rsp['message']     
                 logger = definir_log_info('actualizar_sintomas','logs_sintomas')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)                       #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
-                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
+                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'sintomas/busqueda/id/{idTemporal}')
@@ -113,18 +116,18 @@ def actualizar_sintomas(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_sintomas','logs_sintomas')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas})
+                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_sintomas','logs_sintomas')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
+                return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':sintomas})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_sintomas','logs_sintomas')
         logger.exception("Ocurrio una excepcion:" + str(e))
         mensaje = data['message']
-        return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':[]})
+        return render(request, 'sintomas/actualizar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'sintomas':[]})
     
 
 def eliminar_sintomas(request, id):
@@ -148,7 +151,7 @@ def eliminar_sintomas(request, id):
                 logger = definir_log_info('eliminar_sintomas','logs_sintomas')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje}
             return render(request, 'sintomas/buscar_sintomas.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -161,7 +164,7 @@ def eliminar_sintomas(request, id):
         else:
             sintomas = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'error': mensaje}
         return render(request, 'sintomas/buscar_sintomas.html', context)     
         
 def buscar_sintomas(request):
@@ -183,14 +186,14 @@ def buscar_sintomas(request):
                     else:
                         logger = definir_log_info('buscar_sintomas','logs_sintomas')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
                     return render(request, 'sintomas/buscar_sintomas.html', context)
                 else:
                     sintomas = []
                     mensaje = 'No se encontraron sintomas'
                     logger = definir_log_info('buscar_sintomas','logs_sintomas')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
+                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -205,14 +208,14 @@ def buscar_sintomas(request):
                     else:
                         logger = definir_log_info('buscar_sintomas','logs_sintomas')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje':mensaje}
                     return render(request, 'sintomas/buscar_sintomas.html', context)
                 else:
                     sintomas = []
                     mensaje = 'No se encontraron sintomas'
                     logger = definir_log_info('buscar_sintomas','logs_sintomas')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
+                    return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
            
         else:
             response = requests.get(url+'sintomas/')
@@ -226,18 +229,18 @@ def buscar_sintomas(request):
                 else:
                     logger = definir_log_info('buscar_sintomas','logs_sintomas')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
+                return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
             else:
                 sintomas = []
                 mensaje = 'No se encontraron sintomas'
                 logger = definir_log_info('buscar_sintomas','logs_sintomas')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
 
-            return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
+            return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_sintomas','logs_sintomas')
         logger.exception("Ocurrio una excepcion:" + str(e))
         sintomas = []
-        return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
+        return render(request, 'sintomas/buscar_sintomas.html', {'reportes_lista':DatosReportes.cargar_lista_sintoma(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'sintomas': sintomas, 'mensaje': mensaje})
    

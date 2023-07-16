@@ -5,6 +5,9 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
+
 
 url = 'https://clinicamr.onrender.com/api/'
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
@@ -25,7 +28,7 @@ def eliminar_precio_historico_medicamento(request, id):
                 logger = definir_log_info('eliminar_precio_historico_medicamento','logs_precio_historico_medicamento')
                 logger.info(f"No se elimino el registro: {id}") 
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)     
     except Exception as e:
         rsp_historicos = requests.get(url + 'precioHistoricoMedicamento/') 
@@ -39,7 +42,7 @@ def eliminar_precio_historico_medicamento(request, id):
             logger = definir_log_info('eliminar_precio_historico_medicamento','logs_precio_historico_medicamento')
             logger.info(f"No se obtuvieron los registros")  
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         logger = definir_log_info('eliminar_precio_historico_medicamento','logs_precio_historico_medicamento')
         logger.exception("Ocurrio una excepcion:" + str(e))
         return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)     
@@ -60,14 +63,14 @@ def buscar_precio_historico_medicamento(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                     logger.debug(f"Se obtuvieron los registros: Filtrado(ID)({valor}) - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)       
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos'
                     logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                     logger.info(f"No se obtuvieron los registros: {mensaje}")  
-                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -78,14 +81,14 @@ def buscar_precio_historico_medicamento(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                     logger.debug(f"Se obtuvieron los registros: Filtrado(Nombre):({valor}) - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos'
                     logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                     logger.info(f"No se obtuvieron los registros: {mensaje}")  
-                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'precioHistoricoMedicamento/')
@@ -95,13 +98,13 @@ def buscar_precio_historico_medicamento(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                 logger.debug(f"Se obtuvieron los registros: {mensaje}") 
-                return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón historicos'
                 logger = definir_log_info('buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
                 logger.info(f"No se obtuvieron los registros: {mensaje}")  
-            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_buscar_precio_historico_medicamento','logs_precio_historico_medicamento')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -110,8 +113,8 @@ def buscar_precio_historico_medicamento(request):
             data = response.json()
             historicos = data['historicos']
             mensaje = data['message']   
-            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
         else:
             historicos = []
             mensaje = 'No se encontrarón historicos'     
-        return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+        return render(request, 'precio_historico_medicamento/buscar_precio_historico_medicamento.html', {'reportes_lista':DatosReportes.cargar_lista_precio_historico_medicamento(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})

@@ -5,6 +5,8 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
+
 
 url = 'https://clinicamr.onrender.com/api/'
 #METODO 2 EN 1, PRIMERO FUNCIONA PARA LLENAR EL SELECT DE EMPLEADOS
@@ -25,7 +27,7 @@ def eliminar_precio_historico_examen(request, id):
                 logger = definir_log_info('eliminar_precio_historico_examen','logs_precio_historico_examen')
                 logger.debug(f"No se obtuvieron los registros") 
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje}
             return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', context)     
     except Exception as e:
         logger = definir_log_info('excepcion_eliminar_precio_historico_examen','logs_precio_historico_examen')
@@ -41,7 +43,7 @@ def eliminar_precio_historico_examen(request, id):
             logger = definir_log_info('eliminar_precio_historico_examen','logs_precio_historico_examen')
             logger.debug(f"No se obtuvieron los registros") 
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'error': mensaje}
         return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', context)     
     
 def buscar_precio_historico_examen(request):
@@ -60,14 +62,14 @@ def buscar_precio_historico_examen(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                     logger.debug(f"Se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', context)       
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de examenes'
                     logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                     logger.debug(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}") 
-                    return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -78,14 +80,14 @@ def buscar_precio_historico_examen(request):
                     historicos = data['historicos']
                     logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                     logger.debug(f"Se obtuvieron los registros:Filtrado(Nombre){valor} - {mensaje}") 
-                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje':mensaje}
                     return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', context)
                 else:
                     historicos = []
                     mensaje = 'No se encontrarón historicos de examenes'
                     logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                     logger.debug(f"No se obtuvieron los registros:Filtrado(Nombre){valor} - {mensaje}") 
-                    return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                    return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
 
         else:
             response = requests.get(url+'precioHistoricoExamen/')
@@ -95,13 +97,13 @@ def buscar_precio_historico_examen(request):
                 mensaje = data['message']   
                 logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                 logger.debug(f"Se obtuvieron los registros - {mensaje}") 
-                return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+                return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
             else:
                 historicos = []
                 mensaje = 'No se encontrarón historicos de examenes'
                 logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
                 logger.debug(f"No se obtuvieron los registros: {mensaje}") 
-            return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
     except Exception as e:
         logger = definir_log_info('excepcion_buscar_precio_historico_examen','logs_precio_historico_examen')
         logger.exception("Ocurrio una excepcion:" + str(e))
@@ -110,10 +112,10 @@ def buscar_precio_historico_examen(request):
             data = response.json()
             historicos = data['historicos']
             mensaje = data['message']   
-            return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+            return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
         else:
             historicos = []
             mensaje = 'No se encontrarón historicos de examenes'
             logger = definir_log_info('buscar_precio_historico_examen','logs_precio_historico_examen')
             logger.debug(f"No se obtuvieron los registros: {mensaje}") 
-        return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})
+        return render(request, 'precio_historico_examen/buscar_precio_historico_examen.html', {'reportes_lista':DatosReportes.cargar_lista_historico_precio_examen(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'historicos': historicos, 'mensaje': mensaje})

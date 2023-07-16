@@ -4,6 +4,7 @@ from django.shortcuts import render
 import requests
 from ..views_api.datos_reporte import DatosReportes
 from ..views_api.logger import definir_log_info
+from ..views_api.views_datos_permisos import cargar_datos
 
 
 url = 'https://clinicamr.onrender.com/api/'
@@ -39,21 +40,21 @@ def crear_metodos_De_pago(request):
                     logger = definir_log_info('crear_metodo_pago','logs_metodo_pago')
                     logger.debug(f"Se ha realizado un registro")
 
-                return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('crear_metodo_pago','logs_metodo_pago')
                 logger.warning("No se pudo realizar el registro" + mensaje)
-                return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
+                return render(request, 'MetodoDePago/MetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje, 'registro_temp':registro_temp})
         else:
             logger = definir_log_info('crear_metodo_pago','logs_metodo_pago')
             logger.debug('Entrando a la funcion de registro')
-            return render(request, 'MetodoDePago/MetodoDePago.html',{'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+            return render(request, 'MetodoDePago/MetodoDePago.html',{'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_metodo_pago','logs_metodo_pago')
         logger.exception("Ocurrio una excepcion:" + str(e))
-        return render(request, 'MetodoDePago/MetodoDePago.html',{'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+        return render(request, 'MetodoDePago/MetodoDePago.html',{'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
 
 
 def abrir_actualizar_metodos_De_pago(request):
@@ -76,7 +77,7 @@ def abrir_actualizar_metodos_De_pago(request):
                 metodop = []
                 logger = definir_log_info('abrir_actualizar_metodo_pago','logs_metodo_pago')
                 logger.warning("Se obtuvo una respuesta invalida")
-            context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
             mensaje = data['message']
             return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', context)
     except Exception as e:
@@ -84,7 +85,7 @@ def abrir_actualizar_metodos_De_pago(request):
         logger = definir_log_info('excepcion_metodo_pago','logs_metodo_pago')
         logger.exception("Ocurrio una excepcion:" + str(e))
         metodop = []
-        context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
         return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', context)
     
 
@@ -108,12 +109,12 @@ def actualizar_metodos_De_pago(request, id):
                 mensaje = rsp['message']+'- Actualizado Correctamente'
                 logger = definir_log_info('actualizar_metodo_pago','logs_metodo_pago')
                 logger.debug("Se ha actualizado correctamente el registro: " + mensaje)
-                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop })
+                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop })
             else:
                 mensaje = rsp['message']                            #Se necesitan enviar tanto los datos del usuario, el empleado y el mensaje de la consulta
                 logger = definir_log_info('actualizar_metodo_pago','logs_metodo_pago')
                 logger.info("Se obtuvo una respuesta invalida: " + mensaje)
-                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
+                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
         else:
             #Y aqui no se que hice la verdad
             response = requests.get(url+f'metodop/busqueda/id/{idTemporal}')
@@ -123,12 +124,12 @@ def actualizar_metodos_De_pago(request, id):
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_metodo_pago','logs_metodo_pago')
                 logger.debug("Se obtuvo la informacion del registro, anteriormente actualizado")
-                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop})
+                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop})
             else:
                 mensaje = data['message']
                 logger = definir_log_info('actualizar_metodo_pago','logs_metodo_pago')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
-                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
+                return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_metodo_pago','logs_metodo_pago')
@@ -138,10 +139,10 @@ def actualizar_metodos_De_pago(request, id):
             data = response.json()
             metodop = data['metodop']
             mensaje = data['message']
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop})
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop})
         else:
             mensaje = data['message']
-            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
+            return render(request, 'MetodoDePago/ActualizarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'mensaje': mensaje,'metodop':metodop})
    
 
 def eliminar_metodos_De_pago(request, id):
@@ -165,7 +166,7 @@ def eliminar_metodos_De_pago(request, id):
                 logger = definir_log_info('eliminar_metodo_pago','logs_metodo_pago')
                 logger.warning("Se obtuvo una respuesta invalida" + mensaje)
             mensaje = res['message']
-            context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje}
+            context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje}
             return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
@@ -178,7 +179,7 @@ def eliminar_metodos_De_pago(request, id):
         else:
             metodop = []
         mensaje = 'No se puede eliminar, esta siendo utilizado en otros registros'
-        context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'error': mensaje}
+        context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'error': mensaje}
         return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)     
 
 
@@ -203,14 +204,14 @@ def buscar_metodos_De_pago(request):
                     else:
                         logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                         logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
                     return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
                 else:
                     metodop = []
                     mensaje = 'No se encontraron Metodos de pago'
                     logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                     logger.info(f"No se obtuvieron los registros:Filtrado(ID){valor} - {mensaje}")
-                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
            
             else:
                 response = requests.get(url2+'nombre/'+valor)
@@ -225,14 +226,14 @@ def buscar_metodos_De_pago(request):
                     else:
                         logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                         logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
+                    context = {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje':mensaje}
                     return render(request, 'MetodoDePago/BuscarMetodoDePago.html', context)
                 else:
                     metodop = []
                     mensaje = 'No se encontraron Metodos de pago'
                     logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                     logger.info(f"No se obtuvieron los registros:Filtrado(nombre){valor} - {mensaje}")
-                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+                    return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
     
         else:
             response = requests.get(url+'metodop/')
@@ -246,14 +247,14 @@ def buscar_metodos_De_pago(request):
                 else:
                     logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                     logger.info(f"No se obtuvieron los registros:{mensaje}")
-                return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+                return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
             else:
                 metodop = []
                 mensaje = 'No se encontraron Metodos de pago'
                 logger = definir_log_info('buscar_metodo_pago','logs_metodo_pago')
                 logger.info(f"No se obtuvieron los registros:{mensaje}")
 
-            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
     except Exception as e:
         mensaje = 'Ocurrio una excepcion'
         logger = definir_log_info('excepcion_metodo_pago','logs_metodo_pago')
@@ -263,9 +264,9 @@ def buscar_metodos_De_pago(request):
             data = response.json()
             metodop = data['metodop']
             mensaje = data['message']   
-            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+            return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
         else:
             metodop = []
             mensaje = 'No se encontraron Metodos de pago'
-        return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
+        return render(request, 'MetodoDePago/BuscarMetodoDePago.html', {'reportes_lista':DatosReportes.cargar_lista_metodo_pago(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario(),'metodop': metodop, 'mensaje': mensaje})
    
