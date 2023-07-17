@@ -47,10 +47,14 @@
 
 </style>
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.consultas %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_consultas.js' %}"></script>
 <div class="contenedor">
@@ -108,11 +112,15 @@
                       </div>
                       <label>Precio</label>
                       <input type="text" name="precio" id="precio" value="{{registro_temp.precio}}" placeholder="00.00" min="0"  step="10" oninput="this.value = this.value.replace(/[^\d.]|\.(?=.*\.)/g, '')" >  
-                        <p class="full">
+                      {% if 'actualizar' in datos_permisos.0.idPantallas.consultas %}
+                      <p class="full">
                             <button class="boton-enviar" type="submit" style="
                             max-height: 40px;
                             height: 40px;width: 200px;">Actualizar</button>
                         </p>
+                        {% else %}
+                        <a href="#" class="activarFormulario">Actualizar</a>
+                      {% endif %}
                       </div>
                     </form>
                         <div style="display: block;

@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+    {% if 'exportar' in datos_permisos.0.idPantallas.autorizacion %}
     <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
     <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
     <button id="exportarBtn" >Exportar Excel</button>
     <button id="exportBtn">Exportar PDF</button>
+    {% else %}
+    <a href="#" class="activarFormulario">Exportar</a>
+  {% endif %}
   </div>
 <div class="contenedor-listar-campos">
     <h1 class="h1-listar">Registros de Autorizaciones de pacientes</h1>
@@ -18,9 +22,13 @@
             <div class="buscador-listar">
                 <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o motivos">
             </div>
+            {% if 'buscar' in datos_permisos.0.idPantallas.autorizacion %}
             <div class="btnBusqueda-listar">
                 <input id="btnBuscarUsuario " type="submit" value="Buscar">
-            </div>
+              </div>
+                {% else %}
+                <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+              {% endif %}
         </form>
         <a class="btn-agregar" href="/CLINICA/templates/Autorizacion/Autorizar.html" class="btn-agregar-link">Agregar</a>
     </div>
@@ -41,6 +49,7 @@
                         <td>{{ autorizacion.motivos }}</td>
                         <td>{{ autorizacion.confirmacion }}</td>
                         <td> 
+                            {% if 'actualizar' in datos_permisos.0.idPantallas.autorizacion %}
                             <form action="{% url 'abrir_actualizar_autorizacion' %}" method="post" class="form-botones">
                                 {% csrf_token %}
                             <input type="hidden" name="id_autorizar" value="{{ autorizacion.id }}">
@@ -48,6 +57,10 @@
                                   <img src="{% static 'img/icons/icedit.png' %}">
                             </button>
                             </form>
+                            {% else %}
+                            <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+                          {% endif %}
+                            {% if 'eliminar' in datos_permisos.0.idPantallas.autorizacion %}
                             <form action="{% url 'eliminar_autorizacion' id=autorizacion.id  %}"  method="post">
                                 {% csrf_token %}
                             <input type="hidden" name="id_autorizar" value="{{ autorizacion.id }}">
@@ -55,6 +68,9 @@
                               <img src="{% static 'img/icons/icdelete.png' %}">
                             </button>
                             </form>
+                            {% else %}
+                            <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+                          {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

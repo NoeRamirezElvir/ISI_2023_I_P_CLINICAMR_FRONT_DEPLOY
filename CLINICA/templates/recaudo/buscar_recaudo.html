@@ -22,10 +22,14 @@
 </style>
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.recaudo %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_recaudo.js' %}"></script>
 <div class="contenedor-listar-campos">
@@ -36,9 +40,13 @@
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Numero de Factura">
       </div>
+      {% if 'buscar' in datos_permisos.0.idPantallas.recaudo %}
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
       </div>
+      {% else %}
+      <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+    {% endif %}
     </form>
     <a class="btn-agregar" href="/CLINICA/templates/recaudo/recaudo.html" class="btn-agregar-link">Agregar</a>
   </div>
@@ -86,6 +94,7 @@
             </td>            
             <td>{{ item.activa }}</td>
             <td>
+              {% if 'actualizar' in datos_permisos.0.idPantallas.recaudo %}
               <form action="{% url 'actualizar_recaudo' id=item.id %}" method="post" class="form-botones">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
@@ -94,6 +103,10 @@
                   <img src="{% static 'img/icons/icedit.png' %}">
               </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
+              {% if 'eliminar' in datos_permisos.0.idPantallas.recaudo %}
               <form action="{% url 'reimprimir_recaudo' id=item.id  %}?accion=eliminar" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
@@ -101,6 +114,10 @@
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
+              {% if 'reimprimir' in datos_permisos.0.idPantallas.recaudo %}
               <form action="{% url 'reimprimir_recaudo' id=item.id  %}?accion=reimprimir" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_recaudo" value="{{ item.id }}">
@@ -108,6 +125,9 @@
                   <img src="{% static 'img/icons/icpdfdoc.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
             </td>
           </tr>
           {% endfor %}

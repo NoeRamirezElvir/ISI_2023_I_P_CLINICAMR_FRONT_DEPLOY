@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.enfermedad %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_enfermedad.js' %}"></script>
 <div class="contenedor-listar-campos">
@@ -19,9 +23,13 @@
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
       </div>
+      {% if 'buscar' in datos_permisos.0.idPantallas.enfermedad %}
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
       </div>
+      {% else %}
+      <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+    {% endif %}
     </form>
     <a class="btn-agregar" href="/CLINICA/templates/enfermedad/enfermedad.html" class="btn-agregar-link">Agregar</a>
   </div>
@@ -47,6 +55,7 @@
                 {% endfor %}
             </td>
             <td>
+              {% if 'actualizar' in datos_permisos.0.idPantallas.enfermedad %}
               <form action="{% url 'abrir_actualizar_enfermedad' %}" method="post" class="form-botones">
                 {% csrf_token %}
                 <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
@@ -54,6 +63,10 @@
                     <img src="{% static 'img/icons/icedit.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
+              {% if 'eliminar' in datos_permisos.0.idPantallas.enfermedad %}
               <form action="{% url 'eliminar_enfermedad' id=enfermedad.id  %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_enfermedad" value="{{ enfermedad.id }}">
@@ -61,6 +74,9 @@
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
             </td>
           </tr>
           {% endfor %}

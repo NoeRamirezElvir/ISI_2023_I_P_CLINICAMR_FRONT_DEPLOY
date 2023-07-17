@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.detalleexamen %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_detalle_recaudo_examen.js' %}"></script>
 <div class="contenedor-listar-campos">
@@ -19,9 +23,13 @@
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Numero Factura(Recaudo)">
       </div>
+      {% if 'exportar' in datos_permisos.0.idPantallas.detalleexamen %}
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
       </div>
+      {% else %}
+      <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+    {% endif %}
     </form>
   </div>
   <div class="container-listar">
@@ -42,6 +50,7 @@
             <td>{{ detalle.idRecaudo.noFactura }} <br> {{ detalle.idRecaudo.estado }}</td>
             <td>{{ detalle.idExamen.tipo.nombre }}</td>
             <td>
+              {% if 'exportar' in datos_permisos.0.idPantallas.detalleexamen %}
               <form action="{% url 'eliminar_recaudo_detalle_examen' id=detalle.id  %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_detalle" value="{{ detalle.id }}">
@@ -49,6 +58,9 @@
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
             </td>
           </tr>
           {% endfor %}

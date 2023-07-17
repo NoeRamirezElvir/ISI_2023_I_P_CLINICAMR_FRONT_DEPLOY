@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.historicopreciomedicamento %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_precio_historico_med.js' %}"></script>
 <div class="contenedor-listar-campos">
@@ -19,9 +23,13 @@
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Nombre">
       </div>
+      {% if 'buscar' in datos_permisos.0.idPantallas.historicopreciomedicamento %}
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
       </div>
+      {% else %}
+      <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+    {% endif %}
     </form>
   </div>
   <div class="container-listar">
@@ -47,6 +55,7 @@
             <td>{{ historico.fechaInicio }}</td>
             <td>{{ historico.fechaFinal }}</td>
             <td>
+              {% if 'eliminar' in datos_permisos.0.idPantallas.historicopreciomedicamento %}
               <form action="{% url 'eliminar_precio_historico_medicamento' id=historico.id  %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_historicos" value="{{ historico.id }}">
@@ -54,6 +63,9 @@
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
             </td>
           </tr>
           {% endfor %}

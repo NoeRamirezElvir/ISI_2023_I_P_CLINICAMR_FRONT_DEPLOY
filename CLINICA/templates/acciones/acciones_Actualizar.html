@@ -9,11 +9,15 @@
     }
 </style>
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.acciones %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <input type="hidden" id="datosHiddenTitulo" value="Acciones">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+    <a href="#" class="activarFormulario">Exportar</a>
+  {% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_esp_sin.js' %}"></script>
 <div class="contenedor">
@@ -42,9 +46,13 @@
             <textarea name="descripcion">{{ acciones.0.descripcion }}</textarea>
           </p>
           <p> 
+            {% if 'actualizar' in datos_permisos.0.idPantallas.acciones %}
           <p class="full">
             <button class="boton-enviar">Actualizar</button>
           </p>
+          {% else %}
+            <a href="#" class="activarFormulario">Actualizar</a>
+          {% endif %}
         </form>
       </div>
     </div>

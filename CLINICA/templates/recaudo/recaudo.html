@@ -6,10 +6,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/recaudo_modal.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.recaudo %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_recaudo.js' %}"></script>
 <div class="contenedor">
@@ -141,9 +145,13 @@
            </div>
           </div>
           </div>
+          {% if 'guardar' in datos_permisos.0.idPantallas.recaudo %}
           <p class="full">
             <button class="boton-enviar" style="margin-top:10px">Guardar</button>
           </p>
+          {% else %}
+          <a href="#" class="activarFormulario">Guardar</a>
+        {% endif %}
 
         </form>
       </div>

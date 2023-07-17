@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_general_listas.css' %}">
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.detallemedicamento %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_detalle_recaudo_medicamento.js' %}"></script>
 <div class="contenedor-listar-campos">
@@ -19,9 +23,13 @@
       <div class="buscador-listar">
         <input type="text" name="buscador" id="buscarUsuario" placeholder="ID o Numero Factura(Recaudo)">
       </div>
+      {% if 'buscar' in datos_permisos.0.idPantallas.detallemedicamento %}
       <div class="btnBusqueda-listar">
         <input id="btnBuscarUsuario " type="submit" value="Buscar">
       </div>
+      {% else %}
+      <a href="#" class="activarFormulario" style="color: black;">Buscar</a>
+    {% endif %}
     </form>
   </div>
   <div class="container-listar">
@@ -50,6 +58,7 @@
             <td>{{ detalle.idMedicamento.nombre }}</td>
             <td>{{ detalle.idMedicamento.cantidad }}</td>
             <td>
+              {% if 'eliminar' in datos_permisos.0.idPantallas.detallemedicamento %}
               <form action="{% url 'eliminar_recaudo_detalle_medicamento' id=detalle.id  %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id_detalle" value="{{ detalle.id }}">
@@ -57,6 +66,9 @@
                   <img src="{% static 'img/icons/icdelete.png' %}">
                 </button>
               </form>
+              {% else %}
+              <a href="#" class="activarFormulario" style="background-position: left top;"></a>
+            {% endif %}
             </td>
           </tr>
           {% endfor %}

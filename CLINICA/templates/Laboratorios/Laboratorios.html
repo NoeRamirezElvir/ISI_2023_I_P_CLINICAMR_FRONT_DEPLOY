@@ -4,10 +4,14 @@
 {% block tittle %}Registro de Laboratorios{% endblock %}
 {% block content %}
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.laboratorios %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <script src="{% static 'js/js_reportes/rpt_laboratorio.js' %}"></script>
 
@@ -59,10 +63,13 @@
               </fieldset>
               <br>
             </br>
-
+            {% if 'guardar' in datos_permisos.0.idPantallas.laboratorios %}
         <p class="full">
           <button class="boton-enviar" >Guardar</button>
         </p>
+        {% else %}
+        <a href="#" class="activarFormulario">Guardar</a>
+      {% endif %}
       </form>
     </div>
   </div>

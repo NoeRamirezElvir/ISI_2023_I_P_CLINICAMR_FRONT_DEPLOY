@@ -27,10 +27,14 @@
     }
 </style>
 <div id="contenedor-reportes">
+  {% if 'exportar' in datos_permisos.0.idPantallas.citas %}
   <input type="hidden" id="datosHidden" value="{{ reportes_lista }}">
   <input type="hidden" id="datosHiddenUsuario" value="{{ reportes_usuarios }}">
   <button id="exportarBtn" >Exportar Excel</button>
   <button id="exportBtn">Exportar PDF</button>
+  {% else %}
+  <a href="#" class="activarFormulario">Exportar</a>
+{% endif %}
 </div>
 <div class="contenedor">
     <h1 class="logo"><span class="nombre-empresa">Registro de Citas</span></h1>
@@ -86,9 +90,13 @@
               <input type="datetime-local" name="fechaMaxima" id="fechaMaxima" required value="{{registro_temp.fechaMaxima}}" min="2000-01-01T00:00" max="2030-12-31T23:59">
             </div>
           </div>
+          {% if 'guardar' in datos_permisos.0.idPantallas.citas %}
           <p class="full">
             <button class="boton-enviar">Guardar</button>
           </p>
+          {% else %}
+          <a href="#" class="activarFormulario">Guardar</a>
+        {% endif %}
           {%if registro_temp %}
           {% endif %}
         </form>
