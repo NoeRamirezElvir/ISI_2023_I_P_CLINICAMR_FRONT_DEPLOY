@@ -63,7 +63,7 @@ def crear_correlativo(request):
     except Exception as e:
         logger = definir_log_info('excepcion_correlativo','logs_correlativo')
         logger.exception("Ocurrio una excepcion:" + str(e))
-    return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})       
+    return render(request, 'correlativo/correlativo.html', {'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})       
 
 
 def abrir_actualizar_correlativo(request):

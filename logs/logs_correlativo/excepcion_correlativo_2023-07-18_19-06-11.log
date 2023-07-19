@@ -1,0 +1,6 @@
+2023-07-18 19:06:11,570 - Thread-1 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:cannot access local variable 'mensaje' where it is not associated with a value
+Traceback (most recent call last):
+  File "C:\Users\nblad\Desktop\Nueva carpeta (2)\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_correlativo_SAR.py", line 62, in crear_correlativo
+    return render(request, 'correlativo/correlativo.html', {'mensaje': mensaje, 'registro_temp':registro_temp,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                                                                       ^^^^^^^
+UnboundLocalError: cannot access local variable 'mensaje' where it is not associated with a value

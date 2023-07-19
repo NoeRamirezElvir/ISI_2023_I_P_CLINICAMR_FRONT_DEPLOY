@@ -1,0 +1,9 @@
+2023-07-18 19:09:01,091 - Thread-2 (process_request_thread) - MainProcess - ERROR - Ocurrio una excepcion:list index out of range
+Traceback (most recent call last):
+  File "C:\Users\nblad\Desktop\Nueva carpeta (2)\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\views_correlativo_SAR.py", line 244, in buscar_correlativo
+    return render(request, 'correlativo/buscar_correlativo.html', {'correlativo': correlativo, 'mensaje': mensaje,'reportes_lista':DatosReportes.cargar_lista_sar(),'datos_permisos':cargar_datos(),'reportes_usuarios':DatosReportes.cargar_usuario()})
+                                                                                                                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nblad\Desktop\Nueva carpeta (2)\ISI_2023_I_P_CLINICAMR_FRONT_DEPLOY\CLINICA\views_api\datos_reporte.py", line 14, in cargar_usuario
+    nombre = usuario[0]['nombreUsuario']
+             ~~~~~~~^^^
+IndexError: list index out of range
